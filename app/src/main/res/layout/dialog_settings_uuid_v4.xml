@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#efeff4"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:layout_marginTop="20dp"
+        android:background="#c8c7cc"
+        android:contentDescription="@null" />
+
+    <EditText
+        android:id="@+id/settings_v4_et_uuid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:inputType="text"
+        android:labelFor="@id/edit_uuid"
+        android:paddingBottom="10dp"
+        android:paddingLeft="12dp"
+        android:paddingTop="10dp"
+        android:text=""
+        android:textColor="#666666"
+        android:textSize="16dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:background="#c8c7cc"
+        android:contentDescription="@null" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="30dp"
+        android:text="@string/common_uuid"
+        android:textColor="#333333"
+        android:textSize="18dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:background="#c8c7cc"
+        android:contentDescription="@null" />
+
+    <RelativeLayout
+        android:id="@+id/settings_v4_rl_sensoro_uuid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_item_selector"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/setting_uuid_tv_sensoro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dp"
+            android:text="@string/sensoro"
+            android:textColor="#666666"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/setting_uuid_tv_sensoro_uuid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/setting_uuid_tv_sensoro"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="12dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@string/sensoro_uuid"
+            android:textColor="#999999"
+            android:textSize="16dp" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="#c8c7cc"
+        android:contentDescription="@null" />
+
+    <RelativeLayout
+        android:id="@+id/settings_v4_rl_airlocate_uuid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_item_selector"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/setting_uuid_tv_airlocate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dp"
+            android:text="@string/airlocate"
+            android:textColor="#666666"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/setting_uuid_tv_airlocate_uuid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/setting_uuid_tv_airlocate"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="12dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@string/airlocate_uuid"
+            android:textColor="#999999"
+            android:textSize="16dp" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="#c8c7cc"
+        android:contentDescription="@null" />
+
+    <RelativeLayout
+        android:id="@+id/settings_v4_rl_estimote_uuid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_item_selector"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/setting_uuid_tv_estimote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dp"
+            android:text="@string/estimote"
+            android:textColor="#666666"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/setting_uuid_tv_estimote_uuid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/setting_uuid_tv_estimote"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="12dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@string/estimote_uuid"
+            android:textColor="#999999"
+            android:textSize="16dp" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="#c8c7cc"
+        android:contentDescription="@null" />
+
+    <RelativeLayout
+        android:id="@+id/settings_v4_rl_wx_uuid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_item_selector"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/setting_uuid_tv_wx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dp"
+            android:text="@string/wx"
+            android:textColor="#666666"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/setting_uuid_tv_wx_uuid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/setting_uuid_tv_wx"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="12dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@string/wx_uuid"
+            android:textColor="#999999"
+            android:textSize="16dp" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:background="#c8c7cc"
+        android:contentDescription="@null" />
+</LinearLayout>

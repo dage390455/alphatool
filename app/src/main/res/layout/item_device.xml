@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:descendantFocusability="blocksDescendants">
+    <LinearLayout
+        android:background="@drawable/shape_device_item"
+        android:orientation="vertical"
+        android:id="@+id/item_device_ll"
+        android:layout_marginLeft="@dimen/x40"
+        android:layout_marginRight="@dimen/x40"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:background="@color/cell_head"
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:layout_height="@dimen/y150">
+            <ImageView
+                android:id="@+id/device_item_icon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="@dimen/y10"
+                android:layout_marginLeft="@dimen/x40"
+                android:src="@mipmap/ic_device" />
+
+            <TextView
+                android:id="@+id/device_item_sn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_alignTop="@+id/device_item_icon"
+                android:layout_toRightOf="@+id/device_item_icon"
+                android:text="111111"
+                android:textColor="@color/cell_font"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/device_item_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_alignTop="@+id/device_item_icon"
+                android:layout_toRightOf="@+id/device_item_sn"
+                android:drawableLeft="@drawable/shape_oval"
+                android:drawablePadding="@dimen/x15"
+                android:text="@string/status_normal"
+                android:textColor="@color/cell_font" />
+
+            <TextView
+                android:id="@+id/device_item_status_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_alignTop="@+id/device_item_icon"
+                android:layout_toRightOf="@+id/device_item_status"
+                android:text="@string/one_min" />
+            <com.sensoro.loratool.widget.BatteryView
+                android:id="@+id/device_item_battery"
+                android:layout_width="@dimen/x200"
+                android:layout_height="@dimen/y100"
+                android:gravity="center"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/x10"
+                android:layout_marginTop="@dimen/y10"
+                android:layout_alignTop="@+id/device_item_status_time"
+                />
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/device_item_plugin"
+                android:layout_width="@dimen/x60"
+                android:layout_height="@dimen/y40"
+                android:layout_alignTop="@+id/device_item_icon"
+                android:layout_marginTop="@dimen/y20"
+                android:layout_alignParentRight="true"
+                android:src="@mipmap/ic_plugin"
+                android:layout_marginRight="@dimen/x30"
+                />
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/item_device_ll_sensor"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <include layout="@layout/layout_device_sensor"/>
+                <View
+                    android:id="@+id/item_sensor_sep"
+                    android:background="@color/item_sensor_line"
+                    android:layout_marginTop="@dimen/y50"
+                    android:layout_marginLeft="@dimen/x50"
+                    android:layout_marginRight="@dimen/x50"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"/>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y150"
+                >
+                <TextView
+                    android:id="@+id/device_item_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x40"
+                    android:text="-"
+                    android:textColor="@color/item_text_color"
+                    android:textSize="@dimen/item_lora_text_size"
+                    />
+                <TextView
+                    android:id="@+id/device_item_power"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:layout_toRightOf="@+id/device_item_version"
+                    android:text="-"
+                    android:textColor="@color/item_text_color"
+                    android:textSize="@dimen/item_lora_text_size" />
+
+                <TextView
+                    android:id="@+id/device_item_interval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:layout_toRightOf="@+id/device_item_power"
+                    android:text="-"
+                    android:textColor="@color/item_text_color"
+                    android:textSize="@dimen/item_lora_text_size" />
+
+                <TextView
+                    android:id="@+id/device_item_freq"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:layout_toRightOf="@+id/device_item_interval"
+                    android:text="-"
+                    android:textColor="@color/item_text_color"
+                    android:textSize="@dimen/item_lora_text_size"
+                    />
+                <TextView
+                    android:id="@+id/device_item_sf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:layout_toRightOf="@+id/device_item_freq"
+                    android:text="-"
+                    android:textColor="@color/item_text_color"
+                    android:textSize="@dimen/item_lora_text_size"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/y150"
+                android:layout_marginTop="@dimen/y10"
+                android:gravity="center_vertical"
+                android:background="@color/cell_bottom"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/device_item_nearby"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x40"
+                    android:layout_marginTop="@dimen/y30"
+                    android:background="@drawable/shape_station_nearby"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/item_lora_text_size" />
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/device_item_tag_rv"
+                    android:layout_marginLeft="@dimen/x40"
+                    android:layout_toRightOf="@+id/device_item_nearby"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_marginTop="@dimen/y30"
+                    android:id="@+id/device_item_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/x20"
+                    android:textColor="@android:color/black"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

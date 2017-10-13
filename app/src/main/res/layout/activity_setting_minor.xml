@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#efeff4"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#212424">
+
+        <ImageView
+            android:id="@+id/setting_minor_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:contentDescription="@null"
+            android:background="@drawable/bg_button_selector"
+            android:padding="8dp"
+            android:src="@drawable/icon_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/setting_minor"
+            android:padding="5dp"
+            android:textColor="#fdffff"
+            android:textSize="24dp" />
+
+        <TextView
+            android:id="@+id/text_minor_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:text="@string/text_save"
+            android:background="@drawable/bg_button_selector"
+            android:padding="10dp"
+            android:textColor="#fdffff"
+            android:textSize="20dp" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:layout_marginTop="20dp"
+        android:background="#c8c7cc"
+        android:contentDescription="@null" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:paddingBottom="10dp"
+            android:paddingLeft="12dp"
+            android:paddingTop="10dp"
+            android:text="@string/hexadecimal"
+            android:textColor="#666666"
+            android:textSize="16dp" />
+
+        <EditText
+            android:id="@+id/edit_minor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:gravity="right"
+            android:inputType="text"
+            android:labelFor="@id/edit_minor"
+            android:paddingBottom="10dp"
+            android:paddingRight="12dp"
+            android:paddingTop="10dp"
+            android:text="1234"
+            android:textColor="#666666"
+            android:textSize="16dp" />
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:background="#c8c7cc"
+        android:contentDescription="@null" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:paddingBottom="10dp"
+            android:paddingLeft="12dp"
+            android:paddingTop="10dp"
+            android:text="@string/decimal"
+            android:textColor="#666666"
+            android:textSize="16dp" />
+
+        <EditText
+            android:id="@+id/setting_minor_et_minor_decimal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:background="#ffffff"
+            android:inputType="text"
+            android:labelFor="@id/edit_major"
+            android:paddingBottom="10dp"
+            android:paddingRight="12dp"
+            android:paddingTop="10dp"
+            android:text="1234"
+            android:textColor="#666666"
+            android:textSize="16dp" />
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:background="#c8c7cc"
+        android:contentDescription="@null" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:text="@string/major_minor_tips"
+        android:textColor="#999999"
+        android:textSize="14dp" />
+
+</LinearLayout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.sensoro.loratool.widget.ItemFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    >
+    <com.sensoro.loratool.widget.StationInfoView
+        android:id="@+id/item_station_detail_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/ic_light"
+        />
+
+    <TextView
+        android:id="@+id/item_station_detail_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/stationItemTextStyle"
+        android:text="@string/tips"
+        />
+</com.sensoro.loratool.widget.ItemFrameLayout>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#efeff4"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/settings_tips_v4_tv_level_tips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:text="@string/text_c0_first_power"
+        android:textColor="#999999"
+        android:textSize="14dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/settings_tips_v4_tv_tips_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="12dp"
+        android:layout_below="@id/settings_tips_v4_tv_level_tips"
+        android:text="@string/setting_interval_tips"
+        android:textColor="#999999"
+        android:textSize="14dp"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/settings_tips_v4_rl_remain_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="12dp"
+        android:layout_below="@id/settings_tips_v4_tv_tips_detail"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/settings_tips_v4_tv_remain_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/remaining_time"
+            android:textColor="#999999"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/settings_tips_v4_tv_remain_time_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/settings_tips_v4_tv_remain_time"
+            android:text="0"
+            android:textColor="#999999"
+            android:textSize="14dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/settings_tips_v4_tv_remain_time_value"
+            android:text="@string/for_reference_only"
+            android:textColor="#999999"
+            android:textSize="14dp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

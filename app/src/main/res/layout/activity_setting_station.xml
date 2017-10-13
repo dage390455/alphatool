@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/layout_root"
+    android:orientation="vertical">
+
+    <!--标题：返回按钮和标题-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/actionbar_bg">
+
+        <ImageView
+            android:id="@+id/station_iv_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/bg_button_selector"
+            android:contentDescription="@null"
+            android:padding="8dp"
+            android:src="@drawable/icon_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="5dp"
+            android:text="@string/setting_beacon"
+            android:textColor="#fdffff"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/station_tv_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="5dp"
+            android:text="@string/text_save"
+            android:textColor="#fdffff"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+    <!--功能列表-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:text="@string/setting_text_station_network"
+                android:textColor="#333333"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#c8c7cc"
+                android:contentDescription="@null" />
+
+            <!--access mode-->
+            <RelativeLayout
+                android:id="@+id/settings_station_rl_access_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_item_selector"
+
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/setting_text_access_mode"
+                    android:textColor="#666666"
+                    android:textSize="18sp" />
+
+
+                <ImageView
+                    android:id="@+id/image_access_mode"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="20dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/icon_arrow" />
+
+                <TextView
+                    android:id="@+id/settings_station_tv_access_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_toLeftOf="@id/image_access_mode"
+                    android:ellipsize="end"
+                    android:maxEms="8"
+                    android:maxLines="1"
+                    android:text="Wifi"
+                    android:textColor="#999999"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_marginTop="@dimen/y40"
+                    android:layout_below="@+id/settings_station_tv_access_mode"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:background="#c8c7cc"
+                    android:contentDescription="@null" />
+            </RelativeLayout>
+
+
+            <!--ip assignment-->
+            <RelativeLayout
+                android:id="@+id/settings_station_rl_ip_assignment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_item_selector"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/setting_text_ip_assignment"
+                    android:textColor="#666666"
+                    android:textSize="18sp" />
+                <LinearLayout
+                    android:id="@+id/ll_ip_assignment"
+                    android:layout_alignParentRight="true"
+                    android:orientation="horizontal"
+                    android:layout_marginRight="@dimen/x80"
+                    android:gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/settings_station_tv_ip_assignment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxEms="8"
+                        android:maxLines="1"
+                        android:text=""
+                        android:textColor="#999999"
+                        android:textSize="18sp" />
+                    <ImageView
+                        android:id="@+id/image_ip_assignment"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginLeft="@dimen/x10"
+                        android:contentDescription="@null"
+                        android:src="@drawable/icon_arrow" />
+
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#c8c7cc"
+                    android:layout_marginTop="@dimen/y40"
+                    android:layout_below="@+id/ll_ip_assignment"
+                    android:contentDescription="@null" />
+            </RelativeLayout>
+
+
+            <!--ip assignment-->
+            <LinearLayout
+                android:id="@+id/settings_station_ll_static"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/layout_ip_assignment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/settings_station_rl_ip_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_item_selector"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginLeft="15dp"
+                            android:text="@string/setting_text_ip_address"
+                            android:textColor="#666666"
+                            android:textSize="18sp" />
+
+                        <LinearLayout
+                            android:layout_alignParentRight="true"
+                            android:orientation="horizontal"
+                            android:layout_marginRight="@dimen/x80"
+                            android:gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/settings_station_tv_ip_address"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxEms="8"
+                                android:singleLine="true"
+                                android:textColor="#999999"
+                                android:textSize="18sp" />
+                            <ImageView
+                                android:id="@+id/image_ip_address"
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_marginLeft="@dimen/x10"
+                                android:contentDescription="@null"
+                                android:src="@drawable/icon_arrow" />
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="0.8dp"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="12dp"
+                        android:background="#c8c7cc"
+                        android:contentDescription="@null" />
+
+                    <!--router-->
+                    <RelativeLayout
+                        android:id="@+id/settings_station_rl_router"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_item_selector"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginLeft="15dp"
+                            android:text="@string/setting_text_router"
+                            android:textColor="#666666"
+                            android:textSize="18sp" />
+                        <LinearLayout
+                            android:layout_alignParentRight="true"
+                            android:orientation="horizontal"
+                            android:layout_marginRight="@dimen/x80"
+                            android:gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/settings_station_tv_router"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxEms="8"
+                                android:singleLine="true"
+                                android:textColor="#999999"
+                                android:textSize="18sp" />
+                            <ImageView
+                                android:id="@+id/image_router"
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_marginLeft="@dimen/x10"
+                                android:contentDescription="@null"
+                                android:src="@drawable/icon_arrow" />
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="0.8dp"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="12dp"
+                        android:background="#c8c7cc"
+                        android:contentDescription="@null" />
+
+                    <!--mask-->
+                    <RelativeLayout
+                        android:id="@+id/settings_station_rl_subnet"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_item_selector"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginLeft="15dp"
+                            android:text="@string/setting_text_subnet_mask"
+                            android:textColor="#666666"
+                            android:textSize="18sp" />
+                        <LinearLayout
+                            android:layout_alignParentRight="true"
+                            android:orientation="horizontal"
+                            android:layout_marginRight="@dimen/x80"
+                            android:gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/settings_station_tv_subnet"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxEms="8"
+                                android:singleLine="true"
+                                android:textColor="#999999"
+                                android:textSize="18sp" />
+                            <ImageView
+                                android:id="@+id/image_subnet"
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_marginLeft="@dimen/x10"
+                                android:contentDescription="@null"
+                                android:src="@drawable/icon_arrow" />
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="0.8dp"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="12dp"
+                        android:background="#c8c7cc"
+                        android:contentDescription="@null" />
+
+                    <!--dns-->
+                    <RelativeLayout
+                        android:id="@+id/settings_station_rl_dns"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_item_selector"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginLeft="15dp"
+                            android:text="@string/setting_text_dns"
+                            android:textColor="#666666"
+                            android:textSize="18sp" />
+                        <LinearLayout
+                            android:layout_alignParentRight="true"
+                            android:orientation="horizontal"
+                            android:layout_marginRight="@dimen/x80"
+                            android:gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/settings_station_tv_dns"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxEms="8"
+                                android:singleLine="true"
+                                android:textColor="#999999"
+                                android:textSize="18sp" />
+                            <ImageView
+                                android:id="@+id/image_dns"
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_marginLeft="@dimen/x10"
+                                android:contentDescription="@null"
+                                android:src="@drawable/icon_arrow" />
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="0.8dp"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="12dp"
+                        android:background="#c8c7cc"
+                        android:contentDescription="@null" />
+
+                    <!--sec dns-->
+                    <RelativeLayout
+                        android:id="@+id/settings_station_rl_sec_dns"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_item_selector"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginLeft="15dp"
+                            android:text="@string/setting_text_second_dns"
+                            android:textColor="#666666"
+                            android:textSize="18sp" />
+                        <LinearLayout
+                            android:layout_alignParentRight="true"
+                            android:orientation="horizontal"
+                            android:layout_marginRight="@dimen/x80"
+                            android:gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/settings_station_tv_sec_dns"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxEms="8"
+                                android:singleLine="true"
+                                android:textColor="#999999"
+                                android:textSize="18sp" />
+                            <ImageView
+                                android:id="@+id/image_sec_dns"
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_marginLeft="@dimen/x10"
+                                android:contentDescription="@null"
+                                android:src="@drawable/icon_arrow" />
+                        </LinearLayout>
+
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#c8c7cc"
+                android:contentDescription="@null" />
+
+            <LinearLayout
+                android:id="@+id/settings_station_ll_wifi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <!--wifi-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="@string/wifi"
+                    android:textColor="#333333"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:background="#c8c7cc"
+                    android:contentDescription="@null" />
+
+                <!--name-->
+                <RelativeLayout
+                    android:id="@+id/settings_station_rl_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_item_selector"
+
+                    android:paddingTop="10dp"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/settings_v4_tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="15dp"
+                        android:text="@string/name"
+                        android:textColor="#666666"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:id="@+id/image_name"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="20dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/icon_arrow" />
+
+                    <TextView
+                        android:id="@+id/settings_station_tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_toLeftOf="@id/image_name"
+                        android:ellipsize="end"
+                        android:maxEms="8"
+                        android:singleLine="true"
+                        android:textColor="#999999"
+                        android:textSize="18sp" />
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="0.8dp"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_below="@+id/settings_v4_tv_name"
+                        android:layout_marginTop="@dimen/y40"
+                        android:background="#c8c7cc"
+                        android:contentDescription="@null" />
+                </RelativeLayout>
+
+
+
+                <RelativeLayout
+                    android:id="@+id/settings_station_rl_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_item_selector"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="15dp"
+                        android:text="@string/password"
+                        android:textColor="#666666"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:id="@+id/image_password"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="20dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/icon_arrow" />
+
+                    <TextView
+                        android:id="@+id/settings_station_tv_password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_toLeftOf="@id/image_password"
+                        android:ellipsize="end"
+                        android:maxEms="8"
+                        android:singleLine="true"
+                        android:textColor="#999999"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/settings_station_rl_encrypt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_item_selector"
+                    android:paddingBottom="10dp"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/station_encrypt_sep"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.8dp"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="12dp"
+                        android:background="#c8c7cc"
+                        android:contentDescription="@null" />
+
+                    <TextView
+                        android:id="@+id/settings_station_encrypt_name"
+                        android:layout_below="@+id/station_encrypt_sep"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="@dimen/y30"
+                        android:text="@string/encrpt"
+                        android:textColor="#666666"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:id="@+id/image_encrypt"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="20dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/icon_arrow" />
+
+                    <TextView
+                        android:id="@+id/settings_station_tv_encrypt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_alignTop="@+id/settings_station_encrypt_name"
+                        android:layout_toLeftOf="@id/image_encrypt"
+                        android:ellipsize="end"
+                        android:maxEms="8"
+                        android:text="11"
+                        android:singleLine="true"
+                        android:textColor="#999999"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:background="#c8c7cc"
+                    android:contentDescription="@null" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

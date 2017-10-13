@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/layout_root"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/search_top_rl"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/tab_bar_keyword_et"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:layout_toLeftOf="@+id/tab_bar_cancel_tv"
+            android:background="@drawable/round_white_btn_bg"
+            android:gravity="left|center_vertical"
+            android:hint="@string/search_tips"
+            android:drawableLeft="@mipmap/ic_menu_search_holo_light"
+            android:imeOptions="actionSearch"
+            android:maxLength="10"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:singleLine="true"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/clear_keyword_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/tab_bar_keyword_et"
+            android:layout_centerVertical="true"
+            android:padding="8dp"
+            android:src="@mipmap/ic_search_clear"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tab_bar_cancel_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:paddingBottom="14dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="14dp"
+            android:paddingTop="14dp"
+            android:text="@string/cancel"
+            android:textColor="@color/item_text_color"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/search_device_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ListView
+            android:id="@+id/search_device_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/white"
+            android:dividerHeight="15dp"
+            android:fadingEdge="none"
+            android:scrollbars="vertical"
+            android:layout_marginBottom="@dimen/y30"
+            android:scrollbarStyle="outsideOverlay"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/search_history_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:visibility="visible">
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/contentTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="4dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="4dp"
+                android:text="@string/history"
+                android:textColor="@color/item_sensor_line"
+                android:textSize="12sp" />
+            <Button
+                android:id="@+id/clear_history_btn"
+                android:layout_width="@dimen/x200"
+                android:layout_height="@dimen/y100"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/y20"
+                android:layout_marginRight="@dimen/x40"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/shape_history"
+                android:text="@string/clear"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/search_history_rv"
+            android:layout_marginLeft="@dimen/x40"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>

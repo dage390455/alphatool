@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:top="0px" android:bottom="3px" android:left="3px" android:right="10px">
+        <shape
+            android:shape="rectangle">
+            <!-- 填充的颜色 -->
+            <solid android:color="@color/item_text_color" />
+        </shape>
+    </item>
+</layer-list>

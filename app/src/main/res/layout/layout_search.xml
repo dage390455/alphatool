@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+   <com.sensoro.loratool.widget.SensoroEditText
+       android:id="@+id/et_head_search"
+       android:layout_width="match_parent"
+       android:layout_height="34dp"
+       android:layout_marginTop="@dimen/y30"
+       android:layout_marginLeft="@dimen/x30"
+       android:layout_marginRight="@dimen/x30"
+       android:background="@drawable/rect_white_btn_bg"
+       android:hint="@string/search_tips"
+       android:imeOptions="actionSearch"
+       android:drawableLeft="@mipmap/ic_menu_search_holo_light"
+       android:focusable="false"
+       android:inputType="none"
+       android:textSize="18sp" />
+</RelativeLayout>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@mipmap/ic_login_bg"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/ic_alpha"
+            />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="44dp"
+        android:layout_marginRight="44dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/shape_layout"
+        >
+        <ImageView
+            android:id="@+id/alpha_img"
+            android:layout_marginTop="20dp"
+            android:layout_width="110dp"
+            android:layout_height="120dp"
+            android:src="@mipmap/ic_station"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="18dp"
+            android:text="@string/sensoro"
+            />
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:padding="10dip" >
+            <!-- 表格布局：第一行 -->
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_top_corner"
+                android:padding="10dip" >
+                <EditText
+                    android:id="@+id/login_email"
+                    android:layout_width="@dimen/x760"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="15sp"
+                    android:hint="@string/email"
+                    android:text=""
+                    android:inputType="none"
+                    android:background="@null"
+                    android:singleLine="true"
+                    android:maxLines="1" >
+                </EditText>
+            </TableRow>
+            <!-- 表格布局：第二行 -->
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_bottom_corner"
+                android:padding="10dip" >
+                <EditText
+                    android:id="@+id/login_pwd"
+                    android:layout_width="@dimen/x760"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text=""
+                    android:textSize="15sp"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:background="@null"
+                    android:singleLine="true"
+                    android:maxLines="1" >
+                </EditText>
+            </TableRow>
+        </TableLayout>
+        <Button
+            android:id="@+id/login_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/white"
+            android:background="@drawable/shape_button"
+            android:text="@string/login" />
+    </LinearLayout>
+</LinearLayout>
