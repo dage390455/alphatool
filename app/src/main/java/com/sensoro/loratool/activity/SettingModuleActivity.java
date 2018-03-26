@@ -31,7 +31,6 @@ import com.sensoro.loratool.event.OnPositiveButtonClickListener;
 import com.sensoro.loratool.proto.ProtoMsgCfgV1U1;
 import com.sensoro.loratool.store.DeviceDataDao;
 import com.sensoro.loratool.utils.ParamUtil;
-import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONArray;
@@ -74,7 +73,6 @@ public class SettingModuleActivity extends BaseActivity implements Constants, Vi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init();
-        StatService.trackBeginPage(this, "传输模块配置");
         MobclickAgent.onPageStart("传输模块配置");
         MobclickAgent.onResume(this);
     }
@@ -82,14 +80,12 @@ public class SettingModuleActivity extends BaseActivity implements Constants, Vi
     @Override
     protected void onResume() {
         super.onResume();
-        StatService.onResume(this);
         MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        StatService.onPause(this);
         MobclickAgent.onPause(this);
     }
 

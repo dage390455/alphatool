@@ -24,7 +24,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sensoro.loratool.LoRaSettingApplication;
-import com.sensoro.loratool.LocationService;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.activity.fragment.DeviceFragment;
 import com.sensoro.loratool.activity.fragment.StationFragment;
@@ -96,17 +95,27 @@ public class MainActivity extends BaseActivity
     }
 
 
-
-
-    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
     public void startLocation() {
-        if (PackageManager.PERMISSION_DENIED == ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                || PackageManager.PERMISSION_DENIED == ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                ) {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
+
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{
+                                Manifest.permission.ACCESS_COARSE_LOCATION},
+                        100);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
             Toast.makeText(this, R.string.tips_open_location_service, Toast.LENGTH_SHORT).show();
         } else {
-            LocationService locationService = loRaSettingApplication.locationService;
-            locationService.init();
         }
     }
 

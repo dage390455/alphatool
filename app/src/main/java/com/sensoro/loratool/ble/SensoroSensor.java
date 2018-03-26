@@ -38,7 +38,9 @@ public class SensoroSensor extends BLEDevice implements Parcelable, Cloneable {
     Float rollAngle;
     Float yawAngle;
     Integer smokeStatus;
+    Float gas;
     Integer flame;
+    Float waterPressure;
     Float coAlarmHigh;
     Float co2AlarmHigh;
     Float no2AlarmHigh;
@@ -56,7 +58,8 @@ public class SensoroSensor extends BLEDevice implements Parcelable, Cloneable {
     Float rollAngleAlarmLow;
     Float yawAngleAlarmHigh;
     Float yawAngleAlarmLow;
-    Float gas;
+    Float waterPressureAlarmHigh;
+    Float waterPressureAlarmLow;
 
     boolean hasAcceleration;
     boolean hasAngle;
@@ -87,6 +90,7 @@ public class SensoroSensor extends BLEDevice implements Parcelable, Cloneable {
     boolean hasYawAngle;
     boolean hasFlame;
     boolean hasGas;
+    boolean hasWaterPressure;
 
     public long lastFoundTime;
 
@@ -117,6 +121,7 @@ public class SensoroSensor extends BLEDevice implements Parcelable, Cloneable {
         hasYawAngle = false;
         hasFlame = false;
         hasGas = false;
+        hasWaterPressure = false;
     }
 
     protected SensoroSensor(Parcel in) {
@@ -152,13 +157,16 @@ public class SensoroSensor extends BLEDevice implements Parcelable, Cloneable {
         pitchAngle = (Float) in.readSerializable();
         rollAngle = (Float) in.readSerializable();
         yawAngle = (Float) in.readSerializable();
+        gas = (Float) in.readSerializable();
+        waterPressure = (Float) in.readSerializable();
         pitchAngleAlarmHigh = (Float) in.readSerializable();
         pitchAngleAlarmLow = (Float) in.readSerializable();
         rollAngleAlarmHigh = (Float) in.readSerializable();
         rollAngleAlarmLow = (Float) in.readSerializable();
         yawAngleAlarmHigh = (Float) in.readSerializable();
         yawAngleAlarmLow = (Float) in.readSerializable();
-        gas = (Float) in.readSerializable();
+        waterPressureAlarmHigh = (Float) in.readSerializable();
+        waterPressureAlarmLow = (Float) in.readSerializable();
         customize = in.createByteArray();
         hasAcceleration = in.readByte() != 0;
         hasAngle = in.readByte() != 0;
@@ -189,7 +197,7 @@ public class SensoroSensor extends BLEDevice implements Parcelable, Cloneable {
         hasYawAngle = in.readByte() != 0;
         hasFlame = in.readByte() != 0;
         hasGas = in.readByte() != 0;
-
+        hasWaterPressure = in.readByte() != 0;
     }
 
     @Override
@@ -231,13 +239,16 @@ public class SensoroSensor extends BLEDevice implements Parcelable, Cloneable {
         parcel.writeSerializable(pitchAngle);
         parcel.writeSerializable(rollAngle);
         parcel.writeSerializable(yawAngle);
+        parcel.writeSerializable(gas);
+        parcel.writeSerializable(waterPressure);
         parcel.writeSerializable(pitchAngleAlarmHigh);
         parcel.writeSerializable(pitchAngleAlarmLow);
         parcel.writeSerializable(rollAngleAlarmHigh);
         parcel.writeSerializable(rollAngleAlarmLow);
         parcel.writeSerializable(yawAngleAlarmHigh);
         parcel.writeSerializable(yawAngleAlarmLow);
-        parcel.writeSerializable(gas);
+        parcel.writeSerializable(waterPressureAlarmHigh);
+        parcel.writeSerializable(waterPressureAlarmLow);
         parcel.writeByteArray(customize);
         parcel.writeByte((byte) (hasAcceleration ? 1 : 0));
         parcel.writeByte((byte) (hasAngle ? 1 : 0));
@@ -268,6 +279,7 @@ public class SensoroSensor extends BLEDevice implements Parcelable, Cloneable {
         parcel.writeByte((byte) (hasYawAngle ? 1 : 0));
         parcel.writeByte((byte) (hasFlame ? 1 : 0));
         parcel.writeByte((byte) (hasGas ? 1 : 0));
+        parcel.writeByte((byte) (hasWaterPressure ? 1 : 0));
     }
 
     public static final Creator<SensoroSensor> CREATOR = new Creator<SensoroSensor>() {
@@ -894,5 +906,43 @@ public class SensoroSensor extends BLEDevice implements Parcelable, Cloneable {
         this.hasFlame = hasFlame;
     }
 
+    public Float getGas() {
+        return gas;
+    }
 
+    public void setGas(Float gas) {
+        this.gas = gas;
+    }
+
+    public Float getWaterPressure() {
+        return waterPressure;
+    }
+
+    public void setWaterPressure(Float waterPressure) {
+        this.waterPressure = waterPressure;
+    }
+
+    public Float getWaterPressureAlarmHigh() {
+        return waterPressureAlarmHigh;
+    }
+
+    public void setWaterPressureAlarmHigh(Float waterPressureAlarmHigh) {
+        this.waterPressureAlarmHigh = waterPressureAlarmHigh;
+    }
+
+    public Float getWaterPressureAlarmLow() {
+        return waterPressureAlarmLow;
+    }
+
+    public void setWaterPressureAlarmLow(Float waterPressureAlarmLow) {
+        this.waterPressureAlarmLow = waterPressureAlarmLow;
+    }
+
+    public boolean hasWaterPressure() {
+        return hasWaterPressure;
+    }
+
+    public void setHasWaterPressure(boolean hasWaterPressure) {
+        this.hasWaterPressure = hasWaterPressure;
+    }
 }

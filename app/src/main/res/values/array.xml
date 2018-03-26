@@ -316,6 +316,12 @@
         <item>α Angle</item>
         <item>α Tracker</item>
         <item>Open Node</item>
+        <item>α Flame</item>
+        <item>Open Chip</item>
+        <item>WS Ch4</item>
+        <item>WS LPG</item>
+        <item>WS GAS</item>
+        <item>BH WaterPressure</item>
     </string-array>
     <string-array name="filter_device_band_array">
         <item>SE433</item>

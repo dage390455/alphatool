@@ -314,6 +314,12 @@
         <item>α 倾角</item>
         <item>α 跟踪器</item>
         <item>Open Node</item>
+        <item>α 火焰</item>
+        <item>Open Chip</item>
+        <item>炜盛天然气</item>
+        <item>炜盛液化气</item>
+        <item>炜盛人工煤气</item>
+        <item>博海粤能水压传感器</item>
     </string-array>
     <string-array name="filter_device_band_array">
         <item>SE433</item>

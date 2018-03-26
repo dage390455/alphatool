@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:id="@+id/layout_root"
+    >
+    <RelativeLayout
+        android:id="@+id/upgrade_device_title"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:background="@color/actionbar_bg">
+        <ImageView
+            android:id="@+id/settings_upgrade_device_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="@dimen/x20"
+            android:background="@drawable/bg_button_selector"
+            android:contentDescription="@null"
+            android:padding="8dp"
+            android:src="@mipmap/ic_upgrade_close" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/upgrade_title"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/upgrade_list"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/title_text_size" />
+        <ImageView
+            android:id="@+id/upgrade_device_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/x20"
+            android:src="@mipmap/ic_add" />
+    </RelativeLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/upgrade_device_list"
+        android:layout_below="@+id/upgrade_device_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:id="@+id/upgrade_device_bottom"
+        android:paddingTop="@dimen/y30"
+        android:paddingBottom="@dimen/y30"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/upgrade_device_start"
+            android:background="@drawable/shape_upgrade_enable"
+            android:textColor="@color/white"
+            style="?android:attr/borderlessButtonStyle"
+            android:text="@string/upgrade_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/upgrade_device_add_nearby"
+            android:background="@drawable/shape_upgrade_enable"
+            android:textColor="@color/white"
+            android:layout_marginLeft="@dimen/x50"
+            style="?android:attr/borderlessButtonStyle"
+            android:text="@string/upgrade_add_nearby"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</RelativeLayout>

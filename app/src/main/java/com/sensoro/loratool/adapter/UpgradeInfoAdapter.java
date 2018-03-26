@@ -67,9 +67,7 @@ public class UpgradeInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             return;
         }
         mList.clear();
-        for (int i = 0; i < list.size(); i++) {
-            mList.add(list.get(i));
-        }
+        mList.addAll(list);
 
     }
 

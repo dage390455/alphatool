@@ -35,7 +35,7 @@ import com.sensoro.loratool.activity.SettingModuleActivity;
 import com.sensoro.loratool.activity.SettingMultiDeviceActivity;
 import com.sensoro.loratool.activity.SettingMultiModuleActivity;
 import com.sensoro.loratool.activity.SignalDetectionActivity;
-import com.sensoro.loratool.activity.UpgradeListActivity;
+import com.sensoro.loratool.activity.UpgradeFirmwareListActivity;
 import com.sensoro.loratool.adapter.DeviceInfoAdapter;
 import com.sensoro.loratool.ble.SensoroDevice;
 import com.sensoro.loratool.ble.SensoroSensor;
@@ -44,11 +44,11 @@ import com.sensoro.loratool.store.DeviceDataDao;
 import com.sensoro.loratool.utils.Utils;
 import com.sensoro.loratool.widget.SensoroEditText;
 import com.sensoro.loratool.widget.SensoroPopupView;
-import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -70,6 +70,7 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
     public static final int UP = 1;
     public static final int MODEL_SINGLE = 0;
     public static final int MODEL_MULTI = 1;
+    public static final int MODEL_SAME = 2; // 固件版本，硬件，设备类型，频段
     private Context mContext;
     private LoRaSettingApplication loRaSettingApplication;
     private DeviceInfoAdapter mDeviceInfoAdapter = null;
@@ -114,9 +115,9 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StatService.trackBeginPage(this.getContext(), "设备列表");
         MobclickAgent.onPageStart("设备列表");
         futureTask = new FutureTask<Object>(this);
+
         executorService = Executors.newCachedThreadPool();
         new Thread(futureTask).start();
 
@@ -125,14 +126,12 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
     @Override
     public void onResume() {
         super.onResume();
-        StatService.onResume(this.getContext());
         MobclickAgent.onResume(this.getContext());
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        StatService.onPause(this.getContext());
         MobclickAgent.onPause(this.getContext());
     }
 
@@ -291,6 +290,8 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
                         mPtrListView.onRefreshComplete();
                         mDeviceInfoAdapter.clearCache();
                         ArrayList tempList = (ArrayList) response.getData().getItems();
+                        loRaSettingApplication.getDeviceInfoList().clear();
+                        loRaSettingApplication.getDeviceInfoList().addAll(tempList);
                         if (tempList.size() == 0) {
                             Toast.makeText(mContext, R.string.tips_no_device, Toast.LENGTH_SHORT).show();
                         } else {
@@ -321,6 +322,7 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
                             cur_page--;
                         } else {
                             mDeviceInfoAdapter.appendData(tempList);
+                            loRaSettingApplication.getDeviceInfoList().addAll(tempList);
                         }
 
                     }
@@ -332,6 +334,8 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
                         Toast.makeText(mContext, R.string.tips_network_error, Toast.LENGTH_SHORT).show();
                     }
                 });
+                break;
+            default:
                 break;
         }
     }
@@ -427,12 +431,11 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
                 params.gravity = Gravity.CENTER;
                 clearImageView.setLayoutParams(params);
             }
-            if (cur_model == MODEL_MULTI) {
+            if (cur_model == MODEL_MULTI || cur_model == MODEL_SAME) {
                 clearLayout.setVisibility(VISIBLE);
                 signalLayout.setVisibility(GONE);
             } else {
                 clearLayout.setVisibility(GONE);
-
                 if (selectedDeviceInfo.isCanSignal()) {
                     signalLayout.setVisibility(VISIBLE);
                 } else {
@@ -634,10 +637,10 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
     }
 
     private void upgrade() {
-        Intent intent = new Intent(mContext, UpgradeListActivity.class);
+        Intent intent = new Intent(mContext, UpgradeFirmwareListActivity.class);
         intent.putExtra(Constants.EXTRA_NAME_DEVICE_TYPE, selectedDeviceInfo.getDeviceType());
         intent.putExtra(Constants.EXTRA_NAME_BAND, selectedDeviceInfo.getBand());
-        intent.putExtra(Constants.EXTRA_NAME_DEVICE_HARDWARE_VERSION, selectedDeviceInfo.getHardwareVersion());
+        intent.putExtra(Constants.EXTRA_NAME_DEVICE_HARDWARE_VERSION, selectedDeviceInfo.getDeviceType());
         intent.putExtra(Constants.EXTRA_NAME_DEVICE_FIRMWARE_VERSION, mTargetDevice.getFirmwareVersion());
         ArrayList<SensoroDevice> tempArrayList = new ArrayList<>();
         tempArrayList.add(mTargetDevice);
@@ -652,7 +655,7 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
             ArrayList<SensoroDevice> sensoroDeviceArrayList = new ArrayList<>(sensoroDeviceMap.values());
             SensoroDevice tempDevice = sensoroDeviceArrayList.get(0);
             DeviceInfo deviceInfo = mTargetDeviceInfoMap.get(tempDevice.getSn());
-            Intent intent = new Intent(mContext, UpgradeListActivity.class);
+            Intent intent = new Intent(mContext, UpgradeFirmwareListActivity.class);
             intent.putExtra(Constants.EXTRA_NAME_DEVICE_TYPE, deviceInfo.getDeviceType());
             intent.putExtra(Constants.EXTRA_NAME_BAND, deviceInfo.getBand());
             intent.putExtra(Constants.EXTRA_NAME_DEVICE_HARDWARE_VERSION, deviceInfo.getHardwareVersion());
@@ -681,43 +684,96 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
     }
 
     public void doMultiEvent(View v) {
-        if (v.getId() == R.id.menu_iv_clear) {
-            clear();
-            mBottomPopupWindow.dismiss();
-        } else if (v.getId() == R.id.device_iv_add) {
-            showBottomPopupWindow();
-        } else if (v.getId() == R.id.menu_iv_close) {
-            mBottomPopupWindow.dismiss();
-        } else {
-            if (isSupportDevice()) {
-                ConcurrentHashMap<String, SensoroDevice> tempMap = new ConcurrentHashMap<>();
-                for (String key : mTargetDeviceInfoMap.keySet()) {
-                    DeviceInfo deviceInfo = mTargetDeviceInfoMap.get(key);
-                    if (mDeviceInfoAdapter.getNearByDeviceMap().containsKey(key)) {
-                        SensoroDevice sensoroDevice = mDeviceInfoAdapter.getNearByDeviceMap().get(key);
-                        sensoroDevice.setPassword(deviceInfo.getPassword());
-                        sensoroDevice.setFirmwareVersion(deviceInfo.getFirmwareVersion());
-                        tempMap.put(key, sensoroDevice);
+        switch (v.getId()) {
+            case R.id.menu_iv_clear:
+                clear();
+                mBottomPopupWindow.dismiss();
+                break;
+            case R.id.device_iv_add:
+                showBottomPopupWindow();
+                break;
+            case R.id.menu_iv_close:
+                mBottomPopupWindow.dismiss();
+                break;
+            default:
+                if (isSupportDevice()) {
+                    ConcurrentHashMap<String, SensoroDevice> tempMap = new ConcurrentHashMap<>();
+                    for (String key : mTargetDeviceInfoMap.keySet()) {
+                        DeviceInfo deviceInfo = mTargetDeviceInfoMap.get(key);
+                        if (mDeviceInfoAdapter.getNearByDeviceMap().containsKey(key)) {
+                            SensoroDevice sensoroDevice = mDeviceInfoAdapter.getNearByDeviceMap().get(key);
+                            sensoroDevice.setPassword(deviceInfo.getPassword());
+                            sensoroDevice.setFirmwareVersion(deviceInfo.getFirmwareVersion());
+                            sensoroDevice.setBand(deviceInfo.getBand());
+                            sensoroDevice.setHardwareVersion(deviceInfo.getDeviceType());
+                            tempMap.put(key, sensoroDevice);
+                        }
+                    }
+                    switch (v.getId()) {
+                        case R.id.menu_iv_cloud:
+                            cloud(tempMap);
+                            mBottomPopupWindow.dismiss();
+                            break;
+                        case R.id.menu_iv_config:
+                            config(tempMap);
+                            mBottomPopupWindow.dismiss();
+                            break;
+                        case R.id.menu_iv_signal:
+                            mBottomPopupWindow.dismiss();
+                            break;
+                        case R.id.menu_iv_upgrade:
+                            upgrade(tempMap);
+                            mBottomPopupWindow.dismiss();
+                            break;
                     }
                 }
-                switch (v.getId()) {
-                    case R.id.menu_iv_cloud:
-                        cloud(tempMap);
-                        mBottomPopupWindow.dismiss();
-                        break;
-                    case R.id.menu_iv_config:
-                        config(tempMap);
-                        mBottomPopupWindow.dismiss();
-                        break;
-                    case R.id.menu_iv_signal:
-                        mBottomPopupWindow.dismiss();
-                        break;
-                    case R.id.menu_iv_upgrade:
-                        upgrade(tempMap);
-                        mBottomPopupWindow.dismiss();
-                        break;
+                break;
+        }
+    }
+
+    public void doSameEvent(View v) {
+        switch (v.getId()) {
+            case R.id.menu_iv_clear:
+                clear();
+                mBottomPopupWindow.dismiss();
+                break;
+            case R.id.device_iv_add:
+                showBottomPopupWindow();
+                break;
+            case R.id.menu_iv_close:
+                mBottomPopupWindow.dismiss();
+                break;
+            default:
+                if (isSupportDevice()) {
+                    ConcurrentHashMap<String, SensoroDevice> tempMap = new ConcurrentHashMap<>();
+                    for (String key : mTargetDeviceInfoMap.keySet()) {
+                        DeviceInfo deviceInfo = mTargetDeviceInfoMap.get(key);
+                        if (mDeviceInfoAdapter.getNearByDeviceMap().containsKey(key)) {
+                            SensoroDevice sensoroDevice = mDeviceInfoAdapter.getNearByDeviceMap().get(key);
+                            sensoroDevice.setPassword(deviceInfo.getPassword());
+                            sensoroDevice.setFirmwareVersion(deviceInfo.getFirmwareVersion());
+                            tempMap.put(key, sensoroDevice);
+                        }
+                    }
+                    switch (v.getId()) {
+                        case R.id.menu_iv_cloud:
+                            cloud(tempMap);
+                            mBottomPopupWindow.dismiss();
+                            break;
+                        case R.id.menu_iv_config:
+                            config(tempMap);
+                            mBottomPopupWindow.dismiss();
+                            break;
+                        case R.id.menu_iv_signal:
+                            mBottomPopupWindow.dismiss();
+                            break;
+                        case R.id.menu_iv_upgrade:
+                            upgrade(tempMap);
+                            mBottomPopupWindow.dismiss();
+                            break;
+                    }
                 }
-            }
+                break;
         }
     }
 
@@ -750,51 +806,94 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
 
     @Override
     public void onClick(View v) {
-        if (cur_model == MODEL_MULTI) {
-            doMultiEvent(v);
-        } else {
-            doSingleEvent(v);
+        switch (cur_model) {
+            case MODEL_MULTI:
+                doMultiEvent(v);
+                break;
+            case MODEL_SAME:
+                doSameEvent(v);
+                break;
+            default:
+                doSingleEvent(v);
+                break;
         }
-
     }
 
     public void doSingle(int position) {
         if (position >= 0) {
             selectedDeviceInfo = mDeviceInfoAdapter.getItem(position);
-            if (selectedDeviceInfo != null) {
-                if (mDeviceInfoAdapter.isNearBy(selectedDeviceInfo.getSn())) {
-                    mTargetDevice = mDeviceInfoAdapter.getNearByDeviceMap().get(selectedDeviceInfo.getSn());
-                    mTargetDevice.setPassword(selectedDeviceInfo.getPassword());
-                    showBottomPopupWindow();
-                } else {
-                    Toast.makeText(mContext, R.string.tips_closeto_device, Toast.LENGTH_SHORT).show();
-                }
+            if (mDeviceInfoAdapter.isNearBy(selectedDeviceInfo.getSn())) {
+                mTargetDevice = mDeviceInfoAdapter.getNearByDeviceMap().get(selectedDeviceInfo.getSn());
+                mTargetDevice.setPassword(selectedDeviceInfo.getPassword());
+                mTargetDevice.setBand(selectedDeviceInfo.getBand());
+                mTargetDevice.setFirmwareVersion(selectedDeviceInfo.getFirmwareVersion());
+                mTargetDevice.setHardwareVersion(selectedDeviceInfo.getDeviceType());
+                showBottomPopupWindow();
+            } else {
+                Toast.makeText(mContext, R.string.tips_closeto_device, Toast.LENGTH_SHORT).show();
             }
         }
 
     }
 
-    public void doMulti(View view, int position) {
+    public void doMulti(int position) {
         if (position >= 0) {
             mBottomPopupWindow.dismiss();
             selectedDeviceInfo = mDeviceInfoAdapter.getItem(position);
-            if (selectedDeviceInfo.isSelected()) {
-                mTargetDeviceInfoMap.remove(selectedDeviceInfo.getSn());
-                selectedDeviceInfo.setSelected(false);
-                mDeviceInfoAdapter.getItemLayout(view).setBackgroundResource(R.drawable.shape_device_item);
+            if (mDeviceInfoAdapter.isNearBy(selectedDeviceInfo.getSn())) {
+                if (selectedDeviceInfo.isSelected()) {
+                    mTargetDeviceInfoMap.remove(selectedDeviceInfo.getSn());
+                    selectedDeviceInfo.setSelected(false);
+                } else {
+                    mTargetDeviceInfoMap.put(selectedDeviceInfo.getSn(), selectedDeviceInfo);
+                    selectedDeviceInfo.setSelected(true);
+                }
+                mDeviceInfoAdapter.notifyDataSetChanged();
+                if (mTargetDeviceInfoMap.size() > 0) {
+                    addImageView.setVisibility(VISIBLE);
+                } else {
+                    addImageView.setVisibility(View.GONE);
+                }
             } else {
-                mTargetDeviceInfoMap.put(selectedDeviceInfo.getSn(), selectedDeviceInfo);
-                selectedDeviceInfo.setSelected(true);
-                mDeviceInfoAdapter.getItemLayout(view).setBackgroundResource(R.drawable.shape_shadow_layer);
+                Toast.makeText(mContext, R.string.tips_closeto_device, Toast.LENGTH_SHORT).show();
             }
 
-            if (mTargetDeviceInfoMap.size() > 0) {
-                addImageView.setVisibility(VISIBLE);
+        }
+    }
+
+    public void doSame(int position) {
+        if (position >= 0) {
+            mBottomPopupWindow.dismiss();
+            selectedDeviceInfo = mDeviceInfoAdapter.getItem(position);
+            if (mDeviceInfoAdapter.isNearBy(selectedDeviceInfo.getSn())) {
+                mTargetDeviceInfoMap.clear();
+                if (selectedDeviceInfo.isSelected()) {
+                    selectedDeviceInfo.setSelected(false);
+                } else {
+                    List<DeviceInfo> data = mDeviceInfoAdapter.getFilterData();
+                    for (int i = 0 ; i < data.size(); i ++) {
+                        DeviceInfo tempDeviceInfo = data.get(i);
+                        if (tempDeviceInfo.getDeviceType().equals(selectedDeviceInfo.getDeviceType()) &&
+                                tempDeviceInfo.getFirmwareVersion().equals(selectedDeviceInfo.getFirmwareVersion()) &&
+                                tempDeviceInfo.getBand().equals(selectedDeviceInfo.getBand())
+                                ) {
+                            tempDeviceInfo.setSelected(true);
+                            mTargetDeviceInfoMap.put(tempDeviceInfo.getSn(), tempDeviceInfo);
+                        } else {
+                            tempDeviceInfo.setSelected(false);
+                        }
+                    }
+                }
+                mDeviceInfoAdapter.notifyDataSetChanged();
+                if (mTargetDeviceInfoMap.size() > 0) {
+                    addImageView.setVisibility(VISIBLE);
+                } else {
+                    addImageView.setVisibility(View.GONE);
+                }
             } else {
-                addImageView.setVisibility(View.GONE);
+                Toast.makeText(mContext, R.string.tips_closeto_device, Toast.LENGTH_SHORT).show();
             }
         }
-
     }
 
     @Override
@@ -807,7 +906,10 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
                     doSingle(position - 2);
                     break;
                 case MODEL_MULTI:
-                    doMulti(view, position -2);
+                    doMulti(position -2);
+                    break;
+                case MODEL_SAME:
+                    doSame(position - 2);
                     break;
             }
         }
@@ -827,7 +929,6 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
     @Override
     public Object call() throws Exception {
         while (isRunBackground) {
-            System.out.println("isRunBackground=====>");
             if (Utils.isWifi(mContext)) {
                 Thread.sleep(5000);
             } else {

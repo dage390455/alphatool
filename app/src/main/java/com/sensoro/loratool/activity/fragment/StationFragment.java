@@ -34,7 +34,6 @@ import com.sensoro.loratool.ble.SensoroStation;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.widget.SensoroEditText;
 import com.sensoro.station.communication.bean.StationInfo;
-import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -81,8 +80,7 @@ public class StationFragment extends Fragment implements AdapterView.OnItemClick
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StatService.trackBeginPage(this.getContext(), "基站列表");
-        MobclickAgent.onPageStart("基站检索");
+        MobclickAgent.onPageStart("基站列表");
     }
 
     @Nullable
@@ -96,14 +94,12 @@ public class StationFragment extends Fragment implements AdapterView.OnItemClick
     @Override
     public void onResume() {
         super.onResume();
-        StatService.onResume(this.getContext());
         MobclickAgent.onResume(this.getContext());
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        StatService.onPause(this.getContext());
         MobclickAgent.onPause(this.getContext());
     }
 
@@ -172,14 +168,19 @@ public class StationFragment extends Fragment implements AdapterView.OnItemClick
         upgradeImageView.setVisibility(GONE);
         signalImageView.setVisibility(GONE);
         clearImageView.setVisibility(GONE);
+
         upgradeLayout.setVisibility(GONE);
         clearLayout.setVisibility(GONE);
         signalLayout.setVisibility(GONE);
         if (!Constants.permission[0]) {
             configLayout.setVisibility(GONE);
+        } else {
+            configLayout.setVisibility(View.VISIBLE);
         }
         if (!Constants.permission[2]) {
             cloudLayout.setVisibility(GONE);
+        } else {
+            cloudLayout.setVisibility(View.VISIBLE);
         }
         mPopupWindow = new PopupWindow(mPopupView, LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT, true);

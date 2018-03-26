@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/layout_root"
     android:orientation="vertical">
     <!--标题：返回按钮和标题-->
     <RelativeLayout
@@ -46,6 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none">
+
         <LinearLayout
             android:id="@+id/layout_lora_setting"
             android:layout_width="match_parent"
@@ -62,6 +63,7 @@
                 android:text="@string/wide_area_rf"
                 android:textColor="#333333"
                 android:textSize="18sp" />
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="0.8dp"
@@ -109,12 +111,13 @@
                     android:textColor="#999999"
                     android:textSize="18sp" />
             </RelativeLayout>
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="0.8dp"
-                android:background="#c8c7cc"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
+                android:background="#c8c7cc"
                 android:contentDescription="@null" />
             <!--app eui-->
             <RelativeLayout
@@ -258,13 +261,14 @@
                     android:singleLine="true"
                     android:textColor="#999999"
                     android:textSize="18sp" />
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="0.8dp"
+                    android:layout_below="@+id/settings_device_tv_app_session_key"
                     android:layout_marginLeft="12dp"
                     android:layout_marginRight="12dp"
                     android:layout_marginTop="@dimen/y40"
-                    android:layout_below="@+id/settings_device_tv_app_session_key"
                     android:background="#c8c7cc"
                     android:contentDescription="@null" />
             </RelativeLayout>
@@ -311,13 +315,14 @@
                     android:singleLine="true"
                     android:textColor="#999999"
                     android:textSize="18sp" />
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="0.8dp"
+                    android:layout_below="@+id/settings_device_tv_nwk_session_key"
                     android:layout_marginLeft="12dp"
                     android:layout_marginRight="12dp"
                     android:layout_marginTop="@dimen/y40"
-                    android:layout_below="@+id/settings_device_tv_nwk_session_key"
                     android:background="#c8c7cc"
                     android:contentDescription="@null" />
             </RelativeLayout>
@@ -362,13 +367,14 @@
                     android:singleLine="true"
                     android:textColor="#999999"
                     android:textSize="18sp" />
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="0.8dp"
+                    android:layout_below="@+id/settings_device_tv_nwk_address"
                     android:layout_marginLeft="12dp"
                     android:layout_marginRight="12dp"
                     android:layout_marginTop="@dimen/y40"
-                    android:layout_below="@+id/settings_device_tv_nwk_address"
                     android:background="#c8c7cc"
                     android:contentDescription="@null" />
             </RelativeLayout>
@@ -416,13 +422,14 @@
                     android:singleLine="true"
                     android:textColor="#999999"
                     android:textSize="18sp" />
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="0.8dp"
+                    android:layout_below="@+id/settings_device_tv_sf"
                     android:layout_marginLeft="12dp"
                     android:layout_marginRight="12dp"
                     android:layout_marginTop="@dimen/y40"
-                    android:layout_below="@+id/settings_device_tv_sf"
                     android:background="#c8c7cc"
                     android:contentDescription="@null" />
             </RelativeLayout>
@@ -433,7 +440,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_item_selector"
-                android:paddingBottom="10dp"
                 android:paddingTop="10dp">
 
                 <TextView
@@ -452,13 +458,16 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="20dp" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_below="@+id/settings_device_sc_datarate"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginTop="@dimen/y40"
+                    android:background="#c8c7cc"
+                    android:contentDescription="@null" />
             </RelativeLayout>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="0.8dp"
-                android:background="#c8c7cc"
-                android:contentDescription="@null" />
 
             <RelativeLayout
                 android:id="@+id/settings_device_rl_activation"
@@ -467,7 +476,6 @@
                 android:background="@drawable/bg_item_selector"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp">
-
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -502,19 +510,137 @@
                     android:singleLine="true"
                     android:textColor="#999999"
                     android:textSize="18sp" />
-
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_below="@+id/settings_device_tv_activation"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginTop="@dimen/y40"
+                    android:background="#c8c7cc"
+                    android:contentDescription="@null" />
             </RelativeLayout>
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="0.8dp"
-                android:background="#c8c7cc"
-                android:contentDescription="@null" />
+
             <LinearLayout
+                android:id="@+id/settings_device_ll_delay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:id="@+id/settings_device_rl_delay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_item_selector"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="15dp"
+                        android:text="@string/setting_text_receive_window"
+                        android:textColor="#666666"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_device_delay"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="20dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/icon_arrow" />
+
+                    <TextView
+                        android:id="@+id/settings_device_tv_delay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_toLeftOf="@id/iv_device_delay"
+                        android:ellipsize="end"
+                        android:maxEms="8"
+                        android:singleLine="true"
+                        android:textColor="#999999"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:background="#c8c7cc"
+                    android:contentDescription="@null" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/settings_device_ll_channel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/settings_device_rl_channel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_item_selector"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="15dp"
+                        android:text="@string/setting_text_work_channel"
+                        android:textColor="#666666"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_device_channel"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="20dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/icon_arrow" />
+
+                    <TextView
+                        android:id="@+id/settings_device_tv_channel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_toLeftOf="@id/iv_device_channel"
+                        android:ellipsize="end"
+                        android:maxEms="8"
+                        android:singleLine="true"
+                        android:textColor="#999999"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:background="#c8c7cc"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:contentDescription="@null" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/settings_device_ll_classB"
-                android:orientation="vertical"
-                >
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -530,6 +656,7 @@
                     android:layout_height="0.8dp"
                     android:background="#c8c7cc"
                     android:contentDescription="@null" />
+
                 <RelativeLayout
                     android:id="@+id/settings_device_rl_classB_enable"
                     android:layout_width="match_parent"
@@ -555,6 +682,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="20dp" />
                 </RelativeLayout>
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="0.8dp"
@@ -562,6 +690,7 @@
                     android:layout_marginRight="12dp"
                     android:background="#c8c7cc"
                     android:contentDescription="@null" />
+
                 <RelativeLayout
                     android:id="@+id/settings_device_rl_classB_periodicity"
                     android:layout_width="match_parent"
@@ -605,6 +734,7 @@
                         android:textColor="#999999"
                         android:textSize="18sp" />
                 </RelativeLayout>
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="0.8dp"
@@ -657,6 +787,7 @@
                         android:textSize="18sp" />
 
                 </RelativeLayout>
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="0.8dp"

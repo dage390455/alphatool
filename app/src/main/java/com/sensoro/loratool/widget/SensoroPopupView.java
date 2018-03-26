@@ -22,6 +22,7 @@ public class SensoroPopupView extends LinearLayout {
     private SensoroPopupViewListener mListener;
     private RelativeLayout singleLayout;
     private RelativeLayout multiLayout;
+    private RelativeLayout sameLayout;
     private Context mContext;
 
     public SensoroPopupView(Context context) {
@@ -35,14 +36,17 @@ public class SensoroPopupView extends LinearLayout {
         View mTopPopupView = LayoutInflater.from(context).inflate(R.layout.menu_top_view, this);
         singleLayout = (RelativeLayout) mTopPopupView.findViewById(R.id.menu_rl_single);
         multiLayout = (RelativeLayout) mTopPopupView.findViewById(R.id.menu_rl_multi);
+        sameLayout = (RelativeLayout) mTopPopupView.findViewById(R.id.menu_rl_same);
         final ImageView ivSingle = (ImageView) mTopPopupView.findViewById(R.id.menu_iv_single);
         final ImageView ivMulti = (ImageView) mTopPopupView.findViewById(R.id.menu_iv_multi);
+        final ImageView ivSame = (ImageView) mTopPopupView.findViewById(R.id.menu_iv_same);
         singleLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mListener.onCallBack(DeviceFragment.MODEL_SINGLE);
                 ivSingle.setImageResource(R.mipmap.ic_selected);
                 ivMulti.setImageResource(R.mipmap.ic_unselect);
+                ivSame.setImageResource(R.mipmap.ic_unselect);
                 dismiss();
             }
         });
@@ -53,6 +57,17 @@ public class SensoroPopupView extends LinearLayout {
                 mListener.onCallBack(DeviceFragment.MODEL_MULTI);
                 ivMulti.setImageResource(R.mipmap.ic_selected);
                 ivSingle.setImageResource(R.mipmap.ic_unselect);
+                ivSame.setImageResource(R.mipmap.ic_unselect);
+                dismiss();
+            }
+        });
+        sameLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onCallBack(DeviceFragment.MODEL_SAME);
+                ivMulti.setImageResource(R.mipmap.ic_unselect);
+                ivSingle.setImageResource(R.mipmap.ic_unselect);
+                ivSame.setImageResource(R.mipmap.ic_selected);
                 dismiss();
             }
         });

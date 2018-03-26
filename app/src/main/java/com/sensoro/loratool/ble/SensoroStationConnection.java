@@ -13,7 +13,7 @@ import android.util.Log;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.sensoro.loratool.ble.scanner.SensoroUUID;
 import com.sensoro.loratool.proto.ProtoMsgCfgV1U1;
-import com.sensoro.loratool.proto.ProtoStationMsg;
+import com.sensoro.loratool.proto.ProtoStationMsgV2;
 import com.sensoro.loratool.proto.ProtoStd1U1;
 
 import java.nio.ByteBuffer;
@@ -267,8 +267,8 @@ public class SensoroStationConnection {
                         int length = SensoroUUID.bytesToInt(lengthData, 0);
                         byte[] retData = new byte[length - 1];
                         System.arraycopy(data, 3, retData, 0, length - 1);
-                        ProtoStationMsg.StationMsg stationMsg = ProtoStationMsg.StationMsg.parseFrom(retData);
-                        ProtoStationMsg.CmdRet cmdRet = stationMsg.getRet();
+                        ProtoStationMsgV2.StationMsg stationMsg = ProtoStationMsgV2.StationMsg.parseFrom(retData);
+                        ProtoStationMsgV2.CmdRet cmdRet = stationMsg.getRet();
                         if (cmdRet.getNumber() == ResultCode.CODE_STATION_RET_SUCCCESS) {
                             writeCallbackHashMap.get(cmdType).onWriteSuccess(null, CmdType.CMD_NULL);
                         } else {
@@ -308,7 +308,7 @@ public class SensoroStationConnection {
     }
 
     private void parseStationData(byte[] data) throws Exception {
-        ProtoStationMsg.StationMsg msgCfg = ProtoStationMsg.StationMsg.parseFrom(data);
+        ProtoStationMsgV2.StationMsg msgCfg = ProtoStationMsgV2.StationMsg.parseFrom(data);
         SensoroStation sensoroStation = (SensoroStation) bleDevice;
 
         sensoroStation.setAccessMode(msgCfg.getNwkAccessMode().getNumber());
@@ -331,12 +331,12 @@ public class SensoroStationConnection {
 
     public void writeStationAdvanceConfiguration(SensoroStationConfiguration sensoroStationConfiguration, SensoroWriteCallback writeCallback) {
         writeCallbackHashMap.put(CmdType.CMD_W_CFG, writeCallback);
-        ProtoStationMsg.StationMsg.Builder msgBuilder = ProtoStationMsg.StationMsg.newBuilder();
+        ProtoStationMsgV2.StationMsg.Builder msgBuilder = ProtoStationMsgV2.StationMsg.newBuilder();
         msgBuilder.setNetid(sensoroStationConfiguration.netid);
         msgBuilder.setMcdomain(sensoroStationConfiguration.cloudaddress);
         msgBuilder.setMcport(sensoroStationConfiguration.cloudport);
         msgBuilder.setKey(sensoroStationConfiguration.key);
-        ProtoStationMsg.StationMsg stationMsg = msgBuilder.build();
+        ProtoStationMsgV2.StationMsg stationMsg = msgBuilder.build();
         byte[] data = stationMsg.toByteArray();
         int data_length = data.length;
 
@@ -360,18 +360,18 @@ public class SensoroStationConnection {
 
     public void writeStationConfiguration(SensoroStationConfiguration sensoroStationConfiguration, SensoroWriteCallback writeCallback) {
         writeCallbackHashMap.put(CmdType.CMD_W_CFG, writeCallback);
-        ProtoStationMsg.StationMsg.Builder msgBuilder = ProtoStationMsg.StationMsg.newBuilder();
+        ProtoStationMsgV2.StationMsg.Builder msgBuilder = ProtoStationMsgV2.StationMsg.newBuilder();
         msgBuilder.setPwd(sensoroStationConfiguration.pwd);
         msgBuilder.setIp(sensoroStationConfiguration.ip);
         msgBuilder.setMask(sensoroStationConfiguration.mask);
         msgBuilder.setAdns(sensoroStationConfiguration.adns);
         msgBuilder.setPdns(sensoroStationConfiguration.pdns);
         msgBuilder.setGateway(sensoroStationConfiguration.gateway);
-        msgBuilder.setNwkAccessMode(ProtoStationMsg.NwkAccessMode.valueOf(sensoroStationConfiguration.accessMode));
-        msgBuilder.setIpAlloc(ProtoStationMsg.IPAllocationMode.valueOf(sensoroStationConfiguration.allocationMode));
+        msgBuilder.setNwkAccessMode(ProtoStationMsgV2.NwkAccessMode.valueOf(sensoroStationConfiguration.accessMode));
+        msgBuilder.setIpAlloc(ProtoStationMsgV2.IPAllocationMode.valueOf(sensoroStationConfiguration.allocationMode));
         msgBuilder.setSsid(sensoroStationConfiguration.sid);
         msgBuilder.setEncrypt(sensoroStationConfiguration.encrpt);
-        ProtoStationMsg.StationMsg stationMsg = msgBuilder.build();
+        ProtoStationMsgV2.StationMsg stationMsg = msgBuilder.build();
         byte[] data = stationMsg.toByteArray();
         int data_length = data.length;
 

@@ -39,6 +39,7 @@ public class BLEDeviceFactory {
     protected static HashMap<String, Integer> flameMap = new HashMap<>();
     protected static HashMap<String, Float> gasMap = new HashMap<>();
     protected static HashMap<String, Integer> smokeMap = new HashMap<>();
+    protected static HashMap<String, Float> pressureMap = new HashMap<>();
 
 
     public BLEDeviceFactory(ScanBLEResult scanBLEResult) {
@@ -98,6 +99,7 @@ public class BLEDeviceFactory {
 
     }
 
+    @Deprecated
     public SensoroSensor createSensor() {
         if (scanBLEResult == null) {
             return null;
@@ -229,6 +231,11 @@ public class BLEDeviceFactory {
                 }
                 sensoroSensor.smokeStatus = smokeMap.get(sensoroSensor.macAddress);
 
+                if (e3214.pressure != null) {
+                    pressureMap.put(sensoroSensor.macAddress, e3214.pressure);
+                }
+                sensoroSensor.waterPressure = pressureMap.get(sensoroSensor.macAddress);
+
                 sensoroSensor.setType(BLEDevice.TYPE_SENSOR);
                 if(sensoroSensor.getSn() == null) {
                     return null;
@@ -243,6 +250,7 @@ public class BLEDeviceFactory {
         return null;
     }
 
+    @Deprecated
     public SensoroStation createStation() {
         if (scanBLEResult == null) {
             return null;
@@ -415,6 +423,25 @@ public class BLEDeviceFactory {
                     yawAngleMap.put(sensoroSensor.macAddress, e3214.yawAngle);
                 }
                 sensoroSensor.yawAngle = yawAngleMap.get(sensoroSensor.macAddress);
+                if (e3214.flame != null) {
+                    flameMap.put(sensoroSensor.macAddress, e3214.flame);
+                }
+                sensoroSensor.flame = flameMap.get(sensoroSensor.macAddress);
+
+                if (e3214.artificial_gas != null) {
+                    gasMap.put(sensoroSensor.macAddress, e3214.artificial_gas);
+                }
+                sensoroSensor.gas = gasMap.get(sensoroSensor.macAddress);
+
+                if (e3214.smoke != null) {
+                    smokeMap.put(sensoroSensor.macAddress, e3214.smoke);
+                }
+                sensoroSensor.smokeStatus = smokeMap.get(sensoroSensor.macAddress);
+
+                if (e3214.pressure != null) {
+                    pressureMap.put(sensoroSensor.macAddress, e3214.pressure);
+                }
+                sensoroSensor.waterPressure = pressureMap.get(sensoroSensor.macAddress);
 
                 sensoroSensor.setType(BLEDevice.TYPE_SENSOR);
                 if (sensoroSensor.getSn() == null) {
@@ -521,6 +548,10 @@ public class BLEDeviceFactory {
         pitchAngleMap.clear();
         rollAngleMap.clear();
         yawAngleMap.clear();
+        flameMap.clear();
+        gasMap.clear();
+        smokeMap.clear();
+        pressureMap.clear();
     }
 }
 

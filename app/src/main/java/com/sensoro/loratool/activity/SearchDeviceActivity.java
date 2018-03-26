@@ -410,7 +410,7 @@ public class SearchDeviceActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void upgrade() {
-        Intent intent = new Intent(this, UpgradeListActivity.class);
+        Intent intent = new Intent(this, UpgradeFirmwareListActivity.class);
         intent.putExtra(Constants.EXTRA_NAME_DEVICE_TYPE, selectedDeviceInfo.getDeviceType());
         intent.putExtra(Constants.EXTRA_NAME_BAND, selectedDeviceInfo.getBand());
         intent.putExtra(Constants.EXTRA_NAME_DEVICE_HARDWARE_VERSION, selectedDeviceInfo.getHardwareVersion());
@@ -446,6 +446,8 @@ public class SearchDeviceActivity extends AppCompatActivity implements View.OnCl
             case R.id.clear_keyword_iv:
                 mKeywordEt.setText("");
                 mClearKeywordIv.setVisibility(View.GONE);
+                mSearchHistoryLayout.setVisibility(VISIBLE);
+                mSearchHistoryAdapter.notifyDataSetChanged();
                 break;
             case R.id.menu_iv_cloud:
                 cloud();
@@ -517,6 +519,9 @@ public class SearchDeviceActivity extends AppCompatActivity implements View.OnCl
             if (mDeviceInfoAdapter.isNearBy(selectedDeviceInfo.getSn())) {
                 mTargetDevice = mDeviceInfoAdapter.getNearByDeviceMap().get(selectedDeviceInfo.getSn());
                 mTargetDevice.setPassword(selectedDeviceInfo.getPassword());
+                mTargetDevice.setBand(selectedDeviceInfo.getBand());
+                mTargetDevice.setHardwareVersion(selectedDeviceInfo.getDeviceType());
+                mTargetDevice.setFirmwareVersion(selectedDeviceInfo.getFirmwareVersion());
                 showBottomPopupWindow();
             } else {
                 Toast.makeText(getApplicationContext(), R.string.tips_closeto_device, Toast.LENGTH_SHORT).show();

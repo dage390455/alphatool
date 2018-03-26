@@ -18,7 +18,6 @@ import com.sensoro.loratool.ble.SensoroStationConnection;
 import com.sensoro.loratool.ble.SensoroWriteCallback;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.event.OnPositiveButtonClickListener;
-import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
 import butterknife.BindView;
@@ -57,7 +56,6 @@ public class AdvanceSettingStationActivity extends BaseActivity implements Const
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StatService.trackBeginPage(this, "基站私有云配置V1.1");
         MobclickAgent.onPageStart("基站私有云配置V1.1");
         initData();
     }
@@ -65,14 +63,12 @@ public class AdvanceSettingStationActivity extends BaseActivity implements Const
     @Override
     protected void onResume() {
         super.onResume();
-        StatService.onResume(this);
         MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        StatService.onPause(this);
         MobclickAgent.onPause(this);
     }
 

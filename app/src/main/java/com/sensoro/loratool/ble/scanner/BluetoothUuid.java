@@ -161,14 +161,18 @@ final class BluetoothUuid {
      * @param uuid
      */
     public static boolean isUuidPresent(ParcelUuid[] uuidArray, ParcelUuid uuid) {
-        if ((uuidArray == null || uuidArray.length == 0) && uuid == null)
+        if ((uuidArray == null || uuidArray.length == 0) && uuid == null) {
             return true;
+        }
 
-        if (uuidArray == null)
+        if (uuidArray == null) {
             return false;
+        }
 
         for (ParcelUuid element : uuidArray) {
-            if (element.equals(uuid)) return true;
+            if (element.equals(uuid)) {
+                return true;
+            }
         }
         return false;
     }

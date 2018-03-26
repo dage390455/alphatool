@@ -52,7 +52,7 @@
     <issue
         id="GradleDependency"
         severity="Warning"
-        message="Old buildToolsVersion 25.0.0; recommended version is 25.0.2 or later"
+        message="Old buildToolsVersion 25.0.0; recommended version is 25.0.3 or later"
         category="Correctness"
         priority="4"
         summary="Obsolete Gradle Dependency"

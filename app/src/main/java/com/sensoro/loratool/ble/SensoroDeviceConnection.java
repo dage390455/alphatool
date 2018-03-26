@@ -13,7 +13,7 @@ import android.util.Log;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.sensoro.loratool.ble.scanner.SensoroUUID;
-import com.sensoro.loratool.proto.MsgNode1V1M1;
+import com.sensoro.loratool.proto.MsgNode1V1M5;
 import com.sensoro.loratool.proto.ProtoMsgCfgV1U1;
 import com.sensoro.loratool.proto.ProtoMsgTest1U1;
 import com.sensoro.loratool.proto.ProtoStd1U1;
@@ -635,9 +635,9 @@ public class SensoroDeviceConnection {
         SensoroSensor sensoroSensor = new SensoroSensor();
         SensoroDevice sensoroDevice = new SensoroDevice();
         try {
-            MsgNode1V1M1.MsgNode msgNode = MsgNode1V1M1.MsgNode.parseFrom(data);
+            MsgNode1V1M5.MsgNode msgNode = MsgNode1V1M5.MsgNode.parseFrom(data);
             if (msgNode.hasAppParam()) {
-                MsgNode1V1M1.AppParam appParam = msgNode.getAppParam();
+                MsgNode1V1M5.AppParam appParam = msgNode.getAppParam();
                 sensoroDevice.setUploadInterval(appParam.getUploadInterval());
                 sensoroDevice.setHasUploadInterval(appParam.hasUploadInterval());
                 sensoroDevice.setConfirm(appParam.getConfirm());
@@ -645,7 +645,7 @@ public class SensoroDeviceConnection {
             }
             sensoroDevice.setHasAppParam(msgNode.hasAppParam());
             if (msgNode.hasBleParam()) {
-                MsgNode1V1M1.BleParam bleParam = msgNode.getBleParam();
+                MsgNode1V1M5.BleParam bleParam = msgNode.getBleParam();
                 sensoroDevice.setBleInt(bleParam.getBleInterval());
                 sensoroDevice.setHasBleInterval(bleParam.hasBleInterval());
                 sensoroDevice.setBleOffTime(bleParam.getBleOffTime());
@@ -658,7 +658,7 @@ public class SensoroDeviceConnection {
             }
             sensoroDevice.setHasBleParam(msgNode.hasBleParam());
             if (msgNode.hasLoraParam()) {
-                MsgNode1V1M1.LoraParam loraParam = msgNode.getLoraParam();
+                MsgNode1V1M5.LoraParam loraParam = msgNode.getLoraParam();
                 sensoroDevice.setLoraAdr(loraParam.getAdr());
                 sensoroDevice.setHasAdr(loraParam.hasAdr());
                 sensoroDevice.setAppKey(SensoroUtils.bytesToHexString(loraParam.getAppKey().toByteArray()));
@@ -669,7 +669,7 @@ public class SensoroDeviceConnection {
                 sensoroDevice.setHasNwkSkey(loraParam.hasAppSkey());
                 sensoroDevice.setHasDevAddr(loraParam.hasDevAddr());
                 sensoroDevice.setDevAdr(loraParam.getDevAddr());
-                sensoroDevice.setLoraDr(loraParam.getDaterate());
+                sensoroDevice.setLoraDr(loraParam.getDatarate());
                 sensoroDevice.setHasDevEui(loraParam.hasDevEui());
                 sensoroDevice.setDevUi(SensoroUtils.bytesToHexString(loraParam.getDevEui().toByteArray()));
                 sensoroDevice.setHasAppEui(loraParam.hasAppEui());
@@ -678,14 +678,22 @@ public class SensoroDeviceConnection {
                 sensoroDevice.setAppKey(SensoroUtils.bytesToHexString(loraParam.getAppKey().toByteArray()));
                 sensoroDevice.setHasAppSkey(loraParam.hasAppSkey());
                 sensoroDevice.setAppSkey(SensoroUtils.bytesToHexString(loraParam.getAppSkey().toByteArray()));
-                sensoroDevice.setHasDataRate(loraParam.hasDaterate());
-                sensoroDevice.setClassBDataRate(loraParam.getDaterate());
+                sensoroDevice.setHasDataRate(loraParam.hasDatarate());
+                sensoroDevice.setClassBDataRate(loraParam.getDatarate());
                 sensoroDevice.setHasNwkSkey(loraParam.hasNwkSkey());
                 sensoroDevice.setNwkSkey(SensoroUtils.bytesToHexString(loraParam.getNwkSkey().toByteArray()));
                 sensoroDevice.setHasLoraTxp(loraParam.hasTxPower());
                 sensoroDevice.setLoraTxp(loraParam.getTxPower());
                 sensoroDevice.setHasActivation(loraParam.hasActivition());
                 sensoroDevice.setActivation(loraParam.getActivition().getNumber());
+                sensoroDevice.setHasDelay(loraParam.hasDelay());
+                sensoroDevice.setDelay(loraParam.getDelay());
+                sensoroDevice.setChannelMaskList(loraParam.getChannelMaskList());
+                sensoroDevice.setMaxEirp(loraParam.getMaxEIRP());
+                sensoroDevice.setHasMaxEirp(loraParam.hasMaxEIRP());
+                sensoroDevice.setSglStatus(loraParam.getSglStatus());
+                sensoroDevice.setSglDatarate(loraParam.getSglDatarate());
+                sensoroDevice.setSglFrequency(loraParam.getSglFrequency());
 
             }
             if (msgNode.hasFlame()) {//aae7e4 ble on off temp lower disable
@@ -709,6 +717,12 @@ public class SensoroDeviceConnection {
                 sensoroSensor.setYawAngleAlarmLow(msgNode.getYaw().getAlarmLow());
                 sensoroSensor.setYawAngle(msgNode.getYaw().getData());
                 sensoroSensor.setHasYawAngle(msgNode.hasYaw());
+            }
+            if (msgNode.hasWaterPressure()) {
+                sensoroSensor.setWaterPressureAlarmHigh(msgNode.getWaterPressure().getAlarmHigh());
+                sensoroSensor.setWaterPressureAlarmLow(msgNode.getWaterPressure().getAlarmLow());
+                sensoroSensor.setWaterPressure(msgNode.getWaterPressure().getData());
+                sensoroSensor.setHasWaterPressure(msgNode.hasWaterPressure());
             }
             sensoroDevice.setHasLoraParam(msgNode.hasLoraParam());
             sensoroSensor.setCh20(msgNode.getCh2O().getData());
@@ -865,8 +879,8 @@ public class SensoroDeviceConnection {
             }
             break;
             case DATA_VERSION_05: {
-                MsgNode1V1M1.MsgNode.Builder builder = MsgNode1V1M1.MsgNode.newBuilder();
-                MsgNode1V1M1.LoraParam.Builder loraParamBuilder = MsgNode1V1M1.LoraParam.newBuilder();
+                MsgNode1V1M5.MsgNode.Builder builder = MsgNode1V1M5.MsgNode.newBuilder();
+                MsgNode1V1M5.LoraParam.Builder loraParamBuilder = MsgNode1V1M5.LoraParam.newBuilder();
                 if (deviceConfiguration.hasDevEui()) {
                     loraParamBuilder.setDevEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration.devEui))));
                 }
@@ -885,11 +899,15 @@ public class SensoroDeviceConnection {
                 if (deviceConfiguration.hasDevAddr()) {
                     loraParamBuilder.setDevAddr(deviceConfiguration.devAdr);
                 }
-
+                if (deviceConfiguration.hasDelay()) {
+                    loraParamBuilder.setDelay(deviceConfiguration.delay);
+                }
+                List<Integer> channelList = deviceConfiguration.getChannelList();
+                loraParamBuilder.addAllChannelMask(channelList);
                 loraParamBuilder.setAdr(deviceConfiguration.getLoraAdr());
-                loraParamBuilder.setDaterate(deviceConfiguration.getLoraDr());
+                loraParamBuilder.setDatarate(deviceConfiguration.getLoraDr());
                 if (deviceConfiguration.hasActivation()) {
-                    loraParamBuilder.setActivition(MsgNode1V1M1.Activtion.valueOf(deviceConfiguration.activation));
+                    loraParamBuilder.setActivition(MsgNode1V1M5.Activtion.valueOf(deviceConfiguration.activation));
                 }
                 builder.setLoraParam(loraParamBuilder);
                 byte[] data = builder.build().toByteArray();
@@ -913,7 +931,10 @@ public class SensoroDeviceConnection {
                 }
             }
             break;
+            default:
+                break;
         }
+
 
     }
 
@@ -945,84 +966,90 @@ public class SensoroDeviceConnection {
 
     public void writeData05Configuration(SensoroDeviceConfiguration sensoroDeviceConfiguration, SensoroWriteCallback writeCallback) throws InvalidProtocolBufferException {
         writeCallbackHashMap.put(CmdType.CMD_W_CFG, writeCallback);
-        MsgNode1V1M1.MsgNode.Builder msgNodeBuilder = MsgNode1V1M1.MsgNode.newBuilder();
+        MsgNode1V1M5.MsgNode.Builder msgNodeBuilder = MsgNode1V1M5.MsgNode.newBuilder();
         SensoroSensorConfiguration sensorConfiguration = sensoroDeviceConfiguration.getSensorConfiguration();
         if (sensorConfiguration.hasCh4()) {
-            MsgNode1V1M1.SensorData.Builder ch4Builder = MsgNode1V1M1.SensorData.newBuilder();
+            MsgNode1V1M5.SensorData.Builder ch4Builder = MsgNode1V1M5.SensorData.newBuilder();
             ch4Builder.setAlarmHigh(sensorConfiguration.getCh4AlarmHigh());
             ch4Builder.setData(sensorConfiguration.getCh4Data());
             msgNodeBuilder.setCh4(ch4Builder);
         }
         if (sensorConfiguration.hasCo()) {
-            MsgNode1V1M1.SensorData.Builder coBuilder = MsgNode1V1M1.SensorData.newBuilder();
+            MsgNode1V1M5.SensorData.Builder coBuilder = MsgNode1V1M5.SensorData.newBuilder();
             coBuilder.setAlarmHigh(sensorConfiguration.getCoAlarmHigh());
             coBuilder.setData(sensorConfiguration.getCoData());
             msgNodeBuilder.setCo(coBuilder);
         }
 
         if (sensorConfiguration.hasCo2()) {
-            MsgNode1V1M1.SensorData.Builder co2Builder = MsgNode1V1M1.SensorData.newBuilder();
+            MsgNode1V1M5.SensorData.Builder co2Builder = MsgNode1V1M5.SensorData.newBuilder();
             co2Builder.setAlarmHigh(sensorConfiguration.getCo2AlarmHigh());
             co2Builder.setData(sensorConfiguration.getCo2Data());
             msgNodeBuilder.setCo2(co2Builder);
         }
         if (sensorConfiguration.hasNo2()) {
-            MsgNode1V1M1.SensorData.Builder no2Builder = MsgNode1V1M1.SensorData.newBuilder();
+            MsgNode1V1M5.SensorData.Builder no2Builder = MsgNode1V1M5.SensorData.newBuilder();
             no2Builder.setAlarmHigh(sensorConfiguration.getNo2AlarmHigh());
             no2Builder.setData(sensorConfiguration.getNo2Data());
             msgNodeBuilder.setNo2(no2Builder);
         }
         if (sensorConfiguration.hasLpg()) {
-            MsgNode1V1M1.SensorData.Builder lpgBuilder = MsgNode1V1M1.SensorData.newBuilder();
+            MsgNode1V1M5.SensorData.Builder lpgBuilder = MsgNode1V1M5.SensorData.newBuilder();
             lpgBuilder.setAlarmHigh(sensorConfiguration.getLpgAlarmHigh());
             lpgBuilder.setData(sensorConfiguration.getLpgData());
             msgNodeBuilder.setLpg(lpgBuilder);
         }
 
         if (sensorConfiguration.hasPm10()) {
-            MsgNode1V1M1.SensorData.Builder pm10Builder = MsgNode1V1M1.SensorData.newBuilder();
+            MsgNode1V1M5.SensorData.Builder pm10Builder = MsgNode1V1M5.SensorData.newBuilder();
             pm10Builder.setAlarmHigh(sensorConfiguration.getPm10AlarmHigh());
             pm10Builder.setData(sensorConfiguration.getPm10Data());
             msgNodeBuilder.setPm10(pm10Builder);
         }
         if (sensorConfiguration.hasPm25()) {
-            MsgNode1V1M1.SensorData.Builder pm25Builder = MsgNode1V1M1.SensorData.newBuilder();
+            MsgNode1V1M5.SensorData.Builder pm25Builder = MsgNode1V1M5.SensorData.newBuilder();
             pm25Builder.setAlarmHigh(sensorConfiguration.getPm25AlarmHigh());
             pm25Builder.setData(sensorConfiguration.getPm25Data());
             msgNodeBuilder.setPm25(pm25Builder);
         }
         if (sensorConfiguration.hasTemperature()) {
-            MsgNode1V1M1.SensorData.Builder tempBuilder = MsgNode1V1M1.SensorData.newBuilder();
+            MsgNode1V1M5.SensorData.Builder tempBuilder = MsgNode1V1M5.SensorData.newBuilder();
             tempBuilder.setAlarmHigh(sensorConfiguration.getTempAlarmHigh());
             tempBuilder.setAlarmLow(sensorConfiguration.getTempAlarmLow());
             msgNodeBuilder.setTemperature(tempBuilder);
         }
         if (sensorConfiguration.hasHumidity()) {
-            MsgNode1V1M1.SensorData.Builder humidityBuilder = MsgNode1V1M1.SensorData.newBuilder();
+            MsgNode1V1M5.SensorData.Builder humidityBuilder = MsgNode1V1M5.SensorData.newBuilder();
             humidityBuilder.setAlarmHigh(sensorConfiguration.getHumidityHigh());
             humidityBuilder.setAlarmLow(sensorConfiguration.getHumidityLow());
             msgNodeBuilder.setHumidity(humidityBuilder);
         }
         if (sensorConfiguration.hasPitchAngle()) {
-            MsgNode1V1M1.SensorData.Builder pitchBuilder = MsgNode1V1M1.SensorData.newBuilder();
+            MsgNode1V1M5.SensorData.Builder pitchBuilder = MsgNode1V1M5.SensorData.newBuilder();
             pitchBuilder.setAlarmHigh(sensorConfiguration.getPitchAngleAlarmHigh());
             pitchBuilder.setAlarmLow(sensorConfiguration.getPitchAngleAlarmLow());
             msgNodeBuilder.setPitch(pitchBuilder);
         }
         if (sensorConfiguration.hasRollAngle()) {
-            MsgNode1V1M1.SensorData.Builder rollAngleBuilder = MsgNode1V1M1.SensorData.newBuilder();
+            MsgNode1V1M5.SensorData.Builder rollAngleBuilder = MsgNode1V1M5.SensorData.newBuilder();
             rollAngleBuilder.setAlarmHigh(sensorConfiguration.getRollAngleAlarmHigh());
             rollAngleBuilder.setAlarmLow(sensorConfiguration.getRollAngleAlarmLow());
             msgNodeBuilder.setRoll(rollAngleBuilder);
         }
         if (sensorConfiguration.hasYawAngle()) {
-            MsgNode1V1M1.SensorData.Builder yawAngleBuilder = MsgNode1V1M1.SensorData.newBuilder();
+            MsgNode1V1M5.SensorData.Builder yawAngleBuilder = MsgNode1V1M5.SensorData.newBuilder();
             yawAngleBuilder.setAlarmHigh(sensorConfiguration.getYawAngleAlarmHigh());
             yawAngleBuilder.setAlarmLow(sensorConfiguration.getYawAngleAlarmLow());
             msgNodeBuilder.setYaw(yawAngleBuilder);
         }
+        if (sensorConfiguration.hasWaterPressure()) {
+            MsgNode1V1M5.SensorData.Builder waterPressureBuilder = MsgNode1V1M5.SensorData.newBuilder();
+            waterPressureBuilder.setAlarmHigh(sensorConfiguration.getWaterPressureAlarmHigh());
+            waterPressureBuilder.setAlarmLow(sensorConfiguration.getWaterPressureAlarmLow());
+            msgNodeBuilder.setWaterPressure(waterPressureBuilder);
+        }
         if (sensoroDeviceConfiguration.hasAppParam()) {
-            MsgNode1V1M1.AppParam.Builder appBuilder = MsgNode1V1M1.AppParam.newBuilder();
+            MsgNode1V1M5.AppParam.Builder appBuilder = MsgNode1V1M5.AppParam.newBuilder();
             if (sensoroDeviceConfiguration.hasUploadInterval()) {
                 appBuilder.setUploadInterval(sensoroDeviceConfiguration.getUploadIntervalData());
             }
@@ -1034,10 +1061,14 @@ public class SensoroDeviceConnection {
         }
 
 
-        MsgNode1V1M1.LoraParam.Builder loraBuilder = MsgNode1V1M1.LoraParam.newBuilder();
+        MsgNode1V1M5.LoraParam.Builder loraBuilder = MsgNode1V1M5.LoraParam.newBuilder();
         loraBuilder.setTxPower(sensoroDeviceConfiguration.getLoraTxp());
+//        loraBuilder.setMaxEIRP(sensoroDeviceConfiguration.getLoraEirp());
+//        loraBuilder.setSglStatus(sensoroDeviceConfiguration.getSglStatus());
+//        loraBuilder.setSglFrequency(sensoroDeviceConfiguration.getSglFrequency());
+//        loraBuilder.setSglDatarate(sensoroDeviceConfiguration.getSglDatarate());
 
-        MsgNode1V1M1.BleParam.Builder bleBuilder = MsgNode1V1M1.BleParam.newBuilder();
+        MsgNode1V1M5.BleParam.Builder bleBuilder = MsgNode1V1M5.BleParam.newBuilder();
         bleBuilder.setBleInterval(sensoroDeviceConfiguration.getBleInt());
         bleBuilder.setBleOffTime(sensoroDeviceConfiguration.getBleTurnOffTime());
         bleBuilder.setBleOnTime(sensoroDeviceConfiguration.getBleTurnOnTime());
@@ -1062,9 +1093,9 @@ public class SensoroDeviceConnection {
         }
     }
 
-    public void writeSmokeCmd(MsgNode1V1M1.AppParam.Builder builder, SensoroWriteCallback writeCallback) {
+    public void writeSmokeCmd(MsgNode1V1M5.AppParam.Builder builder, SensoroWriteCallback writeCallback) {
         writeCallbackHashMap.put(CmdType.CMD_SET_SMOKE, writeCallback);
-        MsgNode1V1M1.MsgNode.Builder msgNodeBuilder = MsgNode1V1M1.MsgNode.newBuilder();
+        MsgNode1V1M5.MsgNode.Builder msgNodeBuilder = MsgNode1V1M5.MsgNode.newBuilder();
         msgNodeBuilder.setAppParam(builder);
         byte[] data = msgNodeBuilder.build().toByteArray();
         writeData05Cmd(data, CmdType.CMD_SET_SMOKE, writeCallback);
@@ -1072,8 +1103,8 @@ public class SensoroDeviceConnection {
 
     public void writeZeroCmd(SensoroWriteCallback writeCallback) {
         writeCallbackHashMap.put(CmdType.CMD_SET_ZERO, writeCallback);
-        MsgNode1V1M1.MsgNode.Builder msgNodeBuilder = MsgNode1V1M1.MsgNode.newBuilder();
-        MsgNode1V1M1.SensorData.Builder sensorDataBuilder = MsgNode1V1M1.SensorData.newBuilder();
+        MsgNode1V1M5.MsgNode.Builder msgNodeBuilder = MsgNode1V1M5.MsgNode.newBuilder();
+        MsgNode1V1M5.SensorData.Builder sensorDataBuilder = MsgNode1V1M5.SensorData.newBuilder();
         sensorDataBuilder.setCalibration(1);
         msgNodeBuilder.setPitch(sensorDataBuilder.build());
         msgNodeBuilder.setRoll(sensorDataBuilder.build());
@@ -1200,90 +1231,100 @@ public class SensoroDeviceConnection {
                 }
             }
             break;
+            default:
+                break;
         }
     }
 
     public void writeMultiData05Configuration(SensoroDeviceConfiguration deviceConfiguration, SensoroWriteCallback writeCallback) throws InvalidProtocolBufferException {
         writeCallbackHashMap.put(CmdType.CMD_W_CFG, writeCallback);
-        MsgNode1V1M1.MsgNode.Builder msgNodeBuilder = MsgNode1V1M1.MsgNode.newBuilder();
+        MsgNode1V1M5.MsgNode.Builder msgNodeBuilder = MsgNode1V1M5.MsgNode.newBuilder();
         if (deviceConfiguration.hasLoraParam()) {
-            MsgNode1V1M1.LoraParam.Builder loraParamBuilder = MsgNode1V1M1.LoraParam.newBuilder();
+            MsgNode1V1M5.LoraParam.Builder loraParamBuilder = MsgNode1V1M5.LoraParam.newBuilder();
             loraParamBuilder.setTxPower(deviceConfiguration.loraTxp);
+            msgNodeBuilder.setLoraParam(loraParamBuilder);
         }
         if (deviceConfiguration.hasBleParam()) {
-            MsgNode1V1M1.BleParam.Builder bleParamBuilder = MsgNode1V1M1.BleParam.newBuilder();
+            MsgNode1V1M5.BleParam.Builder bleParamBuilder = MsgNode1V1M5.BleParam.newBuilder();
             bleParamBuilder.setBleTxp(deviceConfiguration.bleTxp);
             bleParamBuilder.setBleInterval(deviceConfiguration.bleInt.intValue());
             bleParamBuilder.setBleOnTime(deviceConfiguration.bleTurnOnTime);
             bleParamBuilder.setBleOffTime(deviceConfiguration.bleTurnOffTime);
+            msgNodeBuilder.setBleParam(bleParamBuilder);
         }
 
         SensoroSensorConfiguration sensorConfiguration = deviceConfiguration.getSensorConfiguration();
         if (sensorConfiguration.hasCh4()) {
-            MsgNode1V1M1.SensorData.Builder ch4Builder = MsgNode1V1M1.SensorData.newBuilder();
+            MsgNode1V1M5.SensorData.Builder ch4Builder = MsgNode1V1M5.SensorData.newBuilder();
             ch4Builder.setAlarmHigh(sensorConfiguration.getCh4AlarmHigh());
             ch4Builder.setData(sensorConfiguration.getCh4Data());
             msgNodeBuilder.setCh4(ch4Builder);
         }
         if (sensorConfiguration.hasCo()) {
-            MsgNode1V1M1.SensorData.Builder coBuilder = MsgNode1V1M1.SensorData.newBuilder();
+            MsgNode1V1M5.SensorData.Builder coBuilder = MsgNode1V1M5.SensorData.newBuilder();
             coBuilder.setAlarmHigh(sensorConfiguration.getCoAlarmHigh());
             coBuilder.setData(sensorConfiguration.getCoData());
             msgNodeBuilder.setCo(coBuilder);
         }
 
         if (sensorConfiguration.hasCo2()) {
-            MsgNode1V1M1.SensorData.Builder co2Builder = MsgNode1V1M1.SensorData.newBuilder();
+            MsgNode1V1M5.SensorData.Builder co2Builder = MsgNode1V1M5.SensorData.newBuilder();
             co2Builder.setAlarmHigh(sensorConfiguration.getCo2AlarmHigh());
             co2Builder.setData(sensorConfiguration.getCo2Data());
             msgNodeBuilder.setCo2(co2Builder);
         }
         if (sensorConfiguration.hasNo2()) {
-            MsgNode1V1M1.SensorData.Builder no2Builder = MsgNode1V1M1.SensorData.newBuilder();
+            MsgNode1V1M5.SensorData.Builder no2Builder = MsgNode1V1M5.SensorData.newBuilder();
             no2Builder.setAlarmHigh(sensorConfiguration.getNo2AlarmHigh());
             no2Builder.setData(sensorConfiguration.getNo2Data());
             msgNodeBuilder.setNo2(no2Builder);
         }
         if (sensorConfiguration.hasLpg()) {
-            MsgNode1V1M1.SensorData.Builder lpgBuilder = MsgNode1V1M1.SensorData.newBuilder();
+            MsgNode1V1M5.SensorData.Builder lpgBuilder = MsgNode1V1M5.SensorData.newBuilder();
             lpgBuilder.setAlarmHigh(sensorConfiguration.getLpgAlarmHigh());
             lpgBuilder.setData(sensorConfiguration.getLpgData());
             msgNodeBuilder.setLpg(lpgBuilder);
         }
 
         if (sensorConfiguration.hasPm10()) {
-            MsgNode1V1M1.SensorData.Builder pm10Builder = MsgNode1V1M1.SensorData.newBuilder();
+            MsgNode1V1M5.SensorData.Builder pm10Builder = MsgNode1V1M5.SensorData.newBuilder();
             pm10Builder.setAlarmHigh(sensorConfiguration.getPm10AlarmHigh());
             pm10Builder.setData(sensorConfiguration.getPm10Data());
             msgNodeBuilder.setPm10(pm10Builder);
         }
         if (sensorConfiguration.hasPm25()) {
-            MsgNode1V1M1.SensorData.Builder pm25Builder = MsgNode1V1M1.SensorData.newBuilder();
+            MsgNode1V1M5.SensorData.Builder pm25Builder = MsgNode1V1M5.SensorData.newBuilder();
             pm25Builder.setAlarmHigh(sensorConfiguration.getPm25AlarmHigh());
             pm25Builder.setData(sensorConfiguration.getPm25Data());
             msgNodeBuilder.setPm25(pm25Builder);
         }
         if (sensorConfiguration.hasTemperature()) {
-            MsgNode1V1M1.SensorData.Builder tempBuilder = MsgNode1V1M1.SensorData.newBuilder();
+            MsgNode1V1M5.SensorData.Builder tempBuilder = MsgNode1V1M5.SensorData.newBuilder();
             tempBuilder.setAlarmHigh(sensorConfiguration.getTempAlarmHigh());
             tempBuilder.setAlarmLow(sensorConfiguration.getTempAlarmLow());
             msgNodeBuilder.setTemperature(tempBuilder);
         }
         if (sensorConfiguration.hasHumidity()) {
-            MsgNode1V1M1.SensorData.Builder humidityBuilder = MsgNode1V1M1.SensorData.newBuilder();
+            MsgNode1V1M5.SensorData.Builder humidityBuilder = MsgNode1V1M5.SensorData.newBuilder();
             humidityBuilder.setAlarmHigh(sensorConfiguration.getHumidityHigh());
             humidityBuilder.setAlarmLow(sensorConfiguration.getHumidityLow());
             msgNodeBuilder.setHumidity(humidityBuilder);
         }
+        if (sensorConfiguration.hasWaterPressure()) {
+            MsgNode1V1M5.SensorData.Builder waterPressureBuilder = MsgNode1V1M5.SensorData.newBuilder();
+            waterPressureBuilder.setAlarmHigh(sensorConfiguration.getWaterPressureAlarmHigh());
+            waterPressureBuilder.setAlarmLow(sensorConfiguration.getWaterPressureAlarmLow());
+            msgNodeBuilder.setWaterPressure(waterPressureBuilder);
+        }
         if (deviceConfiguration.hasAppParam()) {//BB65
             if (deviceConfiguration.hasUploadInterval()) {
-                MsgNode1V1M1.AppParam.Builder appBuilder = MsgNode1V1M1.AppParam.newBuilder();
+                MsgNode1V1M5.AppParam.Builder appBuilder = MsgNode1V1M5.AppParam.newBuilder();
                 appBuilder.setUploadInterval(deviceConfiguration.getUploadIntervalData());
                 msgNodeBuilder.setAppParam(appBuilder);
             }
 
             if (deviceConfiguration.hasConfirm()) {
-                MsgNode1V1M1.AppParam.Builder appBuilder = MsgNode1V1M1.AppParam.newBuilder();
+                MsgNode1V1M5.AppParam.Builder appBuilder = MsgNode1V1M5.AppParam.newBuilder();
                 appBuilder.setConfirm(deviceConfiguration.getConfirmData());
                 msgNodeBuilder.setAppParam(appBuilder);
             }
@@ -1408,6 +1449,8 @@ public class SensoroDeviceConnection {
                 }
             }
             break;
+            default:
+                break;
         }
 
     }
@@ -1470,9 +1513,9 @@ public class SensoroDeviceConnection {
             }
             break;
             case DATA_VERSION_05: {
-                MsgNode1V1M1.MsgNode.Builder nodeBuilder = MsgNode1V1M1.MsgNode.newBuilder();
-                MsgNode1V1M1.AppParam.Builder appBuilder = MsgNode1V1M1.AppParam.newBuilder();
-                appBuilder.setCmd(MsgNode1V1M1.AppCmd.APP_CMD_DFU);
+                MsgNode1V1M5.MsgNode.Builder nodeBuilder = MsgNode1V1M5.MsgNode.newBuilder();
+                MsgNode1V1M5.AppParam.Builder appBuilder = MsgNode1V1M5.AppParam.newBuilder();
+                appBuilder.setCmd(MsgNode1V1M5.AppCmd.APP_CMD_DFU);
                 nodeBuilder.setAppParam(appBuilder);
                 byte[] data = nodeBuilder.build().toByteArray();
                 int data_length = data.length;
@@ -1495,6 +1538,8 @@ public class SensoroDeviceConnection {
                 }
             }
             break;
+            default:
+                break;
         }
     }
 

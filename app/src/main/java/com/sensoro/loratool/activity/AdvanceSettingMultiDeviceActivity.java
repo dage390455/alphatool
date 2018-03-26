@@ -19,6 +19,7 @@ import com.sensoro.lora.setting.server.bean.ResponseBase;
 import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.activity.fragment.SettingsInputDialogFragment;
+import com.sensoro.loratool.activity.fragment.SettingsMultiChoiceItemsFragment;
 import com.sensoro.loratool.activity.fragment.SettingsSingleChoiceItemsFragment;
 import com.sensoro.loratool.ble.BLEDevice;
 import com.sensoro.loratool.ble.SensoroConnectionCallback;
@@ -29,12 +30,12 @@ import com.sensoro.loratool.ble.SensoroUtils;
 import com.sensoro.loratool.ble.SensoroWriteCallback;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.event.OnPositiveButtonClickListener;
-import com.sensoro.loratool.proto.MsgNode1V1M1;
+import com.sensoro.loratool.model.ChannelData;
+import com.sensoro.loratool.proto.MsgNode1V1M5;
 import com.sensoro.loratool.proto.ProtoMsgCfgV1U1;
 import com.sensoro.loratool.proto.ProtoStd1U1;
 import com.sensoro.loratool.store.DeviceDataDao;
 import com.sensoro.loratool.utils.ParamUtil;
-import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONArray;
@@ -42,6 +43,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import butterknife.BindView;
@@ -120,11 +122,25 @@ public class AdvanceSettingMultiDeviceActivity extends BaseActivity implements C
     @BindView(R.id.settings_multi_tv_activation)
     TextView activationTextView;
 
+    @BindView(R.id.settings_multi_ll_delay)
+    LinearLayout delayLinearLayout;
+    @BindView(R.id.settings_multi_rl_delay)
+    RelativeLayout delayRelativeLayout;
+    @BindView(R.id.settings_multi_tv_delay)
+    TextView delayTextView;
+
+    @BindView(R.id.settings_multi_ll_channel)
+    LinearLayout channelMaskLinearLayout;
+    @BindView(R.id.settings_multi_tv_channel)
+    TextView channelTextView;
+
+    private ArrayList<ChannelData> channelOpenList = new ArrayList<>();
     private int writeActivationIndex = SETTING_STATUS_UNSET;
     private int writeDataRateIndex = SETTING_STATUS_UNSET;
     private int writeClassBEnableIndex = SETTING_STATUS_UNSET;
     private int activation = 0;
     private int loraDr = 0;
+    private int delay = 1;
     private String band;
     private String deviceType;
 
@@ -133,7 +149,6 @@ public class AdvanceSettingMultiDeviceActivity extends BaseActivity implements C
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StatService.trackBeginPage(this, "设备私有云配置V1.1");
         MobclickAgent.onPageStart("设备私有云配置V1.1");
         initData();
     }
@@ -141,14 +156,12 @@ public class AdvanceSettingMultiDeviceActivity extends BaseActivity implements C
     @Override
     protected void onResume() {
         super.onResume();
-        StatService.onResume(this);
         MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        StatService.onPause(this);
         MobclickAgent.onPause(this);
     }
 
@@ -178,7 +191,7 @@ public class AdvanceSettingMultiDeviceActivity extends BaseActivity implements C
         return R.layout.activity_advcance_multi_device;
     }
 
-    private void initWidget() {
+    private void refresh() {
         if (targetDeviceIndex == 0) {
             progressDialog.dismiss();
             setContentView(R.layout.activity_advcance_multi_device);
@@ -195,6 +208,18 @@ public class AdvanceSettingMultiDeviceActivity extends BaseActivity implements C
             } else {
                 classBLinearLayout.setVisibility(View.GONE);
             }
+            if (deviceInfo.getDeviceType().equalsIgnoreCase("chip") && (deviceInfo.getFirmwareVersion().equalsIgnoreCase("2.0")||deviceInfo.getFirmwareVersion().equalsIgnoreCase("2.0.0"))) {
+                delayLinearLayout.setVisibility(GONE);
+            } else {
+                delay = targetDevice.getDelay();
+                if (targetDevice.hasDelay()) {
+                    delayLinearLayout.setVisibility(VISIBLE);
+                    delayTextView.setText(String.valueOf(targetDevice.getDelay()));
+                } else {
+                    delayLinearLayout.setVisibility(GONE);
+                }
+            }
+
             if (deviceType != null) {
                 if (deviceInfo.isOpenLoraDevice()) {
                     if (targetDevice.getLoraAdr() == 1 ) {
@@ -204,6 +229,31 @@ public class AdvanceSettingMultiDeviceActivity extends BaseActivity implements C
                     }
                 } else {
                     devEuiRelativeLayout.setVisibility(View.GONE);
+                }
+            }
+
+            if (targetDevice.getChannelMaskList() == null) {
+                channelMaskLinearLayout.setVisibility(GONE);
+            } else {
+                List<Integer> list = targetDevice.getChannelMaskList();
+                for (int i = 0; i < list.size(); i++) {
+                    for (int j =0 ; j < 16; j ++) {
+                        ChannelData channelData = new ChannelData();
+                        channelData.setIndex((i*16 + j));
+                        if ((list.get(i) & 1 << j) !=0) {
+                            channelData.setOpen(true);
+                            System.out.println("open==>"+(i*16 + j));
+                        } else {
+                            channelData.setOpen(false);
+                            System.out.println("close==>"+(i*16 + j));
+                        }
+                        channelOpenList.add(channelData);
+                    }
+                }
+                if (channelOpenList.size() == 0) {
+                    channelMaskLinearLayout.setVisibility(GONE);
+                } else {
+                    channelMaskLinearLayout.setVisibility(VISIBLE);
                 }
             }
         } else {
@@ -331,9 +381,9 @@ public class AdvanceSettingMultiDeviceActivity extends BaseActivity implements C
             baseString = new String(Base64.encode(data, Base64.DEFAULT));
             version = "04";
         } else {
-            MsgNode1V1M1.MsgNode.Builder msgNodeBuilder = MsgNode1V1M1.MsgNode.newBuilder();
+            MsgNode1V1M5.MsgNode.Builder msgNodeBuilder = MsgNode1V1M5.MsgNode.newBuilder();
             if (targetDevice.hasLoraParam()) {
-                MsgNode1V1M1.LoraParam.Builder loraParamBuilder = MsgNode1V1M1.LoraParam.newBuilder();
+                MsgNode1V1M5.LoraParam.Builder loraParamBuilder = MsgNode1V1M5.LoraParam.newBuilder();
                 loraParamBuilder.setTxPower(targetDevice.getLoraTxp());
                 loraParamBuilder.setDevEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration.getDevEui()))));
                 loraParamBuilder.setAppEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration.getAppEui()))));
@@ -342,9 +392,16 @@ public class AdvanceSettingMultiDeviceActivity extends BaseActivity implements C
                 loraParamBuilder.setNwkSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration.getNwkSkey())));
                 loraParamBuilder.setDevAddr(deviceConfiguration.getDevAdr());
                 loraParamBuilder.setAdr(deviceConfiguration.getLoraAdr());
-                loraParamBuilder.setDaterate(deviceConfiguration.getLoraDr());
+                loraParamBuilder.setDatarate(deviceConfiguration.getLoraDr());
                 if (targetDevice.hasActivation()) {
-                    loraParamBuilder.setActivition(MsgNode1V1M1.Activtion.valueOf(activation));
+                    loraParamBuilder.setActivition(MsgNode1V1M5.Activtion.valueOf(activation));
+                }
+                if (deviceInfo.getDeviceType().equalsIgnoreCase("chip") && (deviceInfo.getFirmwareVersion().equalsIgnoreCase("2.0")||deviceInfo.getFirmwareVersion().equalsIgnoreCase("2.0.0"))) {
+
+                } else {
+                    if (targetDevice.hasDelay()) {
+                        loraParamBuilder.setDelay(deviceConfiguration.getDelay());
+                    }
                 }
                 msgNodeBuilder.setLoraParam(loraParamBuilder);
             }
@@ -400,7 +457,7 @@ public class AdvanceSettingMultiDeviceActivity extends BaseActivity implements C
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                initWidget();
+                refresh();
                 progressDialog.setMessage(getString(R.string.device) + targetDevice.getSn() + getString(R.string.connect_success));
 //                Toast.makeText(getApplicationContext(), getString(R.string.device) + targetDevice.getSn() + getString(R.string.connect_success), Toast.LENGTH_SHORT).show();
             }
@@ -443,11 +500,11 @@ public class AdvanceSettingMultiDeviceActivity extends BaseActivity implements C
     }
 
     @Override
-    public void onWriteFailure(int errorCode, final int cmd) {
+    public void onWriteFailure(final int errorCode, final int cmd) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                progressDialog.setMessage(getString(R.string.device) + targetDevice.getSn() + getString(R.string.save_fail));
+                progressDialog.setMessage(getString(R.string.device) + targetDevice.getSn() + getString(R.string.save_fail) + " 错误码" + errorCode);
 //                Toast.makeText(getApplicationContext(), getString(R.string.device) + targetDevice.getSn() + getString(R.string.save_fail), Toast.LENGTH_SHORT).show();
                 save();
             }
@@ -494,6 +551,18 @@ public class AdvanceSettingMultiDeviceActivity extends BaseActivity implements C
     public void doSf() {
         SettingsSingleChoiceItemsFragment dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(SF_ITEMS, 0);
         dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_SF);
+    }
+
+    @OnClick(R.id.settings_multi_rl_delay)
+    public void doDelay() {
+        SettingsSingleChoiceItemsFragment dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(DELAY_ITEMS, 0);
+        dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_DELAY);
+    }
+
+    @OnClick(R.id.settings_multi_rl_channel)
+    public void doChannel() {
+        SettingsMultiChoiceItemsFragment dialogFragment = SettingsMultiChoiceItemsFragment.newInstance(channelOpenList);
+        dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_CHANNEL);
     }
 
     @OnClick(R.id.settings_multi_rl_data_rate)
@@ -634,7 +703,7 @@ public class AdvanceSettingMultiDeviceActivity extends BaseActivity implements C
             }
             if (targetDevice.hasDevAddr() || activation == 1) {
                 builder.setHasDevAddr(true);
-                builder.setDevAdr(Integer.parseInt(devAdrString.replace("0x0", ""), 16));
+                builder.setDevAdr(devAdr);
             } else {
                 builder.setHasDevAddr(false);
             }
@@ -644,6 +713,28 @@ public class AdvanceSettingMultiDeviceActivity extends BaseActivity implements C
             } else {
                 builder.setHasActivation(false);
             }
+            builder.setLoraDr(loraDr);
+            if (targetDevice.hasDelay()) {
+                builder.setDelay(delay);
+                builder.setHasDelay(true);
+            } else {
+                builder.setHasDelay(false);
+            }
+            List<Integer> list = targetDevice.getChannelMaskList();
+            int array[] = new int[list.size()];
+            for (int i = 0; i < list.size() * 16; i++) {
+                ChannelData channelData = channelOpenList.get(i);
+                if (channelData.isOpen()) {
+                    array[i/16] |= 1 << i%16;
+                } else {
+                    array[i/16] |= 0 << i%16;
+                }
+            }
+            ArrayList<Integer> tempList = new ArrayList();
+            for (int i = 0 ; i < array.length; i ++) {
+                tempList.add(array[i]);
+            }
+            builder.setChannelList(tempList);
             if (targetDevice.getFirmwareVersion().compareTo("1.3") >= 0) {
                 if (writeClassBEnableIndex != SETTING_STATUS_UNSET) {
                     String classBPeriodicityString = classBPeriodicityTextView.getText().toString();
@@ -752,6 +843,26 @@ public class AdvanceSettingMultiDeviceActivity extends BaseActivity implements C
             }
             String item = SF_ITEMS[index];
             loraSfTextView.setText(item);
+        } else if (tag.equals(SETTINGS_DEVICE_DELAY)) {
+            int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
+            if (index == 0) {
+                delay = targetDevice.getDelay();
+            } else {
+                delay = DELAY_VALUES[index];
+            }
+            String item = DELAY_ITEMS[index];
+            delayTextView.setText(item);
+        }  else if (tag.equals(SETTINGS_DEVICE_CHANNEL)) {
+            ArrayList<ChannelData> channelDataArrayList = (ArrayList)bundle.getSerializable(SettingsSingleChoiceItemsFragment.INDEX);
+            channelOpenList = channelDataArrayList;
+            StringBuffer stringBuffer = new StringBuffer();
+            for (int i = 0 ; i < channelOpenList.size(); i ++) {
+                ChannelData channelData = channelOpenList.get(i);
+                if (channelData.isOpen()) {
+                    stringBuffer.append(getString(R.string.setting_text_channel) + channelData.getIndex());
+                }
+            }
+            channelTextView.setText(stringBuffer.toString());
         } else if (tag.equals(SETTINGS_DEVICE_CLASSB_DATARATE)) {
             int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
             String item = CLASSB_DATARATE[index];

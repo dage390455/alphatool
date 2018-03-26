@@ -5,8 +5,6 @@ import android.content.Context;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.constant.Constants;
 
-import java.util.Arrays;
-
 /**
  * Created by sensoro on 17/5/8.
  */
@@ -14,38 +12,64 @@ import java.util.Arrays;
 public class ParamUtil {
 
 
+    public static int getLoraEirp(String band, int loraTxp) {
+        int index = 0;
+//        switch (band) {
+//            case Constants.LORA_BAND_EU433:
+//                index = getIndexByValue(Constants.LORA_EU433_TXP, loraTxp);
+//                break;
+//            case Constants.LORA_BAND_EU868:
+//                index = Constants.LORA_EU868_MAX_EIRP[loraTxp];
+//                break;
+//            case Constants.LORA_BAND_AS923:
+//                index = getIndexByValue(Constants.LORA_AS923_TXP, loraTxp);
+//                break;
+//            case Constants.LORA_BAND_AU915:
+//                index = getIndexByValue(Constants.LORA_AU915_TXP, loraTxp);
+//                break;
+//            case Constants.LORA_BAND_US915:
+//                index = getIndexByValue(Constants.LORA_US915_TXP, loraTxp);
+//                break;
+//            case Constants.LORA_BAND_CN470:
+//                index = getIndexByValue(Constants.LORA_CN470_TXP, loraTxp);
+//        }
+//        if (index == -1) {
+//            return 0;
+//        }
+        return index;
+    }
     public static int getLoraTxpIndex(String band, int loraTxp) {
         int index = 0;
         switch (band) {
             case Constants.LORA_BAND_EU433:
-                index = getValueIndex(Constants.LORA_EU433_TXP, loraTxp);
+                index = getIndexByValue(Constants.LORA_EU433_TXP, loraTxp);
                 break;
             case Constants.LORA_BAND_EU868:
-                index = getValueIndex(Constants.LORA_EU868_TXP, loraTxp);
+                index = getIndexByValue(Constants.LORA_EU868_TXP, loraTxp);
                 break;
             case Constants.LORA_BAND_AS923:
-                index = getValueIndex(Constants.LORA_AS923_TXP, loraTxp);
+                index = getIndexByValue(Constants.LORA_AS923_TXP, loraTxp);
                 break;
             case Constants.LORA_BAND_AU915:
-                index = getValueIndex(Constants.LORA_AU915_TXP, loraTxp);
+                index = getIndexByValue(Constants.LORA_AU915_TXP, loraTxp);
                 break;
             case Constants.LORA_BAND_US915:
-                index = getValueIndex(Constants.LORA_US915_TXP, loraTxp);
+                index = getIndexByValue(Constants.LORA_US915_TXP, loraTxp);
                 break;
             case Constants.LORA_BAND_SE433:
-                index = getValueIndex(Constants.LORA_SE433_TXP, loraTxp);
+                index = getIndexByValue(Constants.LORA_SE433_TXP, loraTxp);
                 break;
             case Constants.LORA_BAND_SE470:
-                index = getValueIndex(Constants.LORA_SE470_TXP, loraTxp);
+                index = getIndexByValue(Constants.LORA_SE470_TXP, loraTxp);
                 break;
             case Constants.LORA_BAND_SE780:
-                index = getValueIndex(Constants.LORA_SE780_TXP, loraTxp);
+                index = getIndexByValue(Constants.LORA_SE780_TXP, loraTxp);
                 break;
             case Constants.LORA_BAND_SE915:
-                index = getValueIndex(Constants.LORA_SE915_TXP, loraTxp);
+                index = getIndexByValue(Constants.LORA_SE915_TXP, loraTxp);
                 break;
-
-
+            case Constants.LORA_BAND_CN470:
+                index = getIndexByValue(Constants.LORA_CN470_TXP, loraTxp);
         }
         if (index == -1) {
             return 0;
@@ -57,33 +81,34 @@ public class ParamUtil {
         int index = 0;
         switch (band) {
             case Constants.LORA_BAND_EU433:
-                index = getValueIndex(Constants.LORA_EU433_DR, dr);
+                index = getIndexByValue(Constants.LORA_EU433_DR, dr);
                 break;
             case Constants.LORA_BAND_EU868:
-                index = getValueIndex(Constants.LORA_EU868_DR, dr);
+                index = getIndexByValue(Constants.LORA_EU868_DR, dr);
                 break;
             case Constants.LORA_BAND_AS923:
-                index = getValueIndex(Constants.LORA_AS923_DR, dr);
+                index = getIndexByValue(Constants.LORA_AS923_DR, dr);
                 break;
             case Constants.LORA_BAND_AU915:
-                index = getValueIndex(Constants.LORA_AU915_DR, dr);
+                index = getIndexByValue(Constants.LORA_AU915_DR, dr);
                 break;
             case Constants.LORA_BAND_US915:
-                index = getValueIndex(Constants.LORA_US915_DR, dr);
+                index = getIndexByValue(Constants.LORA_US915_DR, dr);
                 break;
             case Constants.LORA_BAND_SE433:
-                index = getValueIndex(Constants.LORA_SE433_DR, dr);
+                index = getIndexByValue(Constants.LORA_SE433_DR, dr);
                 break;
             case Constants.LORA_BAND_SE470:
-                index = getValueIndex(Constants.LORA_SE470_DR, dr);
+                index = getIndexByValue(Constants.LORA_SE470_DR, dr);
                 break;
             case Constants.LORA_BAND_SE780:
-                index = getValueIndex(Constants.LORA_SE780_DR, dr);
+                index = getIndexByValue(Constants.LORA_SE780_DR, dr);
                 break;
             case Constants.LORA_BAND_SE915:
-                index = getValueIndex(Constants.LORA_SE915_DR, dr);
+                index = getIndexByValue(Constants.LORA_SE915_DR, dr);
                 break;
-
+            case Constants.LORA_BAND_CN470:
+                index = getIndexByValue(Constants.LORA_CN470_DR, dr);
 
         }
         if (index == -1) {
@@ -113,6 +138,8 @@ public class ParamUtil {
                 return Constants.LORA_AS923_TXP[index];
             case "AU915":
                 return Constants.LORA_AU915_TXP[index];
+            case "CN470":
+                return Constants.LORA_CN470_TXP[index];
             default:
                 return 0;
         }
@@ -139,6 +166,8 @@ public class ParamUtil {
                 return Constants.LORA_AS923_DR[index];
             case "AU915":
                 return Constants.LORA_AU915_DR[index];
+            case "CN470":
+                return Constants.LORA_CN470_DR[index];
             default:
                 return 0;
         }
@@ -165,6 +194,8 @@ public class ParamUtil {
                 return Constants.LORA_AS923_SF[index];
             case "AU915":
                 return Constants.LORA_AU915_SF[index];
+            case "CN470":
+                return Constants.LORA_CN470_SF[index];
             default:
                 return "";
         }
@@ -324,12 +355,14 @@ public class ParamUtil {
             return Constants.LORA_BAND_AS_923;
         } else if (band.equals(Constants.LORA_BAND_AU915)) {
             return Constants.LORA_BAND_AU_915;
+        } else if (band.equals(Constants.LORA_BAND_CN470)) {
+            return Constants.LORA_BAND_CN_470;
         } else {
             return Constants.LORA_BAND_SE_433;
         }
     }
 
-    public static int getValueIndex(int array[], int value) {
+    public static int getIndexByValue(int array[], int value) {
         for (int i = 0; i < array.length ; i ++) {
             if (array[i] == value) {
                 return i;

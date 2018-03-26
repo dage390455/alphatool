@@ -118,7 +118,6 @@ public class SearchStationActivity extends AppCompatActivity implements View.OnC
         mCancelTv.setOnClickListener(this);
         mClearBtn.setOnClickListener(this);
         mStationInfoAdapter = new StationInfoAdapter(this);
-//        ArrayList<StationInfo> stationInfoArrayList = getIntent().getParcelableArrayListExtra(Constants.EXTRA_NAME_STATION_LIST);
         mSearchDeviceLv.setAdapter(mStationInfoAdapter);
         mStationInfoAdapter.appendData(loRaSettingApplication.getStationInfoList());
         loRaSettingApplication.registersSensoroDeviceListener(this);

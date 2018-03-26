@@ -38,80 +38,87 @@ public class SettingsSingleChoiceItemsFragment extends SettingsBaseDialogFragmen
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final String[] items = getArguments().getStringArray(ITEMS);
-        int index = getArguments().getInt(INDEX);
-        selectedIndex = index;
-        setViewVisiable(index);
+        try {
+            String[] items = getArguments().getStringArray(ITEMS);
+            int index = getArguments().getInt(INDEX);
+            selectedIndex = index;
+            setViewVisible(index);
 
-        int title = getTitleId();
-        if (title != R.string.prevent_squatters) {
-            return new AlertDialog.Builder(getActivity())
-                    .setTitle(title)
-                    .setView(dialogView)
-                    .setSingleChoiceItems(items, index, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            selectedIndex = which;
-                            if (getTag().equals(SettingDeviceActivity.SETTINGS_BLE_POWER)) {
-                                setPowerView(which);
+            int title = getTitleId();
+            if (title != R.string.prevent_squatters) {
+                AlertDialog.Builder builder =  new AlertDialog.Builder(getActivity())
+                        .setTitle(title)
+                        .setView(dialogView)
+                        .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Bundle bundle = new Bundle();
+                                bundle.putInt(INDEX, selectedIndex);
+                                bundle.putString(ITEM, getArguments().getStringArray(ITEMS)[selectedIndex]);
+                                onPositiveButtonClickListener.onPositiveButtonClick(SettingsSingleChoiceItemsFragment.this.getTag(), bundle);
                             }
+                        })
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+                builder.setSingleChoiceItems(items, index, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        selectedIndex = which;
+                        if (SettingDeviceActivity.SETTINGS_BLE_POWER.equals(getTag())) {
+                            setPowerView();
                         }
-                    })
-                    .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Bundle bundle = new Bundle();
-                            bundle.putInt(INDEX, selectedIndex);
-                            bundle.putString(ITEM, items[selectedIndex]);
-                            onPositiveButtonClickListener.onPositiveButtonClick(SettingsSingleChoiceItemsFragment.this.getTag(), bundle);
-                        }
-                    })
-                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    })
-                    .create();
-        } else {
-            return new AlertDialog.Builder(getActivity())
-                    .setTitle(title)
-                    .setView(dialogView)
-                    .setSingleChoiceItems(items, index, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            selectedIndex = which;
-                            setPowerView(which);
-                            setBroadcastKeyView(which);
-                        }
-                    })
-                    .setNeutralButton(R.string.management, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
 
-                        }
-                    })
-                    .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Bundle bundle = new Bundle();
-                            bundle.putInt(INDEX, selectedIndex);
-                            onPositiveButtonClickListener.onPositiveButtonClick(SettingsSingleChoiceItemsFragment.this.getTag(), bundle);
-                        }
-                    })
-                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    })
-                    .create();
+                return builder.create();
+            } else {
+                Dialog dialog = new AlertDialog.Builder(getActivity())
+                        .setTitle(title)
+                        .setView(dialogView)
+                        .setSingleChoiceItems(items, index, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                selectedIndex = which;
+                                setPowerView();
+                                setBroadcastKeyView(which);
+                            }
+                        })
+                        .setNeutralButton(R.string.management, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Bundle bundle = new Bundle();
+                                bundle.putInt(INDEX, selectedIndex);
+                                onPositiveButtonClickListener.onPositiveButtonClick(SettingsSingleChoiceItemsFragment.this.getTag(), bundle);
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
+                        .create();
+                return dialog;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
-    private void setViewVisiable(int index) {
-        if (getTag().equals(SettingDeviceActivity.SETTINGS_BLE_POWER)) {
-            levelTipsTextView.setVisibility(View.VISIBLE);
+    private void setViewVisible(int index) {
+        if (getTag().equals(SettingDeviceActivity.SETTINGS_BLE_POWER)|| getTag().equals(SettingDeviceActivity.SETTINGS_LORA_TXP) ||getTag().equals(SettingDeviceActivity.SETTINGS_LORA_EIRP)) {
+            levelTipsTextView.setVisibility(View.GONE);
             tipsDetailTextView.setVisibility(View.VISIBLE);
-            setPowerView(index);
+            setPowerView();
         } else if (getTag().equals(SettingDeviceActivity.SETTINGS_ADV_INTERVAL)) {
             tipsDetailTextView.setVisibility(View.VISIBLE);
             setAdvIntervalView(index);
@@ -119,9 +126,10 @@ public class SettingsSingleChoiceItemsFragment extends SettingsBaseDialogFragmen
             tipsDetailTextView.setVisibility(View.VISIBLE);
             setBroadcastKeyView(index);
         }
+
     }
 
-    private void setPowerView(int index) {
+    private void setPowerView() {
         tipsDetailTextView.setText(R.string.setting_power_tips);
     }
 
@@ -136,17 +144,12 @@ public class SettingsSingleChoiceItemsFragment extends SettingsBaseDialogFragmen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initView();
-    }
-
-    private void initView() {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         dialogView = inflater.inflate(R.layout.dialog_settings_tips_v4, null);
-
         levelTipsTextView = (TextView) dialogView.findViewById(R.id.settings_tips_v4_tv_level_tips);
         tipsDetailTextView = (TextView) dialogView.findViewById(R.id.settings_tips_v4_tv_tips_detail);
-
     }
+
 
     public int getTitleId() {
         String tag = getTag();
@@ -170,7 +173,7 @@ public class SettingsSingleChoiceItemsFragment extends SettingsBaseDialogFragmen
             return R.string.setting_ble_turnon_time;
         } else if (tag.equals(SettingDeviceActivity.SETTINGS_BLE_TURNOFF_TIME)) {
             return R.string.setting_ble_turnoff_time;
-        } else if (tag.equals(SettingDeviceActivity.SETTINGS_LORA_TXP)) {
+        } else if (tag.equals(SettingDeviceActivity.SETTINGS_LORA_TXP) || tag.equals(SettingDeviceActivity.SETTINGS_LORA_EIRP)) {
             return R.string.setting_lora_txp;
         }
         return R.string.settings;

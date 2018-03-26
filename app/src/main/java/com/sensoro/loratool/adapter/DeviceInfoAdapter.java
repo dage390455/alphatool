@@ -147,6 +147,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
                 final DeviceInfo deviceInfo = mDeviceInfoList.get(j);
                 if (sensoroDevice.getSn().equalsIgnoreCase(deviceInfo.getSn()) && isFilterNearby() && !isSearchStatus) {
                     mDeviceInfoList.remove(deviceInfo);
+                    deviceInfo.setSelected(false);
                     notifyDataSetChanged();
                     break;
                 }
@@ -212,7 +213,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
                     DeviceInfo deviceInfo = mCacheDeviceInfoMap.get(key);
                     if (deviceInfo != null) {
                         String firmwareVersion = deviceInfo.getFirmwareVersion();
-                        if (firmWare.equalsIgnoreCase(firmwareVersion)) {
+                        if (firmwareVersion.contains(firmWare)) {
                             tempFirmwareList.add(mCacheDeviceInfoMap.get(key));
                         }
                     }
@@ -225,7 +226,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
                     String deviceType = tempFirmwareList.get(i).getDeviceType();
                     if (hardware == null || deviceType == null) {
                     } else {
-                        if (hardware.equalsIgnoreCase(deviceType)) {
+                        if (deviceType.contains(hardware)) {
                             tempHardwareList.add(tempFirmwareList.get(i));
                         }
                     }
@@ -531,7 +532,12 @@ public class DeviceInfoAdapter extends BaseAdapter {
                 SensoroDevice sensoroDevice = mNearByDeviceMap.get(sn);
                 if (sensoroDevice != null) {
                     deviceInfo.setRssi(mNearByDeviceMap.get(sn).getRssi());
-                    version = mNearByDeviceMap.get(sn).getFirmwareVersion();
+                    if (deviceInfo.getFirmwareVersion().compareTo(sensoroDevice.getFirmwareVersion()) > 0) {
+                        version = deviceInfo.getFirmwareVersion();
+                    } else {
+                        version = sensoroDevice.getFirmwareVersion();
+                    }
+                    deviceInfo.setFirmwareVersion(version);
                 }
 
                 deviceInfo.setConnectable(true);
@@ -585,6 +591,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
             itemViewHolder.sensorPitchAngleLayout.setVisibility(GONE);
             itemViewHolder.sensorRollAngleLayout.setVisibility(GONE);
             itemViewHolder.sensorYawAngleLayout.setVisibility(GONE);
+            itemViewHolder.sensorWaterPressureLayout.setVisibility(GONE);
             SensoroSensor sensoroSensor = mSensorMap.get(deviceInfo_sn);
             if (sensoroSensor != null && isNearby) {
                 int sensor_counter = 0;
@@ -654,6 +661,11 @@ public class DeviceInfoAdapter extends BaseAdapter {
                     sensor_counter ++;
                     itemViewHolder.sensorYawAngleTextView.setText("Y " + String.format("%.1f", sensoroSensor.getYawAngle()) + "°。");
                     itemViewHolder.sensorYawAngleLayout.setVisibility(VISIBLE);
+                }
+                if (sensoroSensor.getWaterPressure() != null) {
+                    sensor_counter ++;
+                    itemViewHolder.sensorWaterPressureTextView.setText("WaterPressure " + String.format("%.1f", sensoroSensor.getWaterPressure()) + "");
+                    itemViewHolder.sensorWaterPressureLayout.setVisibility(VISIBLE);
                 }
                 if (sensoroSensor.getLeak() != null) {
                     sensor_counter++;
@@ -762,12 +774,16 @@ public class DeviceInfoAdapter extends BaseAdapter {
         LinearLayout sensorRollAngleLayout;
         @BindView(R.id.device_item_layout_sensor_angle_yaw)
         LinearLayout sensorYawAngleLayout;
+        @BindView(R.id.device_item_layout_sensor_water)
+        LinearLayout sensorWaterPressureLayout;
         @BindView(R.id.device_item_sensor_angle_pitch)
         TextView sensorPitchAngleTextView;
         @BindView(R.id.device_item_sensor_angle_roll)
         TextView sensorRollAngleTextView;
         @BindView(R.id.device_item_sensor_angle_yaw)
         TextView sensorYawAngleTextView;
+        @BindView(R.id.device_item_sensor_water)
+        TextView sensorWaterPressureTextView;
         @BindView(R.id.device_item_tag_rv)
         RecyclerView tagRecyclerView;
         @BindView(R.id.device_item_battery)

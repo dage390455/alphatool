@@ -1,6 +1,8 @@
 package com.sensoro.loratool.ble;
 
 
+import java.util.List;
+
 /**
  * Created by Sensoro on 15/7/27.
  */
@@ -24,6 +26,10 @@ public class SensoroDeviceConfiguration {
     Integer loadAdr = null;
     Integer loraDr = null;
     Integer loraTxp = null;
+    Integer loraEirp = null;
+    Integer sglStatus = null;
+    Integer sglDatarate = null;
+    Integer sglFrequency = null;
     Integer flame = null;
     Float loraInt = null;
     Boolean isEddystoneUIDEnabled = null;
@@ -45,8 +51,10 @@ public class SensoroDeviceConfiguration {
     Integer classBPeriodicity = null;
     Integer sensorBroadcastEnabled = null;
     Integer activation = null;
-    Integer uploadIntervalData;
-    Integer confirmData;
+    Integer uploadIntervalData = null;
+    Integer confirmData = null;
+    Integer delay = null;
+    List<Integer> channelList = null;
     SensoroSensorConfiguration sensoroSensorConfiguration;
     boolean hasUploadInterval;
     boolean hasConfirm;
@@ -66,6 +74,7 @@ public class SensoroDeviceConfiguration {
     boolean hasSensorBroadcast;
     boolean hasCustom;
     boolean hasFlame;
+    boolean hasDelay;
 
     protected SensoroDeviceConfiguration() {
 
@@ -90,6 +99,10 @@ public class SensoroDeviceConfiguration {
         devAdr = builder.devAdr;
         loadAdr = builder.loraAdr;
         loraDr = builder.loraDr;
+        loraEirp = builder.loraEirp;
+        sglStatus = builder.sglStatus;
+        sglFrequency = builder.sglFrequency;
+        sglDatarate = builder.sglDatarate;
         flame = builder.flame;
         isEddystoneOnly = builder.isEddystoneOnly;
         isEddystoneTLMEnabled = builder.isEddystoneTLMEnabled;
@@ -113,6 +126,8 @@ public class SensoroDeviceConfiguration {
         activation = builder.activation;
         uploadIntervalData = builder.uploadIntervalData;
         confirmData = builder.confirmData;
+        delay = builder.delay;
+        channelList = builder.channelList;
         hasUploadInterval = builder.hasUploadInterval;
         hasConfirm = builder.hasConfirm;
         hasActivation = builder.hasActivation;
@@ -131,6 +146,7 @@ public class SensoroDeviceConfiguration {
         hasSensorBroadcast = builder.hasSensorBroadcast;
         hasCustom = builder.hasCustom;
         hasFlame = builder.hasFlame;
+        hasDelay = builder.hasDelay;
     }
 
     public String getPassword() {
@@ -291,6 +307,10 @@ public class SensoroDeviceConfiguration {
         return confirmData;
     }
 
+    public List<Integer> getChannelList() {
+        return channelList;
+    }
+
     public boolean hasAppParam() {
         return hasAppParam;
     }
@@ -376,12 +396,41 @@ public class SensoroDeviceConfiguration {
         return hasActivation;
     }
 
+
+    public boolean hasDelay() {
+        return hasDelay;
+    }
+
     public SensoroSensorConfiguration getSensorConfiguration() {
         return sensoroSensorConfiguration;
     }
 
     public Integer getLoraDr() {
         return loraDr;
+    }
+
+    public Integer getLoraEirp() {
+        return loraEirp;
+    }
+
+    public Integer getSglStatus() {
+        return sglStatus;
+    }
+
+    public Integer getSglDatarate() {
+        return sglDatarate;
+    }
+
+    public Integer getSglFrequency() {
+        return sglFrequency;
+    }
+
+    public Integer getDelay() {
+        return delay;
+    }
+
+    public void setDelay(Integer delay) {
+        this.delay = delay;
     }
 
     public Integer getFlame() {
@@ -413,6 +462,10 @@ public class SensoroDeviceConfiguration {
         private Integer devAdr = null;
         private Integer loraAdr = null;
         private Integer loraDr = null;
+        private Integer loraEirp = null;
+        private Integer sglStatus = null;
+        private Integer sglFrequency = null;
+        private Integer sglDatarate = null;
         private Integer flame;
         private Boolean isEddystoneUIDEnabled = null;
         private Boolean isEddystoneURLEnabled = null;
@@ -435,6 +488,9 @@ public class SensoroDeviceConfiguration {
         private Integer activation;
         private Integer uploadIntervalData;
         private Integer confirmData;
+        private Integer delay;
+        private List<Integer> channelList;
+        private boolean hasDelay;
         private boolean hasUploadInterval;
         private boolean hasConfirm;
         private boolean hasActivation;
@@ -495,6 +551,9 @@ public class SensoroDeviceConfiguration {
             this.activation = null;
             this.uploadIntervalData = null;
             this.confirmData = null;
+            this.delay = null;
+            this.channelList = null;
+            this.hasDelay = false;
             this.hasUploadInterval = false;
             this.hasConfirm = false;
             this.hasActivation = false;
@@ -513,6 +572,7 @@ public class SensoroDeviceConfiguration {
             this.hasSensorBroadcast = false;
             this.hasCustom = false;
             this.hasFlame = false;
+
         }
 
         /**
@@ -806,6 +866,11 @@ public class SensoroDeviceConfiguration {
             return this;
         }
 
+        public Builder setHasDelay(boolean hasDelay) {
+            this.hasDelay = hasDelay;
+            return this;
+        }
+
         public Builder setHasActivation(boolean hasActivation) {
             this.hasActivation = hasActivation;
             return this;
@@ -823,6 +888,36 @@ public class SensoroDeviceConfiguration {
 
         public Builder setHasFlame(boolean hasFlame) {
             this.hasFlame = hasFlame;
+            return this;
+        }
+
+        public Builder setDelay(Integer delay) {
+            this.delay = delay;
+            return this;
+        }
+
+        public Builder setChannelList(List<Integer> channelList) {
+            this.channelList = channelList;
+            return this;
+        }
+
+        public Builder setLoraEirp(Integer loraEirp) {
+            this.loraEirp = loraEirp;
+            return this;
+        }
+
+        public Builder setSglStatus(Integer sglStatus) {
+            this.sglStatus = sglStatus;
+            return this;
+        }
+
+        public Builder setSglFrequency(Integer sglFrequency) {
+            this.sglFrequency = sglFrequency;
+            return this;
+        }
+
+        public Builder setSglDatarate(Integer sglDatarate) {
+            this.sglDatarate = sglDatarate;
             return this;
         }
 

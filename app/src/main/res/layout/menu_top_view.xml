@@ -3,89 +3,114 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:padding="@dimen/x50"
     android:background="@color/white"
     android:id="@+id/menu_view">
-
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/menu_rl_single"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x50"
-        android:layout_marginRight="@dimen/x50"
-        android:layout_marginBottom="@dimen/y50"
-        android:layout_marginTop="@dimen/y50"
         android:orientation="vertical" >
-
-        <RelativeLayout
-            android:id="@+id/menu_rl_single"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/menu_single"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
-            <TextView
-                android:id="@+id/menu_single"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/y50"
-                android:text="@string/menu_single"
-                android:textSize="16sp"
-                android:textColor="@color/cell_font" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/y20"
-                android:layout_below="@id/menu_single"
-                android:text="@string/menu_top_single"
-                android:textSize="12sp"
-                android:layout_marginBottom="@dimen/y50"
-                />
-            <ImageView
-                android:id="@+id/menu_iv_single"
-                android:layout_marginTop="@dimen/y20"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/x20"
-                android:layout_alignTop="@+id/menu_single"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@mipmap/ic_selected" />
-
-        </RelativeLayout>
-        <View
-            android:background="@color/item_sensor_line"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"/>
-        <RelativeLayout
-            android:id="@+id/menu_rl_multi"
-            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/y50"
+            android:text="@string/menu_single"
+            android:textSize="16sp"
+            android:textColor="@color/cell_font" />
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
-            <TextView
-                android:id="@+id/menu_multi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/y50"
-                android:text="@string/menu_multi"
-                android:textSize="16sp"
-                android:textColor="@color/cell_font" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/y20"
-                android:layout_below="@id/menu_multi"
-                android:text="@string/menu_top_multi"
-                android:textSize="12sp"
-                android:layout_marginBottom="@dimen/y50"
-                />
-            <ImageView
-                android:id="@+id/menu_iv_multi"
-                android:layout_marginTop="@dimen/y20"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginRight="@dimen/x20"
-                android:layout_alignTop="@+id/menu_multi"
-                android:layout_alignParentRight="true"
-                android:src="@mipmap/ic_unselect" />
+            android:layout_marginTop="@dimen/y20"
+            android:layout_below="@id/menu_single"
+            android:text="@string/menu_top_single"
+            android:textSize="12sp"
+            android:layout_marginBottom="@dimen/y50"
+            />
+        <ImageView
+            android:id="@+id/menu_iv_single"
+            android:layout_marginTop="@dimen/y20"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/x20"
+            android:layout_alignTop="@+id/menu_single"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@mipmap/ic_selected" />
 
-        </RelativeLayout>
-    </LinearLayout>
+    </RelativeLayout>
+    <View
+        android:background="@color/item_sensor_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y2"/>
+    <RelativeLayout
+        android:id="@+id/menu_rl_multi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        <TextView
+            android:id="@+id/menu_multi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y50"
+            android:text="@string/menu_multi"
+            android:textSize="16sp"
+            android:textColor="@color/cell_font" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y20"
+            android:layout_below="@id/menu_multi"
+            android:text="@string/menu_top_multi"
+            android:textSize="12sp"
+            android:layout_marginBottom="@dimen/y50"
+            />
+        <ImageView
+            android:id="@+id/menu_iv_multi"
+            android:layout_marginTop="@dimen/y20"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginRight="@dimen/x20"
+            android:layout_alignTop="@+id/menu_multi"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/ic_unselect" />
 
+    </RelativeLayout>
+    <View
+        android:background="@color/item_sensor_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y2"/>
+    <RelativeLayout
+        android:id="@+id/menu_rl_same"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        <TextView
+            android:id="@+id/menu_same"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y50"
+            android:text="@string/menu_same"
+            android:textSize="16sp"
+            android:textColor="@color/cell_font" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y20"
+            android:layout_below="@id/menu_same"
+            android:text="@string/menu_top_same"
+            android:textSize="12sp"
+            android:layout_marginBottom="@dimen/y50"
+            />
+        <ImageView
+            android:id="@+id/menu_iv_same"
+            android:layout_marginTop="@dimen/y20"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginRight="@dimen/x20"
+            android:layout_alignTop="@+id/menu_same"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/ic_unselect" />
 
+    </RelativeLayout>
 </LinearLayout>

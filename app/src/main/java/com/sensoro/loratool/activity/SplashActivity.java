@@ -12,9 +12,6 @@ import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.store.LoraDbHelper;
-import com.tencent.stat.MtaSDkException;
-import com.tencent.stat.StatConfig;
-import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
 import java.text.ParseException;
@@ -64,7 +61,7 @@ public class SplashActivity extends BaseActivity implements Constants {
 
     public void init() {
         initSeverUrl();
-        initMTASDK();
+        initUMSDK();
         LoraDbHelper.instance.clearTable(LoraDbHelper.TABLE_DEVICE_OUT);
     }
 
@@ -79,23 +76,8 @@ public class SplashActivity extends BaseActivity implements Constants {
         Constants.permission[6] = sp.getBoolean(PREFERENCE_KEY_PERMISSION_6, false);
     }
 
-    private void initMTASDK() {
-        String appkey = "AQYC1518XAQF";
-        // 初始化并启动MTA
-        // 第三方SDK必须按以下代码初始化MTA，其中appkey为规定的格式或MTA分配的代码。
-        // 其它普通的app可自行选择是否调用
-        try {
-            // 第三个参数必须为：com.tencent.stat.common.StatConstants.VERSION
-            StatService.startStatService(this, appkey,
-                    com.tencent.stat.common.StatConstants.VERSION);
-//            StatService.trackCustomEvent(this, "onCreate", "");
-            StatService.trackBeginPage(this, "登录");
-            MobclickAgent.onPageStart("登录");
-            StatConfig.setDebugEnable(true);
-        } catch (MtaSDkException e) {
-            // MTA初始化失败
-            e.printStackTrace();
-        }
+    private void initUMSDK() {
+        MobclickAgent.onPageStart("登录");
     }
 
     private void initSeverUrl() {

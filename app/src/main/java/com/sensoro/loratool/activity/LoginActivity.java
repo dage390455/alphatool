@@ -31,7 +31,6 @@ import com.sensoro.loratool.store.PreferencesHelper;
 import com.sensoro.loratool.utils.AESUtil;
 import com.sensoro.loratool.utils.Utils;
 import com.sensoro.loratool.widget.StatusBarCompat;
-import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
@@ -101,14 +100,12 @@ public class LoginActivity extends BaseActivity implements Constants {
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
-        StatService.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
-        StatService.onPause(this);
     }
 
     private long[] mHits = new long[7]; // 数组长度代表点击次数
@@ -317,7 +314,8 @@ public class LoginActivity extends BaseActivity implements Constants {
                     try {
                         byte data[] = error.networkResponse.data;
                         if (data != null) {
-                            JSONObject error_msg = new JSONObject(new String(data));
+                            String dataString = new String(data);
+                            JSONObject error_msg = new JSONObject(dataString);
                             if (error_msg.getInt("err_code") == 902) {
                                 Toast.makeText(LoginActivity.this, R.string.tips_user_info_error, Toast.LENGTH_LONG).show();
                             } else {

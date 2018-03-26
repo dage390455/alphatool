@@ -3,6 +3,8 @@ package com.sensoro.loratool.ble;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
 /**
  * Created by fangping on 2016/7/25.
  */
@@ -29,10 +31,13 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
     String appSkey;
     String nwkSkey;
     String password;
+    String dfuInfo;
+    String band;
     int devAdr;
     int loraDr;
     int loraAdr;
     int loraTxp;
+    int dfuProgress;
     float loraInt;
     int bleTxp;
     float bleInt;
@@ -47,6 +52,12 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
     Integer uploadInterval;
     Integer confirm;
     Integer activation;
+    Integer delay;
+    transient List<Integer> channelMaskList;
+    transient int maxEirp;
+    transient int sglStatus;
+    transient int sglFrequency;
+    transient int sglDatarate;
     byte dataVersion;
     boolean isIBeaconEnabled; // is beacon function enable.
     boolean isDfu;
@@ -78,6 +89,8 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
     boolean hasSensorBroadcast;
     boolean hasSensorParam;
     boolean hasCustomPackage;
+    boolean hasDelay;
+    transient boolean hasMaxEirp;
     SensoroSlot slotArray[];
     SensoroSensor sensoroSensor;
     public long lastFoundTime;
@@ -92,7 +105,10 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         batteryLevel = 0;
         hardwareVersion = null;
         firmwareVersion = null;
+        dfuInfo = null;
         accelerometerCount = 0;
+        dfuProgress = 0;
+        delay = 0;
         isIBeaconEnabled = true;
         isDfu = false;
         hasBleInterval = false;
@@ -123,6 +139,8 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         hasCustomPackage = false;
         hasSensorBroadcast = false;
         hasSensorParam = false;
+        hasDelay = false;
+        hasMaxEirp = false;
     }
 
     protected SensoroDevice(Parcel in) {
@@ -132,8 +150,6 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         proximityUUID = in.readString();
         macAddress = in.readString();
         batteryLevel = in.readInt();
-        hardwareVersion = in.readString();
-        firmwareVersion = in.readString();
         accelerometerCount = in.readInt();
         power = in.readInt();
         sf = in.readFloat();
@@ -143,6 +159,8 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         appKey = in.readString();
         appSkey = in.readString();
         nwkSkey = in.readString();
+        password = in.readString();
+        dfuInfo = in.readString();
         devAdr = in.readInt();
         loraDr = in.readInt();
         loraAdr = in.readInt();
@@ -162,11 +180,13 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         classBEnabled = in.readInt();
         classBDataRate = in.readInt();
         classBPeriodicity = in.readInt();
+        dfuProgress = in.readInt();
         dataVersion = in.readByte();
-        password = in.readString();
+        band = in.readString();
         uploadInterval = (Integer) in.readSerializable();
         confirm = (Integer) in.readSerializable();
         activation = (Integer)in.readSerializable();
+        delay = (Integer)in.readSerializable();
         hasBleInterval = in.readByte() != 0;
         hasBleOffTime = in.readByte() != 0;
         hasBleOnOff = in.readByte() != 0;
@@ -192,6 +212,7 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         hasCustomPackage = in.readByte() != 0;
         hasSensorBroadcast = in.readByte() != 0;
         hasSensorParam = in.readByte() != 0;
+        hasDelay = in.readByte() != 0;
     }
 
     @Override
@@ -207,8 +228,6 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         out.writeString(proximityUUID);
         out.writeString(macAddress);
         out.writeInt(batteryLevel);
-        out.writeString(hardwareVersion);
-        out.writeString(firmwareVersion);
         out.writeInt(accelerometerCount);
         out.writeInt(power);
         out.writeFloat(sf);
@@ -218,6 +237,8 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         out.writeString(appKey);
         out.writeString(appSkey);
         out.writeString(nwkSkey);
+        out.writeString(password);
+        out.writeString(dfuInfo);
         out.writeInt(devAdr);
         out.writeInt(loraDr);
         out.writeInt(loraAdr);
@@ -237,11 +258,13 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         out.writeInt(classBEnabled);
         out.writeInt(classBDataRate);
         out.writeInt(classBPeriodicity);
+        out.writeInt(dfuProgress);
         out.writeByte(dataVersion);
-        out.writeString(password);
+        out.writeString(band);
         out.writeSerializable(uploadInterval);
         out.writeSerializable(confirm);
         out.writeSerializable(activation);
+        out.writeSerializable(delay);
         out.writeByte((byte) (hasBleInterval ? 1 : 0));
         out.writeByte((byte) (hasBleOffTime ? 1 : 0));
         out.writeByte((byte) (hasBleOnOff ? 1 : 0));
@@ -267,6 +290,7 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         out.writeByte((byte) (hasCustomPackage ? 1 : 0));
         out.writeByte((byte) (hasSensorBroadcast ? 1 : 0));
         out.writeByte((byte) (hasSensorParam ? 1 : 0));
+        out.writeByte((byte) (hasDelay ? 1 : 0));
     }
 
     public static final Creator<SensoroDevice> CREATOR = new Creator<SensoroDevice>() {
@@ -344,28 +368,20 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
     }
 
 
-    public String getHardwareVersion() {
-        return hardwareVersion;
-    }
-
-    public void setHardwareVersion(String hardwareVersion) {
-        this.hardwareVersion = hardwareVersion;
-    }
-
-    public String getFirmwareVersion() {
-        return firmwareVersion;
-    }
-
-    public void setFirmwareVersion(String firmwareVersion) {
-        this.firmwareVersion = firmwareVersion;
-    }
-
     public int getAccelerometerCount() {
         return accelerometerCount;
     }
 
     public void setAccelerometerCount(int accelerometerCount) {
         this.accelerometerCount = accelerometerCount;
+    }
+
+    public String getBand() {
+        return band;
+    }
+
+    public void setBand(String band) {
+        this.band = band;
     }
 
     public float getSf() {
@@ -508,6 +524,15 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         this.isDfu = isDfu;
     }
 
+
+    public String getDfuInfo() {
+        return dfuInfo;
+    }
+
+    public void setDfuInfo(String dfuInfo) {
+        this.dfuInfo = dfuInfo;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -543,6 +568,7 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
     public void setHumidityInterval(int humidityInterval) {
         this.humidityInterval = humidityInterval;
     }
+
 
     public SensoroSlot[] getSlotArray() {
         return slotArray;
@@ -584,6 +610,14 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         this.rssi = rssi;
     }
 
+    public int getDfuProgress() {
+        return dfuProgress;
+    }
+
+    public void setDfuProgress(int dfuProgress) {
+        this.dfuProgress = dfuProgress;
+    }
+
     public byte getDataVersion() {
         return dataVersion;
     }
@@ -596,6 +630,13 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         return isIBeaconEnabled;
     }
 
+    public List<Integer> getChannelMaskList() {
+        return channelMaskList;
+    }
+
+    public void setChannelMaskList(List<Integer> channelMaskList) {
+        this.channelMaskList = channelMaskList;
+    }
 
     @Override
     public boolean equals(Object that) {
@@ -865,6 +906,66 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
 
     public void setHasSensorBroadcast(boolean hasSensorBroadcast) {
         this.hasSensorBroadcast = hasSensorBroadcast;
+    }
+
+    public Integer getDelay() {
+        return delay;
+    }
+
+    public void setDelay(Integer delay) {
+        this.delay = delay;
+    }
+
+    public int getMaxEirp() {
+        return maxEirp;
+    }
+
+    public SensoroDevice setMaxEirp(int maxEirp) {
+        this.maxEirp = maxEirp;
+        return this;
+    }
+
+    public int getSglStatus() {
+        return sglStatus;
+    }
+
+    public SensoroDevice setSglStatus(int sglStatus) {
+        this.sglStatus = sglStatus;
+        return this;
+    }
+
+    public int getSglFrequency() {
+        return sglFrequency;
+    }
+
+    public SensoroDevice setSglFrequency(int sglFrequency) {
+        this.sglFrequency = sglFrequency;
+        return this;
+    }
+
+    public int getSglDatarate() {
+        return sglDatarate;
+    }
+
+    public SensoroDevice setSglDatarate(int sglDatarate) {
+        this.sglDatarate = sglDatarate;
+        return this;
+    }
+
+    public boolean hasMaxEirp() {
+        return hasMaxEirp;
+    }
+
+    public void setHasMaxEirp(boolean hasMaxEirp) {
+        this.hasMaxEirp = hasMaxEirp;
+    }
+
+    public boolean hasDelay() {
+        return hasDelay;
+    }
+
+    public void setHasDelay(boolean hasDelay) {
+        this.hasDelay = hasDelay;
     }
 
     public boolean hasSensorParam() {

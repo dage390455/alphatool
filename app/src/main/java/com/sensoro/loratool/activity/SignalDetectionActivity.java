@@ -30,7 +30,6 @@ import com.sensoro.loratool.utils.DateUtil;
 import com.sensoro.loratool.utils.ParamUtil;
 import com.sensoro.loratool.widget.RecycleViewDivider;
 import com.sensoro.loratool.widget.RecycleViewItemClickListener;
-import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.Calendar;
@@ -75,7 +74,6 @@ public class SignalDetectionActivity extends BaseActivity implements OnPositiveB
         sensoroDevice = this.getIntent().getParcelableExtra(Constants.EXTRA_NAME_DEVICE);
         band = this.getIntent().getStringExtra(Constants.EXTRA_NAME_BAND);
         connect();
-        StatService.trackBeginPage(this, "设备信号检测");
         MobclickAgent.onPageStart("设备信号检测");
     }
 
@@ -87,14 +85,12 @@ public class SignalDetectionActivity extends BaseActivity implements OnPositiveB
     @Override
     protected void onResume() {
         super.onResume();
-        StatService.onResume(this);
         MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        StatService.onPause(this);
         MobclickAgent.onPause(this);
     }
 

@@ -34,6 +34,8 @@ public class SensoroSensorConfiguration  {
     Float rollAngleAlarmLow;
     Float yawAngleAlarmHigh;
     Float yawAngleAlarmLow;
+    Float waterPressureAlarmHigh;
+    Float waterPressureAlarmLow;
     boolean hasCo;
     boolean hasCo2;
     boolean hasNo2;
@@ -46,6 +48,7 @@ public class SensoroSensorConfiguration  {
     boolean hasPitchAngle;
     boolean hasRollAngle;
     boolean hasYawAngle;
+    boolean hasWaterPressure;
 
 
     protected SensoroSensorConfiguration(Builder builder) {
@@ -423,6 +426,31 @@ public class SensoroSensorConfiguration  {
         return this;
     }
 
+
+    public Float getWaterPressureAlarmHigh() {
+        return waterPressureAlarmHigh;
+    }
+
+    public void setWaterPressureAlarmHigh(Float waterPressureAlarmHigh) {
+        this.waterPressureAlarmHigh = waterPressureAlarmHigh;
+    }
+
+    public Float getWaterPressureAlarmLow() {
+        return waterPressureAlarmLow;
+    }
+
+    public void setWaterPressureAlarmLow(Float waterPressureAlarmLow) {
+        this.waterPressureAlarmLow = waterPressureAlarmLow;
+    }
+
+    public boolean hasWaterPressure() {
+        return hasWaterPressure;
+    }
+
+    public void setHasWaterPressure(boolean hasWaterPressure) {
+        this.hasWaterPressure = hasWaterPressure;
+    }
+
     public static class Builder {
         Float coAlarmHigh;
         Float co2AlarmHigh;
@@ -453,6 +481,8 @@ public class SensoroSensorConfiguration  {
         Float rollAngleAlarmLow;
         Float yawAngleAlarmHigh;
         Float yawAngleAlarmLow;
+        Float waterPressureAlarmHigh;
+        Float waterPressureAlarmLow;
         boolean hasCo;
         boolean hasCo2;
         boolean hasNo2;
@@ -465,6 +495,7 @@ public class SensoroSensorConfiguration  {
         boolean hasPitchAngle;
         boolean hasRollAngle;
         boolean hasYawAngle;
+        boolean hasWaterPressure;
 
         public Builder() {
             coAlarmHigh = null;
@@ -496,6 +527,8 @@ public class SensoroSensorConfiguration  {
             rollAngleAlarmLow = null;
             yawAngleAlarmHigh = null;
             yawAngleAlarmLow = null;
+            waterPressureAlarmHigh = null;
+            waterPressureAlarmLow = null;
             hasCo = false;
             hasCo2 = false;
             hasNo2 = false;
@@ -508,6 +541,7 @@ public class SensoroSensorConfiguration  {
             hasPitchAngle = false;
             hasRollAngle = false;
             hasYawAngle = false;
+            hasWaterPressure = false;
         }
 
         public Builder setCh4AlarmHigh(Float ch4AlarmHigh) {
@@ -700,6 +734,16 @@ public class SensoroSensorConfiguration  {
             return this;
         }
 
+        public Builder setWaterPressureAlarmHigh(Float waterPressureAlarmHigh) {
+            this.waterPressureAlarmHigh = waterPressureAlarmHigh;
+            return this;
+        }
+
+        public Builder setWaterPressureAlarmLow(Float waterPressureAlarmLow) {
+            this.waterPressureAlarmLow = waterPressureAlarmLow;
+            return this;
+        }
+
         public Builder setHasPitchAngle(boolean hasPitchAngle) {
             this.hasPitchAngle = hasPitchAngle;
             return this;
@@ -712,6 +756,12 @@ public class SensoroSensorConfiguration  {
 
         public Builder setHasYawAngle(boolean hasYawAngle) {
             this.hasYawAngle = hasYawAngle;
+            return this;
+        }
+
+
+        public Builder setHasWaterPressure(boolean hasWaterPressure) {
+            this.hasWaterPressure = hasWaterPressure;
             return this;
         }
 

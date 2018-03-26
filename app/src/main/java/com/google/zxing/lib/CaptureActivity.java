@@ -18,25 +18,17 @@ package com.google.zxing.lib;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
+import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -48,40 +40,41 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.google.zxing.BarcodeFormat;
-import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
-import com.google.zxing.MultiFormatReader;
-import com.google.zxing.NotFoundException;
-import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Result;
-import com.google.zxing.ResultPoint;
-import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.lib.camera.CameraManager;
 import com.google.zxing.lib.clipboard.ClipboardInterface;
-import com.google.zxing.lib.history.HistoryItem;
 import com.google.zxing.lib.history.HistoryManager;
 import com.google.zxing.lib.result.ResultHandler;
 import com.google.zxing.lib.result.ResultHandlerFactory;
-import com.google.zxing.lib.share.ShareActivity;
-
+import com.sensoro.lora.setting.server.ILoRaSettingServer;
+import com.sensoro.lora.setting.server.bean.DeviceInfo;
+import com.sensoro.lora.setting.server.bean.DeviceInfoListRsp;
 import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
+import com.sensoro.loratool.ble.SensoroDevice;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.utils.Utils;
-import com.sensoro.station.communication.bean.StationInfo;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.EnumMap;
-import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * This activity opens the camera and does the actual scanning on a background thread. It draws a
@@ -91,7 +84,7 @@ import java.util.Map;
  * @author dswitkin@google.com (Daniel Switkin)
  * @author Sean Owen
  */
-public final class CaptureActivity extends Activity implements SurfaceHolder.Callback, View.OnClickListener {
+public final class CaptureActivity extends Activity implements Constants, SurfaceHolder.Callback, View.OnClickListener {
 
     private static final String TAG = CaptureActivity.class.getSimpleName();
 
@@ -124,18 +117,22 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
     private ImageView flashImageView;
     private boolean isFlashOn;
-
-
     private LoRaSettingApplication appliction;
     private int requestCode;
-    private ArrayList<StationInfo> mStationList = new ArrayList<>();
+    private boolean isMulti = false;
+    private Map<String,SensoroDevice> deviceMap = new HashMap<>();
     public Handler getHandler() {
         return handler;
     }
 
+    @BindView(R.id.capture_bottom_edit)
+    EditText manualEditText;
+    @BindView(R.id.capture_bottom_manual_sc)
+    SwitchCompat manualSwitchCompat;
     CameraManager getCameraManager() {
         return cameraManager;
     }
+
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -143,19 +140,38 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        setContentView(R.layout.zxing_capture);
-
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-
+        setContentView(R.layout.activity_capture);
+        ButterKnife.bind(this);
+        appliction = (LoRaSettingApplication) getApplication();
         flashImageView = (ImageView) findViewById(R.id.zxing_capture_iv_flash);
         flashImageView.setOnClickListener(this);
 
         requestCode = getIntent().getIntExtra(ZXING_REQUEST_CODE, -1);
-        mStationList = getIntent().getParcelableArrayListExtra("stationList");
-//        requirePermission();
+        ArrayList<SensoroDevice> dataList = getIntent().getParcelableArrayListExtra(EXTRA_NAME_DEVICE_LIST);
+        for (int i = 0; i < dataList.size(); i ++) {
+            deviceMap.put(dataList.get(i).getSn(), dataList.get(i));
+        }
+        manualSwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                isMulti = b;
+            }
+        });
+        manualEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (textView.getText().length() != 16) {
+                    processResult(textView.getText().toString());
+                } else {
+                    Toast.makeText(appliction, "SN 格式不正确", Toast.LENGTH_SHORT).show();
+                }
 
+                return false;
+            }
+        });
         initCamera();
     }
+
 
     private void initCamera() {
         hasSurface = false;
@@ -291,6 +307,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     @Override
     protected void onDestroy() {
         inactivityTimer.shutdown();
+        deviceMap.clear();
         super.onDestroy();
     }
 
@@ -303,67 +320,14 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-            case R.id.menu_share:
-                intent.setClassName(this, ShareActivity.class.getName());
-                startActivity(intent);
-                break;
-            case R.id.menu_from_photo:
-                selectFromPhoto();
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+
         return true;
-    }
-
-    private void selectFromPhoto() {
-        Intent innerIntent = new Intent(); // "android.intent.action.GET_CONTENT"
-        if (Build.VERSION.SDK_INT < 19) {
-            innerIntent.setAction(Intent.ACTION_GET_CONTENT);
-        } else {
-            innerIntent.setAction(Intent.ACTION_OPEN_DOCUMENT);
-        }
-
-        innerIntent.setType("image/*");
-
-        Intent wrapperIntent = Intent.createChooser(innerIntent, getString(R.string.pick_qrpic));
-
-        CaptureActivity.this
-                .startActivityForResult(wrapperIntent, PHOTO_REQUEST_CODE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (resultCode == RESULT_OK) {
-            if (requestCode == HISTORY_REQUEST_CODE) {
-                int itemNumber = intent.getIntExtra(Intents.History.ITEM_NUMBER, -1);
-                if (itemNumber >= 0) {
-                    HistoryItem historyItem = historyManager.buildHistoryItem(itemNumber);
-                    decodeOrStoreSavedBitmap(historyItem.getResult());
-                }
-            } else {
-                if (requestCode == PHOTO_REQUEST_CODE) {
-                    //选择图片
-                    Uri uri = intent.getData();
-                    ContentResolver contentResolver = this.getContentResolver();
-                    Bitmap bitmap = null;
-                    try {
-                        bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri));
-                        bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    new DecodeImageAsyncTask().execute(bitmap);
-                }
-            }
+
         }
     }
 
@@ -386,64 +350,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         }
     }
 
-
-    class DecodeImageAsyncTask extends AsyncTask<Bitmap, Void, String> {
-        ProgressDialog decodeDialog = new ProgressDialog(CaptureActivity.this);
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            decodeDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);// 设置进度条的形式为圆形转动的进度
-            decodeDialog.setMessage(getString(R.string.is_decoding));
-            decodeDialog.show();
-        }
-
-        @Override
-        protected String doInBackground(Bitmap... params) {
-            Bitmap bitmap = params[0];
-
-            Map<DecodeHintType, Object> hints = new EnumMap<DecodeHintType, Object>(DecodeHintType.class);
-            Collection<BarcodeFormat> decodeFormats = EnumSet.noneOf(BarcodeFormat.class);
-            decodeFormats.addAll(EnumSet.of(BarcodeFormat.QR_CODE));
-            hints.put(DecodeHintType.POSSIBLE_FORMATS, decodeFormats);
-            hints.put(DecodeHintType.CHARACTER_SET, "UTF-8");
-
-            Result result = null;
-            try {
-                result = new MultiFormatReader().decode(loadImage(bitmap, CaptureActivity.this), hints);
-            } catch (NotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (result == null) {
-                return null;
-            } else {
-                return result.getText();
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            decodeDialog.dismiss();
-            if (result != null) {
-                beepManager.playBeepSoundAndVibrate();
-
-                processResultCustome(result);
-            } else {
-                Toast.makeText(CaptureActivity.this, getString(R.string.decode_failed), Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    private BinaryBitmap loadImage(Bitmap bitmap, Context context) throws IOException {
-        int lWidth = bitmap.getWidth();
-        int lHeight = bitmap.getHeight();
-        int[] lPixels = new int[lWidth * lHeight];
-        bitmap.getPixels(lPixels, 0, lWidth, 0, 0, lWidth, lHeight);
-        return new BinaryBitmap(new HybridBinarizer(new RGBLuminanceSource(lWidth, lHeight, lPixels)));
-    }
 
     private void decodeOrStoreSavedBitmap( Result result) {
         // Bitmap isn't used yet -- will be used soon
@@ -516,8 +422,130 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             resultHandler.handleButtonPress(resultHandler.getDefaultButtonID());
             return;
         }
-        Toast.makeText(CaptureActivity.this, rawResult.getText(), Toast.LENGTH_SHORT).show();
+
         processResultCustome(rawResult.getText());
+    }
+
+    @OnClick(R.id.capture_close)
+    public void close() {
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_NAME_DEVICE_LIST, new ArrayList<>(deviceMap.values()));
+        setResult(ZXING_REQUEST_CODE_RESULT, intent);
+        finish();
+    }
+
+    private void requestDeviceWithSearch(final String sn) {
+        ILoRaSettingServer loRaSettingServer = appliction.loRaSettingServer;
+        loRaSettingServer.deviceList(sn, "sn", new Response.Listener<DeviceInfoListRsp>() {
+            @Override
+            public void onResponse(final DeviceInfoListRsp response) {
+                ArrayList<DeviceInfo> searchList = (ArrayList) response.getData().getItems();
+                if (searchList.size() > 0) {
+                    DeviceInfo deviceInfo = searchList.get(0);
+                    if (appliction.getSensoroDeviceMap().containsKey(sn)) {
+                        SensoroDevice sensoroDevice = appliction.getSensoroDeviceMap().get(sn);
+                        sensoroDevice.setPassword(deviceInfo.getPassword());
+                        sensoroDevice.setFirmwareVersion(deviceInfo.getFirmwareVersion());
+                        sensoroDevice.setHardwareVersion(deviceInfo.getDeviceType());
+                        sensoroDevice.setBand(deviceInfo.getBand());
+                        if (isSupportDevice(sensoroDevice)) {
+                            if (!deviceMap.containsKey(sn)) {
+                                deviceMap.put(sn, sensoroDevice);
+                                Toast.makeText(appliction, "设备添加成功", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(appliction, "设备已存在升级队列中", Toast.LENGTH_SHORT).show();
+                            }
+                            if (!isMulti) {
+                                Intent intent = new Intent();
+                                intent.putExtra(EXTRA_NAME_DEVICE_LIST, new ArrayList<>(deviceMap.values()));
+                                setResult(ZXING_REQUEST_CODE_RESULT, intent);
+                                finish();
+                            }
+                        }
+                    } else {
+                        Toast.makeText(appliction, "未找到设备在附近", Toast.LENGTH_SHORT).show();
+                    }
+
+                } else {
+                    Toast.makeText(appliction, R.string.beacon_not_found, Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(appliction, R.string.beacon_not_found, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private boolean isSupportDevice(SensoroDevice device) {
+        boolean isSame = false;
+        for (String key : deviceMap.keySet()) {
+            SensoroDevice sensoroDevice = deviceMap.get(key);
+            System.out.println("sensorodevice.hw=>" + sensoroDevice.getHardwareVersion());
+            System.out.println("device.hw=>" + device.getHardwareVersion());
+            System.out.println("sensorodevice.fw=>" + sensoroDevice.getHardwareVersion());
+            System.out.println("device.fw=>" + device.getHardwareVersion());
+            if (sensoroDevice.getHardwareVersion().equalsIgnoreCase(device.getHardwareVersion())) {
+                if (sensoroDevice.getFirmwareVersion().equalsIgnoreCase(device.getFirmwareVersion())) {
+                    if (sensoroDevice.getBand().equalsIgnoreCase(device.getBand())) {
+                        isSame = true;
+                    } else {
+                        Toast.makeText(this, R.string.tips_same_band, Toast.LENGTH_SHORT).show();
+                        isSame = false;
+                    }
+                } else {
+                    Toast.makeText(this, R.string.tips_same_firmware, Toast.LENGTH_SHORT).show();
+                    isSame = false;
+                }
+            } else {
+                Toast.makeText(this, R.string.tips_same_hardware, Toast.LENGTH_SHORT).show();
+                isSame = false;
+            }
+        }
+        return isSame;
+    }
+
+    private void processResult(String sn) {
+        if (appliction.getSensoroDeviceMap().containsKey(sn)) {
+            List<DeviceInfo> deviceInfoList = appliction.getDeviceInfoList();
+            boolean isFind = false;
+            for (int i = 0 ; i <deviceInfoList.size(); i++) {
+                DeviceInfo deviceInfo = deviceInfoList.get(i);
+                if (deviceInfo.getSn().equalsIgnoreCase(sn)) {
+                    isFind = true;
+                    SensoroDevice sensoroDevice = appliction.getSensoroDeviceMap().get(sn);
+                    sensoroDevice.setPassword(deviceInfo.getPassword());
+                    sensoroDevice.setFirmwareVersion(deviceInfo.getFirmwareVersion());
+                    sensoroDevice.setHardwareVersion(deviceInfo.getDeviceType());
+                    sensoroDevice.setBand(deviceInfo.getBand());
+                    if (isSupportDevice(sensoroDevice)) {
+                        if (!deviceMap.containsKey(sn)) {
+                            Toast.makeText(appliction, "设备添加成功", Toast.LENGTH_SHORT).show();
+                            deviceMap.put(sn, sensoroDevice);
+                        } else {
+                            Toast.makeText(appliction, "设备已存在升级队列中", Toast.LENGTH_SHORT).show();
+                        }
+                        if (!isMulti) {
+                            Intent intent = new Intent();
+                            intent.putExtra(EXTRA_NAME_DEVICE_LIST, new ArrayList<>(deviceMap.values()));
+                            setResult(ZXING_REQUEST_CODE_RESULT, intent);
+                            finish();
+                        }
+                    }
+
+                    break;
+                }
+            }
+            if (!isFind) {
+                requestDeviceWithSearch(sn);
+            }
+        } else {
+            Toast.makeText(appliction, "未找到设备在附近", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     /**
@@ -534,26 +562,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                 // QRCode is not Yunzi
                 Toast.makeText(appliction, R.string.qr_not_lora_station, Toast.LENGTH_SHORT).show();
             } else {
-                boolean isFound = false;
-                StationInfo stationInfo = null;
-                synchronized (mStationList) {
-                    for (StationInfo searchStationInfo : mStationList) {
-                        if (searchStationInfo.getSys().getSn().equals(result)) {
-                            isFound = true;
-                            stationInfo = searchStationInfo;
-                        }
-                    }
-                }
-                if (isFound) {
-                    // 进入 stationinfo 详情
-//                    Intent intent = new Intent(this, StationDetailActivity.class);
-//                    intent.putExtra("stationInfo", stationInfo);
-//                    this.startActivity(intent);
-//                    startActivity(intent);
-                } else {
-                    // 提示该beacon未被扫到
-                    new AlertDialog.Builder(CaptureActivity.this).setMessage(getString(R.string.station_not_found)).setTitle(getString(R.string.alert_title)).setNegativeButton(getString(R.string.confirm), null).create().show();
-                }
+                processResult(scanSerialNumber);
             }
         } else if (requestCode == ZXING_REQUEST_CODE_ENTER_PWD) {
             byte[] password = parseResultResult(result);
@@ -573,15 +582,10 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         String serialNumber = null;
         if (result != null) {
             String[] data = null;
-            String type = null;
             data = result.split("\\|");
             // if length is 2, it is fault-tolerant hardware.
-            type = data[0];
-            if (type.length() == 2) {
-                serialNumber = data[1];
-            } else {
-                serialNumber = data[0].substring(data[0].length() - 12);
-            }
+            serialNumber = data[0];
+
         }
         return serialNumber;
     }
@@ -618,50 +622,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 //			Log.v("zwz", temp2.toString());
         }
         return pwd;
-    }
-
-
-    /**
-     * Superimpose a line for 1D or dots for 2D to highlight the key features of the barcode.
-     *
-     * @param barcode     A bitmap of the captured image.
-     * @param scaleFactor amount by which thumbnail was scaled
-     * @param rawResult   The decoded results which contains the points to draw.
-     */
-    private void drawResultPoints(Bitmap barcode, float scaleFactor, Result rawResult) {
-        ResultPoint[] points = rawResult.getResultPoints();
-        if (points != null && points.length > 0) {
-            Canvas canvas = new Canvas(barcode);
-            Paint paint = new Paint();
-            paint.setColor(getResources().getColor(R.color.result_points));
-            if (points.length == 2) {
-                paint.setStrokeWidth(4.0f);
-                drawLine(canvas, paint, points[0], points[1], scaleFactor);
-            } else if (points.length == 4 &&
-                    (rawResult.getBarcodeFormat() == BarcodeFormat.UPC_A ||
-                            rawResult.getBarcodeFormat() == BarcodeFormat.EAN_13)) {
-                // Hacky special case -- draw two lines, for the barcode and metadata
-                drawLine(canvas, paint, points[0], points[1], scaleFactor);
-                drawLine(canvas, paint, points[2], points[3], scaleFactor);
-            } else {
-                paint.setStrokeWidth(10.0f);
-                for (ResultPoint point : points) {
-                    if (point != null) {
-                        canvas.drawPoint(scaleFactor * point.getX(), scaleFactor * point.getY(), paint);
-                    }
-                }
-            }
-        }
-    }
-
-    private static void drawLine(Canvas canvas, Paint paint, ResultPoint a, ResultPoint b, float scaleFactor) {
-        if (a != null && b != null) {
-            canvas.drawLine(scaleFactor * a.getX(),
-                    scaleFactor * a.getY(),
-                    scaleFactor * b.getX(),
-                    scaleFactor * b.getY(),
-                    paint);
-        }
     }
 
     private void initCamera(SurfaceHolder surfaceHolder) {

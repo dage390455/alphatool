@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/menu_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:gravity="bottom"
+    android:layout_gravity="bottom"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/upgrade_ll_upgrade"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y200"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/upgrade"
+            android:textColor="@color/cell_font"
+            android:textSize="15sp" />
+    </LinearLayout>
+    <View
+        android:background="@color/text_gray"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y1"/>
+    <LinearLayout
+        android:id="@+id/upgrade_ll_advance"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y200"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/advance"
+            android:textColor="@color/cell_font"
+            android:textSize="15sp" />
+    </LinearLayout>
+    <View
+        android:background="@color/text_gray"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y1"/>
+    <LinearLayout
+        android:id="@+id/upgrade_ll_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y200"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/cancel"
+            android:textColor="@color/cell_font"
+            android:textSize="15sp" />
+    </LinearLayout>
+</LinearLayout>

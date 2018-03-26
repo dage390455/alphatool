@@ -24,8 +24,7 @@ import com.sensoro.loratool.ble.SensoroStationConnection;
 import com.sensoro.loratool.ble.SensoroWriteCallback;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.event.OnPositiveButtonClickListener;
-import com.sensoro.loratool.proto.ProtoStationMsg;
-import com.tencent.stat.StatService;
+import com.sensoro.loratool.proto.ProtoStationMsgV2;
 import com.umeng.analytics.MobclickAgent;
 
 import butterknife.BindView;
@@ -118,21 +117,18 @@ public class SettingStationActivity extends BaseActivity implements Constants, O
         super.onCreate(savedInstanceState);
         initData();
         connectStation(sensoroStation);
-        StatService.trackBeginPage(this, "基站配置");
         MobclickAgent.onPageStart("基站配置");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        StatService.onResume(this);
         MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        StatService.onPause(this);
         MobclickAgent.onPause(this);
     }
 
@@ -214,7 +210,7 @@ public class SettingStationActivity extends BaseActivity implements Constants, O
     }
 
     public void refreshUI() {
-        if (accessMode == ProtoStationMsg.NwkAccessMode.NWK_MODE_WIFI_VALUE && stationType.equals("gateway")) {
+        if (accessMode == ProtoStationMsgV2.NwkAccessMode.NWK_MODE_WIFI_VALUE && stationType.equals("gateway")) {
             wifiLayout.setVisibility(VISIBLE);
             assignmentLayout.setClickable(false);
             assignmentImageView.setVisibility(GONE);
@@ -223,14 +219,14 @@ public class SettingStationActivity extends BaseActivity implements Constants, O
             assignmentLayout.setClickable(true);
             assignmentImageView.setVisibility(VISIBLE);
         }
-        if (accessMode == ProtoStationMsg.NwkAccessMode.NWK_MODE_CELLULAR_VALUE) {
+        if (accessMode == ProtoStationMsgV2.NwkAccessMode.NWK_MODE_CELLULAR_VALUE) {
             assignmentLayout.setVisibility(GONE);
             dismissArrowImageView();
         } else {
             assignmentLayout.setVisibility(VISIBLE);
             showArrowImageView();
         }
-        if (assignment == ProtoStationMsg.IPAllocationMode.IP_ALLOC_DHCP_VALUE) {
+        if (assignment == ProtoStationMsgV2.IPAllocationMode.IP_ALLOC_DHCP_VALUE) {
             dismissArrowImageView();
         } else {
             showArrowImageView();
@@ -241,7 +237,7 @@ public class SettingStationActivity extends BaseActivity implements Constants, O
         try {
             String[] assignmentArray = this.getResources().getStringArray(R.array.assignment_array);
             accessMode = sensoroStation.getAccessMode();
-            if (accessMode == ProtoStationMsg.NwkAccessMode.NWK_MODE_CELLULAR_VALUE && stationType.equals("station")) {
+            if (accessMode == ProtoStationMsgV2.NwkAccessMode.NWK_MODE_CELLULAR_VALUE && stationType.equals("station")) {
                 accessMode = 1;
             }
             assignmentTextView.setText(assignmentArray[sensoroStation.getAllocationMode()]);
@@ -255,21 +251,21 @@ public class SettingStationActivity extends BaseActivity implements Constants, O
             encrypt = sensoroStation.getEncrpt();
             encryptTextView.setText(encrypt);
 
-//        if (sensoroStation.getAccessMode() == ProtoStationMsg.NwkAccessMode.NWK_MODE_WIFI_VALUE) {
+//        if (sensoroStation.getAccessMode() == ProtoStationMsgV2.NwkAccessMode.NWK_MODE_WIFI_VALUE) {
 //            wifiLayout.setVisibility(VISIBLE);
 //        } else {
 //            wifiLayout.setVisibility(View.GONE);
 //        }
             if (stationType.equals("station")) {
                 String[] accessModeArray = this.getResources().getStringArray(R.array.station_access_mode_array);
-                if (sensoroStation.getAccessMode() == ProtoStationMsg.NwkAccessMode.NWK_MODE_CELLULAR_VALUE) {
+                if (sensoroStation.getAccessMode() == ProtoStationMsgV2.NwkAccessMode.NWK_MODE_CELLULAR_VALUE) {
                     accessModeTextView.setText(accessModeArray[1]);
 //                assignmentLayout.setVisibility(GONE);
                 } else {
 //                assignmentLayout.setVisibility(VISIBLE);
                     accessModeTextView.setText(accessModeArray[0]);
                 }
-//            if (sensoroStation.getAllocationMode() == ProtoStationMsg.IPAllocationMode.IP_ALLOC_DHCP_VALUE) {
+//            if (sensoroStation.getAllocationMode() == ProtoStationMsgV2.IPAllocationMode.IP_ALLOC_DHCP_VALUE) {
 //                staticLayout.setVisibility(GONE);
 //            } else {
 //                staticLayout.setVisibility(VISIBLE);
@@ -277,7 +273,7 @@ public class SettingStationActivity extends BaseActivity implements Constants, O
             } else {
                 String[] accessModeArray = this.getResources().getStringArray(R.array.gateway_access_mode_array);
                 accessModeTextView.setText(accessModeArray[sensoroStation.getAccessMode()]);
-//            if (sensoroStation.getAllocationMode() == ProtoStationMsg.IPAllocationMode.IP_ALLOC_DHCP_VALUE || sensoroStation.getAccessMode() == ProtoStationMsg.NwkAccessMode.NWK_MODE_WIFI_VALUE) {
+//            if (sensoroStation.getAllocationMode() == ProtoStationMsgV2.IPAllocationMode.IP_ALLOC_DHCP_VALUE || sensoroStation.getAccessMode() == ProtoStationMsgV2.NwkAccessMode.NWK_MODE_WIFI_VALUE) {
 //                staticLayout.setVisibility(GONE);
 //            } else {
 //                staticLayout.setVisibility(VISIBLE);
@@ -327,7 +323,7 @@ public class SettingStationActivity extends BaseActivity implements Constants, O
             accessMode = index;
             if (stationType.equals("station")) {
                 if (index == 1) {
-                    accessMode = ProtoStationMsg.NwkAccessMode.NWK_MODE_CELLULAR_VALUE;
+                    accessMode = ProtoStationMsgV2.NwkAccessMode.NWK_MODE_CELLULAR_VALUE;
                 }
             }
             sensoroStation.setAccessMode(accessMode);
@@ -392,38 +388,38 @@ public class SettingStationActivity extends BaseActivity implements Constants, O
                 break;
             case R.id.settings_station_rl_access_mode:
                 int access_mode = sensoroStation.getAccessMode();
-                if (access_mode == ProtoStationMsg.NwkAccessMode.NWK_MODE_CELLULAR_VALUE && stationType.equals("station")) {
+                if (access_mode == ProtoStationMsgV2.NwkAccessMode.NWK_MODE_CELLULAR_VALUE && stationType.equals("station")) {
                     access_mode = 1;
                 }
                 dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(accessModeItems, access_mode);
                 dialogFragment.show(getFragmentManager(), SETTINGS_ACCESS_MODE);
                 break;
             case R.id.settings_station_rl_ip_address:
-                if (accessMode != ProtoStationMsg.NwkAccessMode.NWK_MODE_CELLULAR_VALUE) {
+                if (accessMode != ProtoStationMsgV2.NwkAccessMode.NWK_MODE_CELLULAR_VALUE) {
                     dialogFragment = SettingsInputDialogFragment.newInstance(sensoroStation.getIp());
                     dialogFragment.show(getFragmentManager(), SETTINGS_IP_ADDRESS);
                 }
                 break;
             case R.id.settings_station_rl_router:
-                if (accessMode != ProtoStationMsg.NwkAccessMode.NWK_MODE_CELLULAR_VALUE) {
+                if (accessMode != ProtoStationMsgV2.NwkAccessMode.NWK_MODE_CELLULAR_VALUE) {
                     dialogFragment = SettingsInputDialogFragment.newInstance(sensoroStation.getGateway());
                     dialogFragment.show(getFragmentManager(), SETTINGS_ROUTER);
                 }
                 break;
             case R.id.settings_station_rl_subnet:
-                if (accessMode != ProtoStationMsg.NwkAccessMode.NWK_MODE_CELLULAR_VALUE) {
+                if (accessMode != ProtoStationMsgV2.NwkAccessMode.NWK_MODE_CELLULAR_VALUE) {
                     dialogFragment = SettingsInputDialogFragment.newInstance(sensoroStation.getMask());
                     dialogFragment.show(getFragmentManager(), SETTINGS_SUBNET_MASK);
                 }
                 break;
             case R.id.settings_station_rl_dns:
-                if (accessMode != ProtoStationMsg.NwkAccessMode.NWK_MODE_CELLULAR_VALUE) {
+                if (accessMode != ProtoStationMsgV2.NwkAccessMode.NWK_MODE_CELLULAR_VALUE) {
                     dialogFragment = SettingsInputDialogFragment.newInstance(sensoroStation.getPdns());
                     dialogFragment.show(getFragmentManager(), SETTINGS_DNS);
                 }
                 break;
             case R.id.settings_station_rl_sec_dns:
-                if (accessMode != ProtoStationMsg.NwkAccessMode.NWK_MODE_CELLULAR_VALUE) {
+                if (accessMode != ProtoStationMsgV2.NwkAccessMode.NWK_MODE_CELLULAR_VALUE) {
                     dialogFragment = SettingsInputDialogFragment.newInstance(sensoroStation.getAdns());
                     dialogFragment.show(getFragmentManager(), SETTINGS_SEC_DNS);
                 }

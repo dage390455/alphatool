@@ -8,7 +8,9 @@ import android.widget.Toast;
 
 import com.sensoro.lora.setting.server.ILoRaSettingServer;
 import com.sensoro.lora.setting.server.LoRaSettingServerImpl;
+import com.sensoro.lora.setting.server.bean.DeviceInfo;
 import com.sensoro.loratool.ble.BLEDevice;
+import com.sensoro.loratool.ble.SensoroDevice;
 import com.sensoro.loratool.ble.scanner.BLEDeviceListener;
 import com.sensoro.loratool.ble.scanner.BLEDeviceManager;
 import com.sensoro.loratool.store.LoraDbHelper;
@@ -20,6 +22,7 @@ import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 //
 //import com.facebook.stetho.Stetho;
@@ -34,8 +37,9 @@ public class LoRaSettingApplication extends Application implements BLEDeviceList
 
     public IStation station;
     public ILoRaSettingServer loRaSettingServer;
-    public LocationService locationService;
     private List<StationInfo> stationInfoList = new ArrayList<>();
+    private List<DeviceInfo> deviceInfoList = new ArrayList<>();
+    private ConcurrentHashMap<String, SensoroDevice> sensoroDeviceMap = new ConcurrentHashMap<>();
     private BLEDeviceManager bleDeviceManager;
     private ArrayList<SensoroDeviceListener> sensoroDeviceListeners = new ArrayList<>();
     private RefWatcher refWatcher;
@@ -44,13 +48,6 @@ public class LoRaSettingApplication extends Application implements BLEDeviceList
     public void onCreate() {
         super.onCreate();
         init();
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            @Override
-            public void uncaughtException(Thread thread, Throwable ex) {
-                ex.printStackTrace();
-                System.out.println("ex====>" + ex.getMessage());
-            }
-        });
 
     }
 
@@ -63,7 +60,6 @@ public class LoRaSettingApplication extends Application implements BLEDeviceList
     private void init() {
 //        refWatcher = LeakCanary.install(this);
         loRaSettingServer = LoRaSettingServerImpl.getInstance(getApplicationContext());
-        locationService = new LocationService(getApplicationContext());
         initStationHandler();
         LoraDbHelper.init(this);
         initSensoroSDK();
@@ -99,13 +95,14 @@ public class LoRaSettingApplication extends Application implements BLEDeviceList
 
     @Override
     public void onTerminate() {
-        locationService.stop();
         stationInfoList.clear();
+        deviceInfoList.clear();
+        sensoroDeviceMap.clear();
         LoraDbHelper.instance.close();
         bleDeviceManager.stopService();
         super.onTerminate();
     }
-//zhangchao asd.123456
+
     public void initStationHandler() {
         WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
         String localIP = IPUtil.getWifiIP(wifiManager.getConnectionInfo());
@@ -117,6 +114,13 @@ public class LoRaSettingApplication extends Application implements BLEDeviceList
         return stationInfoList;
     }
 
+    public List<DeviceInfo> getDeviceInfoList() {
+        return deviceInfoList;
+    }
+
+    public ConcurrentHashMap<String, SensoroDevice> getSensoroDeviceMap() {
+        return sensoroDeviceMap;
+    }
     public void registersSensoroDeviceListener(SensoroDeviceListener sensoroDeviceListener) {
         if (sensoroDeviceListeners != null) {
             synchronized (sensoroDeviceListeners) {
@@ -139,7 +143,9 @@ public class LoRaSettingApplication extends Application implements BLEDeviceList
 
     @Override
     public void onNewDevice(BLEDevice bleDevice) {
-
+        if (bleDevice instanceof SensoroDevice) {
+            sensoroDeviceMap.put(bleDevice.getSn(), (SensoroDevice)bleDevice);
+        }
         if (sensoroDeviceListeners != null) {
             synchronized (sensoroDeviceListeners) {
                 if (sensoroDeviceListeners.size() != 0) {
@@ -153,6 +159,7 @@ public class LoRaSettingApplication extends Application implements BLEDeviceList
 
     @Override
     public void onGoneDevice(BLEDevice bleDevice) {
+        sensoroDeviceMap.remove(bleDevice.getSn());
         if (sensoroDeviceListeners != null) {
             synchronized (sensoroDeviceListeners) {
                 if (sensoroDeviceListeners.size() != 0) {

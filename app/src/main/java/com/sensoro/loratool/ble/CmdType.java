@@ -42,4 +42,5 @@ public class CmdType {
     public static final int CMD_FLAME = 0x16;
     public static final int CMD_ARTIFICIAL = 0x17;
     public static final int CMD_SMOKE = 0x18;
+    public static final int CMD_PRESSURE = 0x19;
 }

@@ -38,6 +38,7 @@ public class E3214 extends SensoroUUID {
     Float pitchAngle = null;
     Float rollAngle = null;
     Float yawAngle = null;
+    Float pressure = null;
     byte customize[] = null;
 
 
@@ -241,7 +242,15 @@ public class E3214 extends SensoroUUID {
                         cur_pos += 2;
                         i = cur_pos;
                         break;
+                    case CmdType.CMD_PRESSURE:
+                        byte[] pressure = new byte[4];
+                        System.arraycopy(e3214Bytes, cur_pos + 1, pressure, 0, pressure.length);
+                        e3214.pressure = byteArrayToFloat(pressure, 0);
+                        cur_pos += 5;
+                        i = cur_pos;
+                        break;
                     default:
+                        System.out.println("defualt====>" + cur_type);
                         i = data_length;
                         break;
                 }

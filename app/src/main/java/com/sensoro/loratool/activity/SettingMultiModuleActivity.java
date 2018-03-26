@@ -30,7 +30,6 @@ import com.sensoro.loratool.event.OnPositiveButtonClickListener;
 import com.sensoro.loratool.proto.ProtoMsgCfgV1U1;
 import com.sensoro.loratool.store.DeviceDataDao;
 import com.sensoro.loratool.utils.ParamUtil;
-import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONArray;
@@ -70,7 +69,6 @@ public class SettingMultiModuleActivity extends BaseActivity implements Constant
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init();
-        StatService.trackBeginPage(this, "传输模块配置");
         MobclickAgent.onPageStart("传输模块配置");
         MobclickAgent.onResume(this);
     }
@@ -78,14 +76,12 @@ public class SettingMultiModuleActivity extends BaseActivity implements Constant
     @Override
     protected void onResume() {
         super.onResume();
-        StatService.onResume(this);
         MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        StatService.onPause(this);
         MobclickAgent.onPause(this);
     }
 
@@ -287,7 +283,6 @@ public class SettingMultiModuleActivity extends BaseActivity implements Constant
 
     private void save() {
         try {
-
             if (sensoroDeviceConnection != null) {
                 sensoroDeviceConnection.disconnect();
             }
@@ -357,79 +352,9 @@ public class SettingMultiModuleActivity extends BaseActivity implements Constant
         }
         String dataString = null;
         String version = null;
-//        float firmware_version = Float.valueOf(sensoroDevice.getFirmwareVersion());
         ProtoMsgCfgV1U1.MsgCfgV1u1.Builder msgCfgBuilder = ProtoMsgCfgV1U1.MsgCfgV1u1.newBuilder();
 
-//        msgCfgBuilder.setLoraInt(deviceConfiguration.getLoraInt().intValue());
         msgCfgBuilder.setLoraTxp(deviceConfiguration.getLoraTxp());
-//        msgCfgBuilder.setBleTxp(deviceConfiguration.getBleTxp());
-//        msgCfgBuilder.setBleInt(deviceConfiguration.getBleInt().intValue());
-//        msgCfgBuilder.setBleOnTime(deviceConfiguration.getBleTurnOnTime());
-//        msgCfgBuilder.setBleOffTime(deviceConfiguration.getBleTurnOffTime());
-//
-//        msgCfgBuilder.setHumiInt(deviceConfiguration.getHumidityInterval());
-//        msgCfgBuilder.setTempInt(deviceConfiguration.getTemperatureInterval());
-//        msgCfgBuilder.setLightInt(deviceConfiguration.getLightInterval());
-//        msgCfgBuilder.setAppEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration.getAppEui()))));
-//        msgCfgBuilder.setAppKey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration.getAppKey())));
-//        msgCfgBuilder.setAppSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration.getAppSkey())));
-//        msgCfgBuilder.setNwkSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration.getNwkSkey())));
-//        msgCfgBuilder.setDevAddr(deviceConfiguration.getDevAdr());
-//        msgCfgBuilder.setLoraDr((12 - Integer.valueOf(deviceConfiguration.getLoraSf())));
-//        msgCfgBuilder.setLoraAdr(deviceConfiguration.getLoraAdr());
-
-//        SensoroSlot[] sensoroSlots = deviceConfiguration.getSensoroSlots();
-//        for (int i = 0; i < sensoroSlots.length; i++) {
-//            ProtoMsgCfgV1U1.Slot.Builder builder = ProtoMsgCfgV1U1.Slot.newBuilder();
-//            SensoroSlot sensoroSlot = sensoroSlots[i];
-//            if (sensoroSlot.isActived() == 1) {
-//                if (i == 4) {
-//                    byte uuid_data[] = SensoroUtils.HexString2Bytes(deviceConfiguration.getProximityUUID());
-//                    byte major_data[] = SensoroUUID.intToByteArray(deviceConfiguration.getMajor(), 2);
-//                    byte minor_data[] = SensoroUUID.intToByteArray(deviceConfiguration.getMinor(), 2);
-//                    byte ibeacon_data[] = new byte[20];
-//                    System.arraycopy(uuid_data, 0, ibeacon_data, 0, 16);
-//                    System.arraycopy(major_data, 0, ibeacon_data, 16, 2);
-//                    System.arraycopy(minor_data, 0, ibeacon_data, 18, 2);
-//                    builder.setFrame(ByteString.copyFrom(ibeacon_data));
-//                } else if (i == 5 || i == 6 || i == 7) {
-//                    String frameString = sensoroSlot.getFrame();
-//                    if (frameString != null) {
-//                        builder.setFrame(ByteString.copyFrom(SensoroUtils.HexString2Bytes(frameString)));
-//                    }
-//
-//                } else {
-//                    switch (sensoroSlot.getType()) {
-//                        case ProtoMsgCfgV1U1.SlotType.SLOT_EDDYSTONE_URL_VALUE:
-//                            builder.setFrame(ByteString.copyFrom(SensoroUtils.encodeUrl(sensoroSlot.getFrame())));
-//                            break;
-//                        default:
-//                            builder.setFrame(ByteString.copyFrom(SensoroUtils.HexString2Bytes(sensoroSlot.getFrame())));
-//                            break;
-//                    }
-//                }
-//                builder.setIndex(i);
-//                builder.setType(ProtoMsgCfgV1U1.SlotType.valueOf(sensoroSlot.getType()));
-//            }
-//            builder.setActived(sensoroSlot.isActived());
-//            msgCfgBuilder.addSlot(i, builder.build());
-//        }
-//
-//
-//        if (firmware_version <= SensoroDevice.FV_1_2) {//03
-//
-//        } else {//04
-//            ProtoMsgCfgV1U1.MsgCfgV1u1 msgCfg = msgCfgBuilder.build();
-//            ProtoStd1U1.MsgStd.Builder msgStdBuilder = ProtoStd1U1.MsgStd.newBuilder();
-//            msgStdBuilder.setCustomData(msgCfg.toByteString());
-//            msgStdBuilder.setEnableClassB(deviceConfiguration.getClassBEnabled());
-//            msgStdBuilder.setClassBDataRate(deviceConfiguration.getClassDateRate());
-//            msgStdBuilder.setClassBPeriodicity(deviceConfiguration.getClassPeriodicity());
-//            ProtoStd1U1.MsgStd msgStd = msgStdBuilder.build();
-//            byte[] data = msgStd.toByteArray();
-//            dataString = new String(Base64.encode(data, Base64.DEFAULT));
-//            version = "04";
-//        }
         ProtoMsgCfgV1U1.MsgCfgV1u1 msgCfg = msgCfgBuilder.build();
         byte[] data = msgCfg.toByteArray();
         dataString = new String(Base64.encode(data, Base64.DEFAULT));

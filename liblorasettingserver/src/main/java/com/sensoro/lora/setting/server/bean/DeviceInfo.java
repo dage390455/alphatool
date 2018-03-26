@@ -703,7 +703,7 @@ public class DeviceInfo implements Parcelable, Comparable {
     }
 
     public int toSensoroDeviceType() {
-        if (deviceType.equals("module") || deviceType.equals("chip")) {
+        if (deviceType.equals("module")) {
             return TYPE_MODULE;
         } else if (deviceType.equals("node")) {
             return TYPE_NODE;
@@ -725,6 +725,14 @@ public class DeviceInfo implements Parcelable, Comparable {
             return false;
         } else {
             switch (deviceType) {
+                case "flame":
+                case "op_chip":
+                case "winsen_ch4":
+                case "winsen_lpg":
+                case "winsen_gas":
+                case "bhenergy_water":
+                    isCan = true;
+                    break;
                 case "chip":
                 case "module":
                     isCan = firmwareVersion.compareTo(CHIP_FIRMWARE_V1) >= 0;

@@ -40,12 +40,11 @@ import com.sensoro.loratool.ble.SensoroWriteCallback;
 import com.sensoro.loratool.ble.scanner.SensoroUUID;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.event.OnPositiveButtonClickListener;
-import com.sensoro.loratool.proto.MsgNode1V1M1;
+import com.sensoro.loratool.proto.MsgNode1V1M5;
 import com.sensoro.loratool.proto.ProtoMsgCfgV1U1;
 import com.sensoro.loratool.proto.ProtoStd1U1;
 import com.sensoro.loratool.store.DeviceDataDao;
 import com.sensoro.loratool.utils.ParamUtil;
-import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONArray;
@@ -60,6 +59,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -130,6 +130,10 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
     RelativeLayout loraAdIntervalRelativeLayout;
     @BindView(R.id.settings_multi_tv_lora_ad_interval)
     TextView loraAdIntervalTextView;
+    @BindView(R.id.settings_multi_rl_lora_eirp)
+    RelativeLayout loraEirpRelativeLayout;
+    @BindView(R.id.settings_multi_tv_lora_eirp)
+    TextView loraEirpTextView;
 
     /**
      * Eddystone Function
@@ -303,6 +307,18 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
     RelativeLayout yawAngleUpperRelativeLayout;
     @BindView(R.id.settings_multi_rl_yaw_angle_lower)
     RelativeLayout yawAngleLowerRelativeLayout;
+
+    @BindView(R.id.settings_multi_ll_water_pressure)
+    LinearLayout waterPressureLinearLayout;
+    @BindView(R.id.settings_multi_tv_water_pressure_upper_limit)
+    TextView waterPressureUpperTextView;
+    @BindView(R.id.settings_multi_tv_water_pressure_lower_limit)
+    TextView waterPressureLowerTextView;
+    @BindView(R.id.settings_multi_rl_water_pressure_upper)
+    RelativeLayout waterPressureUpperRelativeLayout;
+    @BindView(R.id.settings_multi_rl_water_pressure_lower)
+    RelativeLayout waterPressureLowerRelativeLayout;
+
     @BindView(R.id.settings_device_ll_smoke)
     LinearLayout smokeLinearLayout;
     @BindView(R.id.settings_device_tv_smoke_status)
@@ -335,6 +351,8 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
     private String[] blePowerItems;
     private String[] bleTimeItems;
     private String[] loraTxpItems;
+    private String[] loraEirpItems;
+    private String[] loraEirpValues;
     private String uuid;
     private int major;
     private int minor;
@@ -363,6 +381,8 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
     private float rollAngleAlarmLow;
     private float yawAngleAlarmHigh;
     private float yawAngleAlarmLow;
+    private float waterPressureAlarmHigh;
+    private float waterPressureAlarmLow;
     private int uploadInterval;
     private int appParamConfirm;
     private String[] slotItems;
@@ -398,7 +418,6 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init();
-        StatService.trackBeginPage(this, "设备配置");
         MobclickAgent.onPageStart("设备配置");
         MobclickAgent.onResume(this);
     }
@@ -406,14 +425,12 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
     @Override
     protected void onResume() {
         super.onResume();
-        StatService.onResume(this);
         MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        StatService.onPause(this);
         MobclickAgent.onPause(this);
     }
 
@@ -441,9 +458,9 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
     }
 
     private void initData() {
+        targetDeviceList = this.getIntent().getParcelableArrayListExtra(Constants.EXTRA_NAME_DEVICE_LIST);
         targetDeviceIndex = 0;
         targetDevice = targetDeviceList.get(targetDeviceIndex);
-        targetDeviceList = this.getIntent().getParcelableArrayListExtra(Constants.EXTRA_NAME_DEVICE_LIST);
         band = getIntent().getStringExtra(Constants.EXTRA_NAME_BAND);
         deviceType = getIntent().getStringExtra(EXTRA_NAME_DEVICE_TYPE);
         String tempItems[] = null ;
@@ -453,7 +470,7 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
             tempItems = BLE_NOT_NODE_TXP_ARRAY;
         }
         blePowerItems = new String[tempItems.length + 1];
-        for (int i = 0; i < tempItems.length; i++) {
+        for (int i = 0; i < blePowerItems.length; i++) {
             if (i == 0) {
                 blePowerItems[i] = getString(R.string.setting_unset);
             } else {
@@ -490,13 +507,23 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                 break;
             case Constants.LORA_BAND_AS923:
                 txp_array = Constants.LORA_AS923_TXP;
+                loraEirpItems = Constants.LORA_AS923_MAX_EIRP;
+                loraEirpValues = Constants.LORA_AS923_MAX_EIRP_VALUE;
                 break;
             case Constants.LORA_BAND_EU433:
                 txp_array = Constants.LORA_EU433_TXP;
+                loraEirpItems = Constants.LORA_EU433_MAX_EIRP;
+                loraEirpValues = Constants.LORA_EU433_MAX_EIRP_VALUE;
                 break;
             case Constants.LORA_BAND_EU868:
                 txp_array = Constants.LORA_EU868_TXP;
+                loraEirpItems = Constants.LORA_EU868_MAX_EIRP;
+                loraEirpValues = Constants.LORA_EU868_MAX_EIRP_VALUE;
                 break;
+            case Constants.LORA_BAND_CN470:
+                txp_array = Constants.LORA_CN470_TXP;
+                loraEirpItems = Constants.LORA_CN470_MAX_EIRP;
+                loraEirpValues = Constants.LORA_CN470_MAX_EIRP_VALUE;
         }
         loraTxpItems = new String[txp_array.length + 1];
         for (int i = 0; i < txp_array.length; i++) {
@@ -516,6 +543,7 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
 
     private void registerUiEvent() {
         setContentView(R.layout.activity_setting_multi_device);
+        ButterKnife.bind(this);
         resetRootLayout();
         backImageView.setOnClickListener(this);
         saveTextView.setOnClickListener(this);
@@ -568,9 +596,12 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
         rollAngleLowerRelativeLayout.setOnClickListener(this);
         yawAngleUpperRelativeLayout.setOnClickListener(this);
         yawAngleLowerRelativeLayout.setOnClickListener(this);
+        waterPressureUpperRelativeLayout.setOnClickListener(this);
+        waterPressureLowerRelativeLayout.setOnClickListener(this);
     }
 
     private void refresh() {
+
         if (targetDeviceIndex == 0) {
             registerUiEvent();
             progressDialog.dismiss();
@@ -586,6 +617,13 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
             }
             if (targetDevice.hasLoraParam()) {
                 loraLayout.setVisibility(VISIBLE);
+                if (targetDevice.hasMaxEirp()) {
+                    loraEirpRelativeLayout.setVisibility(VISIBLE);
+                    loraTxpRelativeLayout.setVisibility(GONE);
+                } else {
+                    loraEirpRelativeLayout.setVisibility(GONE);
+                    loraTxpRelativeLayout.setVisibility(VISIBLE);
+                }
                 if (targetDevice.hasLoraInterval()) {
                     loraAdIntervalRelativeLayout.setVisibility(VISIBLE);
                 } else {
@@ -693,6 +731,13 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                 } else {
                     yawAngleLinearLayout.setVisibility(GONE);
                 }
+                if (targetDevice.getSensoroSensor().hasWaterPressure()) {
+                    waterPressureLinearLayout.setVisibility(VISIBLE);
+                    waterPressureUpperTextView.setText(targetDevice.getSensoroSensor().getWaterPressureAlarmHigh() + "");
+                    waterPressureLowerTextView.setText(targetDevice.getSensoroSensor().getWaterPressureAlarmLow() + "");
+                } else {
+                    waterPressureLinearLayout.setVisibility(GONE);
+                }
             } else {
                 sensorParamLayout.setVisibility(GONE);
             }
@@ -715,9 +760,9 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
         } else {
             progressDialog.show();
             progressDialog.setMessage(getString(R.string.device) + targetDevice.getSn() + getString(R.string.connect_success));
-            refreshDevice();
             saveConfiguration();
         }
+        refreshDevice();
     }
 
     private void refreshDevice() {
@@ -725,14 +770,6 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
             uuid = targetDevice.getProximityUUID();
             major = targetDevice.getMajor();
             minor = targetDevice.getMinor();
-            if (uuid != null) {
-                StringBuilder uuidString = new StringBuilder(uuid.toUpperCase());
-                uuidString.insert(8, "-");
-                uuidString.insert(13, "-");
-                uuidString.insert(18, "-");
-                uuidString.insert(23, "-");
-                uuidTextView.setText(uuidString);
-            }
         }
 
         if (targetDevice.hasBleParam()) {
@@ -750,16 +787,15 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
         if (targetDevice.hasLoraParam()) {
             loraInt = targetDevice.getLoraInt();
             loraTxp = targetDevice.getLoraTxp();
-
         }
 
         if (targetDevice.hasEddyStone()) {
             sensoroSlotArray = targetDevice.getSlotArray();
             float firmware_version = Float.valueOf(targetDevice.getFirmwareVersion());
             if (firmware_version > SensoroDevice.FV_1_2) { // 1.3以后没有custom package 3
-                findViewById(R.id.settings_device_ll_custome_package3).setVisibility(GONE);
+                findViewById(R.id.settings_multi_ll_custome_package3).setVisibility(GONE);
             } else {
-                findViewById(R.id.settings_device_ll_sensor_enable).setVisibility(GONE);
+                findViewById(R.id.settings_multi_ll_sensor_enable).setVisibility(GONE);
             }
             if (sensoroSlotArray != null) {
                 refreshSlot();
@@ -800,6 +836,24 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
             if (targetDevice.getSensoroSensor().hasSmoke()) {
 
             }
+            if (targetDevice.getSensoroSensor().hasPitchAngle()) {
+                pitchAngleAlarmHigh = targetDevice.getSensoroSensor().getPitchAngleAlarmHigh();
+                pitchAngleAlarmLow = targetDevice.getSensoroSensor().getPitchAngleAlarmLow();
+            }
+            if (targetDevice.getSensoroSensor().hasRollAngle()) {
+                rollAngleAlarmHigh = targetDevice.getSensoroSensor().getRollAngleAlarmHigh();
+                rollAngleAlarmLow = targetDevice.getSensoroSensor().getRollAngleAlarmLow();
+            }
+            if (targetDevice.getSensoroSensor().hasYawAngle()) {
+                yawAngleAlarmHigh = targetDevice.getSensoroSensor().getYawAngleAlarmHigh();
+                yawAngleAlarmLow = targetDevice.getSensoroSensor().getYawAngleAlarmLow();
+
+            }
+            if (targetDevice.getSensoroSensor().hasWaterPressure()) {
+                waterPressureAlarmHigh = targetDevice.getSensoroSensor().getWaterPressureAlarmHigh();
+                waterPressureAlarmLow = targetDevice.getSensoroSensor().getWaterPressureAlarmLow();
+
+            }
         }
         if (targetDevice.hasAppParam()) {
             if (targetDevice.hasUploadInterval()) {
@@ -809,19 +863,7 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                 appParamConfirm = targetDevice.getConfirm();
             }
         }
-        if (targetDevice.getSensoroSensor().hasPitchAngle()) {
-            pitchAngleAlarmHigh = targetDevice.getSensoroSensor().getPitchAngleAlarmHigh();
-            pitchAngleAlarmLow = targetDevice.getSensoroSensor().getPitchAngleAlarmLow();
-        }
-        if (targetDevice.getSensoroSensor().hasRollAngle()) {
-            rollAngleAlarmHigh = targetDevice.getSensoroSensor().getRollAngleAlarmHigh();
-            rollAngleAlarmLow = targetDevice.getSensoroSensor().getRollAngleAlarmLow();
-        }
-        if (targetDevice.getSensoroSensor().hasYawAngle()) {
-            yawAngleAlarmHigh = targetDevice.getSensoroSensor().getYawAngleAlarmHigh();
-            yawAngleAlarmLow = targetDevice.getSensoroSensor().getYawAngleAlarmLow();
 
-        }
     }
 
     public void refreshSlot() {
@@ -1218,66 +1260,74 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
         try {
             SensoroDeviceConfiguration.Builder builder = new SensoroDeviceConfiguration.Builder();
             SensoroSensorConfiguration.Builder sensorBuilder = new SensoroSensorConfiguration.Builder();
-            if (targetDevice.getSensoroSensor().hasCo()) {
-                sensorBuilder.setCoAlarmHigh(coAlarmHigh);
-                sensorBuilder.setCoData(targetDevice.getSensoroSensor().getCo());
-                sensorBuilder.setHasCo(targetDevice.getSensoroSensor().hasCo());
+            if (targetDevice.hasSensorParam()) {
+                if (targetDevice.getSensoroSensor().hasCo()) {
+                    sensorBuilder.setCoAlarmHigh(coAlarmHigh);
+                    sensorBuilder.setCoData(targetDevice.getSensoroSensor().getCo());
+                    sensorBuilder.setHasCo(targetDevice.getSensoroSensor().hasCo());
+                }
+                if (targetDevice.getSensoroSensor().hasCo2()) {
+                    sensorBuilder.setCo2AlarmHigh(co2AlarmHigh);
+                    sensorBuilder.setCo2Data(targetDevice.getSensoroSensor().getCo2());
+                    sensorBuilder.setHasCo2(targetDevice.getSensoroSensor().hasCo2());
+                }
+                if (targetDevice.getSensoroSensor().hasNo2()) {
+                    sensorBuilder.setNo2AlarmHigh(no2AlarmHigh);
+                    sensorBuilder.setNo2Data(targetDevice.getSensoroSensor().getNo2());
+                    sensorBuilder.setHasNo2(targetDevice.getSensoroSensor().hasNo2());
+                }
+                if (targetDevice.getSensoroSensor().hasCh4()) {
+                    sensorBuilder.setCh4AlarmHigh(ch4AlarmHigh);
+                    sensorBuilder.setCh4Data(targetDevice.getSensoroSensor().getCh4());
+                    sensorBuilder.setHasCh4(targetDevice.getSensoroSensor().hasCh4());
+                }
+                if (targetDevice.getSensoroSensor().hasLpg()) {
+                    sensorBuilder.setLpgAlarmHigh(lpgAlarmHigh);
+                    sensorBuilder.setLpgData(targetDevice.getSensoroSensor().getLpg());
+                    sensorBuilder.setHasLpg(targetDevice.getSensoroSensor().hasLpg());
+                }
+                if (targetDevice.getSensoroSensor().hasPm10()) {
+                    sensorBuilder.setPm10AlarmHigh(pm10AlarmHigh);
+                    sensorBuilder.setPm10Data(targetDevice.getSensoroSensor().getPm10());
+                    sensorBuilder.setHasPm10(targetDevice.getSensoroSensor().hasPm10());
+                }
+                if (targetDevice.getSensoroSensor().hasPm25()) {
+                    sensorBuilder.setPm25AlarmHigh(pm25AlarmHigh);
+                    sensorBuilder.setPm25Data(targetDevice.getSensoroSensor().getPm25());
+                    sensorBuilder.setHasPm25(targetDevice.getSensoroSensor().hasPm25());
+                }
+                if (targetDevice.getSensoroSensor().hasTemperature()) {
+                    sensorBuilder.setTempAlarmHigh(tempAlarmHigh);
+                    sensorBuilder.setTempAlarmLow(tempAlarmLow);
+                    sensorBuilder.setHasTemperature(targetDevice.getSensoroSensor().hasTemperature());
+                }
+                if (targetDevice.getSensoroSensor().hasHumidity()) {
+                    sensorBuilder.setHumidityHigh(humidityAlarmHigh);
+                    sensorBuilder.setHumidityLow(humidityAlarmLow);
+                    sensorBuilder.setHasHumidity(targetDevice.getSensoroSensor().hasHumidity());
+                }
+                if (targetDevice.getSensoroSensor().hasPitchAngle()) {
+                    sensorBuilder.setPitchAngleAlarmHigh(pitchAngleAlarmHigh);
+                    sensorBuilder.setPitchAngleAlarmLow(pitchAngleAlarmLow);
+                    sensorBuilder.setHasPitchAngle(targetDevice.getSensoroSensor().hasPitchAngle());
+                }
+                if (targetDevice.getSensoroSensor().hasRollAngle()) {
+                    sensorBuilder.setRollAngleAlarmHigh(rollAngleAlarmHigh);
+                    sensorBuilder.setRollAngleAlarmLow(rollAngleAlarmLow);
+                    sensorBuilder.setHasRollAngle(targetDevice.getSensoroSensor().hasRollAngle());
+                }
+                if (targetDevice.getSensoroSensor().hasYawAngle()) {
+                    sensorBuilder.setYawAngleAlarmHigh(yawAngleAlarmHigh);
+                    sensorBuilder.setYawAngleAlarmLow(yawAngleAlarmLow);
+                    sensorBuilder.setHasYawAngle(targetDevice.getSensoroSensor().hasYawAngle());
+                }
+                if (targetDevice.getSensoroSensor().hasWaterPressure()) {
+                    sensorBuilder.setWaterPressureAlarmHigh(waterPressureAlarmHigh);
+                    sensorBuilder.setWaterPressureAlarmLow(waterPressureAlarmLow);
+                    sensorBuilder.setHasWaterPressure(targetDevice.getSensoroSensor().hasWaterPressure());
+                }
             }
-            if (targetDevice.getSensoroSensor().hasCo2()) {
-                sensorBuilder.setCo2AlarmHigh(co2AlarmHigh);
-                sensorBuilder.setCo2Data(targetDevice.getSensoroSensor().getCo2());
-                sensorBuilder.setHasCo2(targetDevice.getSensoroSensor().hasCo2());
-            }
-            if (targetDevice.getSensoroSensor().hasNo2()) {
-                sensorBuilder.setNo2AlarmHigh(no2AlarmHigh);
-                sensorBuilder.setNo2Data(targetDevice.getSensoroSensor().getNo2());
-                sensorBuilder.setHasNo2(targetDevice.getSensoroSensor().hasNo2());
-            }
-            if (targetDevice.getSensoroSensor().hasCh4()) {
-                sensorBuilder.setCh4AlarmHigh(ch4AlarmHigh);
-                sensorBuilder.setCh4Data(targetDevice.getSensoroSensor().getCh4());
-                sensorBuilder.setHasCh4(targetDevice.getSensoroSensor().hasCh4());
-            }
-            if (targetDevice.getSensoroSensor().hasLpg()) {
-                sensorBuilder.setLpgAlarmHigh(lpgAlarmHigh);
-                sensorBuilder.setLpgData(targetDevice.getSensoroSensor().getLpg());
-                sensorBuilder.setHasLpg(targetDevice.getSensoroSensor().hasLpg());
-            }
-            if (targetDevice.getSensoroSensor().hasPm10()) {
-                sensorBuilder.setPm10AlarmHigh(pm10AlarmHigh);
-                sensorBuilder.setPm10Data(targetDevice.getSensoroSensor().getPm10());
-                sensorBuilder.setHasPm10(targetDevice.getSensoroSensor().hasPm10());
-            }
-            if (targetDevice.getSensoroSensor().hasPm25()) {
-                sensorBuilder.setPm25AlarmHigh(pm25AlarmHigh);
-                sensorBuilder.setPm25Data(targetDevice.getSensoroSensor().getPm25());
-                sensorBuilder.setHasPm25(targetDevice.getSensoroSensor().hasPm25());
-            }
-            if (targetDevice.getSensoroSensor().hasTemperature()) {
-                sensorBuilder.setTempAlarmHigh(tempAlarmHigh);
-                sensorBuilder.setTempAlarmLow(tempAlarmLow);
-                sensorBuilder.setHasTemperature(targetDevice.getSensoroSensor().hasTemperature());
-            }
-            if (targetDevice.getSensoroSensor().hasHumidity()) {
-                sensorBuilder.setHumidityHigh(humidityAlarmHigh);
-                sensorBuilder.setHumidityLow(humidityAlarmLow);
-                sensorBuilder.setHasHumidity(targetDevice.getSensoroSensor().hasHumidity());
-            }
-            if (targetDevice.getSensoroSensor().hasPitchAngle()) {
-                sensorBuilder.setPitchAngleAlarmHigh(pitchAngleAlarmHigh);
-                sensorBuilder.setHumidityLow(pitchAngleAlarmLow);
-                sensorBuilder.setHasHumidity(targetDevice.getSensoroSensor().hasPitchAngle());
-            }
-            if (targetDevice.getSensoroSensor().hasRollAngle()) {
-                sensorBuilder.setPitchAngleAlarmHigh(rollAngleAlarmHigh);
-                sensorBuilder.setHumidityLow(rollAngleAlarmLow);
-                sensorBuilder.setHasHumidity(targetDevice.getSensoroSensor().hasRollAngle());
-            }
-            if (targetDevice.getSensoroSensor().hasYawAngle()) {
-                sensorBuilder.setYawAngleAlarmHigh(yawAngleAlarmHigh);
-                sensorBuilder.setYawAngleAlarmLow(yawAngleAlarmLow);
-                sensorBuilder.setHasHumidity(targetDevice.getSensoroSensor().hasYawAngle());
-            }
+
             if (targetDevice.hasAppParam()) {
                 if (targetDevice.hasUploadInterval()) {
                     builder.setHasUploadInterval(targetDevice.hasUploadInterval());
@@ -1290,6 +1340,8 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                 }
                 builder.setHasAppParam(targetDevice.hasAppParam());
             }
+            builder.setHasBleParam(targetDevice.hasBleParam());
+            builder.setHasLoraParam(targetDevice.hasLoraParam());
             builder.setBleTurnOnTime(bleTurnOnTime)
                     .setBleTurnOffTime(bleTurnOffTime)
                     .setBleInt(bleInt)
@@ -1316,29 +1368,30 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
 
     protected void doSmokeStart() {
         progressDialog.setMessage(getString(R.string.device) + targetDevice.getSn() + getString(R.string.smoke_test));
-        MsgNode1V1M1.AppParam.Builder appParamBuilder = MsgNode1V1M1.AppParam.newBuilder();
-        appParamBuilder.setSmokeCtrl(MsgNode1V1M1.SmokeCtrl.SMOKE_INSPECTION_TEST);
+        MsgNode1V1M5.AppParam.Builder appParamBuilder = MsgNode1V1M5.AppParam.newBuilder();
+        appParamBuilder.setSmokeCtrl(MsgNode1V1M5.SmokeCtrl.SMOKE_INSPECTION_TEST);
         sensoroDeviceConnection.writeSmokeCmd(appParamBuilder, this);
     }
 
     protected void doSmokeStop() {
         progressDialog.setMessage(getString(R.string.device) + targetDevice.getSn() + getString(R.string.smoke_test));
-        MsgNode1V1M1.AppParam.Builder appParamBuilder = MsgNode1V1M1.AppParam.newBuilder();
-        appParamBuilder.setSmokeCtrl(MsgNode1V1M1.SmokeCtrl.SMOKE_INSPECTION_OVER);
+        MsgNode1V1M5.AppParam.Builder appParamBuilder = MsgNode1V1M5.AppParam.newBuilder();
+        appParamBuilder.setSmokeCtrl(MsgNode1V1M5.SmokeCtrl.SMOKE_INSPECTION_OVER);
         sensoroDeviceConnection.writeSmokeCmd(appParamBuilder, this);
 
     }
 
     protected void doSmokeSilence() {
         progressDialog.setMessage(getString(R.string.device) + targetDevice.getSn() + getString(R.string.smoke_test));
-        MsgNode1V1M1.AppParam.Builder appParamBuilder = MsgNode1V1M1.AppParam.newBuilder();
-        appParamBuilder.setSmokeCtrl(MsgNode1V1M1.SmokeCtrl.SMOKE_ERASURE);
+        MsgNode1V1M5.AppParam.Builder appParamBuilder = MsgNode1V1M5.AppParam.newBuilder();
+        appParamBuilder.setSmokeCtrl(MsgNode1V1M5.SmokeCtrl.SMOKE_ERASURE);
         sensoroDeviceConnection.writeSmokeCmd(appParamBuilder, this);
     }
 
 
     @Override
     public void onWriteSuccess(Object o, final int cmd) {
+        System.out.println("写入成功=====>");
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -1364,11 +1417,12 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
     }
 
     @Override
-    public void onWriteFailure(int errorCode, final int cmd) {
+    public void onWriteFailure(final int errorCode, final int cmd) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                progressDialog.setMessage(getString(R.string.device) + targetDevice.getSn() + getString(R.string.save_fail));
+                System.out.println("写入失败,错误码=====>" + errorCode);
+                progressDialog.setMessage(getString(R.string.device) + targetDevice.getSn() + getString(R.string.save_fail) + " 错误码" + errorCode);
 //                Toast.makeText(getApplicationContext(), getString(R.string.device) + targetDevice.getSn() + getString(R.string.save_fail), Toast.LENGTH_SHORT).show();
                 save();
             }
@@ -1379,6 +1433,7 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
 
     @Override
     public void onConnectedSuccess(BLEDevice bleDevice, int cmd) {
+        System.out.println(bleDevice.getSn() + "连接成功=====>" );
         if (cmd == CmdType.CMD_SET_SMOKE) {
             if (targetDeviceIndex < (targetDeviceList.size() - 1)) {
                 targetDeviceIndex++;
@@ -1415,11 +1470,11 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
 
 
     @Override
-    public void onConnectedFailure(int errorCode) {
+    public void onConnectedFailure(final int errorCode) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
+                System.out.println("连接错误,错误码=====>" + errorCode);
 //                Toast.makeText(getApplicationContext(), getString(R.string.device) + targetDevice.getSn() + getString(R.string.connect_failed), Toast.LENGTH_SHORT).show();
                 if (targetDeviceIndex != 0) {
                     progressDialog.setMessage(getString(R.string.device) + targetDevice.getSn() + getString(R.string.connect_failed));
@@ -1624,14 +1679,14 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
         }
         String dataString = null;
         String version = null;
-        MsgNode1V1M1.MsgNode.Builder msgCfgBuilder = MsgNode1V1M1.MsgNode.newBuilder();
+        MsgNode1V1M5.MsgNode.Builder msgCfgBuilder = MsgNode1V1M5.MsgNode.newBuilder();
         if (targetDevice.hasLoraParam()) {
-            MsgNode1V1M1.LoraParam.Builder loraParamBuilder = MsgNode1V1M1.LoraParam.newBuilder();
+            MsgNode1V1M5.LoraParam.Builder loraParamBuilder = MsgNode1V1M5.LoraParam.newBuilder();
             loraParamBuilder.setTxPower(deviceConfiguration.getLoraTxp());
             msgCfgBuilder.setLoraParam(loraParamBuilder);
         }
         if (targetDevice.hasBleParam()) {
-            MsgNode1V1M1.BleParam.Builder bleParamBuilder = MsgNode1V1M1.BleParam.newBuilder();
+            MsgNode1V1M5.BleParam.Builder bleParamBuilder = MsgNode1V1M5.BleParam.newBuilder();
             bleParamBuilder.setBleOnTime(deviceConfiguration.getBleTurnOnTime());
             bleParamBuilder.setBleOffTime(deviceConfiguration.getBleTurnOffTime());
             bleParamBuilder.setBleTxp(deviceConfiguration.getBleTxp());
@@ -1639,7 +1694,7 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
             msgCfgBuilder.setBleParam(bleParamBuilder);
         }
         if (targetDevice.hasAppParam()) {
-            MsgNode1V1M1.AppParam.Builder appParamBuilder = MsgNode1V1M1.AppParam.newBuilder();
+            MsgNode1V1M5.AppParam.Builder appParamBuilder = MsgNode1V1M5.AppParam.newBuilder();
             if (targetDevice.hasUploadInterval()) {
                 appParamBuilder.setUploadInterval(deviceConfiguration.getUploadIntervalData());
                 msgCfgBuilder.setAppParam(appParamBuilder);
@@ -1650,72 +1705,81 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
             }
         }
 
-        if (targetDevice.getSensoroSensor().hasCo()) {
-            MsgNode1V1M1.SensorData.Builder builder = MsgNode1V1M1.SensorData.newBuilder();
-            builder.setAlarmHigh(coAlarmHigh);
-            msgCfgBuilder.setCo(builder);
+        if (targetDevice.hasSensorParam()) {
+            if (targetDevice.getSensoroSensor().hasCo()) {
+                MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
+                builder.setAlarmHigh(coAlarmHigh);
+                msgCfgBuilder.setCo(builder);
+            }
+            if (targetDevice.getSensoroSensor().hasCo2()) {
+                MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
+                builder.setAlarmHigh(co2AlarmHigh);
+                msgCfgBuilder.setCo2(builder);
+            }
+            if (targetDevice.getSensoroSensor().hasNo2()) {
+                MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
+                builder.setAlarmHigh(no2AlarmHigh);
+                msgCfgBuilder.setNo2(builder);
+            }
+            if (targetDevice.getSensoroSensor().hasCh4()) {
+                MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
+                builder.setAlarmHigh(ch4AlarmHigh);
+                msgCfgBuilder.setCh4(builder);
+            }
+            if (targetDevice.getSensoroSensor().hasLpg()) {
+                MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
+                builder.setAlarmHigh(lpgAlarmHigh);
+                msgCfgBuilder.setLpg(builder);
+            }
+            if (targetDevice.getSensoroSensor().hasPm10()) {
+                MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
+                builder.setAlarmHigh(pm10AlarmHigh);
+                msgCfgBuilder.setPm10(builder);
+            }
+            if (targetDevice.getSensoroSensor().hasPm25()) {
+                MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
+                builder.setAlarmHigh(pm25AlarmHigh);
+                msgCfgBuilder.setPm25(builder);
+            }
+            if (targetDevice.getSensoroSensor().hasTemperature()) {
+                MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
+                builder.setAlarmHigh(tempAlarmHigh);
+                builder.setAlarmLow(tempAlarmLow);
+                msgCfgBuilder.setTemperature(builder);
+            }
+            if (targetDevice.getSensoroSensor().hasHumidity()) {
+                MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
+                builder.setAlarmHigh(humidityAlarmHigh);
+                builder.setAlarmLow(humidityAlarmLow);
+                msgCfgBuilder.setHumidity(builder);
+            }
+            if (targetDevice.getSensoroSensor().hasPitchAngle()) {
+                MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
+                builder.setAlarmHigh(pitchAngleAlarmHigh);
+                builder.setAlarmLow(pitchAngleAlarmLow);
+                msgCfgBuilder.setPitch(builder);
+            }
+            if (targetDevice.getSensoroSensor().hasRollAngle()) {
+                MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
+                builder.setAlarmHigh(rollAngleAlarmHigh);
+                builder.setAlarmLow(rollAngleAlarmLow);
+                msgCfgBuilder.setRoll(builder);
+            }
+            if (targetDevice.getSensoroSensor().hasYawAngle()) {
+                MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
+                builder.setAlarmHigh(yawAngleAlarmHigh);
+                builder.setAlarmLow(yawAngleAlarmLow);
+                msgCfgBuilder.setYaw(builder);
+            }
+            if (targetDevice.getSensoroSensor().hasWaterPressure()) {
+                MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
+                builder.setAlarmHigh(waterPressureAlarmHigh);
+                builder.setAlarmLow(waterPressureAlarmLow);
+                msgCfgBuilder.setWaterPressure(builder);
+            }
         }
-        if (targetDevice.getSensoroSensor().hasCo2()) {
-            MsgNode1V1M1.SensorData.Builder builder = MsgNode1V1M1.SensorData.newBuilder();
-            builder.setAlarmHigh(co2AlarmHigh);
-            msgCfgBuilder.setCo2(builder);
-        }
-        if (targetDevice.getSensoroSensor().hasNo2()) {
-            MsgNode1V1M1.SensorData.Builder builder = MsgNode1V1M1.SensorData.newBuilder();
-            builder.setAlarmHigh(no2AlarmHigh);
-            msgCfgBuilder.setNo2(builder);
-        }
-        if (targetDevice.getSensoroSensor().hasCh4()) {
-            MsgNode1V1M1.SensorData.Builder builder = MsgNode1V1M1.SensorData.newBuilder();
-            builder.setAlarmHigh(ch4AlarmHigh);
-            msgCfgBuilder.setCh4(builder);
-        }
-        if (targetDevice.getSensoroSensor().hasLpg()) {
-            MsgNode1V1M1.SensorData.Builder builder = MsgNode1V1M1.SensorData.newBuilder();
-            builder.setAlarmHigh(lpgAlarmHigh);
-            msgCfgBuilder.setLpg(builder);
-        }
-        if (targetDevice.getSensoroSensor().hasPm10()) {
-            MsgNode1V1M1.SensorData.Builder builder = MsgNode1V1M1.SensorData.newBuilder();
-            builder.setAlarmHigh(pm10AlarmHigh);
-            msgCfgBuilder.setPm10(builder);
-        }
-        if (targetDevice.getSensoroSensor().hasPm25()) {
-            MsgNode1V1M1.SensorData.Builder builder = MsgNode1V1M1.SensorData.newBuilder();
-            builder.setAlarmHigh(pm25AlarmHigh);
-            msgCfgBuilder.setPm25(builder);
-        }
-        if (targetDevice.getSensoroSensor().hasTemperature()) {
-            MsgNode1V1M1.SensorData.Builder builder = MsgNode1V1M1.SensorData.newBuilder();
-            builder.setAlarmHigh(tempAlarmHigh);
-            builder.setAlarmLow(tempAlarmLow);
-            msgCfgBuilder.setTemperature(builder);
-        }
-        if (targetDevice.getSensoroSensor().hasHumidity()) {
-            MsgNode1V1M1.SensorData.Builder builder = MsgNode1V1M1.SensorData.newBuilder();
-            builder.setAlarmHigh(humidityAlarmHigh);
-            builder.setAlarmLow(humidityAlarmLow);
-            msgCfgBuilder.setHumidity(builder);
-        }
-        if (targetDevice.getSensoroSensor().hasPitchAngle()) {
-            MsgNode1V1M1.SensorData.Builder builder = MsgNode1V1M1.SensorData.newBuilder();
-            builder.setAlarmHigh(pitchAngleAlarmHigh);
-            builder.setAlarmLow(pitchAngleAlarmLow);
-            msgCfgBuilder.setPitch(builder);
-        }
-        if (targetDevice.getSensoroSensor().hasRollAngle()) {
-            MsgNode1V1M1.SensorData.Builder builder = MsgNode1V1M1.SensorData.newBuilder();
-            builder.setAlarmHigh(rollAngleAlarmHigh);
-            builder.setAlarmLow(rollAngleAlarmLow);
-            msgCfgBuilder.setRoll(builder);
-        }
-        if (targetDevice.getSensoroSensor().hasYawAngle()) {
-            MsgNode1V1M1.SensorData.Builder builder = MsgNode1V1M1.SensorData.newBuilder();
-            builder.setAlarmHigh(yawAngleAlarmHigh);
-            builder.setAlarmLow(yawAngleAlarmLow);
-            msgCfgBuilder.setYaw(builder);
-        }
-        MsgNode1V1M1.MsgNode msgCfg = msgCfgBuilder.build();
+
+        MsgNode1V1M5.MsgNode msgCfg = msgCfgBuilder.build();
         byte[] data = msgCfg.toByteArray();
         dataString = new String(Base64.encode(data, Base64.DEFAULT));
         version = "05";
@@ -2047,197 +2111,205 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
 
     @Override
     public void onClick(View v) {
-        DialogFragment dialogFragment = null;
-        switch (v.getId()) {
-            case R.id.settings_multi_device_back:
-                finish();
-                break;
-            case R.id.settings_multi_rl_ibeacon:
-                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(statusItems, 0);
-                dialogFragment.show(getFragmentManager(), SETTINGS_IBEACON);
-                break;
-            case R.id.settings_multi_rl_uuid:
-                dialogFragment = SettingsUUIDDialogFragment.newInstance(uuid);
-                dialogFragment.show(getFragmentManager(), SETTINGS_UUID);
-                break;
-            case R.id.settings_multi_rl_major:
-                dialogFragment = SettingsMajorMinorDialogFragment.newInstance(major);
-                dialogFragment.show(getFragmentManager(), SETTINGS_MAJOR);
-                break;
-            case R.id.settings_multi_rl_minor:
-                dialogFragment = SettingsMajorMinorDialogFragment.newInstance(minor);
-                dialogFragment.show(getFragmentManager(), SETTINGS_MINOR);
-                break;
-            case R.id.settings_multi_rl_power:
-                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(blePowerItems, 0);
-                dialogFragment.show(getFragmentManager(), SETTINGS_BLE_POWER);
-                break;
-            case R.id.settings_multi_rl_adv_interval:
-                dialogFragment = SettingsInputDialogFragment.newInstance("");
-                dialogFragment.show(getFragmentManager(), SETTINGS_ADV_INTERVAL);
-                break;
-            case R.id.setting_multi_ll_turnon_time:
-                int showTurnOnTime = bleTurnOnTime;
-                if (bleTurnOnTime >= 24) {
-                    showTurnOnTime -= 24;
-                }
-                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(bleTimeItems, showTurnOnTime);
-                dialogFragment.show(getFragmentManager(), SETTINGS_BLE_TURNON_TIME);
-                break;
-            case R.id.setting_multi_ll_turnoff_time:
-                int showTurnOffTime = bleTurnOffTime;
-                if (bleTurnOffTime >= 24) {
-                    showTurnOffTime -= 24;
-                }
-                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(bleTimeItems, showTurnOffTime);
-                dialogFragment.show(getFragmentManager(), SETTINGS_BLE_TURNOFF_TIME);
-                break;
-            case R.id.settings_multi_rl_lora_transmit_power:
-                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(loraTxpItems, 0);
-                dialogFragment.show(getFragmentManager(), SETTINGS_LORA_TXP);
-                break;
-            case R.id.settings_multi_rl_lora_ad_interval:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(loraInt));
-                dialogFragment.show(getFragmentManager(), SETTINGS_LORA_INT);
-                break;
-            case R.id.settings_multi_rl_slot1_item1:
-                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(slotItems, slotItemSelectIndex[0]);
-                dialogFragment.show(getFragmentManager(), SETTINGS_EDDYSTONE1);
-                break;
-            case R.id.settings_multi_rl_slot1_item2:
-                showSlot1Dialog(dialogFragment);
-                break;
-            case R.id.settings_multi_rl_slot2_item1:
-                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(slotItems, slotItemSelectIndex[1]);
-                dialogFragment.show(getFragmentManager(), SETTINGS_EDDYSTONE2);
-                break;
-            case R.id.settings_multi_rl_slot2_item2:
-                showSlot2Dialog(dialogFragment);
-                break;
+        try {
+            DialogFragment dialogFragment = null;
+            switch (v.getId()) {
+                case R.id.settings_multi_device_back:
+                    finish();
+                    break;
+                case R.id.settings_multi_rl_ibeacon:
+                    dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(statusItems, 0);
+                    dialogFragment.show(getFragmentManager(), SETTINGS_IBEACON);
+                    break;
+                case R.id.settings_multi_rl_uuid:
+                    dialogFragment = SettingsUUIDDialogFragment.newInstance(uuid);
+                    dialogFragment.show(getFragmentManager(), SETTINGS_UUID);
+                    break;
+                case R.id.settings_multi_rl_major:
+                    dialogFragment = SettingsMajorMinorDialogFragment.newInstance(major);
+                    dialogFragment.show(getFragmentManager(), SETTINGS_MAJOR);
+                    break;
+                case R.id.settings_multi_rl_minor:
+                    dialogFragment = SettingsMajorMinorDialogFragment.newInstance(minor);
+                    dialogFragment.show(getFragmentManager(), SETTINGS_MINOR);
+                    break;
+                case R.id.settings_multi_rl_power:
+                    dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(blePowerItems, 0);
+                    dialogFragment.show(getFragmentManager(), SETTINGS_BLE_POWER);
+                    break;
+                case R.id.settings_multi_rl_adv_interval:
+                    dialogFragment = SettingsInputDialogFragment.newInstance("");
+                    dialogFragment.show(getFragmentManager(), SETTINGS_ADV_INTERVAL);
+                    break;
+                case R.id.setting_multi_ll_turnon_time:
+                    int showTurnOnTime = bleTurnOnTime;
+                    if (bleTurnOnTime >= 24) {
+                        showTurnOnTime -= 24;
+                    }
+                    dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(bleTimeItems, showTurnOnTime);
+                    dialogFragment.show(getFragmentManager(), SETTINGS_BLE_TURNON_TIME);
+                    break;
+                case R.id.setting_multi_ll_turnoff_time:
+                    int showTurnOffTime = bleTurnOffTime;
+                    if (bleTurnOffTime >= 24) {
+                        showTurnOffTime -= 24;
+                    }
+                    dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(bleTimeItems, showTurnOffTime);
+                    dialogFragment.show(getFragmentManager(), SETTINGS_BLE_TURNOFF_TIME);
+                    break;
+                case R.id.settings_multi_rl_lora_transmit_power:
+                    dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(loraTxpItems, 0);
+                    dialogFragment.show(getFragmentManager(), SETTINGS_LORA_TXP);
+                    break;
+                case R.id.settings_multi_rl_lora_ad_interval:
+                    dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(loraInt));
+                    dialogFragment.show(getFragmentManager(), SETTINGS_LORA_INT);
+                    break;
+                case R.id.settings_multi_rl_lora_eirp:
+                    dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(loraEirpItems, loraTxp);
+                    dialogFragment.show(getFragmentManager(), SETTINGS_LORA_EIRP);
+                    break;
+                case R.id.settings_multi_rl_slot1_item1:
+                    dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(slotItems, slotItemSelectIndex[0]);
+                    dialogFragment.show(getFragmentManager(), SETTINGS_EDDYSTONE1);
+                    break;
+                case R.id.settings_multi_rl_slot1_item2:
+                    showSlot1Dialog(dialogFragment);
+                    break;
+                case R.id.settings_multi_rl_slot2_item1:
+                    dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(slotItems, slotItemSelectIndex[1]);
+                    dialogFragment.show(getFragmentManager(), SETTINGS_EDDYSTONE2);
+                    break;
+                case R.id.settings_multi_rl_slot2_item2:
+                    showSlot2Dialog(dialogFragment);
+                    break;
+                case R.id.settings_multi_rl_slot3_item1:
+                    dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(slotItems, slotItemSelectIndex[2]);
+                    dialogFragment.show(getFragmentManager(), SETTINGS_EDDYSTONE3);
+                    break;
+                case R.id.settings_multi_rl_slot3_item2:
+                    showSlot3Dialog(dialogFragment);
+                    break;
 
-            case R.id.settings_multi_rl_slot3_item1:
-                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(slotItems, slotItemSelectIndex[2]);
-                dialogFragment.show(getFragmentManager(), SETTINGS_EDDYSTONE3);
-                break;
-            case R.id.settings_multi_rl_slot3_item2:
-                showSlot3Dialog(dialogFragment);
-                break;
-
-            case R.id.settings_multi_rl_slot4_item1:
-                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(slotItems, slotItemSelectIndex[3]);
-                dialogFragment.show(getFragmentManager(), SETTINGS_EDDYSTONE4);
-                break;
-            case R.id.settings_multi_rl_slot4_item2:
-                showSlot4Dialog(dialogFragment);
-                break;
-            case R.id.settings_multi_ll_sensor_enable:
-                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(statusItems, 0);
-                dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR);
-                break;
-            case R.id.settings_multi_rl_custom_package1_state:
-                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(statusItems, 0);
-                dialogFragment.show(getFragmentManager(), SETTINGS_CUSTOM_PACKAGE1_STATUS);
-                break;
-            case R.id.settings_multi_rl_custom_package2_state:
-                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(statusItems, 0);
-                dialogFragment.show(getFragmentManager(), SETTINGS_CUSTOM_PACKAGE2_STATUS);
-                break;
-            case R.id.settings_multi_rl_custom_package3_state:
-                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(statusItems, 0);
-                dialogFragment.show(getFragmentManager(), SETTINGS_CUSTOM_PACKAGE3_STATUS);
-                break;
-            case R.id.settings_multi_rl_custom_package1:
-                dialogFragment = SettingsInputDialogFragment.newInstance(custom_package1);
-                dialogFragment.show(getFragmentManager(), SETTINGS_CUSTOM_PACKAGE1);
-                break;
-            case R.id.settings_multi_rl_custom_package2:
-                dialogFragment = SettingsInputDialogFragment.newInstance(custom_package2);
-                dialogFragment.show(getFragmentManager(), SETTINGS_CUSTOM_PACKAGE2);
-                break;
-            case R.id.settings_multi_rl_custom_package3:
-                dialogFragment = SettingsInputDialogFragment.newInstance(custom_package3);
-                dialogFragment.show(getFragmentManager(), SETTINGS_CUSTOM_PACKAGE3);
-                break;
-            case R.id.settings_multi_ll_co:
-                dialogFragment = SettingsInputDialogFragment.newInstance("");
-                dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_CO);
-                break;
-            case R.id.settings_multi_ll_co2:
-                dialogFragment = SettingsInputDialogFragment.newInstance("");
-                dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_CO2);
-                break;
-            case R.id.settings_multi_ll_ch4:
-                dialogFragment = SettingsInputDialogFragment.newInstance("");
-                dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_CH4);
-                break;
-            case R.id.settings_multi_ll_no2:
-                dialogFragment = SettingsInputDialogFragment.newInstance("");
-                dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_NO2);
-                break;
-            case R.id.settings_multi_ll_lpg:
-                dialogFragment = SettingsInputDialogFragment.newInstance("");
-                dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_LPG);
-                break;
-            case R.id.settings_multi_ll_pm10:
-                dialogFragment = SettingsInputDialogFragment.newInstance("");
-                dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_PM10);
-                break;
-            case R.id.settings_multi_ll_pm25:
-                dialogFragment = SettingsInputDialogFragment.newInstance("");
-                dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_PM25);
-                break;
-            case R.id.settings_multi_rl_temp_upper:
-                dialogFragment = SettingsInputDialogFragment.newInstance("");
-                dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_TEMP_UPPER);
-                break;
-            case R.id.settings_multi_rl_temp_lower:
-                dialogFragment = SettingsInputDialogFragment.newInstance("");
-                dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_TEMP_LOWER);
-                break;
-            case R.id.settings_multi_rl_humidity_upper:
-                dialogFragment = SettingsInputDialogFragment.newInstance("");
-                dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_HUMIDITY_UPPER);
-                break;
-            case R.id.settings_multi_rl_humidity_lower:
-                dialogFragment = SettingsInputDialogFragment.newInstance("");
-                dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_HUMIDITY_LOWER);
-                break;
-            case R.id.settings_multi_rl_app_param_upload:
-                dialogFragment = SettingsInputDialogFragment.newInstance("");
-                dialogFragment.show(getFragmentManager(), SETTINGS_APP_PARAM_UPLOAD);
-                break;
-            case R.id.settings_multi_rl_app_param_confirm:
-                String statusArray[] = this.getResources().getStringArray(R.array.multi_status_array);
-                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(statusArray, 0);
-                dialogFragment.show(getFragmentManager(), SETTINGS_APP_PARAM_CONFIRM);
-                break;
-            case R.id.settings_device_tv_smoke_start:
-                progressDialog.show();
-                smokeActionIndex = SMOKE_ACTION_START;
-                doSmokeStart();
-                break;
-            case R.id.settings_device_tv_smoke_stop:
-                progressDialog.show();
-                smokeActionIndex = SMOKE_ACTION_STOP;
-                doSmokeStop();
-                break;
-            case R.id.settings_device_tv_smoke_silence:
-                progressDialog.show();
-                smokeActionIndex = SMOKE_ACTION_SILENCE;
-                doSmokeSilence();
-                break;
-            case R.id.settings_multi_tv_save:
-                if (targetDeviceIndex == 0) {
-                    progressDialog.setMessage(getString(R.string.device) + targetDevice.getSn() + getString(R.string.saving));
+                case R.id.settings_multi_rl_slot4_item1:
+                    dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(slotItems, slotItemSelectIndex[3]);
+                    dialogFragment.show(getFragmentManager(), SETTINGS_EDDYSTONE4);
+                    break;
+                case R.id.settings_multi_rl_slot4_item2:
+                    showSlot4Dialog(dialogFragment);
+                    break;
+                case R.id.settings_multi_ll_sensor_enable:
+                    dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(statusItems, 0);
+                    dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR);
+                    break;
+                case R.id.settings_multi_rl_custom_package1_state:
+                    dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(statusItems, 0);
+                    dialogFragment.show(getFragmentManager(), SETTINGS_CUSTOM_PACKAGE1_STATUS);
+                    break;
+                case R.id.settings_multi_rl_custom_package2_state:
+                    dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(statusItems, 0);
+                    dialogFragment.show(getFragmentManager(), SETTINGS_CUSTOM_PACKAGE2_STATUS);
+                    break;
+                case R.id.settings_multi_rl_custom_package3_state:
+                    dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(statusItems, 0);
+                    dialogFragment.show(getFragmentManager(), SETTINGS_CUSTOM_PACKAGE3_STATUS);
+                    break;
+                case R.id.settings_multi_rl_custom_package1:
+                    dialogFragment = SettingsInputDialogFragment.newInstance(custom_package1);
+                    dialogFragment.show(getFragmentManager(), SETTINGS_CUSTOM_PACKAGE1);
+                    break;
+                case R.id.settings_multi_rl_custom_package2:
+                    dialogFragment = SettingsInputDialogFragment.newInstance(custom_package2);
+                    dialogFragment.show(getFragmentManager(), SETTINGS_CUSTOM_PACKAGE2);
+                    break;
+                case R.id.settings_multi_rl_custom_package3:
+                    dialogFragment = SettingsInputDialogFragment.newInstance(custom_package3);
+                    dialogFragment.show(getFragmentManager(), SETTINGS_CUSTOM_PACKAGE3);
+                    break;
+                case R.id.settings_multi_ll_co:
+                    dialogFragment = SettingsInputDialogFragment.newInstance("");
+                    dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_CO);
+                    break;
+                case R.id.settings_multi_ll_co2:
+                    dialogFragment = SettingsInputDialogFragment.newInstance("");
+                    dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_CO2);
+                    break;
+                case R.id.settings_multi_ll_ch4:
+                    dialogFragment = SettingsInputDialogFragment.newInstance("");
+                    dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_CH4);
+                    break;
+                case R.id.settings_multi_ll_no2:
+                    dialogFragment = SettingsInputDialogFragment.newInstance("");
+                    dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_NO2);
+                    break;
+                case R.id.settings_multi_ll_lpg:
+                    dialogFragment = SettingsInputDialogFragment.newInstance("");
+                    dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_LPG);
+                    break;
+                case R.id.settings_multi_ll_pm10:
+                    dialogFragment = SettingsInputDialogFragment.newInstance("");
+                    dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_PM10);
+                    break;
+                case R.id.settings_multi_ll_pm25:
+                    dialogFragment = SettingsInputDialogFragment.newInstance("");
+                    dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_PM25);
+                    break;
+                case R.id.settings_multi_rl_temp_upper:
+                    dialogFragment = SettingsInputDialogFragment.newInstance("");
+                    dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_TEMP_UPPER);
+                    break;
+                case R.id.settings_multi_rl_temp_lower:
+                    dialogFragment = SettingsInputDialogFragment.newInstance("");
+                    dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_TEMP_LOWER);
+                    break;
+                case R.id.settings_multi_rl_humidity_upper:
+                    dialogFragment = SettingsInputDialogFragment.newInstance("");
+                    dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_HUMIDITY_UPPER);
+                    break;
+                case R.id.settings_multi_rl_humidity_lower:
+                    dialogFragment = SettingsInputDialogFragment.newInstance("");
+                    dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_HUMIDITY_LOWER);
+                    break;
+                case R.id.settings_multi_rl_app_param_upload:
+                    dialogFragment = SettingsInputDialogFragment.newInstance("");
+                    dialogFragment.show(getFragmentManager(), SETTINGS_APP_PARAM_UPLOAD);
+                    break;
+                case R.id.settings_multi_rl_app_param_confirm:
+                    String statusArray[] = this.getResources().getStringArray(R.array.multi_status_array);
+                    dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(statusArray, 0);
+                    dialogFragment.show(getFragmentManager(), SETTINGS_APP_PARAM_CONFIRM);
+                    break;
+                case R.id.settings_device_tv_smoke_start:
                     progressDialog.show();
-                    saveConfiguration();
-                } else {
-                    save();
-                }
-                break;
-            default:
-                break;
+                    smokeActionIndex = SMOKE_ACTION_START;
+                    doSmokeStart();
+                    break;
+                case R.id.settings_device_tv_smoke_stop:
+                    progressDialog.show();
+                    smokeActionIndex = SMOKE_ACTION_STOP;
+                    doSmokeStop();
+                    break;
+                case R.id.settings_device_tv_smoke_silence:
+                    progressDialog.show();
+                    smokeActionIndex = SMOKE_ACTION_SILENCE;
+                    doSmokeSilence();
+                    break;
+                case R.id.settings_multi_tv_save:
+                    if (targetDeviceIndex == 0) {
+                        progressDialog.setMessage(getString(R.string.device) + targetDevice.getSn() + getString(R.string.saving));
+                        progressDialog.show();
+                        saveConfiguration();
+                    } else {
+                        save();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
     }
 
     @Override
@@ -2349,6 +2421,10 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                     loraTxpTextView.setText("" + loraTxp);
                 }
 
+            }  else if (tag.equals(SETTINGS_LORA_EIRP)) {
+                int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
+                loraTxp = index;
+                loraEirpTextView.setText(loraEirpValues[loraTxp]);
             } else if (tag.equals(SETTINGS_LORA_INT)) {
                 String loraIntString = bundle.getString(SettingsInputDialogFragment.INPUT);
                 if (loraIntString != null && (loraIntString.trim().equals("") && loraIntString.equals(unsetString))) {
@@ -2718,6 +2794,14 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                 String yawLower = bundle.getString(SettingsInputDialogFragment.INPUT);
                 this.yawAngleAlarmLow = Float.valueOf(yawLower).intValue();
                 yawAngleLowerTextView.setText(yawLower + "");
+            } else if (tag.equals(SETTINGS_SENSOR_WATER_PRESSURE_UPPER)) {
+                String waterHigh = bundle.getString(SettingsInputDialogFragment.INPUT);
+                this.waterPressureAlarmHigh = Float.valueOf(waterHigh).intValue();
+                waterPressureUpperTextView.setText(waterHigh + "");
+            } else if (tag.equals(SETTINGS_SENSOR_WATER_PRESSURE_LOWER)) {
+                String waterLower = bundle.getString(SettingsInputDialogFragment.INPUT);
+                this.waterPressureAlarmLow = Float.valueOf(waterLower).intValue();
+                waterPressureLowerTextView.setText(waterLower + "");
             } else if (tag.equals(SETTINGS_APP_PARAM_UPLOAD)) {
                 String upload = bundle.getString(SettingsInputDialogFragment.INPUT);
                 if (upload != null && (upload.trim().equals("") && upload.equals(unsetString))) {

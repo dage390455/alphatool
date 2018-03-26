@@ -187,6 +187,8 @@
     <string name="upgrade_failed">Upgrade Failed</string>
     <string name="upgrade_end">Upgrade End</string>
     <string name="upgrading">Upgrading</string>
+    <string name="upgrade_start">Upgrade Start</string>
+    <string name="upgrade_add_nearby">Add NearBy</string>
     <string name="copyright">Copyright (c) 2013-2015 Sensoro Co., Ltd.. All Rights Reserved.</string>
     <string name="search_condition">major,minor,id</string>
     <string name="search_tips">SN,Name,Tags</string>
@@ -218,7 +220,7 @@
     <string name="scan">"Scan QR"</string>
     <string name="manual">"Manual"</string>
     <string name="auth">"Authorization"</string>
-    <string name="beacon_not_found">Can not find this beacon, the reason: \n 1: The App not found it yet, please retry later. 2: This beacon is not working. \n 3. The broadcast of this beacon was encrypt, please add this broadcast key.</string>
+    <string name="beacon_not_found">Device Not Found</string>
     <string name="no_result">No result!</string>
 
 
@@ -228,8 +230,8 @@
     <string name="rssi">Rssi</string>
     <string name="light">Light</string>
     <string name="battery">Battery</string>
-
     <string name="upgrade">Upgrade</string>
+    <string name="upgrade_list">Upgrade List</string>
     <string name="upgrade_in_background">Upgrade</string>
     <string name="connecting">connecting...</string>
     <string name="select_key">Selected:</string>
@@ -297,6 +299,7 @@
     <string name="setting_temp">Temp. Sampling Interval</string>
     <string name="setting_humidity">Humidity Interval</string>
     <string name="setting_rate">Advertising</string>
+    <string name="advance">Advance</string>
     <string name="setting_sensor_advertising">Sensor Advertising</string>
     <string name="setting_restore_factory_settings">Reset All Settings</string>
     <string name="setting_firmware_update">Firmware Upgrade</string>
@@ -327,6 +330,7 @@
     <string name="sensor_angle_pitch">Pitch</string>
     <string name="sensor_angle_roll">Roll</string>
     <string name="sensor_angle_yaw">Yaw</string>
+    <string name="sensor_water_pressure">Water Pressure</string>
     <string name="command">Command</string>
     <string name="zero_calibrate">Zero Calibrate</string>
     <string name="zero_calibrate_success">Zero Calibrate Success</string>
@@ -402,10 +406,6 @@
     <string name="text_scaning">Searching...</string>
     <string name="text_connecting">Connecting...</string>
     <string name="text_double_validation">Two-Step Verification</string>
-    <string name="text_input_passwd">Password protection, enter password to continue</string>
-    <string name="text_reinput_passwd">Password incorrect, try again.</string>
-    <string name="http_www_sensoro_com_orders">http://www.sensoro.com/order</string>
-    <string name="http_www_sensoro_com">http://www.sensoro.com</string>
     <string name="setting_background_enhancement">Enable Background Enhancement</string>
     <string name="setting_custom_package1">Custom Package 1</string>
     <string name="setting_custom_package2">Custom Package 2</string>
@@ -441,6 +441,9 @@
     <string name="setting_text_classB">ClassB</string>
     <string name="setting_text_classB_enable">Enable ClassB</string>
     <string name="setting_text_classB_datarate">ClassB Data Rate</string>
+    <string name="setting_text_receive_window">Receive Window</string>
+    <string name="setting_text_work_channel">Work Channel</string>
+    <string name="setting_text_channel">Channel</string>
     <string name="setting_text_classB_periodicity">Receiving Period</string>
     <string name="setting_text_transmit_power">Transmit Power</string>
     <string name="setting_text_ad_interval">Advertising Interval</string>
@@ -465,6 +468,12 @@
     <string name="pull_to_refresh_pull_label">Pull Down To Refresh…</string>
     <string name="pull_to_refresh_release_label">Release To Refresh…</string>
     <string name="pull_to_refresh_refreshing_label">Loading…</string>
+    <string name="dfu_waiting">Waiting Upgrade</string>
+    <string name="dfu_ready">Ready Upgrade</string>
+    <string name="dfu_connecting">Connecting</string>
+    <string name="dfu_connect_success">Connect Success</string>
+    <string name="dfu_write_success">Write Success</string>
+    <string name="dfu_trans">Waiting Transiting</string>
     <string name="setting_power">Transmit Power</string>
     <string name="setting_brightness">Light Sampling Interval</string>
     <string name="setting_speed">Accelerometer Sensitivity</string>
@@ -502,6 +511,7 @@
     <string name="tips_connecting">connecting</string>
     <string name="tips_loading">loading...</string>
     <string name="tips_logining">logining...</string>
+    <string name="tips_open_camera">Please Open Camera Permission</string>
     <string name="tips_open_location_service">Please Turn On Location Service</string>
     <string name="tips_open_ble_service">Please Turn On mobile bluetooth</string>
     <string name="tips_network_error">The network connection is wrong, please check the network connection</string>
@@ -512,8 +522,10 @@
     <string name="tips_cannot_find_connection">Can not find Connection Object</string>
     <string name="menu_single">Single Mode</string>
     <string name="menu_multi">Multi Mode</string>
+    <string name="menu_same">Same Mode</string>
     <string name="menu_top_single">If it is checked, you could setting quickly a device.</string>
     <string name="menu_top_multi">If it is checked, you could setting a batch of device.</string>
+    <string name="menu_top_same">If it is checked, you could setting a batch of same device.</string>
     <string name="menu_setting">Setting</string>
     <string name="menu_cloud_setting">Private Cloud Setting</string>
     <string name="menu_upgrade">Upgrade</string>

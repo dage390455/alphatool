@@ -597,7 +597,49 @@
                         android:textSize="18sp" />
 
                 </RelativeLayout>
+                <!--maxEirp-->
+                <RelativeLayout
+                    android:id="@+id/settings_device_rl_lora_eirp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_item_selector"
+                    android:paddingBottom="10dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="@dimen/y30"
+                        android:text="@string/setting_text_transmit_power"
+                        android:textColor="#666666"
+                        android:textSize="18sp" />
 
+                    <ImageView
+                        android:id="@+id/iv_eirp"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="20dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/icon_arrow" />
+
+                    <TextView
+                        android:id="@+id/settings_device_tv_lora_eirp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_toLeftOf="@id/iv_eirp"
+                        android:ellipsize="end"
+                        android:maxEms="8"
+                        android:singleLine="true"
+                        android:textColor="#999999"
+                        android:textSize="18sp" />
+
+                </RelativeLayout>
                 <!--ad interval-->
                 <RelativeLayout
                     android:id="@+id/settings_device_rl_lora_ad_interval"
@@ -650,6 +692,7 @@
                         android:textSize="18sp" />
 
                 </RelativeLayout>
+
 
                 <ImageView
                     android:layout_width="match_parent"

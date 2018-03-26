@@ -184,13 +184,14 @@
     <string name="upgrade_failed">升级失败</string>
     <string name="upgrade_end">升级结束</string>
     <string name="upgrading">正在升级</string>
+    <string name="upgrade_start">开始升级</string>
+    <string name="upgrade_add_nearby">添加附近设备</string>
     <string name="copyright">Copyright (c) 2013-2015 Sensoro Co., Ltd.. All Rights Reserved.</string>
     <string name="search_condition">major,minor,id</string>
     <string name="search_tips">序列号,名称,标签</string>
     <string name="have_no_signal">无信号</string>
-    <string name="no_connection">Please approach beacon to retry!</string>
-    <string name="setting_power_tips">Tips: The higher transimit power can increase the coverage range of signal, but it will decrease the battery life.</string>
-    <string name="setting_interval_tips">Tips: The shorter advertising interval result in quicker broadcast speed and increase the chance to be found, but it will significantly decrease battery life</string>
+    <string name="setting_power_tips">提示: 广播功率设置越高，信号覆盖范围越大，同时耗电量也更高！.</string>
+    <string name="setting_interval_tips">提示：广播时间间隔越短，广播速度越快，发现的机会越大，但会显着降低电池寿命</string>
     <string name="min">MIN</string>
     <string name="low">LOW</string>
     <string name="medium">MEDIUM</string>
@@ -215,10 +216,14 @@
     <string name="scan">"Scan QR"</string>
     <string name="manual">"Manual"</string>
     <string name="auth">"Authorization"</string>
-    <string name="beacon_not_found">Can not find this beacon, the reason: \n 1: The App not found it yet, please retry later. 2: This beacon is not working. \n 3. The broadcast of this beacon was encrypt, please add this broadcast key.</string>
+    <string name="beacon_not_found">设备不在此账户下</string>
     <string name="no_result">无结果!</string>
-
-
+    <string name="dfu_waiting">等待升级</string>
+    <string name="dfu_ready">准备更新</string>
+    <string name="dfu_connecting">正在连接</string>
+    <string name="dfu_connect_success">连接成功</string>
+    <string name="dfu_write_success">写入成功</string>
+    <string name="dfu_trans">等待传输固件</string>
     <string name="defaults">默认</string>
     <string name="major_minor">MajorMinor</string>
     <string name="distance">距离</string>
@@ -226,6 +231,7 @@
     <string name="light">光线</string>
     <string name="battery">电池</string>
     <string name="upgrade">升级</string>
+    <string name="upgrade_list">升级列表</string>
     <string name="upgrade_in_background">升级</string>
     <string name="connecting">连接中...</string>
     <string name="select_key">Selected:</string>
@@ -295,6 +301,7 @@
     <string name="setting_passwd">密码</string>
     <string name="setting_other">其他</string>
     <string name="status">状态</string>
+    <string name="advance">升级(高级)</string>
     <string name="setting_sensor_advertising">传感器广播</string>
     <string name="setting_temp">Temp. Sampling Interval</string>
     <string name="setting_humidity">Humidity Interval</string>
@@ -328,6 +335,7 @@
     <string name="sensor_angle_pitch">俯仰角</string>
     <string name="sensor_angle_roll">横滚角</string>
     <string name="sensor_angle_yaw">偏航角</string>
+    <string name="sensor_water_pressure">水压</string>
     <string name="command">命令</string>
     <string name="zero_calibrate">校零</string>
     <string name="zero_calibrate_success">校零成功</string>
@@ -402,10 +410,6 @@
     <string name="text_third_speed">Highest</string>
     <string name="text_scaning">扫描中...</string>
     <string name="text_connecting">连接中...</string>
-    <string name="text_input_passwd">Password protection, enter password to continue</string>
-    <string name="text_reinput_passwd">Password incorrect, try again.</string>
-    <string name="http_www_sensoro_com_orders">http://www.sensoro.com/order</string>
-    <string name="http_www_sensoro_com">http://www.sensoro.com</string>
     <string name="setting_background_enhancement">Enable Background Enhancement</string>
     <string name="setting_custom_package1">自定义包 1</string>
     <string name="setting_custom_package2">自定义包 2</string>
@@ -442,6 +446,9 @@
     <string name="setting_text_classB_enable">状态</string>
     <string name="setting_text_classB_datarate">扩频因子</string>
     <string name="setting_text_classB_periodicity">灵敏度</string>
+    <string name="setting_text_receive_window">接收窗口</string>
+    <string name="setting_text_work_channel">工作通道</string>
+    <string name="setting_text_channel">通道</string>
     <string name="setting_text_transmit_power">广播功率</string>
     <string name="setting_text_ad_interval">传输周期</string>
     <string name="setting_text_access_mode">联网方式</string>
@@ -502,6 +509,7 @@
     <string name="tips_logining">登录中...</string>
     <string name="tips_open_location_service">请开启手机定位权限</string>
     <string name="tips_open_ble_service">请确认蓝牙是否打开</string>
+    <string name="tips_open_camera">请打开相机权限</string>
     <string name="tips_network_error">网络连接错误,请检查网络连接</string>
     <string name="tips_no_station">无基站</string>
     <string name="tips_loading_device_data">正在加载设备数据</string>
@@ -510,8 +518,10 @@
     <string name="tips_cannot_find_connection">无法找到连接对象</string>
     <string name="menu_single">单选模式</string>
     <string name="menu_multi">多选模式</string>
+    <string name="menu_same">选择模式</string>
     <string name="menu_top_single">开启后对单个设备进行快速操作</string>
     <string name="menu_top_multi">开启后对多个设备进行批量操作</string>
+    <string name="menu_top_same">开启后一次性选择相同设备</string>
     <string name="menu_setting">配置</string>
     <string name="menu_cloud_setting">私有云配置</string>
     <string name="menu_upgrade">升级</string>
