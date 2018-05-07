@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/LoRaTool.iml" filepath="$PROJECT_DIR$/LoRaTool.iml" />
+      <module fileurl="file://$PROJECT_DIR$/alphatool.iml" filepath="$PROJECT_DIR$/alphatool.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/liblorasettingserver/liblorasettingserver.iml" filepath="$PROJECT_DIR$/liblorasettingserver/liblorasettingserver.iml" />
       <module fileurl="file://$PROJECT_DIR$/libs/libs.iml" filepath="$PROJECT_DIR$/libs/libs.iml" />

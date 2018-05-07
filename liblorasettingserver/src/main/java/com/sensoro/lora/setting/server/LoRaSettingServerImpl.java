@@ -81,23 +81,31 @@ public class LoRaSettingServerImpl implements ILoRaSettingServer {
     }
 
     @Override
-    public boolean login(String id, String pwd, final Response.Listener<LoginRsp> listener, Response.ErrorListener errorListener) {
+    public boolean login(String id, String pwd, final Response.Listener<LoginRsp> listener, Response.ErrorListener
+            errorListener) {
 
         if (id == null || pwd == null) {
             return false;
         }
         LoginReq loginReq = new LoginReq(id, pwd);
         String body = gson.toJson(loginReq);
+        Map<String, String> headers = new HashMap<>();
+
+        // add sessionId for authorization.
+        headers.put(HEADER_USER_AGENT, "android");
         Response.Listener<LoginRsp> interceptListener = new Response.Listener<LoginRsp>() {
             @Override
             public void onResponse(LoginRsp response) {
                 // set sessionid;
                 sessionId = response.getSessionId();
-                String expires = response.getExpires();
+//                String expires = response.getExpires();
+//                String s = response.toString();
                 listener.onResponse(response);
             }
         };
-        volleyManager.gsonRequest(TAG, Request.Method.POST, body, SCOPE + LOGIN, LoginRsp.class, interceptListener, errorListener);
+        volleyManager.gsonRequest(TAG, Request.Method.POST, headers, body, SCOPE + LOGIN, LoginRsp.class,
+                interceptListener,
+                errorListener);
 
         return true;
     }
@@ -111,12 +119,14 @@ public class LoRaSettingServerImpl implements ILoRaSettingServer {
             // add sessionId for authorization.
             headers.put(HEADER_SESSION_ID, sessionId);
         }
-        volleyManager.gsonRequest(TAG, Request.Method.GET, headers, (String) null, SCOPE + STATION_LIST, StationListRsp.class, listener, errorListener);
+        volleyManager.gsonRequest(TAG, Request.Method.GET, headers, (String) null, SCOPE + STATION_LIST,
+                StationListRsp.class, listener, errorListener);
         return false;
     }
 
     @Override
-    public boolean deviceList(int page, Response.Listener<DeviceInfoListRsp> listener, Response.ErrorListener errorListener) {
+    public boolean deviceList(int page, Response.Listener<DeviceInfoListRsp> listener, Response.ErrorListener
+            errorListener) {
 
         Map<String, String> headers = new HashMap<>();
 
@@ -131,13 +141,16 @@ public class LoRaSettingServerImpl implements ILoRaSettingServer {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        volleyManager.gsonRequest(TAG, Request.Method.POST, headers, jsonObject.toString(), SCOPE + DEVICE_LIST, DeviceInfoListRsp.class, listener, errorListener);
-//        volleyManager.gsonRequest(null, Request.Method.POST, headers, (String) null, SCOPE + DEVICE_LIST, DeviceInfoListRsp.class, listener, errorListener);
+        volleyManager.gsonRequest(TAG, Request.Method.POST, headers, jsonObject.toString(), SCOPE + DEVICE_LIST,
+                DeviceInfoListRsp.class, listener, errorListener);
+//        volleyManager.gsonRequest(null, Request.Method.POST, headers, (String) null, SCOPE + DEVICE_LIST,
+// DeviceInfoListRsp.class, listener, errorListener);
         return false;
     }
 
     @Override
-    public boolean deviceList(String searchText, String searchType, Response.Listener<DeviceInfoListRsp> listener, Response.ErrorListener errorListener) {
+    public boolean deviceList(String searchText, String searchType, Response.Listener<DeviceInfoListRsp> listener,
+                              Response.ErrorListener errorListener) {
         Map<String, String> headers = new HashMap<>();
 
         if (sessionId != null) {
@@ -154,13 +167,15 @@ public class LoRaSettingServerImpl implements ILoRaSettingServer {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        volleyManager.gsonRequest(TAG, Request.Method.POST, headers, jsonObject.toString(), SCOPE + DEVICE_LIST, DeviceInfoListRsp.class, listener, errorListener);
+        volleyManager.gsonRequest(TAG, Request.Method.POST, headers, jsonObject.toString(), SCOPE + DEVICE_LIST,
+                DeviceInfoListRsp.class, listener, errorListener);
 
         return false;
     }
 
     @Override
-    public boolean deviceAll(String sn, Response.Listener<DeviceInfoListRsp> listener, Response.ErrorListener errorListener) {
+    public boolean deviceAll(String sn, Response.Listener<DeviceInfoListRsp> listener, Response.ErrorListener
+            errorListener) {
         Map<String, String> headers = new HashMap<>();
 
         if (sessionId != null) {
@@ -169,7 +184,8 @@ public class LoRaSettingServerImpl implements ILoRaSettingServer {
         }
 
         String url = SCOPE + DEVICE_ALL + "/" + sn;
-        volleyManager.gsonRequest(TAG, Request.Method.GET, headers, (String) null, url, DeviceInfoListRsp.class, listener, errorListener);
+        volleyManager.gsonRequest(TAG, Request.Method.GET, headers, (String) null, url, DeviceInfoListRsp.class,
+                listener, errorListener);
 
         return false;
     }
@@ -189,12 +205,14 @@ public class LoRaSettingServerImpl implements ILoRaSettingServer {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        volleyManager.gsonRequest(TAG, Request.Method.POST, headers, jsonObject.toString(), SCOPE + EID_LIST, EidInfoListRsp.class, listener, errorListener);
+        volleyManager.gsonRequest(TAG, Request.Method.POST, headers, jsonObject.toString(), SCOPE + EID_LIST,
+                EidInfoListRsp.class, listener, errorListener);
 
     }
 
     @Override
-    public void getStationInfo(Response.Listener<StationListRsp> listener, Response.ErrorListener errorListener, String sn) {
+    public void getStationInfo(Response.Listener<StationListRsp> listener, Response.ErrorListener errorListener,
+                               String sn) {
         String url = SCOPE + STATION_LIST + "?sn=" + sn;
         Map<String, String> headers = new HashMap<>();
 
@@ -204,12 +222,14 @@ public class LoRaSettingServerImpl implements ILoRaSettingServer {
         }
 //        Map<String, String> params = new HashMap<>();
 //        params.put("sn", sn);
-        volleyManager.gsonRequest(TAG, Request.Method.GET, headers, (String) null, url, StationListRsp.class, listener, errorListener);
+        volleyManager.gsonRequest(TAG, Request.Method.GET, headers, (String) null, url, StationListRsp.class,
+                listener, errorListener);
 
     }
 
     @Override
-    public void updateDevices(String dataJson, Response.Listener<ResponseBase> listener, Response.ErrorListener errorListener) {
+    public void updateDevices(String dataJson, Response.Listener<ResponseBase> listener, Response.ErrorListener
+            errorListener) {
         String url = SCOPE + UPDATE;
         Map<String, String> headers = new HashMap<>();
 
@@ -217,11 +237,13 @@ public class LoRaSettingServerImpl implements ILoRaSettingServer {
             // add sessionId for authorization.
             headers.put(HEADER_SESSION_ID, sessionId);
         }
-        volleyManager.gsonRequest(TAG, Request.Method.POST, headers, dataJson, url, ResponseBase.class, listener, errorListener);
+        volleyManager.gsonRequest(TAG, Request.Method.POST, headers, dataJson, url, ResponseBase.class, listener,
+                errorListener);
     }
 
     @Override
-    public boolean deviceUpgradeList(int page, String deviceType, String band, String hv, String fv, Response.Listener<UpgradeListRsp> listener, Response.ErrorListener errorListener) {
+    public boolean deviceUpgradeList(int page, String deviceType, String band, String hv, String fv, Response
+            .Listener<UpgradeListRsp> listener, Response.ErrorListener errorListener) {
         Map<String, String> headers = new HashMap<>();
 
         if (sessionId != null) {
@@ -239,12 +261,14 @@ public class LoRaSettingServerImpl implements ILoRaSettingServer {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        volleyManager.gsonRequest(TAG, Request.Method.POST, headers, jsonObject.toString(), SCOPE + UPDATE_LIST, UpgradeListRsp.class, listener, errorListener);
+        volleyManager.gsonRequest(TAG, Request.Method.POST, headers, jsonObject.toString(), SCOPE + UPDATE_LIST,
+                UpgradeListRsp.class, listener, errorListener);
         return false;
     }
 
     @Override
-    public void updateDeviceUpgradeInfo(String dataJson, Response.Listener<ResponseBase> listener, Response.ErrorListener errorListener) {
+    public void updateDeviceUpgradeInfo(String dataJson, Response.Listener<ResponseBase> listener, Response
+            .ErrorListener errorListener) {
         String url = SCOPE + UPDATE_DEVICE_UPGRADE_INFO;
         Map<String, String> headers = new HashMap<>();
 
@@ -252,11 +276,13 @@ public class LoRaSettingServerImpl implements ILoRaSettingServer {
             // add sessionId for authorization.
             headers.put(HEADER_SESSION_ID, sessionId);
         }
-        volleyManager.gsonRequest(TAG, Request.Method.PUT, headers, dataJson, url, ResponseBase.class, listener, errorListener);
+        volleyManager.gsonRequest(TAG, Request.Method.PUT, headers, dataJson, url, ResponseBase.class, listener,
+                errorListener);
     }
 
     @Override
-    public void secondAuth(String pinCode, Response.Listener<ResponseBase> listener, Response.ErrorListener errorListener) {
+    public void secondAuth(String pinCode, Response.Listener<ResponseBase> listener, Response.ErrorListener
+            errorListener) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("pincode", pinCode);
@@ -269,7 +295,8 @@ public class LoRaSettingServerImpl implements ILoRaSettingServer {
             // add sessionId for authorization.
             headers.put(HEADER_SESSION_ID, sessionId);
         }
-        volleyManager.gsonRequest(TAG, Request.Method.POST, headers, jsonObject.toString(), SCOPE + TWO_AUTHENTICATION, ResponseBase.class, listener, errorListener);
+        volleyManager.gsonRequest(TAG, Request.Method.POST, headers, jsonObject.toString(), SCOPE +
+                TWO_AUTHENTICATION, ResponseBase.class, listener, errorListener);
 
     }
 }

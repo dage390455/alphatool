@@ -65,7 +65,8 @@ import butterknife.ButterKnife;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-public class SettingDeviceActivity extends BaseActivity implements Constants, CompoundButton.OnCheckedChangeListener, View.OnClickListener, OnPositiveButtonClickListener, SensoroWriteCallback, SensoroConnectionCallback {
+public class SettingDeviceActivity extends BaseActivity implements Constants, CompoundButton.OnCheckedChangeListener,
+        View.OnClickListener, OnPositiveButtonClickListener, SensoroWriteCallback, SensoroConnectionCallback {
     private static final String TAG = SettingDeviceActivity.class.getSimpleName();
 
     @BindView(R.id.settings_device_back)
@@ -661,8 +662,10 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         loraEirpRelativeLayout.setVisibility(GONE);
                         loraTxpRelativeLayout.setVisibility(VISIBLE);
                     }
-                    loraEirpTextView.setText("" + loraEirpValues[loraTxp]);
-                    loraTxpTextView.setText(String.valueOf(sensoroDevice.getLoraTxp()) + " dBm");
+                    if (sensoroDevice.hasLoraTxp()) {
+                        loraEirpTextView.setText("" + loraEirpValues[loraTxp]);
+                        loraTxpTextView.setText(String.valueOf(sensoroDevice.getLoraTxp()) + " dBm");
+                    }
                     if (sensoroDevice.hasLoraInterval()) {
                         loraAdIntervalTextView.setText(String.valueOf(sensoroDevice.getLoraInt()) + "s");
                         loraAdIntervalRelativeLayout.setVisibility(VISIBLE);
@@ -689,12 +692,18 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
 
                 if (sensoroDevice.hasEddyStone()) {
                     sensoroSlotArray = sensoroDevice.getSlotArray();
-                    float firmware_version = Float.valueOf(sensoroDevice.getFirmwareVersion());
-                    if (firmware_version > SensoroDevice.FV_1_2) { // 1.3以后没有custom package 3
-                        findViewById(R.id.settings_device_ll_custome_package3).setVisibility(GONE);
-                    } else {
-                        findViewById(R.id.settings_device_ll_sensor_enable).setVisibility(GONE);
+                    try {
+                        String firmwareVersion = sensoroDevice.getFirmwareVersion();
+                        float firmware_version = Float.valueOf(firmwareVersion);
+                        if (firmware_version > SensoroDevice.FV_1_2) { // 1.3以后没有custom package 3
+                            findViewById(R.id.settings_device_ll_custome_package3).setVisibility(GONE);
+                        } else {
+                            findViewById(R.id.settings_device_ll_sensor_enable).setVisibility(GONE);
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
                     }
+
                     if (sensoroSlotArray != null) {
                         refreshSlot();
                     }
@@ -823,13 +832,16 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         waterPressureLinearLayout.setVisibility(VISIBLE);
                         waterPressureAlarmHigh = sensoroDevice.getSensoroSensor().getWaterPressureAlarmHigh();
                         waterPressureAlarmLow = sensoroDevice.getSensoroSensor().getWaterPressureAlarmLow();
-                        waterPressureUpperTextView.setText(sensoroDevice.getSensoroSensor().getWaterPressureAlarmHigh() + "");
-                        waterPressureLowerTextView.setText(sensoroDevice.getSensoroSensor().getWaterPressureAlarmLow() + "");
+                        waterPressureUpperTextView.setText(sensoroDevice.getSensoroSensor().getWaterPressureAlarmHigh
+                                () + "");
+                        waterPressureLowerTextView.setText(sensoroDevice.getSensoroSensor().getWaterPressureAlarmLow
+                                () + "");
                     } else {
                         waterPressureLinearLayout.setVisibility(GONE);
                     }
 
-                    if (sensoroDevice.getSensoroSensor().hasPitchAngle() || sensoroDevice.getSensoroSensor().hasRollAngle() || sensoroDevice.getSensoroSensor().hasYawAngle()) {
+                    if (sensoroDevice.getSensoroSensor().hasPitchAngle() || sensoroDevice.getSensoroSensor()
+                            .hasRollAngle() || sensoroDevice.getSensoroSensor().hasYawAngle()) {
                         zeroCommandLinearLayout.setVisibility(VISIBLE);
                     } else {
                         zeroCommandLinearLayout.setVisibility(GONE);
@@ -854,7 +866,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         confirmLayout.setOnClickListener(this);
                         appParamConfirm = sensoroDevice.getConfirm();
 
-                        confirmTextView.setText(this.getResources().getStringArray(R.array.status_array)[sensoroDevice.getConfirm() == 0 ? 1 : 0]);
+                        confirmTextView.setText(this.getResources().getStringArray(R.array.status_array)
+                                [sensoroDevice.getConfirm() == 0 ? 1 : 0]);
                     } else {
                         confirmLayout.setVisibility(GONE);
                     }
@@ -888,16 +901,20 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
 
                     switch (slot.getIndex()) {
                         case EDDYSTONE_SLOT_UID:
-                            eddyStoneSlot1Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[0]);
+                            eddyStoneSlot1Item1Value.setText(getResources().getStringArray(R.array
+                                    .eddystone_slot_array)[0]);
                             break;
                         case EDDYSTONE_SLOT_URL:
-                            eddyStoneSlot2Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[0]);
+                            eddyStoneSlot2Item1Value.setText(getResources().getStringArray(R.array
+                                    .eddystone_slot_array)[0]);
                             break;
                         case EDDYSTONE_SLOT_EID:
-                            eddyStoneSlot3Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[0]);
+                            eddyStoneSlot3Item1Value.setText(getResources().getStringArray(R.array
+                                    .eddystone_slot_array)[0]);
                             break;
                         case EDDYSTONE_SLOT_TLM:
-                            eddyStoneSlot4Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[0]);
+                            eddyStoneSlot4Item1Value.setText(getResources().getStringArray(R.array
+                                    .eddystone_slot_array)[0]);
                             break;
                         case EDDYSTONE_SLOT_CUSTOM1:
                             isCustomPackage1Enabled = false;
@@ -921,47 +938,59 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     switch (slot.getIndex()) {
                         case 0:
                             if (slot.isActived() == 1) {
-                                eddyStoneSlot1Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[1]);
-                                eddyStoneSlot1Item2.setText(getResources().getStringArray(R.array.eddystone_slot_array)[1]);
+                                eddyStoneSlot1Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[1]);
+                                eddyStoneSlot1Item2.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[1]);
                                 eddyStoneSlot1Item2Value.setText(slot.getFrame());
                                 eddyStoneSlot1Item2Layout.setVisibility(View.VISIBLE);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
-                                eddyStoneSlot1Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[0]);
+                                eddyStoneSlot1Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[0]);
                             }
                             break;
                         case 1:
                             if (slot.isActived() == 1) {
-                                eddyStoneSlot2Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[1]);
-                                eddyStoneSlot2Item2.setText(getResources().getStringArray(R.array.eddystone_slot_array)[1]);
+                                eddyStoneSlot2Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[1]);
+                                eddyStoneSlot2Item2.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[1]);
                                 eddyStoneSlot2Item2Value.setText(slot.getFrame());
                                 eddyStoneSlot2Item2Layout.setVisibility(View.VISIBLE);
 
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
-                                eddyStoneSlot2Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[0]);
+                                eddyStoneSlot2Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[0]);
                             }
                             break;
                         case 2:
                             if (slot.isActived() == 1) {
-                                eddyStoneSlot3Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[1]);
-                                eddyStoneSlot3Item2.setText(getResources().getStringArray(R.array.eddystone_slot_array)[1]);
+                                eddyStoneSlot3Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[1]);
+                                eddyStoneSlot3Item2.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[1]);
                                 eddyStoneSlot3Item2Value.setText(slot.getFrame());
                                 eddyStoneSlot3Item2Layout.setVisibility(View.VISIBLE);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
-                                eddyStoneSlot3Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[0]);
+                                eddyStoneSlot3Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[0]);
                             }
                             break;
                         case 3:
                             if (slot.isActived() == 1) {
-                                eddyStoneSlot4Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[1]);
-                                eddyStoneSlot4Item2.setText(getResources().getStringArray(R.array.eddystone_slot_array)[1]);
+                                eddyStoneSlot4Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[1]);
+                                eddyStoneSlot4Item2.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[1]);
                                 eddyStoneSlot4Item2Value.setText(slot.getFrame());
                                 eddyStoneSlot4Item2Layout.setVisibility(View.VISIBLE);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
-                                eddyStoneSlot4Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[0]);
+                                eddyStoneSlot4Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[0]);
                             }
                             break;
                     }
@@ -971,46 +1000,58 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     switch (slot.getIndex()) {
                         case 0:
                             if (slot.isActived() == 1) {
-                                eddyStoneSlot1Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[2]);
-                                eddyStoneSlot1Item2.setText(getResources().getStringArray(R.array.eddystone_slot_array)[2]);
+                                eddyStoneSlot1Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[2]);
+                                eddyStoneSlot1Item2.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[2]);
                                 eddyStoneSlot1Item2Value.setText(slot.getFrame());
                                 eddyStoneSlot1Item2Layout.setVisibility(View.VISIBLE);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
-                                eddyStoneSlot1Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[0]);
+                                eddyStoneSlot1Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[0]);
                             }
                             break;
                         case 1:
                             if (slot.isActived() == 1) {
-                                eddyStoneSlot2Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[2]);
-                                eddyStoneSlot2Item2.setText(getResources().getStringArray(R.array.eddystone_slot_array)[2]);
+                                eddyStoneSlot2Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[2]);
+                                eddyStoneSlot2Item2.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[2]);
                                 eddyStoneSlot2Item2Value.setText(slot.getFrame());
                                 eddyStoneSlot2Item2Layout.setVisibility(View.VISIBLE);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
-                                eddyStoneSlot2Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[0]);
+                                eddyStoneSlot2Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[0]);
                             }
                             break;
                         case 2:
                             if (slot.isActived() == 1) {
-                                eddyStoneSlot3Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[1]);
-                                eddyStoneSlot3Item2.setText(getResources().getStringArray(R.array.eddystone_slot_array)[1]);
+                                eddyStoneSlot3Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[1]);
+                                eddyStoneSlot3Item2.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[1]);
                                 eddyStoneSlot3Item2Value.setText(slot.getFrame());
                                 eddyStoneSlot3Item2Layout.setVisibility(View.VISIBLE);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
-                                eddyStoneSlot3Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[0]);
+                                eddyStoneSlot3Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[0]);
                             }
                             break;
                         case 3:
                             if (slot.isActived() == 1) {
-                                eddyStoneSlot4Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[2]);
-                                eddyStoneSlot4Item2.setText(getResources().getStringArray(R.array.eddystone_slot_array)[2]);
+                                eddyStoneSlot4Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[2]);
+                                eddyStoneSlot4Item2.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[2]);
                                 eddyStoneSlot4Item2Value.setText(slot.getFrame());
                                 eddyStoneSlot4Item2Layout.setVisibility(View.VISIBLE);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
-                                eddyStoneSlot4Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[0]);
+                                eddyStoneSlot4Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[0]);
                             }
                             break;
                     }
@@ -1020,8 +1061,10 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     switch (slot.getIndex()) {
                         case 0:
                             if (slot.isActived() == 1) {
-                                eddyStoneSlot1Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[3]);
-                                eddyStoneSlot1Item2.setText(getResources().getStringArray(R.array.eddystone_slot_array)[3]);
+                                eddyStoneSlot1Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[3]);
+                                eddyStoneSlot1Item2.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[3]);
                                 String value = slot.getFrame();
                                 byte[] value_data = SensoroUtils.HexString2Bytes(value);
                                 byte[] ik_data = new byte[16];
@@ -1032,13 +1075,16 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                                 eddyStoneSlot1Item2Layout.setVisibility(View.VISIBLE);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
-                                eddyStoneSlot1Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[0]);
+                                eddyStoneSlot1Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[0]);
                             }
                             break;
                         case 1:
                             if (slot.isActived() == 1) {
-                                eddyStoneSlot2Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[3]);
-                                eddyStoneSlot2Item2.setText(getResources().getStringArray(R.array.eddystone_slot_array)[3]);
+                                eddyStoneSlot2Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[3]);
+                                eddyStoneSlot2Item2.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[3]);
                                 String value = slot.getFrame();
                                 byte[] value_data = SensoroUtils.HexString2Bytes(value);
                                 byte[] ik_data = new byte[16];
@@ -1049,13 +1095,16 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                                 eddyStoneSlot2Item2Layout.setVisibility(View.VISIBLE);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
-                                eddyStoneSlot2Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[0]);
+                                eddyStoneSlot2Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[0]);
                             }
                             break;
                         case 2:
                             if (slot.isActived() == 1) {
-                                eddyStoneSlot3Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[3]);
-                                eddyStoneSlot3Item2.setText(getResources().getStringArray(R.array.eddystone_slot_array)[3]);
+                                eddyStoneSlot3Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[3]);
+                                eddyStoneSlot3Item2.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[3]);
                                 String value = slot.getFrame();
                                 byte[] value_data = SensoroUtils.HexString2Bytes(value);
                                 byte[] ik_data = new byte[16];
@@ -1066,13 +1115,16 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                                 eddyStoneSlot3Item2Layout.setVisibility(View.VISIBLE);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
-                                eddyStoneSlot3Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[0]);
+                                eddyStoneSlot3Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[0]);
                             }
                             break;
                         case 3:
                             if (slot.isActived() == 1) {
-                                eddyStoneSlot4Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[3]);
-                                eddyStoneSlot4Item2.setText(getResources().getStringArray(R.array.eddystone_slot_array)[3]);
+                                eddyStoneSlot4Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[3]);
+                                eddyStoneSlot4Item2.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[3]);
                                 String value = slot.getFrame();
                                 byte[] value_data = SensoroUtils.HexString2Bytes(value);
                                 byte[] ik_data = new byte[16];
@@ -1083,7 +1135,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                                 eddyStoneSlot4Item2Layout.setVisibility(View.VISIBLE);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
-                                eddyStoneSlot4Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[0]);
+                                eddyStoneSlot4Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[0]);
                             }
                             break;
                     }
@@ -1093,35 +1146,43 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     switch (slot.getIndex()) {
                         case 0:
                             if (slot.isActived() == 1) {
-                                eddyStoneSlot1Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[4]);
+                                eddyStoneSlot1Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[4]);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
-                                eddyStoneSlot1Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[0]);
+                                eddyStoneSlot1Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[0]);
                             }
 
                             break;
                         case 1:
                             if (slot.isActived() == 1) {
-                                eddyStoneSlot2Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[4]);
+                                eddyStoneSlot2Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[4]);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
-                                eddyStoneSlot2Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[0]);
+                                eddyStoneSlot2Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[0]);
                             }
                             break;
                         case 2:
                             if (slot.isActived() == 1) {
-                                eddyStoneSlot3Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[4]);
+                                eddyStoneSlot3Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[4]);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
-                                eddyStoneSlot3Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[0]);
+                                eddyStoneSlot3Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[0]);
                             }
                             break;
                         case 3:
                             if (slot.isActived() == 1) {
-                                eddyStoneSlot4Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[4]);
+                                eddyStoneSlot4Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[4]);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
-                                eddyStoneSlot4Item1Value.setText(getResources().getStringArray(R.array.eddystone_slot_array)[0]);
+                                eddyStoneSlot4Item1Value.setText(getResources().getStringArray(R.array
+                                        .eddystone_slot_array)[0]);
                             }
                             break;
                     }
@@ -1390,7 +1451,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         .setClassBPeriodicity(sensoroDevice.getClassBPeriodicity())
                         .setClassBDataRate(sensoroDevice.getClassBDataRate());
             }
-            if (sensoroDevice.getPassword() == null || (sensoroDevice.getPassword() != null && !sensoroDevice.getPassword().equals(""))) {
+            if (sensoroDevice.getPassword() == null || (sensoroDevice.getPassword() != null && !sensoroDevice
+                    .getPassword().equals(""))) {
                 builder.setPassword(sensoroDevice.getPassword());
             }
             deviceConfiguration = builder.build();
@@ -1519,7 +1581,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     .setDevAdr(sensoroDevice.getDevAdr())
                     .setLoraDr(sensoroDevice.getLoraDr())
                     .setLoraAdr(sensoroDevice.getLoraAdr());
-            if (sensoroDevice.getPassword() == null || (sensoroDevice.getPassword() != null && !sensoroDevice.getPassword().equals(""))) {
+            if (sensoroDevice.getPassword() == null || (sensoroDevice.getPassword() != null && !sensoroDevice
+                    .getPassword().equals(""))) {
                 builder.setPassword(sensoroDevice.getPassword());
             }
             SensoroSensorConfiguration sensorConfiguration = sensorBuilder.build();
@@ -1567,7 +1630,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     case CmdType.CMD_SET_SMOKE:
                         break;
                     case CmdType.CMD_SET_ZERO:
-                        Toast.makeText(SettingDeviceActivity.this, R.string.zero_calibrate_success, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SettingDeviceActivity.this, R.string.zero_calibrate_success, Toast
+                                .LENGTH_SHORT).show();
                         break;
                     default:
                         try {
@@ -1583,7 +1647,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             e.printStackTrace();
                         }
 
-                        Toast.makeText(getApplicationContext(), getString(R.string.save_succ), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.save_succ), Toast.LENGTH_SHORT)
+                                .show();
                         SettingDeviceActivity.this.finish();
                         break;
                 }
@@ -1601,10 +1666,12 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     case CmdType.CMD_SET_SMOKE:
                         break;
                     case CmdType.CMD_SET_ZERO:
-                        Toast.makeText(SettingDeviceActivity.this, R.string.zero_calibrate_failed, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SettingDeviceActivity.this, R.string.zero_calibrate_failed, Toast
+                                .LENGTH_SHORT).show();
                         break;
                     default:
-                        Toast.makeText(getApplicationContext(), getString(R.string.save_fail) + " 错误码" + errorCode, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.save_fail) + " 错误码" + errorCode,
+                                Toast.LENGTH_SHORT).show();
                         break;
                 }
                 progressDialog.dismiss();
@@ -1821,19 +1888,24 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             MsgNode1V1M5.LoraParam.Builder loraParamBuilder = MsgNode1V1M5.LoraParam.newBuilder();
             loraParamBuilder.setTxPower(deviceConfiguration.getLoraTxp());
             if (sensoroDevice.hasDevEui()) {
-                loraParamBuilder.setDevEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration.getDevEui()))));
+                loraParamBuilder.setDevEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration
+                        .getDevEui()))));
             }
             if (sensoroDevice.hasAppEui()) {
-                loraParamBuilder.setAppEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration.getAppEui()))));
+                loraParamBuilder.setAppEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration
+                        .getAppEui()))));
             }
             if (sensoroDevice.hasAppKey()) {
-                loraParamBuilder.setAppKey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration.getAppKey())));
+                loraParamBuilder.setAppKey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration
+                        .getAppKey())));
             }
             if (sensoroDevice.hasAppSkey()) {
-                loraParamBuilder.setAppSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration.getAppSkey())));
+                loraParamBuilder.setAppSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration
+                        .getAppSkey())));
             }
             if (sensoroDevice.hasNwkSkey()) {
-                loraParamBuilder.setNwkSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration.getNwkSkey())));
+                loraParamBuilder.setNwkSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration
+                        .getNwkSkey())));
             }
             if (sensoroDevice.hasDevAddr()) {
                 loraParamBuilder.setDevAddr(deviceConfiguration.getDevAdr());
@@ -1988,19 +2060,23 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         msgCfgBuilder.setBleOnTime(deviceConfiguration.getBleTurnOnTime());
         msgCfgBuilder.setBleOffTime(deviceConfiguration.getBleTurnOffTime());
         if (deviceConfiguration.getDevEui() != null) {
-            msgCfgBuilder.setDevEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration.getDevEui()))));
+            msgCfgBuilder.setDevEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration.getDevEui()
+            ))));
         }
         if (deviceConfiguration.getAppEui() != null) {
-            msgCfgBuilder.setAppEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration.getAppEui()))));
+            msgCfgBuilder.setAppEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration.getAppEui()
+            ))));
         }
         if (deviceConfiguration.getAppKey() != null) {
             msgCfgBuilder.setAppKey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration.getAppKey())));
         }
         if (deviceConfiguration.getAppSkey() != null) {
-            msgCfgBuilder.setAppSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration.getAppSkey())));
+            msgCfgBuilder.setAppSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration.getAppSkey
+                    ())));
         }
         if (deviceConfiguration.getNwkSkey() != null) {
-            msgCfgBuilder.setNwkSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration.getNwkSkey())));
+            msgCfgBuilder.setNwkSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration.getNwkSkey
+                    ())));
         }
 
         msgCfgBuilder.setDevAddr(deviceConfiguration.getDevAdr());
@@ -2119,7 +2195,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 dialogFragment.show(getFragmentManager(), SETTINGS_MINOR);
                 break;
             case R.id.settings_device_rl_power:
-                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(blePowerItems, ParamUtil.getBleTxpIndex(deviceType, bleTxp));
+                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(blePowerItems, ParamUtil
+                        .getBleTxpIndex(deviceType, bleTxp));
                 dialogFragment.show(getFragmentManager(), SETTINGS_BLE_POWER);
                 break;
             case R.id.settings_device_rl_adv_interval:
@@ -2143,7 +2220,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 dialogFragment.show(getFragmentManager(), SETTINGS_BLE_TURNOFF_TIME);
                 break;
             case R.id.settings_device_rl_lora_txp:
-                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(loraTxpItems, ParamUtil.getLoraTxpIndex(band, loraTxp));
+                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(loraTxpItems, ParamUtil
+                        .getLoraTxpIndex(band, loraTxp));
                 dialogFragment.show(getFragmentManager(), SETTINGS_LORA_TXP);
                 break;
             case R.id.settings_device_rl_lora_ad_interval:
@@ -2277,7 +2355,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 break;
             case R.id.settings_device_rl_app_param_confirm:
                 String statusArray[] = this.getResources().getStringArray(R.array.status_array);
-                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(statusArray, sensoroDevice.getConfirm() == 0 ? 1 : 0);
+                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(statusArray, sensoroDevice.getConfirm
+                        () == 0 ? 1 : 0);
                 dialogFragment.show(getFragmentManager(), SETTINGS_APP_PARAM_CONFIRM);
                 break;
             case R.id.settings_device_tv_smoke_start:
@@ -2361,20 +2440,23 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         switch (index) {
             case STATUS_SLOT_DISABLED:
                 eddyStoneSlot1Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot1Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot1Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot1Item2Layout.setVisibility(GONE);
                 eddyStoneSlot1Iv2.setVisibility(GONE);
                 break;
             case STATUS_SLOT_UID:
                 eddyStoneSlot1Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot1Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot1Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot1Item2.setText(this.getString(R.string.slot5_name));
                 eddyStoneSlot1Item2Value.setText(this.getString(R.string.text_null));
                 eddyStoneSlot1Item2Layout.setVisibility(View.VISIBLE);
                 break;
             case STATUS_SLOT_URL:
                 eddyStoneSlot1Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot1Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot1Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot1Item2.setText(this.getString(R.string.slot6_name));
                 eddyStoneSlot1Item2Value.setText(this.getString(R.string.text_null));
                 eddyStoneSlot1Item2Layout.setVisibility(View.VISIBLE);
@@ -2383,13 +2465,15 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 eddyStoneSlot1Item2Layout.setVisibility(View.VISIBLE);
                 eddyStoneSlot1Iv2.setVisibility(View.VISIBLE);
                 eddyStoneSlot1Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot1Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot1Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot1Item2.setText(this.getString(R.string.eid_list));
                 eddyStoneSlot1Item2Value.setText(this.getString(R.string.text_null));
                 break;
             case STATUS_SLOT_TLM:
                 eddyStoneSlot1Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot1Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot1Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot1Iv2.setVisibility(GONE);
                 eddyStoneSlot1Item2Layout.setVisibility(GONE);
                 break;
@@ -2401,20 +2485,23 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         switch (index) {
             case STATUS_SLOT_DISABLED:
                 eddyStoneSlot2Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot2Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot2Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot2Iv2.setVisibility(GONE);
                 eddyStoneSlot2Item2Value.setText(this.getString(R.string.text_null));
                 eddyStoneSlot2Item2Layout.setVisibility(GONE);
                 break;
             case STATUS_SLOT_UID:
                 eddyStoneSlot2Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot2Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot2Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot2Item2.setText(this.getString(R.string.slot5_name));
                 eddyStoneSlot2Item2Layout.setVisibility(View.VISIBLE);
                 break;
             case STATUS_SLOT_URL:
                 eddyStoneSlot2Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot2Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot2Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot2Item2.setText(this.getString(R.string.slot6_name));
                 eddyStoneSlot2Item2Value.setText(this.getString(R.string.text_null));
                 eddyStoneSlot2Item2Layout.setVisibility(View.VISIBLE);
@@ -2422,13 +2509,15 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             case STATUS_SLOT_EID:
                 eddyStoneSlot2Item2Layout.setVisibility(View.VISIBLE);
                 eddyStoneSlot2Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot2Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot2Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot2Item2.setText(this.getString(R.string.eid_list));
                 eddyStoneSlot2Item2Value.setText(this.getString(R.string.text_null));
                 break;
             case STATUS_SLOT_TLM:
                 eddyStoneSlot2Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot2Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot2Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot2Item2Layout.setVisibility(GONE);
                 eddyStoneSlot2Iv2.setVisibility(GONE);
                 break;
@@ -2440,33 +2529,38 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         switch (index) {
             case STATUS_SLOT_DISABLED:
                 eddyStoneSlot3Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot3Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot3Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot3Item2Layout.setVisibility(GONE);
                 eddyStoneSlot2Iv2.setVisibility(GONE);
                 break;
             case STATUS_SLOT_UID:
                 eddyStoneSlot3Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot3Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot3Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot3Item2.setText(this.getString(R.string.slot5_name));
                 eddyStoneSlot3Item2Value.setText(this.getString(R.string.text_null));
                 eddyStoneSlot3Item2Layout.setVisibility(View.VISIBLE);
                 break;
             case STATUS_SLOT_URL:
                 eddyStoneSlot3Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot3Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot3Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot3Item2.setText(this.getString(R.string.slot6_name));
                 eddyStoneSlot3Item2Layout.setVisibility(View.VISIBLE);
                 break;
             case STATUS_SLOT_EID:
                 eddyStoneSlot3Item2Layout.setVisibility(View.VISIBLE);
                 eddyStoneSlot3Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot3Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot3Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot3Item2.setText(this.getString(R.string.eid_list));
                 eddyStoneSlot3Iv2.setVisibility(View.VISIBLE);
                 break;
             case STATUS_SLOT_TLM:
                 eddyStoneSlot3Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot3Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot3Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot3Item2Layout.setVisibility(GONE);
                 eddyStoneSlot3Iv2.setVisibility(GONE);
                 break;
@@ -2478,34 +2572,39 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         switch (index) {
             case STATUS_SLOT_DISABLED:
                 eddyStoneSlot4Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot4Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot4Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot4Item2Layout.setVisibility(GONE);
                 eddyStoneSlot4Iv2.setVisibility(GONE);
                 break;
             case STATUS_SLOT_UID:
                 eddyStoneSlot4Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot4Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot4Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot4Item2.setText(this.getString(R.string.slot5_name));
                 eddyStoneSlot4Item2Value.setText(this.getString(R.string.text_null));
                 eddyStoneSlot4Item2Layout.setVisibility(View.VISIBLE);
                 break;
             case STATUS_SLOT_URL:
                 eddyStoneSlot4Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot4Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot4Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot4Item2.setText(this.getString(R.string.slot6_name));
                 eddyStoneSlot4Item2Layout.setVisibility(View.VISIBLE);
                 break;
             case STATUS_SLOT_EID:
                 eddyStoneSlot4Item2Layout.setVisibility(View.VISIBLE);
                 eddyStoneSlot3Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot4Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot4Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot4Item2.setText(this.getString(R.string.eid_list));
                 eddyStoneSlot4Item2Value.setText(this.getString(R.string.text_null));
                 eddyStoneSlot4Iv2.setVisibility(View.VISIBLE);
                 break;
             case STATUS_SLOT_TLM:
                 eddyStoneSlot4Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot4Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot4Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot4Item2Layout.setVisibility(GONE);
                 eddyStoneSlot4Iv2.setVisibility(GONE);
 
@@ -2570,7 +2669,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             String text = bundle.getString(SettingsInputDialogFragment.INPUT);
             String regString = "[a-f0-9A-F]{32}";
             if (!Pattern.matches(regString, text)) {
-                SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(eddyStoneSlot1Item2Value.getText().toString());
+                SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance
+                        (eddyStoneSlot1Item2Value.getText().toString());
                 dialogFragment.show(getFragmentManager(), SETTINGS_EDDYSTONE1_UID);
                 Toast.makeText(this, R.string.invaild_uid, Toast.LENGTH_SHORT).show();
             } else {
@@ -2583,7 +2683,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         .compile("(http|https):\\/\\/\\S*");
                 Matcher matcher2 = pattern2.matcher(text);
                 if (!matcher2.matches()) {
-                    SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(eddyStoneSlot1Item2Value.getText().toString());
+                    SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance
+                            (eddyStoneSlot1Item2Value.getText().toString());
                     dialogFragment.show(getFragmentManager(), SETTINGS_EDDYSTONE1_URL);
                     Toast.makeText(this, R.string.invaild_url, Toast.LENGTH_SHORT).show();
                 } else {
@@ -2595,7 +2696,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             String text = bundle.getString(SettingsInputDialogFragment.INPUT);
             String regString = "[a-f0-9A-F]{32}";
             if (!Pattern.matches(regString, text)) {
-                SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(eddyStoneSlot2Item2Value.getText().toString());
+                SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance
+                        (eddyStoneSlot2Item2Value.getText().toString());
                 dialogFragment.show(getFragmentManager(), SETTINGS_EDDYSTONE2_UID);
                 Toast.makeText(this, R.string.invaild_uid, Toast.LENGTH_SHORT).show();
             } else {
@@ -2608,7 +2710,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         .compile("(http|https):\\/\\/\\S*");
                 Matcher matcher2 = pattern2.matcher(text);
                 if (!matcher2.matches()) {
-                    SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(eddyStoneSlot2Item2Value.getText().toString());
+                    SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance
+                            (eddyStoneSlot2Item2Value.getText().toString());
                     dialogFragment.show(getFragmentManager(), SETTINGS_EDDYSTONE2_URL);
                     Toast.makeText(this, R.string.invaild_url, Toast.LENGTH_SHORT).show();
                 } else {
@@ -2620,7 +2723,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             String text = bundle.getString(SettingsInputDialogFragment.INPUT);
             String regString = "[a-f0-9A-F]{32}";
             if (!Pattern.matches(regString, text)) {
-                SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(eddyStoneSlot3Item2Value.getText().toString());
+                SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance
+                        (eddyStoneSlot3Item2Value.getText().toString());
                 dialogFragment.show(getFragmentManager(), SETTINGS_EDDYSTONE3_UID);
                 Toast.makeText(this, R.string.invaild_uid, Toast.LENGTH_SHORT).show();
             } else {
@@ -2633,7 +2737,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         .compile("(http|https):\\/\\/\\S*");
                 Matcher matcher2 = pattern2.matcher(text);
                 if (!matcher2.matches()) {
-                    SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(eddyStoneSlot3Item2Value.getText().toString());
+                    SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance
+                            (eddyStoneSlot3Item2Value.getText().toString());
                     dialogFragment.show(getFragmentManager(), SETTINGS_EDDYSTONE3_URL);
                     Toast.makeText(this, R.string.invaild_url, Toast.LENGTH_SHORT).show();
                 } else {
@@ -2645,7 +2750,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             String text = bundle.getString(SettingsInputDialogFragment.INPUT);
             String regString = "[a-f0-9A-F]{32}";
             if (!Pattern.matches(regString, text)) {
-                SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(eddyStoneSlot4Item2Value.getText().toString());
+                SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance
+                        (eddyStoneSlot4Item2Value.getText().toString());
                 dialogFragment.show(getFragmentManager(), SETTINGS_EDDYSTONE4_UID);
                 Toast.makeText(this, R.string.invaild_uid, Toast.LENGTH_SHORT).show();
             } else {
@@ -2658,7 +2764,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         .compile("(http|https):\\/\\/\\S*");
                 Matcher matcher2 = pattern2.matcher(text);
                 if (!matcher2.matches()) {
-                    SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(eddyStoneSlot4Item2Value.getText().toString());
+                    SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance
+                            (eddyStoneSlot4Item2Value.getText().toString());
                     dialogFragment.show(getFragmentManager(), SETTINGS_EDDYSTONE4_URL);
                     Toast.makeText(this, R.string.invaild_url, Toast.LENGTH_SHORT).show();
                 } else {
@@ -2783,7 +2890,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             String yawLower = bundle.getString(SettingsInputDialogFragment.INPUT);
             this.yawAngleAlarmLow = Float.valueOf(yawLower).intValue();
             yawAngleLowerTextView.setText(yawLower + "");
-        }  else if (tag.equals(SETTINGS_SENSOR_WATER_PRESSURE_UPPER)) {
+        } else if (tag.equals(SETTINGS_SENSOR_WATER_PRESSURE_UPPER)) {
             String waterHigh = bundle.getString(SettingsInputDialogFragment.INPUT);
             this.waterPressureAlarmHigh = Float.valueOf(waterHigh).intValue();
             waterPressureUpperTextView.setText(waterHigh + "");

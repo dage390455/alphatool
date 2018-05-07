@@ -61,5 +61,5 @@ public class PreferencesHelper implements Constants{
         editor.putBoolean(PREFERENCE_KEY_PERMISSION_6, Constants.permission[6]);
         editor.commit();
     }
-
+//    public List<Boolean>
 }
