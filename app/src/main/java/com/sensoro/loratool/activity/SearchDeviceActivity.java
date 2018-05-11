@@ -104,7 +104,6 @@ public class SearchDeviceActivity extends AppCompatActivity implements View.OnCl
 
     private DeviceInfo selectedDeviceInfo;
     private SensoroDevice mTargetDevice;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

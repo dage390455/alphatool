@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,7 @@ import static android.view.View.VISIBLE;
 public class DeviceInfoAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mInflater;
-    private List<DeviceInfo> mDeviceInfoList = Collections.synchronizedList(new ArrayList<DeviceInfo>());
+    private final List<DeviceInfo> mDeviceInfoList = Collections.synchronizedList(new ArrayList<DeviceInfo>());
     private ConcurrentHashMap<String, DeviceInfo> mCacheDeviceInfoMap = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, SensoroDevice> mNearByDeviceMap = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, SensoroSensor> mSensorMap = new ConcurrentHashMap<>();
@@ -116,18 +117,22 @@ public class DeviceInfoAdapter extends BaseAdapter {
     }
 
     public void refreshNew(SensoroDevice sensoroDevice, boolean isSearchStatus) {
-        if (!mNearByDeviceMap.containsKey(sensoroDevice.getSn())) {
-            mNearByDeviceMap.put(sensoroDevice.getSn(), sensoroDevice);
+        String sn = sensoroDevice.getSn();
+        if (sn.endsWith("DDFA")) {
+            Log.e("", "refreshNew: " + sn);
+        }
+        if (!mNearByDeviceMap.containsKey(sn)) {
+            mNearByDeviceMap.put(sn, sensoroDevice);
             notifyDataSetChanged();
         }
-        final DeviceInfo cacheDeviceInfo = mCacheDeviceInfoMap.get(sensoroDevice.getSn());
+        final DeviceInfo cacheDeviceInfo = mCacheDeviceInfoMap.get(sn);
         if (isSearchStatus || cacheDeviceInfo == null) {
             return;
         }
         boolean isContains = false;
         for (int j = 0; j < mDeviceInfoList.size(); j++) {
             DeviceInfo deviceInfo = mDeviceInfoList.get(j);
-            if (sensoroDevice.getSn().equalsIgnoreCase(deviceInfo.getSn())) {
+            if (sn.equalsIgnoreCase(deviceInfo.getSn())) {
                 deviceInfo.setSort(2);
                 isContains = true;
                 break;
@@ -140,12 +145,16 @@ public class DeviceInfoAdapter extends BaseAdapter {
 
     }
 
-    public void refreshGone( SensoroDevice sensoroDevice, boolean isSearchStatus) {
-        if (mNearByDeviceMap.containsKey(sensoroDevice.getSn())) {
-            mNearByDeviceMap.remove(sensoroDevice.getSn());
+    public void refreshGone(SensoroDevice sensoroDevice, boolean isSearchStatus) {
+        String sn = sensoroDevice.getSn();
+        if (sn.endsWith("DDFA")) {
+            Log.e("", "refreshGone: " + sn);
+        }
+        if (mNearByDeviceMap.containsKey(sn)) {
+            mNearByDeviceMap.remove(sn);
             for (int j = 0; j < mDeviceInfoList.size(); j++) {
                 final DeviceInfo deviceInfo = mDeviceInfoList.get(j);
-                if (sensoroDevice.getSn().equalsIgnoreCase(deviceInfo.getSn()) && isFilterNearby() && !isSearchStatus) {
+                if (sn.equalsIgnoreCase(deviceInfo.getSn()) && isFilterNearby() && !isSearchStatus) {
                     mDeviceInfoList.remove(deviceInfo);
                     deviceInfo.setSelected(false);
                     notifyDataSetChanged();
@@ -156,7 +165,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
         }
     }
 
-    public void refreshSensorNew( final SensoroSensor sensoroSensor) {
+    public void refreshSensorNew(final SensoroSensor sensoroSensor) {
         if (!mSensorMap.containsKey(sensoroSensor.getSn())) {
             mSensorMap.put(sensoroSensor.getSn(), sensoroSensor);
             notifyDataSetChanged();
@@ -189,7 +198,8 @@ public class DeviceInfoAdapter extends BaseAdapter {
 
     public void filter() {
 
-        SharedPreferences sharedPreferences = mContext.getSharedPreferences(Constants.PREFERENCE_FILTER, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(Constants.PREFERENCE_FILTER, Context
+                .MODE_PRIVATE);
         HashSet<String> firmwareSet = (HashSet) sharedPreferences.getStringSet("device_firmware", null);
         HashSet<String> hardwareSet = (HashSet) sharedPreferences.getStringSet("device_hardware", null);
         HashSet<String> bandSet = (HashSet) sharedPreferences.getStringSet("device_band", null);
@@ -206,7 +216,8 @@ public class DeviceInfoAdapter extends BaseAdapter {
             }
         }
 
-        if ((firmwareSet != null && hardwareSet != null && signalSet != null && nearSet != null && bandSet != null) && !isClose) {
+        if ((firmwareSet != null && hardwareSet != null && signalSet != null && nearSet != null && bandSet != null)
+                && !isClose) {
             List<DeviceInfo> tempFirmwareList = new ArrayList<>();
             for (String firmWare : firmwareSet) {
                 for (String key : mCacheDeviceInfoMap.keySet()) {
@@ -295,7 +306,8 @@ public class DeviceInfoAdapter extends BaseAdapter {
     }
 
     public boolean isFilterNearby() {
-        SharedPreferences sharedPreferences = mContext.getSharedPreferences(Constants.PREFERENCE_FILTER, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(Constants.PREFERENCE_FILTER, Context
+                .MODE_PRIVATE);
         HashSet<String> nearSet = (HashSet) sharedPreferences.getStringSet("device_near", null);
         HashSet<String> enableFilterSet = (HashSet) sharedPreferences.getStringSet("device_enable_filter", null);
         if (enableFilterSet != null) {
@@ -318,7 +330,8 @@ public class DeviceInfoAdapter extends BaseAdapter {
     }
 
     public boolean isFitable(SensoroDevice sensoroDevice, DeviceInfo deviceInfo) {
-        SharedPreferences sharedPreferences = mContext.getSharedPreferences(Constants.PREFERENCE_FILTER, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(Constants.PREFERENCE_FILTER, Context
+                .MODE_PRIVATE);
         HashSet<String> firmwareSet = (HashSet) sharedPreferences.getStringSet("device_firmware", null);
         HashSet<String> hardwareSet = (HashSet) sharedPreferences.getStringSet("device_hardware", null);
         HashSet<String> bandSet = (HashSet) sharedPreferences.getStringSet("device_band", null);
@@ -428,63 +441,80 @@ public class DeviceInfoAdapter extends BaseAdapter {
             switch (deviceInfo.getNormalStatus()) {
                 case 0:
                     Drawable drawable0 = mContext.getResources().getDrawable(R.drawable.shape_oval);
-                    drawable0.setBounds(0, 0, drawable0 != null ? drawable0.getMinimumWidth() : 0, drawable0.getMinimumHeight());
-                    drawable0.setColorFilter(mContext.getResources().getColor(R.color.status_normal), PorterDuff.Mode.MULTIPLY);
+                    drawable0.setBounds(0, 0, drawable0 != null ? drawable0.getMinimumWidth() : 0,
+                            drawable0.getMinimumHeight());
+                    drawable0.setColorFilter(mContext.getResources().getColor(R.color.status_normal), PorterDuff.Mode
+                            .MULTIPLY);
                     itemViewHolder.statusTextView.setCompoundDrawables(drawable0, null, null, null);
                     status_str = mContext.getString(R.string.status_normal);
                     break;
                 case 1:
                     Drawable drawable1 = mContext.getResources().getDrawable(R.drawable.shape_status_fault);
-                    drawable1.setBounds(0, 0, drawable1 != null ? drawable1.getMinimumWidth() : 0, drawable1.getMinimumHeight());
-                    drawable1.setColorFilter(mContext.getResources().getColor(R.color.status_fault), PorterDuff.Mode.MULTIPLY);
+                    drawable1.setBounds(0, 0, drawable1 != null ? drawable1.getMinimumWidth() : 0,
+                            drawable1.getMinimumHeight());
+                    drawable1.setColorFilter(mContext.getResources().getColor(R.color.status_fault), PorterDuff.Mode
+                            .MULTIPLY);
                     itemViewHolder.statusTextView.setCompoundDrawables(drawable1, null, null, null);
                     status_str = mContext.getString(R.string.status_fault);
                     break;
                 case 2:
                     Drawable drawable2 = mContext.getResources().getDrawable(R.drawable.shape_status_fault);
-                    drawable2.setBounds(0, 0, drawable2 != null ? drawable2.getMinimumWidth() : 0, drawable2.getMinimumHeight());
-                    drawable2.setColorFilter(mContext.getResources().getColor(R.color.status_serious), PorterDuff.Mode.MULTIPLY);
+                    drawable2.setBounds(0, 0, drawable2 != null ? drawable2.getMinimumWidth() : 0,
+                            drawable2.getMinimumHeight());
+                    drawable2.setColorFilter(mContext.getResources().getColor(R.color.status_serious), PorterDuff
+                            .Mode.MULTIPLY);
                     itemViewHolder.statusTextView.setCompoundDrawables(drawable2, null, null, null);
                     status_str = mContext.getString(R.string.status_serious);
                     break;
                 case 3:
                     Drawable drawable3 = mContext.getResources().getDrawable(R.drawable.shape_status_timeout);
-                    drawable3.setBounds(0, 0, drawable3 != null ? drawable3.getMinimumWidth() : 0, drawable3.getMinimumHeight());
-                    drawable3.setColorFilter(mContext.getResources().getColor(R.color.status_timeout), PorterDuff.Mode.MULTIPLY);
+                    drawable3.setBounds(0, 0, drawable3 != null ? drawable3.getMinimumWidth() : 0,
+                            drawable3.getMinimumHeight());
+                    drawable3.setColorFilter(mContext.getResources().getColor(R.color.status_timeout), PorterDuff
+                            .Mode.MULTIPLY);
                     itemViewHolder.statusTextView.setCompoundDrawables(drawable3, null, null, null);
                     status_str = mContext.getString(R.string.status_timeout);
                     break;
                 case -1:
                     Drawable drawable4 = mContext.getResources().getDrawable(R.drawable.shape_status_inactive);
-                    drawable4.setBounds(0, 0, drawable4 != null ? drawable4.getMinimumWidth() : 0, drawable4.getMinimumHeight());
-                    drawable4.setColorFilter(mContext.getResources().getColor(R.color.status_inactive), PorterDuff.Mode.MULTIPLY);
+                    drawable4.setBounds(0, 0, drawable4 != null ? drawable4.getMinimumWidth() : 0,
+                            drawable4.getMinimumHeight());
+                    drawable4.setColorFilter(mContext.getResources().getColor(R.color.status_inactive), PorterDuff
+                            .Mode.MULTIPLY);
                     itemViewHolder.statusTextView.setCompoundDrawables(drawable4, null, null, null);
                     status_str = mContext.getString(R.string.status_inactive);
                     break;
                 case 4:
                     Drawable drawable6 = mContext.getResources().getDrawable(R.drawable.shape_status_offline);
-                    drawable6.setBounds(0, 0, drawable6 != null ? drawable6.getMinimumWidth() : 0, drawable6.getMinimumHeight());
-                    drawable6.setColorFilter(mContext.getResources().getColor(R.color.status_offline), PorterDuff.Mode.MULTIPLY);
+                    drawable6.setBounds(0, 0, drawable6 != null ? drawable6.getMinimumWidth() : 0,
+                            drawable6.getMinimumHeight());
+                    drawable6.setColorFilter(mContext.getResources().getColor(R.color.status_offline), PorterDuff
+                            .Mode.MULTIPLY);
                     itemViewHolder.statusTextView.setCompoundDrawables(drawable6, null, null, null);
                     status_str = mContext.getString(R.string.status_offline);
                 default:
                     Drawable drawable5 = mContext.getResources().getDrawable(R.drawable.shape_status_inactive);
-                    drawable5.setBounds(0, 0, drawable5 != null ? drawable5.getMinimumWidth() : 0, drawable5.getMinimumHeight());
-                    drawable5.setColorFilter(mContext.getResources().getColor(R.color.status_inactive), PorterDuff.Mode.MULTIPLY);
+                    drawable5.setBounds(0, 0, drawable5 != null ? drawable5.getMinimumWidth() : 0,
+                            drawable5.getMinimumHeight());
+                    drawable5.setColorFilter(mContext.getResources().getColor(R.color.status_inactive), PorterDuff
+                            .Mode.MULTIPLY);
                     itemViewHolder.statusTextView.setCompoundDrawables(drawable5, null, null, null);
                     break;
             }
             itemViewHolder.statusTextView.setText(status_str);
-            itemViewHolder.statusTimeTextView.setText(DateUtil.getDateDiffWithFormat(mContext, deviceInfo.getLastUpTime(), "MM-dd"));
+            itemViewHolder.statusTimeTextView.setText(DateUtil.getDateDiffWithFormat(mContext, deviceInfo
+                    .getLastUpTime(), "MM-dd"));
             List<String> list = deviceInfo.getTags();
             LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
             layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
             itemViewHolder.tagRecyclerView.setLayoutManager(layoutManager);
             itemViewHolder.tagRecyclerView.setAdapter(new TagAdapter(mContext, list));
             String default_value = mContext.getString(R.string.item_tv_default);
-            itemViewHolder.powerTextView.setText(mContext.getString(R.string.item_tv_power) + (deviceInfo.getLoraTxp() == 0 ? default_value : (deviceInfo.getLoraTxp()) + "dBm"));
+            itemViewHolder.powerTextView.setText(mContext.getString(R.string.item_tv_power) + (deviceInfo.getLoraTxp
+                    () == 0 ? default_value : (deviceInfo.getLoraTxp()) + "dBm"));
             int interval = deviceInfo.getInterval();
-            itemViewHolder.intervalTextView.setText(mContext.getString(R.string.item_tv_freq) + (interval == 0 ? default_value : (interval + "s")));
+            itemViewHolder.intervalTextView.setText(mContext.getString(R.string.item_tv_freq) + (interval == 0 ?
+                    default_value : (interval + "s")));
             String band = deviceInfo.getBand();
             itemViewHolder.bandTextView.setText(mContext.getString(R.string.item_band) + band + "MHz");
             int sf = (int) deviceInfo.getSf();
@@ -525,6 +555,9 @@ public class DeviceInfoAdapter extends BaseAdapter {
 //                    deviceInfo.setConnectable(false);
 //                }
 //            }
+            if (sn.endsWith("DDFA")) {
+                Log.e("", "refreshNew: " + sn);
+            }
             boolean isNearby = mNearByDeviceMap.containsKey(sn);
             if (isNearby) {
                 itemViewHolder.nearByTextView.setText(mContext.getString(R.string.nearby));
@@ -551,7 +584,8 @@ public class DeviceInfoAdapter extends BaseAdapter {
             } else {
                 itemViewHolder.versionTextView.setText("V" + version);
             }
-            if (deviceInfo.getDeviceType().equals("chip") || deviceInfo.getDeviceType().equals("op_chip")|| deviceInfo.getDeviceType().equals("module") || deviceInfo.getDeviceType().equals("op_node")) {
+            if (deviceInfo.getDeviceType().equals("chip") || deviceInfo.getDeviceType().equals("op_chip") ||
+                    deviceInfo.getDeviceType().equals("module") || deviceInfo.getDeviceType().equals("op_node")) {
                 itemViewHolder.iconImageView.setImageResource(R.mipmap.ic_device_module);
             } else if (deviceInfo.getDeviceType().equals("angle")) {
                 itemViewHolder.iconImageView.setImageResource(R.mipmap.ic_device_angle);
@@ -561,8 +595,10 @@ public class DeviceInfoAdapter extends BaseAdapter {
                 itemViewHolder.iconImageView.setImageResource(R.mipmap.ic_device_cover);
             } else if (deviceInfo.getDeviceType().equals("ch4") || deviceInfo.getDeviceType().equals("tvoc") ||
                     deviceInfo.getDeviceType().equals("pm") || deviceInfo.getDeviceType().equals("o3") ||
-                    deviceInfo.getDeviceType().equals("lpg") || deviceInfo.getDeviceType().equals("co2") || deviceInfo.getDeviceType().equals("co") ||
-                    deviceInfo.getDeviceType().equals("nh4") || deviceInfo.getDeviceType().equals("so2") || deviceInfo.getDeviceType().equals("no2")) {
+                    deviceInfo.getDeviceType().equals("lpg") || deviceInfo.getDeviceType().equals("co2") ||
+                    deviceInfo.getDeviceType().equals("co") ||
+                    deviceInfo.getDeviceType().equals("nh4") || deviceInfo.getDeviceType().equals("so2") ||
+                    deviceInfo.getDeviceType().equals("no2")) {
                 itemViewHolder.iconImageView.setImageResource(R.mipmap.ic_device_gas);
             } else if (deviceInfo.getDeviceType().equals("leak")) {
                 itemViewHolder.iconImageView.setImageResource(R.mipmap.ic_device_leak);
@@ -598,12 +634,14 @@ public class DeviceInfoAdapter extends BaseAdapter {
                 if (sensoroSensor.getTemperature() != null) {
                     sensor_counter++;
                     itemViewHolder.sensorTempLayout.setVisibility(VISIBLE);
-                    itemViewHolder.sensorTempTextView.setText(String.format("%.1f", sensoroSensor.getTemperature()) + " ℃");
+                    itemViewHolder.sensorTempTextView.setText(String.format("%.1f", sensoroSensor.getTemperature()) +
+                            " ℃");
                 }
                 if (sensoroSensor.getHumidity() != null) {
                     sensor_counter++;
                     itemViewHolder.sensorHumidityLayout.setVisibility(VISIBLE);
-                    itemViewHolder.sensorHumidityTextView.setText(String.format("%.1f", sensoroSensor.getHumidity()) + " RH%");
+                    itemViewHolder.sensorHumidityTextView.setText(String.format("%.1f", sensoroSensor.getHumidity())
+                            + " RH%");
                 }
                 if (sensoroSensor.getLight() != null) {
                     sensor_counter++;
@@ -648,36 +686,42 @@ public class DeviceInfoAdapter extends BaseAdapter {
                     itemViewHolder.sensorPm10Layout.setVisibility(VISIBLE);
                 }
                 if (sensoroSensor.getPitchAngle() != null) {
-                    sensor_counter ++;
-                    itemViewHolder.sensorPitchAngleTextView.setText("P " + String.format("%.1f", sensoroSensor.getPitchAngle()) + "°。");
+                    sensor_counter++;
+                    itemViewHolder.sensorPitchAngleTextView.setText("P " + String.format("%.1f", sensoroSensor
+                            .getPitchAngle()) + "°。");
                     itemViewHolder.sensorPitchAngleLayout.setVisibility(VISIBLE);
                 }
                 if (sensoroSensor.getRollAngle() != null) {
-                    sensor_counter ++;
-                    itemViewHolder.sensorRollAngleTextView.setText("R " + String.format("%.1f", sensoroSensor.getRollAngle()) + "°。");
+                    sensor_counter++;
+                    itemViewHolder.sensorRollAngleTextView.setText("R " + String.format("%.1f", sensoroSensor
+                            .getRollAngle()) + "°。");
                     itemViewHolder.sensorRollAngleLayout.setVisibility(VISIBLE);
                 }
                 if (sensoroSensor.getYawAngle() != null) {
-                    sensor_counter ++;
-                    itemViewHolder.sensorYawAngleTextView.setText("Y " + String.format("%.1f", sensoroSensor.getYawAngle()) + "°。");
+                    sensor_counter++;
+                    itemViewHolder.sensorYawAngleTextView.setText("Y " + String.format("%.1f", sensoroSensor
+                            .getYawAngle()) + "°。");
                     itemViewHolder.sensorYawAngleLayout.setVisibility(VISIBLE);
                 }
                 if (sensoroSensor.getWaterPressure() != null) {
-                    sensor_counter ++;
-                    itemViewHolder.sensorWaterPressureTextView.setText("WaterPressure " + String.format("%.1f", sensoroSensor.getWaterPressure()) + "");
+                    sensor_counter++;
+                    itemViewHolder.sensorWaterPressureTextView.setText("WaterPressure " + String.format("%.1f",
+                            sensoroSensor.getWaterPressure()) + "");
                     itemViewHolder.sensorWaterPressureLayout.setVisibility(VISIBLE);
                 }
                 if (sensoroSensor.getLeak() != null) {
                     sensor_counter++;
                     if (sensoroSensor.getLeak() == 0) {
                         Drawable drawableNormal = mContext.getResources().getDrawable(R.mipmap.ic_leak_normal);
-                        drawableNormal.setBounds(0, 0, drawableNormal != null ? drawableNormal.getMinimumWidth() : 0, drawableNormal.getMinimumHeight());
+                        drawableNormal.setBounds(0, 0, drawableNormal != null ? drawableNormal.getMinimumWidth() : 0,
+                                drawableNormal.getMinimumHeight());
                         itemViewHolder.sensorLeakTextView.setCompoundDrawables(drawableNormal, null, null, null);
                         itemViewHolder.sensorLeakTextView.setText(R.string.leak_normal);
                         itemViewHolder.sensorLeakLayout.setVisibility(VISIBLE);
                     } else {
                         Drawable drawableWarning = mContext.getResources().getDrawable(R.mipmap.ic_leak_warning);
-                        drawableWarning.setBounds(0, 0, drawableWarning != null ? drawableWarning.getMinimumWidth() : 0, drawableWarning.getMinimumHeight());
+                        drawableWarning.setBounds(0, 0, drawableWarning != null ? drawableWarning.getMinimumWidth() :
+                                0, drawableWarning.getMinimumHeight());
                         itemViewHolder.sensorLeakTextView.setCompoundDrawables(drawableWarning, null, null, null);
                         itemViewHolder.sensorLeakTextView.setText(R.string.leak_warn);
                         itemViewHolder.sensorLeakLayout.setVisibility(VISIBLE);
@@ -806,5 +850,15 @@ public class DeviceInfoAdapter extends BaseAdapter {
         public DeviceItemViewHolder(final View itemView) {
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        ArrayList<DeviceInfo> deviceInfos = new ArrayList<>(mDeviceInfoList);
+        mDeviceInfoList.clear();
+        mDeviceInfoList.addAll(deviceInfos);
+        deviceInfos.clear();
+        deviceInfos=null;
+        super.notifyDataSetChanged();
     }
 }

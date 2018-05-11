@@ -14,10 +14,11 @@ import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
-
+import android.util.Log;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -31,7 +32,7 @@ public class BluetoothLEHelper4 implements Serializable {
     private BluetoothManager bluetoothManager = null;
     private BluetoothAdapter bluetoothAdapter = null;
     private String bluetoothDeviceAddress = null;
-    private BluetoothGatt bluetoothGatt = null;
+    public BluetoothGatt bluetoothGatt = null;
 
     private ArrayList<byte[]> writePackets;
     private int sendPacketNumber = 1;
@@ -166,7 +167,8 @@ public class BluetoothLEHelper4 implements Serializable {
     }
 
     private boolean isURLInValid(String url) {
-        String regex = "(http|ftp|https):\\/\\/[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-\\.,@?^=%&amp;:/~\\+#]*[\\w\\-\\@?^=%&amp;/~\\+#])?";
+        String regex = "(http|ftp|https):\\/\\/[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-\\.,@?^=%&amp;" +
+                ":/~\\+#]*[\\w\\-\\@?^=%&amp;/~\\+#])?";
         if (Pattern.matches(regex, url)) {
             //匹配成功
             return false;
@@ -213,7 +215,7 @@ public class BluetoothLEHelper4 implements Serializable {
         // encrypt paasword by HMAC-SHA512，get 16 bytes before.
         byte[] newPassword = new byte[16];
         if (password == null) {
-            for (int i = 0 ; i <newPassword.length; i++) {
+            for (int i = 0; i < newPassword.length; i++) {
                 newPassword[i] = 0x00;
             }
             return newPassword;
@@ -233,13 +235,36 @@ public class BluetoothLEHelper4 implements Serializable {
      */
     public boolean close() {
         if (bluetoothGatt != null) {
+            refreshDeviceCache(bluetoothGatt);
             bluetoothGatt.disconnect();
-            bluetoothGatt.close();
-            bluetoothGatt = null;
+//            bluetoothGatt = null;
             return true;
         } else {
             return false;
         }
+    }
+
+    /**
+     * 刷新缓存
+     *
+     * @param bluetoothGatt
+     * @return
+     */
+    public boolean refreshDeviceCache(BluetoothGatt bluetoothGatt) {
+        try {
+            final Method refresh = BluetoothGatt.class.getMethod("refresh");
+            if (refresh != null) {
+                boolean success = (Boolean) refresh.invoke(bluetoothGatt);
+                Log.i("", "refreshDeviceCache, is success:  " + success);
+                return success;
+            }
+        } catch (Exception e) {
+            Log.i("", "exception occur while refreshing device: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            bluetoothGatt.close();
+        }
+        return false;
     }
 
     /**
@@ -286,7 +311,7 @@ public class BluetoothLEHelper4 implements Serializable {
             BluetoothGattDescriptor readDescriptor = readChar.getDescriptor(GattInfo.CLIENT_CHARACTERISTIC_CONFIG);
             readDescriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE);
             bluetoothGatt.writeDescriptor(readDescriptor);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -361,7 +386,8 @@ public class BluetoothLEHelper4 implements Serializable {
         // check bytes( '0~f' and '-')
         uuid = uuid.toLowerCase();
         for (int i = 0; i < uuid.length(); i++) {
-            if (uuid.charAt(i) >= 'a' && uuid.charAt(i) <= 'f' || uuid.charAt(i) <= '9' && uuid.charAt(i) >= '0' || uuid.charAt(i) == '-') {
+            if (uuid.charAt(i) >= 'a' && uuid.charAt(i) <= 'f' || uuid.charAt(i) <= '9' && uuid.charAt(i) >= '0' ||
+                    uuid.charAt(i) == '-') {
                 continue;
             } else {
                 return false;
@@ -373,7 +399,8 @@ public class BluetoothLEHelper4 implements Serializable {
 
     private int writeDeviceConfigurations(byte[] writeConfigurationBytes, int cmdType) {
         if (sensoroService != null) {
-            BluetoothGattCharacteristic writeChar = sensoroService.getCharacteristic(GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
+            BluetoothGattCharacteristic writeChar = sensoroService.getCharacteristic(GattInfo
+                    .SENSORO_DEVICE_WRITE_CHAR_UUID);
             if (writeChar != null) {
                 return writeCharAllBytes(writeChar, writeConfigurationBytes, cmdType);
             }
@@ -460,17 +487,23 @@ public class BluetoothLEHelper4 implements Serializable {
 
     public static class GattInfo {
         public static final UUID SENSORO_DEVICE_SERVICE_UUID = UUID.fromString("DEAE0300-7A4E-1BA2-834A-50A30CCAE0E4");
-        public static final UUID SENSORO_DEVICE_AUTHORIZATION_CHAR_UUID = UUID.fromString("DEAE0302-7A4E-1BA2-834A-50A30CCAE0E4");
-        public static final UUID SENSORO_DEVICE_WRITE_CHAR_UUID = UUID.fromString("DEAE0301-7A4E-1BA2-834A-50A30CCAE0E4");
-        public static final UUID SENSORO_DEVICE_READ_CHAR_UUID = UUID.fromString("DEAE0301-7A4E-1BA2-834A-50A30CCAE0E4");
+        public static final UUID SENSORO_DEVICE_AUTHORIZATION_CHAR_UUID = UUID.fromString
+                ("DEAE0302-7A4E-1BA2-834A-50A30CCAE0E4");
+        public static final UUID SENSORO_DEVICE_WRITE_CHAR_UUID = UUID.fromString
+                ("DEAE0301-7A4E-1BA2-834A-50A30CCAE0E4");
+        public static final UUID SENSORO_DEVICE_READ_CHAR_UUID = UUID.fromString
+                ("DEAE0301-7A4E-1BA2-834A-50A30CCAE0E4");
         public static final UUID SENSORO_DEVICE_SIGNAL_UUID = UUID.fromString("DEAE0303-7A4E-1BA2-834A-50A30CCAE0E4");
         public static final UUID SENSORO_SENSOR_CHAR_UUID = UUID.fromString("DEAE0301-7A4E-1BA2-834A-50A30CCAE0E4");
         public static final UUID CLIENT_CHARACTERISTIC_CONFIG = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
 
         public static final UUID SENSORO_STATION_SERVICE_UUID = UUID.fromString("DEAE0400-7A4E-1BA2-834A-50A30CCAE0E4");
-        public static final UUID SENSORO_STATION_AUTHORIZATION_CHAR_UUID = UUID.fromString("DEAE0402-7A4E-1BA2-834A-50A30CCAE0E4");
-        public static final UUID SENSORO_STATION_WRITE_CHAR_UUID = UUID.fromString("DEAE0401-7A4E-1BA2-834A-50A30CCAE0E4");
-        public static final UUID SENSORO_STATION_READ_CHAR_UUID = UUID.fromString("DEAE0401-7A4E-1BA2-834A-50A30CCAE0E4");
+        public static final UUID SENSORO_STATION_AUTHORIZATION_CHAR_UUID = UUID.fromString
+                ("DEAE0402-7A4E-1BA2-834A-50A30CCAE0E4");
+        public static final UUID SENSORO_STATION_WRITE_CHAR_UUID = UUID.fromString
+                ("DEAE0401-7A4E-1BA2-834A-50A30CCAE0E4");
+        public static final UUID SENSORO_STATION_READ_CHAR_UUID = UUID.fromString
+                ("DEAE0401-7A4E-1BA2-834A-50A30CCAE0E4");
 
     }
 }

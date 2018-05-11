@@ -64,7 +64,8 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
  * Created by sensoro on 16/8/18.
  */
 
-public class DeviceFragment extends Fragment implements Callable, AdapterView.OnItemClickListener, View.OnClickListener, Constants {
+public class DeviceFragment extends Fragment implements Callable, AdapterView.OnItemClickListener, View
+        .OnClickListener, Constants {
     public static final String INPUT = "INPUT";
     public static final int DOWN = 0;
     public static final int UP = 1;
@@ -101,7 +102,6 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
     private boolean isRunBackground = true;
     public boolean isCurrent = true;
     private ExecutorService executorService;
-
 
     public static DeviceFragment newInstance(String input) {
         DeviceFragment deviceFragment = new DeviceFragment();
@@ -175,7 +175,8 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
         loRaSettingApplication = (LoRaSettingApplication) this.getActivity().getApplication();
         progressDialog = new ProgressDialog(mContext);
         mPtrListView = (PullToRefreshListView) view.findViewById(R.id.device_ptr_list);
-        ViewGroup searchLayout = (ViewGroup) LayoutInflater.from(this.getActivity()).inflate(R.layout.layout_search, null);
+        ViewGroup searchLayout = (ViewGroup) LayoutInflater.from(this.getActivity()).inflate(R.layout.layout_search,
+                null);
         SensoroEditText mSearchEditText = (SensoroEditText) searchLayout.findViewById(R.id.et_head_search);
         mSearchEditText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -348,7 +349,8 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
         for (String key : mDeviceInfoAdapter.getNearByDeviceMap().keySet()) {
             String sn = mDeviceInfoAdapter.getNearByDeviceMap().get(key).getSn();
             if (!mDeviceInfoAdapter.getCacheData().containsKey(sn) && !dataMap.containsKey(sn)) {
-                if (j == mDeviceInfoAdapter.getNearByDeviceMap().size() - 1 || mDeviceInfoAdapter.getNearByDeviceMap().size() == 1) {
+                if (j == mDeviceInfoAdapter.getNearByDeviceMap().size() - 1 || mDeviceInfoAdapter.getNearByDeviceMap
+                        ().size() == 1) {
                     snString.append(sn);
                 } else {
                     snString.append(sn + ",");
@@ -363,7 +365,8 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
             if (temp_char.equals(",")) {
                 snString.replace(snString.length() - 1, snString.length(), "");
             }
-            loRaSettingApplication.loRaSettingServer.deviceAll(snString.toString(), new Response.Listener<DeviceInfoListRsp>() {
+            loRaSettingApplication.loRaSettingServer.deviceAll(snString.toString(), new Response
+                    .Listener<DeviceInfoListRsp>() {
                 @Override
                 public void onResponse(final DeviceInfoListRsp response) {
                     ArrayList<DeviceInfo> infoArrayList = (ArrayList) response.getData().getItems();
@@ -417,7 +420,8 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
                 cloudLayout.setVisibility(GONE);
                 upgradeLayout.setVisibility(GONE);
                 signalLayout.setVisibility(GONE);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(clear_layout_width, clear_layout_height);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(clear_layout_width,
+                        clear_layout_height);
                 params.gravity = Gravity.CENTER;
                 clearImageView.setLayoutParams(params);
                 clearLayout.setVisibility(VISIBLE);
@@ -427,7 +431,8 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
                 cloudLayout.setVisibility(VISIBLE);
                 upgradeLayout.setVisibility(VISIBLE);
                 signalLayout.setVisibility(VISIBLE);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(clear_layout_width, clear_layout_height);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(clear_layout_width,
+                        clear_layout_height);
                 params.gravity = Gravity.CENTER;
                 clearImageView.setLayoutParams(params);
             }
@@ -470,13 +475,13 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
 
     public void refreshGone(SensoroDevice sensoroDevice) {
         if (mDeviceInfoAdapter != null) {
-            mDeviceInfoAdapter.refreshGone( sensoroDevice, false);
+            mDeviceInfoAdapter.refreshGone(sensoroDevice, false);
         }
     }
 
     public void refreshSensorGone(SensoroSensor sensoroSensor) {
         if (mDeviceInfoAdapter != null) {
-            mDeviceInfoAdapter.refreshSensorGone( sensoroSensor);
+            mDeviceInfoAdapter.refreshSensorGone(sensoroSensor);
         }
     }
 
@@ -871,7 +876,7 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
                     selectedDeviceInfo.setSelected(false);
                 } else {
                     List<DeviceInfo> data = mDeviceInfoAdapter.getFilterData();
-                    for (int i = 0 ; i < data.size(); i ++) {
+                    for (int i = 0; i < data.size(); i++) {
                         DeviceInfo tempDeviceInfo = data.get(i);
                         if (tempDeviceInfo.getDeviceType().equals(selectedDeviceInfo.getDeviceType()) &&
                                 tempDeviceInfo.getFirmwareVersion().equals(selectedDeviceInfo.getFirmwareVersion()) &&
@@ -906,7 +911,7 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
                     doSingle(position - 2);
                     break;
                 case MODEL_MULTI:
-                    doMulti(position -2);
+                    doMulti(position - 2);
                     break;
                 case MODEL_SAME:
                     doSame(position - 2);

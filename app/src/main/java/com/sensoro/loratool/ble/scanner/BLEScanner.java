@@ -64,6 +64,7 @@ public abstract class BLEScanner {
         } else {
             return new BLEScannerForJellyBean(context, bleScanCallback);
         }
+//        return new BLEScannerForJellyBean(context, bleScanCallback);
     }
 
     public void start() {
