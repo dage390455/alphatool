@@ -56,6 +56,8 @@
     <string name="email">邮箱</string>
     <string name="password">密码</string>
     <string name="encrpt">加密方式</string>
+    <string name="sgl_dr">扩频因子</string>
+    <string name="sgl_freq">频率</string>
     <string name="name">名称</string>
     <string name="tag">标签</string>
     <string name="enter_dfu">进入 dfu 模式</string>

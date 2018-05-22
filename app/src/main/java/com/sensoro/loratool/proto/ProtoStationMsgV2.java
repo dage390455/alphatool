@@ -288,10 +288,10 @@ public final class ProtoStationMsgV2 {
     // @@protoc_insertion_point(enum_scope:IPAllocationMode)
   }
 
-  public interface StationMsgOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:StationMsg)
-      com.google.protobuf.MessageOrBuilder {
+  public interface StationMsgOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // optional .CmdRet ret = 1;
     /**
      * <code>optional .CmdRet ret = 1;</code>
      *
@@ -307,8 +307,9 @@ public final class ProtoStationMsgV2 {
      *命令返回
      * </pre>
      */
-    CmdRet getRet();
+    ProtoStationMsgV2.CmdRet getRet();
 
+    // optional string sn = 2;
     /**
      * <code>optional string sn = 2;</code>
      *
@@ -335,6 +336,7 @@ public final class ProtoStationMsgV2 {
     com.google.protobuf.ByteString
         getSnBytes();
 
+    // optional string netid = 3;
     /**
      * <code>optional string netid = 3;</code>
      *
@@ -361,6 +363,7 @@ public final class ProtoStationMsgV2 {
     com.google.protobuf.ByteString
         getNetidBytes();
 
+    // optional string mcdomain = 4;
     /**
      * <code>optional string mcdomain = 4;</code>
      *
@@ -387,6 +390,7 @@ public final class ProtoStationMsgV2 {
     com.google.protobuf.ByteString
         getMcdomainBytes();
 
+    // optional string mcport = 5;
     /**
      * <code>optional string mcport = 5;</code>
      *
@@ -413,6 +417,7 @@ public final class ProtoStationMsgV2 {
     com.google.protobuf.ByteString
         getMcportBytes();
 
+    // optional string key = 6;
     /**
      * <code>optional string key = 6;</code>
      *
@@ -439,6 +444,7 @@ public final class ProtoStationMsgV2 {
     com.google.protobuf.ByteString
         getKeyBytes();
 
+    // optional .NwkAccessMode nwk_access_mode = 7;
     /**
      * <code>optional .NwkAccessMode nwk_access_mode = 7;</code>
      *
@@ -454,8 +460,9 @@ public final class ProtoStationMsgV2 {
      *网络接入方式
      * </pre>
      */
-    NwkAccessMode getNwkAccessMode();
+    ProtoStationMsgV2.NwkAccessMode getNwkAccessMode();
 
+    // optional .IPAllocationMode ip_alloc = 8;
     /**
      * <code>optional .IPAllocationMode ip_alloc = 8;</code>
      *
@@ -471,8 +478,9 @@ public final class ProtoStationMsgV2 {
      *IP地址分配方式
      * </pre>
      */
-    IPAllocationMode getIpAlloc();
+    ProtoStationMsgV2.IPAllocationMode getIpAlloc();
 
+    // optional string ip = 9;
     /**
      * <code>optional string ip = 9;</code>
      *
@@ -499,6 +507,7 @@ public final class ProtoStationMsgV2 {
     com.google.protobuf.ByteString
         getIpBytes();
 
+    // optional string gateway = 10;
     /**
      * <code>optional string gateway = 10;</code>
      *
@@ -525,6 +534,7 @@ public final class ProtoStationMsgV2 {
     com.google.protobuf.ByteString
         getGatewayBytes();
 
+    // optional string mask = 11;
     /**
      * <code>optional string mask = 11;</code>
      *
@@ -551,6 +561,7 @@ public final class ProtoStationMsgV2 {
     com.google.protobuf.ByteString
         getMaskBytes();
 
+    // optional string pdns = 12;
     /**
      * <code>optional string pdns = 12;</code>
      *
@@ -577,6 +588,7 @@ public final class ProtoStationMsgV2 {
     com.google.protobuf.ByteString
         getPdnsBytes();
 
+    // optional string adns = 13;
     /**
      * <code>optional string adns = 13;</code>
      *
@@ -603,6 +615,7 @@ public final class ProtoStationMsgV2 {
     com.google.protobuf.ByteString
         getAdnsBytes();
 
+    // optional string ssid = 14;
     /**
      * <code>optional string ssid = 14;</code>
      *
@@ -629,6 +642,7 @@ public final class ProtoStationMsgV2 {
     com.google.protobuf.ByteString
         getSsidBytes();
 
+    // optional string pwd = 15;
     /**
      * <code>optional string pwd = 15;</code>
      *
@@ -655,6 +669,7 @@ public final class ProtoStationMsgV2 {
     com.google.protobuf.ByteString
         getPwdBytes();
 
+    // optional string encrypt = 16;
     /**
      * <code>optional string encrypt = 16;</code>
      *
@@ -681,6 +696,7 @@ public final class ProtoStationMsgV2 {
     com.google.protobuf.ByteString
         getEncryptBytes();
 
+    // optional uint32 self_test_code = 17;
     /**
      * <code>optional uint32 self_test_code = 17;</code>
      *
@@ -698,6 +714,7 @@ public final class ProtoStationMsgV2 {
      */
     int getSelfTestCode();
 
+    // optional uint32 sgl_freq = 18;
     /**
      * <code>optional uint32 sgl_freq = 18;</code>
      *
@@ -715,11 +732,12 @@ public final class ProtoStationMsgV2 {
      */
     int getSglFreq();
 
+    // optional uint32 sgl_dr = 19;
     /**
      * <code>optional uint32 sgl_dr = 19;</code>
      *
      * <pre>
-     *单通道基站DR    
+     *单通道基站DR
      * </pre>
      */
     boolean hasSglDr();
@@ -727,7 +745,7 @@ public final class ProtoStationMsgV2 {
      * <code>optional uint32 sgl_dr = 19;</code>
      *
      * <pre>
-     *单通道基站DR    
+     *单通道基站DR
      * </pre>
      */
     int getSglDr();
@@ -736,9 +754,8 @@ public final class ProtoStationMsgV2 {
    * Protobuf type {@code StationMsg}
    */
   public static final class StationMsg extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:StationMsg)
-      StationMsgOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements StationMsgOrBuilder {
     // Use StationMsg.newBuilder() to construct.
     private StationMsg(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -786,7 +803,7 @@ public final class ProtoStationMsgV2 {
             }
             case 8: {
               int rawValue = input.readEnum();
-              CmdRet value = CmdRet.valueOf(rawValue);
+              ProtoStationMsgV2.CmdRet value = ProtoStationMsgV2.CmdRet.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(1, rawValue);
               } else {
@@ -796,38 +813,33 @@ public final class ProtoStationMsgV2 {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              sn_ = bs;
+              sn_ = input.readBytes();
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              netid_ = bs;
+              netid_ = input.readBytes();
               break;
             }
             case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              mcdomain_ = bs;
+              mcdomain_ = input.readBytes();
               break;
             }
             case 42: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              mcport_ = bs;
+              mcport_ = input.readBytes();
               break;
             }
             case 50: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              key_ = bs;
+              key_ = input.readBytes();
               break;
             }
             case 56: {
               int rawValue = input.readEnum();
-              NwkAccessMode value = NwkAccessMode.valueOf(rawValue);
+              ProtoStationMsgV2.NwkAccessMode value = ProtoStationMsgV2.NwkAccessMode.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(7, rawValue);
               } else {
@@ -838,7 +850,7 @@ public final class ProtoStationMsgV2 {
             }
             case 64: {
               int rawValue = input.readEnum();
-              IPAllocationMode value = IPAllocationMode.valueOf(rawValue);
+              ProtoStationMsgV2.IPAllocationMode value = ProtoStationMsgV2.IPAllocationMode.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(8, rawValue);
               } else {
@@ -848,51 +860,43 @@ public final class ProtoStationMsgV2 {
               break;
             }
             case 74: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000100;
-              ip_ = bs;
+              ip_ = input.readBytes();
               break;
             }
             case 82: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000200;
-              gateway_ = bs;
+              gateway_ = input.readBytes();
               break;
             }
             case 90: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000400;
-              mask_ = bs;
+              mask_ = input.readBytes();
               break;
             }
             case 98: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000800;
-              pdns_ = bs;
+              pdns_ = input.readBytes();
               break;
             }
             case 106: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00001000;
-              adns_ = bs;
+              adns_ = input.readBytes();
               break;
             }
             case 114: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00002000;
-              ssid_ = bs;
+              ssid_ = input.readBytes();
               break;
             }
             case 122: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00004000;
-              pwd_ = bs;
+              pwd_ = input.readBytes();
               break;
             }
             case 130: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00008000;
-              encrypt_ = bs;
+              encrypt_ = input.readBytes();
               break;
             }
             case 136: {
@@ -931,7 +935,7 @@ public final class ProtoStationMsgV2 {
         internalGetFieldAccessorTable() {
       return ProtoStationMsgV2.internal_static_StationMsg_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              StationMsg.class, Builder.class);
+              ProtoStationMsgV2.StationMsg.class, ProtoStationMsgV2.StationMsg.Builder.class);
     }
 
     public static com.google.protobuf.Parser<StationMsg> PARSER =
@@ -950,8 +954,9 @@ public final class ProtoStationMsgV2 {
     }
 
     private int bitField0_;
+    // optional .CmdRet ret = 1;
     public static final int RET_FIELD_NUMBER = 1;
-    private CmdRet ret_;
+    private ProtoStationMsgV2.CmdRet ret_;
     /**
      * <code>optional .CmdRet ret = 1;</code>
      *
@@ -969,10 +974,11 @@ public final class ProtoStationMsgV2 {
      *命令返回
      * </pre>
      */
-    public CmdRet getRet() {
+    public ProtoStationMsgV2.CmdRet getRet() {
       return ret_;
     }
 
+    // optional string sn = 2;
     public static final int SN_FIELD_NUMBER = 2;
     private Object sn_;
     /**
@@ -997,7 +1003,7 @@ public final class ProtoStationMsgV2 {
       if (ref instanceof String) {
         return (String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -1017,7 +1023,7 @@ public final class ProtoStationMsgV2 {
         getSnBytes() {
       Object ref = sn_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (String) ref);
         sn_ = b;
@@ -1027,6 +1033,7 @@ public final class ProtoStationMsgV2 {
       }
     }
 
+    // optional string netid = 3;
     public static final int NETID_FIELD_NUMBER = 3;
     private Object netid_;
     /**
@@ -1051,7 +1058,7 @@ public final class ProtoStationMsgV2 {
       if (ref instanceof String) {
         return (String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -1071,7 +1078,7 @@ public final class ProtoStationMsgV2 {
         getNetidBytes() {
       Object ref = netid_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (String) ref);
         netid_ = b;
@@ -1081,6 +1088,7 @@ public final class ProtoStationMsgV2 {
       }
     }
 
+    // optional string mcdomain = 4;
     public static final int MCDOMAIN_FIELD_NUMBER = 4;
     private Object mcdomain_;
     /**
@@ -1105,7 +1113,7 @@ public final class ProtoStationMsgV2 {
       if (ref instanceof String) {
         return (String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -1125,7 +1133,7 @@ public final class ProtoStationMsgV2 {
         getMcdomainBytes() {
       Object ref = mcdomain_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (String) ref);
         mcdomain_ = b;
@@ -1135,6 +1143,7 @@ public final class ProtoStationMsgV2 {
       }
     }
 
+    // optional string mcport = 5;
     public static final int MCPORT_FIELD_NUMBER = 5;
     private Object mcport_;
     /**
@@ -1159,7 +1168,7 @@ public final class ProtoStationMsgV2 {
       if (ref instanceof String) {
         return (String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -1179,7 +1188,7 @@ public final class ProtoStationMsgV2 {
         getMcportBytes() {
       Object ref = mcport_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (String) ref);
         mcport_ = b;
@@ -1189,6 +1198,7 @@ public final class ProtoStationMsgV2 {
       }
     }
 
+    // optional string key = 6;
     public static final int KEY_FIELD_NUMBER = 6;
     private Object key_;
     /**
@@ -1213,7 +1223,7 @@ public final class ProtoStationMsgV2 {
       if (ref instanceof String) {
         return (String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -1233,7 +1243,7 @@ public final class ProtoStationMsgV2 {
         getKeyBytes() {
       Object ref = key_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (String) ref);
         key_ = b;
@@ -1243,8 +1253,9 @@ public final class ProtoStationMsgV2 {
       }
     }
 
+    // optional .NwkAccessMode nwk_access_mode = 7;
     public static final int NWK_ACCESS_MODE_FIELD_NUMBER = 7;
-    private NwkAccessMode nwkAccessMode_;
+    private ProtoStationMsgV2.NwkAccessMode nwkAccessMode_;
     /**
      * <code>optional .NwkAccessMode nwk_access_mode = 7;</code>
      *
@@ -1262,12 +1273,13 @@ public final class ProtoStationMsgV2 {
      *网络接入方式
      * </pre>
      */
-    public NwkAccessMode getNwkAccessMode() {
+    public ProtoStationMsgV2.NwkAccessMode getNwkAccessMode() {
       return nwkAccessMode_;
     }
 
+    // optional .IPAllocationMode ip_alloc = 8;
     public static final int IP_ALLOC_FIELD_NUMBER = 8;
-    private IPAllocationMode ipAlloc_;
+    private ProtoStationMsgV2.IPAllocationMode ipAlloc_;
     /**
      * <code>optional .IPAllocationMode ip_alloc = 8;</code>
      *
@@ -1285,10 +1297,11 @@ public final class ProtoStationMsgV2 {
      *IP地址分配方式
      * </pre>
      */
-    public IPAllocationMode getIpAlloc() {
+    public ProtoStationMsgV2.IPAllocationMode getIpAlloc() {
       return ipAlloc_;
     }
 
+    // optional string ip = 9;
     public static final int IP_FIELD_NUMBER = 9;
     private Object ip_;
     /**
@@ -1313,7 +1326,7 @@ public final class ProtoStationMsgV2 {
       if (ref instanceof String) {
         return (String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -1333,7 +1346,7 @@ public final class ProtoStationMsgV2 {
         getIpBytes() {
       Object ref = ip_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (String) ref);
         ip_ = b;
@@ -1343,6 +1356,7 @@ public final class ProtoStationMsgV2 {
       }
     }
 
+    // optional string gateway = 10;
     public static final int GATEWAY_FIELD_NUMBER = 10;
     private Object gateway_;
     /**
@@ -1367,7 +1381,7 @@ public final class ProtoStationMsgV2 {
       if (ref instanceof String) {
         return (String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -1387,7 +1401,7 @@ public final class ProtoStationMsgV2 {
         getGatewayBytes() {
       Object ref = gateway_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (String) ref);
         gateway_ = b;
@@ -1397,6 +1411,7 @@ public final class ProtoStationMsgV2 {
       }
     }
 
+    // optional string mask = 11;
     public static final int MASK_FIELD_NUMBER = 11;
     private Object mask_;
     /**
@@ -1421,7 +1436,7 @@ public final class ProtoStationMsgV2 {
       if (ref instanceof String) {
         return (String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -1441,7 +1456,7 @@ public final class ProtoStationMsgV2 {
         getMaskBytes() {
       Object ref = mask_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (String) ref);
         mask_ = b;
@@ -1451,6 +1466,7 @@ public final class ProtoStationMsgV2 {
       }
     }
 
+    // optional string pdns = 12;
     public static final int PDNS_FIELD_NUMBER = 12;
     private Object pdns_;
     /**
@@ -1475,7 +1491,7 @@ public final class ProtoStationMsgV2 {
       if (ref instanceof String) {
         return (String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -1495,7 +1511,7 @@ public final class ProtoStationMsgV2 {
         getPdnsBytes() {
       Object ref = pdns_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (String) ref);
         pdns_ = b;
@@ -1505,6 +1521,7 @@ public final class ProtoStationMsgV2 {
       }
     }
 
+    // optional string adns = 13;
     public static final int ADNS_FIELD_NUMBER = 13;
     private Object adns_;
     /**
@@ -1529,7 +1546,7 @@ public final class ProtoStationMsgV2 {
       if (ref instanceof String) {
         return (String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -1549,7 +1566,7 @@ public final class ProtoStationMsgV2 {
         getAdnsBytes() {
       Object ref = adns_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (String) ref);
         adns_ = b;
@@ -1559,6 +1576,7 @@ public final class ProtoStationMsgV2 {
       }
     }
 
+    // optional string ssid = 14;
     public static final int SSID_FIELD_NUMBER = 14;
     private Object ssid_;
     /**
@@ -1583,7 +1601,7 @@ public final class ProtoStationMsgV2 {
       if (ref instanceof String) {
         return (String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -1603,7 +1621,7 @@ public final class ProtoStationMsgV2 {
         getSsidBytes() {
       Object ref = ssid_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (String) ref);
         ssid_ = b;
@@ -1613,6 +1631,7 @@ public final class ProtoStationMsgV2 {
       }
     }
 
+    // optional string pwd = 15;
     public static final int PWD_FIELD_NUMBER = 15;
     private Object pwd_;
     /**
@@ -1637,7 +1656,7 @@ public final class ProtoStationMsgV2 {
       if (ref instanceof String) {
         return (String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -1657,7 +1676,7 @@ public final class ProtoStationMsgV2 {
         getPwdBytes() {
       Object ref = pwd_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (String) ref);
         pwd_ = b;
@@ -1667,6 +1686,7 @@ public final class ProtoStationMsgV2 {
       }
     }
 
+    // optional string encrypt = 16;
     public static final int ENCRYPT_FIELD_NUMBER = 16;
     private Object encrypt_;
     /**
@@ -1691,7 +1711,7 @@ public final class ProtoStationMsgV2 {
       if (ref instanceof String) {
         return (String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -1711,7 +1731,7 @@ public final class ProtoStationMsgV2 {
         getEncryptBytes() {
       Object ref = encrypt_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (String) ref);
         encrypt_ = b;
@@ -1721,6 +1741,7 @@ public final class ProtoStationMsgV2 {
       }
     }
 
+    // optional uint32 self_test_code = 17;
     public static final int SELF_TEST_CODE_FIELD_NUMBER = 17;
     private int selfTestCode_;
     /**
@@ -1744,6 +1765,7 @@ public final class ProtoStationMsgV2 {
       return selfTestCode_;
     }
 
+    // optional uint32 sgl_freq = 18;
     public static final int SGL_FREQ_FIELD_NUMBER = 18;
     private int sglFreq_;
     /**
@@ -1767,13 +1789,14 @@ public final class ProtoStationMsgV2 {
       return sglFreq_;
     }
 
+    // optional uint32 sgl_dr = 19;
     public static final int SGL_DR_FIELD_NUMBER = 19;
     private int sglDr_;
     /**
      * <code>optional uint32 sgl_dr = 19;</code>
      *
      * <pre>
-     *单通道基站DR    
+     *单通道基站DR
      * </pre>
      */
     public boolean hasSglDr() {
@@ -1783,7 +1806,7 @@ public final class ProtoStationMsgV2 {
      * <code>optional uint32 sgl_dr = 19;</code>
      *
      * <pre>
-     *单通道基站DR    
+     *单通道基站DR
      * </pre>
      */
     public int getSglDr() {
@@ -1791,14 +1814,14 @@ public final class ProtoStationMsgV2 {
     }
 
     private void initFields() {
-      ret_ = CmdRet.CMD_RET_NONE;
+      ret_ = ProtoStationMsgV2.CmdRet.CMD_RET_NONE;
       sn_ = "";
       netid_ = "";
       mcdomain_ = "";
       mcport_ = "";
       key_ = "";
-      nwkAccessMode_ = NwkAccessMode.NWK_MODE_ETH;
-      ipAlloc_ = IPAllocationMode.IP_ALLOC_DHCP;
+      nwkAccessMode_ = ProtoStationMsgV2.NwkAccessMode.NWK_MODE_ETH;
+      ipAlloc_ = ProtoStationMsgV2.IPAllocationMode.IP_ALLOC_DHCP;
       ip_ = "";
       gateway_ = "";
       mask_ = "";
@@ -1814,8 +1837,7 @@ public final class ProtoStationMsgV2 {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       memoizedIsInitialized = 1;
       return true;
@@ -1978,53 +2000,53 @@ public final class ProtoStationMsgV2 {
       return super.writeReplace();
     }
 
-    public static StationMsg parseFrom(
+    public static ProtoStationMsgV2.StationMsg parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static StationMsg parseFrom(
+    public static ProtoStationMsgV2.StationMsg parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static StationMsg parseFrom(byte[] data)
+    public static ProtoStationMsgV2.StationMsg parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static StationMsg parseFrom(
+    public static ProtoStationMsgV2.StationMsg parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static StationMsg parseFrom(java.io.InputStream input)
+    public static ProtoStationMsgV2.StationMsg parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static StationMsg parseFrom(
+    public static ProtoStationMsgV2.StationMsg parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static StationMsg parseDelimitedFrom(java.io.InputStream input)
+    public static ProtoStationMsgV2.StationMsg parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static StationMsg parseDelimitedFrom(
+    public static ProtoStationMsgV2.StationMsg parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static StationMsg parseFrom(
+    public static ProtoStationMsgV2.StationMsg parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static StationMsg parseFrom(
+    public static ProtoStationMsgV2.StationMsg parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -2033,7 +2055,7 @@ public final class ProtoStationMsgV2 {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(StationMsg prototype) {
+    public static Builder newBuilder(ProtoStationMsgV2.StationMsg prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -2048,9 +2070,8 @@ public final class ProtoStationMsgV2 {
      * Protobuf type {@code StationMsg}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:StationMsg)
-        StationMsgOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements ProtoStationMsgV2.StationMsgOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return ProtoStationMsgV2.internal_static_StationMsg_descriptor;
@@ -2060,7 +2081,7 @@ public final class ProtoStationMsgV2 {
           internalGetFieldAccessorTable() {
         return ProtoStationMsgV2.internal_static_StationMsg_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                StationMsg.class, Builder.class);
+                ProtoStationMsgV2.StationMsg.class, ProtoStationMsgV2.StationMsg.Builder.class);
       }
 
       // Construct using ProtoStationMsgV2.StationMsg.newBuilder()
@@ -2083,7 +2104,7 @@ public final class ProtoStationMsgV2 {
 
       public Builder clear() {
         super.clear();
-        ret_ = CmdRet.CMD_RET_NONE;
+        ret_ = ProtoStationMsgV2.CmdRet.CMD_RET_NONE;
         bitField0_ = (bitField0_ & ~0x00000001);
         sn_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -2095,9 +2116,9 @@ public final class ProtoStationMsgV2 {
         bitField0_ = (bitField0_ & ~0x00000010);
         key_ = "";
         bitField0_ = (bitField0_ & ~0x00000020);
-        nwkAccessMode_ = NwkAccessMode.NWK_MODE_ETH;
+        nwkAccessMode_ = ProtoStationMsgV2.NwkAccessMode.NWK_MODE_ETH;
         bitField0_ = (bitField0_ & ~0x00000040);
-        ipAlloc_ = IPAllocationMode.IP_ALLOC_DHCP;
+        ipAlloc_ = ProtoStationMsgV2.IPAllocationMode.IP_ALLOC_DHCP;
         bitField0_ = (bitField0_ & ~0x00000080);
         ip_ = "";
         bitField0_ = (bitField0_ & ~0x00000100);
@@ -2133,20 +2154,20 @@ public final class ProtoStationMsgV2 {
         return ProtoStationMsgV2.internal_static_StationMsg_descriptor;
       }
 
-      public StationMsg getDefaultInstanceForType() {
-        return StationMsg.getDefaultInstance();
+      public ProtoStationMsgV2.StationMsg getDefaultInstanceForType() {
+        return ProtoStationMsgV2.StationMsg.getDefaultInstance();
       }
 
-      public StationMsg build() {
-        StationMsg result = buildPartial();
+      public ProtoStationMsgV2.StationMsg build() {
+        ProtoStationMsgV2.StationMsg result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public StationMsg buildPartial() {
-        StationMsg result = new StationMsg(this);
+      public ProtoStationMsgV2.StationMsg buildPartial() {
+        ProtoStationMsgV2.StationMsg result = new ProtoStationMsgV2.StationMsg(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -2231,16 +2252,16 @@ public final class ProtoStationMsgV2 {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof StationMsg) {
-          return mergeFrom((StationMsg)other);
+        if (other instanceof ProtoStationMsgV2.StationMsg) {
+          return mergeFrom((ProtoStationMsgV2.StationMsg)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(StationMsg other) {
-        if (other == StationMsg.getDefaultInstance()) return this;
+      public Builder mergeFrom(ProtoStationMsgV2.StationMsg other) {
+        if (other == ProtoStationMsgV2.StationMsg.getDefaultInstance()) return this;
         if (other.hasRet()) {
           setRet(other.getRet());
         }
@@ -2336,11 +2357,11 @@ public final class ProtoStationMsgV2 {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        StationMsg parsedMessage = null;
+        ProtoStationMsgV2.StationMsg parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (StationMsg) e.getUnfinishedMessage();
+          parsedMessage = (ProtoStationMsgV2.StationMsg) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -2351,7 +2372,8 @@ public final class ProtoStationMsgV2 {
       }
       private int bitField0_;
 
-      private CmdRet ret_ = CmdRet.CMD_RET_NONE;
+      // optional .CmdRet ret = 1;
+      private ProtoStationMsgV2.CmdRet ret_ = ProtoStationMsgV2.CmdRet.CMD_RET_NONE;
       /**
        * <code>optional .CmdRet ret = 1;</code>
        *
@@ -2369,7 +2391,7 @@ public final class ProtoStationMsgV2 {
        *命令返回
        * </pre>
        */
-      public CmdRet getRet() {
+      public ProtoStationMsgV2.CmdRet getRet() {
         return ret_;
       }
       /**
@@ -2379,7 +2401,7 @@ public final class ProtoStationMsgV2 {
        *命令返回
        * </pre>
        */
-      public Builder setRet(CmdRet value) {
+      public Builder setRet(ProtoStationMsgV2.CmdRet value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -2397,11 +2419,12 @@ public final class ProtoStationMsgV2 {
        */
       public Builder clearRet() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        ret_ = CmdRet.CMD_RET_NONE;
+        ret_ = ProtoStationMsgV2.CmdRet.CMD_RET_NONE;
         onChanged();
         return this;
       }
 
+      // optional string sn = 2;
       private Object sn_ = "";
       /**
        * <code>optional string sn = 2;</code>
@@ -2423,12 +2446,9 @@ public final class ProtoStationMsgV2 {
       public String getSn() {
         Object ref = sn_;
         if (!(ref instanceof String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            sn_ = s;
-          }
+          String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          sn_ = s;
           return s;
         } else {
           return (String) ref;
@@ -2445,7 +2465,7 @@ public final class ProtoStationMsgV2 {
           getSnBytes() {
         Object ref = sn_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (String) ref);
           sn_ = b;
@@ -2502,6 +2522,7 @@ public final class ProtoStationMsgV2 {
         return this;
       }
 
+      // optional string netid = 3;
       private Object netid_ = "";
       /**
        * <code>optional string netid = 3;</code>
@@ -2523,12 +2544,9 @@ public final class ProtoStationMsgV2 {
       public String getNetid() {
         Object ref = netid_;
         if (!(ref instanceof String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            netid_ = s;
-          }
+          String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          netid_ = s;
           return s;
         } else {
           return (String) ref;
@@ -2545,7 +2563,7 @@ public final class ProtoStationMsgV2 {
           getNetidBytes() {
         Object ref = netid_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (String) ref);
           netid_ = b;
@@ -2602,6 +2620,7 @@ public final class ProtoStationMsgV2 {
         return this;
       }
 
+      // optional string mcdomain = 4;
       private Object mcdomain_ = "";
       /**
        * <code>optional string mcdomain = 4;</code>
@@ -2623,12 +2642,9 @@ public final class ProtoStationMsgV2 {
       public String getMcdomain() {
         Object ref = mcdomain_;
         if (!(ref instanceof String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            mcdomain_ = s;
-          }
+          String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          mcdomain_ = s;
           return s;
         } else {
           return (String) ref;
@@ -2645,7 +2661,7 @@ public final class ProtoStationMsgV2 {
           getMcdomainBytes() {
         Object ref = mcdomain_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (String) ref);
           mcdomain_ = b;
@@ -2702,6 +2718,7 @@ public final class ProtoStationMsgV2 {
         return this;
       }
 
+      // optional string mcport = 5;
       private Object mcport_ = "";
       /**
        * <code>optional string mcport = 5;</code>
@@ -2723,12 +2740,9 @@ public final class ProtoStationMsgV2 {
       public String getMcport() {
         Object ref = mcport_;
         if (!(ref instanceof String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            mcport_ = s;
-          }
+          String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          mcport_ = s;
           return s;
         } else {
           return (String) ref;
@@ -2745,7 +2759,7 @@ public final class ProtoStationMsgV2 {
           getMcportBytes() {
         Object ref = mcport_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (String) ref);
           mcport_ = b;
@@ -2802,6 +2816,7 @@ public final class ProtoStationMsgV2 {
         return this;
       }
 
+      // optional string key = 6;
       private Object key_ = "";
       /**
        * <code>optional string key = 6;</code>
@@ -2823,12 +2838,9 @@ public final class ProtoStationMsgV2 {
       public String getKey() {
         Object ref = key_;
         if (!(ref instanceof String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            key_ = s;
-          }
+          String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          key_ = s;
           return s;
         } else {
           return (String) ref;
@@ -2845,7 +2857,7 @@ public final class ProtoStationMsgV2 {
           getKeyBytes() {
         Object ref = key_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (String) ref);
           key_ = b;
@@ -2902,7 +2914,8 @@ public final class ProtoStationMsgV2 {
         return this;
       }
 
-      private NwkAccessMode nwkAccessMode_ = NwkAccessMode.NWK_MODE_ETH;
+      // optional .NwkAccessMode nwk_access_mode = 7;
+      private ProtoStationMsgV2.NwkAccessMode nwkAccessMode_ = ProtoStationMsgV2.NwkAccessMode.NWK_MODE_ETH;
       /**
        * <code>optional .NwkAccessMode nwk_access_mode = 7;</code>
        *
@@ -2920,7 +2933,7 @@ public final class ProtoStationMsgV2 {
        *网络接入方式
        * </pre>
        */
-      public NwkAccessMode getNwkAccessMode() {
+      public ProtoStationMsgV2.NwkAccessMode getNwkAccessMode() {
         return nwkAccessMode_;
       }
       /**
@@ -2930,7 +2943,7 @@ public final class ProtoStationMsgV2 {
        *网络接入方式
        * </pre>
        */
-      public Builder setNwkAccessMode(NwkAccessMode value) {
+      public Builder setNwkAccessMode(ProtoStationMsgV2.NwkAccessMode value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -2948,12 +2961,13 @@ public final class ProtoStationMsgV2 {
        */
       public Builder clearNwkAccessMode() {
         bitField0_ = (bitField0_ & ~0x00000040);
-        nwkAccessMode_ = NwkAccessMode.NWK_MODE_ETH;
+        nwkAccessMode_ = ProtoStationMsgV2.NwkAccessMode.NWK_MODE_ETH;
         onChanged();
         return this;
       }
 
-      private IPAllocationMode ipAlloc_ = IPAllocationMode.IP_ALLOC_DHCP;
+      // optional .IPAllocationMode ip_alloc = 8;
+      private ProtoStationMsgV2.IPAllocationMode ipAlloc_ = ProtoStationMsgV2.IPAllocationMode.IP_ALLOC_DHCP;
       /**
        * <code>optional .IPAllocationMode ip_alloc = 8;</code>
        *
@@ -2971,7 +2985,7 @@ public final class ProtoStationMsgV2 {
        *IP地址分配方式
        * </pre>
        */
-      public IPAllocationMode getIpAlloc() {
+      public ProtoStationMsgV2.IPAllocationMode getIpAlloc() {
         return ipAlloc_;
       }
       /**
@@ -2981,7 +2995,7 @@ public final class ProtoStationMsgV2 {
        *IP地址分配方式
        * </pre>
        */
-      public Builder setIpAlloc(IPAllocationMode value) {
+      public Builder setIpAlloc(ProtoStationMsgV2.IPAllocationMode value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -2999,11 +3013,12 @@ public final class ProtoStationMsgV2 {
        */
       public Builder clearIpAlloc() {
         bitField0_ = (bitField0_ & ~0x00000080);
-        ipAlloc_ = IPAllocationMode.IP_ALLOC_DHCP;
+        ipAlloc_ = ProtoStationMsgV2.IPAllocationMode.IP_ALLOC_DHCP;
         onChanged();
         return this;
       }
 
+      // optional string ip = 9;
       private Object ip_ = "";
       /**
        * <code>optional string ip = 9;</code>
@@ -3025,12 +3040,9 @@ public final class ProtoStationMsgV2 {
       public String getIp() {
         Object ref = ip_;
         if (!(ref instanceof String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            ip_ = s;
-          }
+          String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          ip_ = s;
           return s;
         } else {
           return (String) ref;
@@ -3047,7 +3059,7 @@ public final class ProtoStationMsgV2 {
           getIpBytes() {
         Object ref = ip_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (String) ref);
           ip_ = b;
@@ -3104,6 +3116,7 @@ public final class ProtoStationMsgV2 {
         return this;
       }
 
+      // optional string gateway = 10;
       private Object gateway_ = "";
       /**
        * <code>optional string gateway = 10;</code>
@@ -3125,12 +3138,9 @@ public final class ProtoStationMsgV2 {
       public String getGateway() {
         Object ref = gateway_;
         if (!(ref instanceof String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            gateway_ = s;
-          }
+          String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          gateway_ = s;
           return s;
         } else {
           return (String) ref;
@@ -3147,7 +3157,7 @@ public final class ProtoStationMsgV2 {
           getGatewayBytes() {
         Object ref = gateway_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (String) ref);
           gateway_ = b;
@@ -3204,6 +3214,7 @@ public final class ProtoStationMsgV2 {
         return this;
       }
 
+      // optional string mask = 11;
       private Object mask_ = "";
       /**
        * <code>optional string mask = 11;</code>
@@ -3225,12 +3236,9 @@ public final class ProtoStationMsgV2 {
       public String getMask() {
         Object ref = mask_;
         if (!(ref instanceof String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            mask_ = s;
-          }
+          String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          mask_ = s;
           return s;
         } else {
           return (String) ref;
@@ -3247,7 +3255,7 @@ public final class ProtoStationMsgV2 {
           getMaskBytes() {
         Object ref = mask_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (String) ref);
           mask_ = b;
@@ -3304,6 +3312,7 @@ public final class ProtoStationMsgV2 {
         return this;
       }
 
+      // optional string pdns = 12;
       private Object pdns_ = "";
       /**
        * <code>optional string pdns = 12;</code>
@@ -3325,12 +3334,9 @@ public final class ProtoStationMsgV2 {
       public String getPdns() {
         Object ref = pdns_;
         if (!(ref instanceof String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            pdns_ = s;
-          }
+          String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          pdns_ = s;
           return s;
         } else {
           return (String) ref;
@@ -3347,7 +3353,7 @@ public final class ProtoStationMsgV2 {
           getPdnsBytes() {
         Object ref = pdns_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (String) ref);
           pdns_ = b;
@@ -3404,6 +3410,7 @@ public final class ProtoStationMsgV2 {
         return this;
       }
 
+      // optional string adns = 13;
       private Object adns_ = "";
       /**
        * <code>optional string adns = 13;</code>
@@ -3425,12 +3432,9 @@ public final class ProtoStationMsgV2 {
       public String getAdns() {
         Object ref = adns_;
         if (!(ref instanceof String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            adns_ = s;
-          }
+          String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          adns_ = s;
           return s;
         } else {
           return (String) ref;
@@ -3447,7 +3451,7 @@ public final class ProtoStationMsgV2 {
           getAdnsBytes() {
         Object ref = adns_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (String) ref);
           adns_ = b;
@@ -3504,6 +3508,7 @@ public final class ProtoStationMsgV2 {
         return this;
       }
 
+      // optional string ssid = 14;
       private Object ssid_ = "";
       /**
        * <code>optional string ssid = 14;</code>
@@ -3525,12 +3530,9 @@ public final class ProtoStationMsgV2 {
       public String getSsid() {
         Object ref = ssid_;
         if (!(ref instanceof String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            ssid_ = s;
-          }
+          String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          ssid_ = s;
           return s;
         } else {
           return (String) ref;
@@ -3547,7 +3549,7 @@ public final class ProtoStationMsgV2 {
           getSsidBytes() {
         Object ref = ssid_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (String) ref);
           ssid_ = b;
@@ -3604,6 +3606,7 @@ public final class ProtoStationMsgV2 {
         return this;
       }
 
+      // optional string pwd = 15;
       private Object pwd_ = "";
       /**
        * <code>optional string pwd = 15;</code>
@@ -3625,12 +3628,9 @@ public final class ProtoStationMsgV2 {
       public String getPwd() {
         Object ref = pwd_;
         if (!(ref instanceof String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            pwd_ = s;
-          }
+          String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          pwd_ = s;
           return s;
         } else {
           return (String) ref;
@@ -3647,7 +3647,7 @@ public final class ProtoStationMsgV2 {
           getPwdBytes() {
         Object ref = pwd_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (String) ref);
           pwd_ = b;
@@ -3704,6 +3704,7 @@ public final class ProtoStationMsgV2 {
         return this;
       }
 
+      // optional string encrypt = 16;
       private Object encrypt_ = "";
       /**
        * <code>optional string encrypt = 16;</code>
@@ -3725,12 +3726,9 @@ public final class ProtoStationMsgV2 {
       public String getEncrypt() {
         Object ref = encrypt_;
         if (!(ref instanceof String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            encrypt_ = s;
-          }
+          String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          encrypt_ = s;
           return s;
         } else {
           return (String) ref;
@@ -3747,7 +3745,7 @@ public final class ProtoStationMsgV2 {
           getEncryptBytes() {
         Object ref = encrypt_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (String) ref);
           encrypt_ = b;
@@ -3804,6 +3802,7 @@ public final class ProtoStationMsgV2 {
         return this;
       }
 
+      // optional uint32 self_test_code = 17;
       private int selfTestCode_ ;
       /**
        * <code>optional uint32 self_test_code = 17;</code>
@@ -3852,6 +3851,7 @@ public final class ProtoStationMsgV2 {
         return this;
       }
 
+      // optional uint32 sgl_freq = 18;
       private int sglFreq_ ;
       /**
        * <code>optional uint32 sgl_freq = 18;</code>
@@ -3900,12 +3900,13 @@ public final class ProtoStationMsgV2 {
         return this;
       }
 
+      // optional uint32 sgl_dr = 19;
       private int sglDr_ ;
       /**
        * <code>optional uint32 sgl_dr = 19;</code>
        *
        * <pre>
-       *单通道基站DR    
+       *单通道基站DR
        * </pre>
        */
       public boolean hasSglDr() {
@@ -3915,7 +3916,7 @@ public final class ProtoStationMsgV2 {
        * <code>optional uint32 sgl_dr = 19;</code>
        *
        * <pre>
-       *单通道基站DR    
+       *单通道基站DR
        * </pre>
        */
       public int getSglDr() {
@@ -3925,7 +3926,7 @@ public final class ProtoStationMsgV2 {
        * <code>optional uint32 sgl_dr = 19;</code>
        *
        * <pre>
-       *单通道基站DR    
+       *单通道基站DR
        * </pre>
        */
       public Builder setSglDr(int value) {
@@ -3938,7 +3939,7 @@ public final class ProtoStationMsgV2 {
        * <code>optional uint32 sgl_dr = 19;</code>
        *
        * <pre>
-       *单通道基站DR    
+       *单通道基站DR
        * </pre>
        */
       public Builder clearSglDr() {
@@ -3959,7 +3960,7 @@ public final class ProtoStationMsgV2 {
     // @@protoc_insertion_point(class_scope:StationMsg)
   }
 
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_StationMsg_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -3992,23 +3993,23 @@ public final class ProtoStationMsgV2 {
       "TATIC\020\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
+      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
+        public com.google.protobuf.ExtensionRegistry assignDescriptors(
+            com.google.protobuf.Descriptors.FileDescriptor root) {
+          descriptor = root;
+          internal_static_StationMsg_descriptor =
+            getDescriptor().getMessageTypes().get(0);
+          internal_static_StationMsg_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_StationMsg_descriptor,
+              new String[] { "Ret", "Sn", "Netid", "Mcdomain", "Mcport", "Key", "NwkAccessMode", "IpAlloc", "Ip", "Gateway", "Mask", "Pdns", "Adns", "Ssid", "Pwd", "Encrypt", "SelfTestCode", "SglFreq", "SglDr", });
+          return null;
+        }
+      };
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
-    internal_static_StationMsg_descriptor =
-      getDescriptor().getMessageTypes().get(0);
-    internal_static_StationMsg_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_StationMsg_descriptor,
-        new String[] { "Ret", "Sn", "Netid", "Mcdomain", "Mcport", "Key", "NwkAccessMode", "IpAlloc", "Ip", "Gateway", "Mask", "Pdns", "Adns", "Ssid", "Pwd", "Encrypt", "SelfTestCode", "SglFreq", "SglDr", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

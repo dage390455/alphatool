@@ -58,6 +58,8 @@
     <string name="password">Password</string>
     <string name="name">Name</string>
     <string name="encrpt">Encrpt Method</string>
+    <string name="sgl_dr">Spreading Factor</string>
+    <string name="sgl_freq">Frequency</string>
     <string name="tag">tag</string>
     <string name="enter_dfu">Enter dfu mode</string>
     <string name="write_failed">Write failed</string>

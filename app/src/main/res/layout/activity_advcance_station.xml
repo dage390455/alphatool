@@ -273,6 +273,129 @@
                 android:layout_marginRight="12dp"
                 android:background="#c8c7cc"
                 android:contentDescription="@null" />
+            <RelativeLayout
+                android:id="@+id/settings_station_rl_sgl_dr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_item_selector"
+                android:paddingBottom="10dp"
+                android:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/station_sgl_dr_sep"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:background="#c8c7cc"
+                    android:contentDescription="@null"/>
+
+                <TextView
+                    android:id="@+id/settings_station_sgl_dr_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/station_sgl_dr_sep"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="@dimen/y30"
+                    android:text="@string/sgl_dr"
+                    android:textColor="#666666"
+                    android:textSize="18sp"/>
+
+                <ImageView
+                    android:id="@+id/image_sgl_dr"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="20dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/icon_arrow"/>
+
+                <TextView
+                    android:id="@+id/settings_station_tv_sgl_gr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/settings_station_sgl_dr_name"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_toLeftOf="@id/image_sgl_dr"
+                    android:ellipsize="end"
+                    android:maxEms="8"
+                    android:singleLine="true"
+                    android:text="SF7/125kHz"
+                    android:textColor="#999999"
+                    android:textSize="18sp"/>
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"
+                android:background="#c8c7cc"
+                android:contentDescription="@null"/>
+
+            <RelativeLayout
+                android:id="@+id/settings_station_rl_sgl_freq"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_item_selector"
+                android:paddingBottom="10dp"
+                android:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/station_sgl_freq_sep"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:background="#c8c7cc"
+                    android:contentDescription="@null"/>
+
+                <TextView
+                    android:id="@+id/settings_station_sgl_freq_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/station_sgl_freq_sep"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="@dimen/y30"
+                    android:text="@string/sgl_freq"
+                    android:textColor="#666666"
+                    android:textSize="18sp"/>
+
+                <ImageView
+                    android:id="@+id/image_sgl_freq"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="20dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/icon_arrow"/>
+
+                <TextView
+                    android:id="@+id/settings_station_tv_sgl_freq"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/settings_station_sgl_freq_name"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_toLeftOf="@id/image_sgl_freq"
+                    android:ellipsize="end"
+                    android:maxEms="8"
+                    android:singleLine="true"
+                    android:text="测试Mhz"
+                    android:textColor="#999999"
+                    android:textSize="18sp"/>
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"
+                android:background="#c8c7cc"
+                android:contentDescription="@null"/>
         </LinearLayout>
 
     </ScrollView>

@@ -290,6 +290,7 @@ public class SearchStationActivity extends AppCompatActivity implements View.OnC
 
     public void cloud() {
         Intent intent = new Intent(this, AdvanceSettingStationActivity.class);
+        intent.putExtra(Constants.EXTRA_NAME_STATION_TYPE, targetStationInfo.getDeviceType());
         intent.putExtra(Constants.EXTRA_NAME_STATION, targetSensoroStation);
         startActivity(intent);
     }

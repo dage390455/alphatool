@@ -26,6 +26,25 @@ public class SensoroStationConfiguration {
     String cloudport;
     String key;
 
+    public int getSgl_dr() {
+        return sgl_dr;
+    }
+
+    public void setSgl_dr(int sgl_dr) {
+        this.sgl_dr = sgl_dr;
+    }
+
+    public int getSgl_freq() {
+        return sgl_freq;
+    }
+
+    public void setSgl_freq(int sgl_freq) {
+        this.sgl_freq = sgl_freq;
+    }
+
+    int sgl_dr;
+    int sgl_freq;
+
     private SensoroStationConfiguration(Builder builder) {
         this.sn = builder.sn;
         this.accessMode = builder.accessMode;
@@ -45,6 +64,8 @@ public class SensoroStationConfiguration {
         this.cloudaddress = builder.cloudaddress;
         this.cloudport = builder.cloudport;
         this.key = builder.key;
+        this.sgl_freq = builder.sgl_freq;
+        this.sgl_dr = builder.sgl_dr;
     }
 
     public static class Builder {
@@ -67,6 +88,25 @@ public class SensoroStationConfiguration {
         private String cloudaddress;
         private String cloudport;
         private String key;
+
+        public int getSgl_dr() {
+            return sgl_dr;
+        }
+
+        public void setSgl_dr(int sgl_dr) {
+            this.sgl_dr = sgl_dr;
+        }
+
+        public int getSgl_freq() {
+            return sgl_freq;
+        }
+
+        public void setSgl_freq(int sgl_freq) {
+            this.sgl_freq = sgl_freq;
+        }
+
+        private int sgl_dr;
+        private int sgl_freq;
 
         public Builder setSn(String sn) {
             this.sn = sn;
@@ -123,6 +163,7 @@ public class SensoroStationConfiguration {
             this.netid = netid;
             return this;
         }
+
         public Builder setCloudAddress(String address) {
             this.cloudaddress = address;
             return this;
@@ -132,22 +173,27 @@ public class SensoroStationConfiguration {
             this.cloudport = port;
             return this;
         }
+
         public Builder setKey(String key) {
             this.key = key;
             return this;
         }
+
         public Builder setPassword(String pwd) {
             this.pwd = pwd;
-            return  this;
+            return this;
         }
+
         public Builder setEncrpt(String encrpt) {
             this.encrpt = encrpt;
             return this;
         }
+
         public Builder setRouter(String router) {
             this.gateway = router;
             return this;
         }
+
         public SensoroStationConfiguration build() {
             return new SensoroStationConfiguration(this);
         }

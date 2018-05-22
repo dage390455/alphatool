@@ -252,6 +252,8 @@ public interface Constants {
     String SETTINGS_NAME = "SETTINGS_NAME";
     String SETTINGS_PASSWORD = "SETTINGS_PASSWORD";
     String SETTINGS_ENCRYPT = "SETTINGS_ENCRYPT";
+    String SETTINGS_SGL_DR = "settings_sgl_dr";
+    String SETTINGS_SGL_FREQ = "settings_sgl_freq";
 
     String SETTINGS_DEVICE_APP_EUI = "Settings_device_app_eui";
     String SETTINGS_DEVICE_DEV_EUI = "Settings_device_dev_eui";

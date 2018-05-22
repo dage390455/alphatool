@@ -4,12 +4,15 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.activity.fragment.SettingsInputDialogFragment;
+import com.sensoro.loratool.activity.fragment.SettingsSingleChoiceItemsFragment;
 import com.sensoro.loratool.ble.BLEDevice;
 import com.sensoro.loratool.ble.SensoroConnectionCallback;
 import com.sensoro.loratool.ble.SensoroStation;
@@ -24,16 +27,27 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 /**
  * Created by sensoro on 16/10/11.
  */
 
-public class AdvanceSettingStationActivity extends BaseActivity implements Constants, OnPositiveButtonClickListener, SensoroConnectionCallback, SensoroWriteCallback {
+public class AdvanceSettingStationActivity extends BaseActivity implements Constants, OnPositiveButtonClickListener,
+        SensoroConnectionCallback, SensoroWriteCallback, View.OnClickListener {
 
 
     private SensoroStationConnection sensoroConnection;
     private SensoroStation sensoroStation;
     private ProgressDialog progressDialog;
+
+    /**
+     * 单通道基站DR
+     */
+    private final String[] ITEM_SGL_DR_STR = {"SF12 / 125 kHz", "SF11 / 125 kHz", "SF10 / 125 kHz", "SF9 / 125 kHz",
+            "SF8 / 125 kHz", "SF7 / 125 kHz"};
+
 
     @BindView(R.id.station_cloud_rl_netid)
     RelativeLayout netIdRelativeLayout;
@@ -52,6 +66,20 @@ public class AdvanceSettingStationActivity extends BaseActivity implements Const
     TextView cloudPortTextView;
     @BindView(R.id.station_cloud_tv_key)
     TextView keyTextView;
+    //
+    @BindView(R.id.settings_station_tv_sgl_gr)
+    TextView sgl_drTextView;
+    @BindView(R.id.settings_station_tv_sgl_freq)
+    TextView sgl_freqTextView;
+
+    @BindView(R.id.settings_station_rl_sgl_dr)
+    RelativeLayout sgl_drLayout;
+    @BindView(R.id.settings_station_rl_sgl_freq)
+    RelativeLayout sgl_freqLayout;
+    private SettingsSingleChoiceItemsFragment dialogFragment;
+    private String stationType;
+    private float sgl_freq_f;
+    private int sgl_dr;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,6 +110,23 @@ public class AdvanceSettingStationActivity extends BaseActivity implements Const
             setContentView(R.layout.activity_advcance_station);
             ButterKnife.bind(this);
             resetRootLayout();
+            if (!TextUtils.isEmpty(stationType) && "scgateway".equals(stationType)) {
+                sgl_drLayout.setOnClickListener(this);
+                sgl_freqLayout.setOnClickListener(this);
+                int sgl_dr = sensoroStation.getSgl_dr();
+                this.sgl_dr = sgl_dr;
+                int sgl_freq = sensoroStation.getSgl_freq();
+                sgl_drLayout.setVisibility(VISIBLE);
+                sgl_drTextView.setText(ITEM_SGL_DR_STR[sgl_dr]);
+                sgl_freqLayout.setVisibility(VISIBLE);
+                sgl_freq_f = sgl_freq / 1000000f;
+                sgl_freqTextView.setText(sgl_freq_f + " MHz");
+            } else {
+                sgl_drLayout.setVisibility(GONE);
+                sgl_freqLayout.setVisibility(GONE);
+            }
+
+
             netIdTextView.setText(sensoroStation.getNetid());
             cloudAddressTextView.setText(sensoroStation.getCloudaddress());
             cloudPortTextView.setText(sensoroStation.getCloudport());
@@ -97,6 +142,7 @@ public class AdvanceSettingStationActivity extends BaseActivity implements Const
     private void initData() {
 
         sensoroStation = this.getIntent().getParcelableExtra(Constants.EXTRA_NAME_STATION);
+        stationType = this.getIntent().getStringExtra(Constants.EXTRA_NAME_STATION_TYPE);
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
         progressDialog.setCanceledOnTouchOutside(false);
@@ -123,6 +169,7 @@ public class AdvanceSettingStationActivity extends BaseActivity implements Const
         }
     }
 
+
     @OnClick(R.id.station_cloud_iv_back)
     public void back() {
         this.finish();
@@ -138,9 +185,13 @@ public class AdvanceSettingStationActivity extends BaseActivity implements Const
             builder.setCloudAddress(cloudAddressTextView.getText().toString());
             builder.setCloudPort(cloudPortTextView.getText().toString());
             builder.setKey(keyTextView.getText().toString());
+            if (!TextUtils.isEmpty(stationType) && "scgateway".equals(stationType)) {
+                builder.setSgl_dr(sgl_dr);
+                builder.setSgl_freq((int) (sgl_freq_f * 1000000));
+            }
             SensoroStationConfiguration sensoroStationConfiguration = builder.build();
             sensoroConnection.writeStationAdvanceConfiguration(sensoroStationConfiguration, this);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -186,7 +237,7 @@ public class AdvanceSettingStationActivity extends BaseActivity implements Const
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                 progressDialog.dismiss();
+                progressDialog.dismiss();
                 AdvanceSettingStationActivity.this.finish();
                 Toast.makeText(AdvanceSettingStationActivity.this, R.string.save_succ, Toast.LENGTH_SHORT).show();
             }
@@ -206,25 +257,29 @@ public class AdvanceSettingStationActivity extends BaseActivity implements Const
 
     @OnClick(R.id.station_cloud_rl_netid)
     public void doNetId() {
-        SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(netIdTextView.getText().toString());
+        SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(netIdTextView.getText()
+                .toString());
         dialogFragment.show(getFragmentManager(), SETTINGS_STATION_NETID);
     }
 
     @OnClick(R.id.station_cloud_rl_address)
     public void doCloudAddress() {
-        SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(cloudAddressTextView.getText().toString());
+        SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(cloudAddressTextView
+                .getText().toString());
         dialogFragment.show(getFragmentManager(), SETTINGS_STATION_CLOUD_ADDRESS);
     }
 
     @OnClick(R.id.station_cloud_rl_port)
     public void doCloudPort() {
-        SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(cloudPortTextView.getText().toString());
+        SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(cloudPortTextView
+                .getText().toString());
         dialogFragment.show(getFragmentManager(), SETTINGS_STATION_CLOUD_PORT);
     }
 
     @OnClick(R.id.station_cloud_rl_key)
     public void doKey() {
-        SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(keyTextView.getText().toString());
+        SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(keyTextView.getText()
+                .toString());
         dialogFragment.show(getFragmentManager(), SETTINGS_STATION_KEY);
     }
 
@@ -243,6 +298,22 @@ public class AdvanceSettingStationActivity extends BaseActivity implements Const
         } else if (tag.equals(SETTINGS_STATION_KEY)) {
             String text = bundle.getString(SettingsInputDialogFragment.INPUT);
             keyTextView.setText(text);
+        } else if (tag.equals(SETTINGS_SGL_DR)) {
+            //单通道基站DR选择
+            sgl_dr = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
+            sgl_drTextView.setText(ITEM_SGL_DR_STR[sgl_dr]);
+            sensoroStation.setSgl_dr(sgl_dr);
+        } else if (tag.equals(SETTINGS_SGL_FREQ)) {
+            String text = bundle.getString(SettingsInputDialogFragment.INPUT);
+            float v;
+            try {
+                v = Float.parseFloat(text);
+                sgl_freqTextView.setText(v + "MHz");
+                sgl_freq_f = v;
+            } catch (Exception e) {
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 
@@ -252,5 +323,25 @@ public class AdvanceSettingStationActivity extends BaseActivity implements Const
         if (sensoroConnection != null) {
             sensoroConnection.disconnect();
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.settings_station_rl_sgl_dr:
+                //单通道基站DR
+                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(ITEM_SGL_DR_STR, sgl_dr);
+                dialogFragment.show(getFragmentManager(), SETTINGS_SGL_DR);
+                break;
+            case R.id.settings_station_rl_sgl_freq:
+                //单通道基站频点
+//                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(encryptItems, getEncryptIndex
+// (encrypt));
+//                dialogFragment.show(getFragmentManager(), SETTINGS_ENCRYPT);
+                SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(sgl_freq_f + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_SGL_FREQ);
+                break;
+        }
+
     }
 }

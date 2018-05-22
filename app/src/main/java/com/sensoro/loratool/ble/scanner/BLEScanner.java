@@ -27,8 +27,8 @@ public abstract class BLEScanner {
     private Handler handler = new Handler();
     private HandlerThread handlerThread;
     private BluetoothAdapter bluetoothAdapter;
-    private boolean scannerEnable;
-    private boolean scanCycleStarted;
+    private volatile boolean scannerEnable;
+    private volatile boolean scanCycleStarted;
 
     private volatile long scanPeriod = DEFAULT_SCAN_PERIOD;
     private volatile long betweenScanPeriod = DEFAULT_BETWEEN_SCAN_PERIOD;
@@ -59,12 +59,12 @@ public abstract class BLEScanner {
             useAndroidLScanner = true;
         }
 
-        if (useAndroidLScanner) {
-            return new BLEScannerForLollipop(context, bleScanCallback);
-        } else {
-            return new BLEScannerForJellyBean(context, bleScanCallback);
-        }
-//        return new BLEScannerForJellyBean(context, bleScanCallback);
+//        if (useAndroidLScanner) {
+//            return new BLEScannerForLollipop(context, bleScanCallback);
+//        } else {
+//            return new BLEScannerForJellyBean(context, bleScanCallback);
+//        }
+        return new BLEScannerForJellyBean(context, bleScanCallback);
     }
 
     public void start() {

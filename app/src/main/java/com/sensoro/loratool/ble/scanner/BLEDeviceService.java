@@ -156,8 +156,10 @@ public class BLEDeviceService extends Service implements BLEScanCallback {
     }
 
     private void processScanCycleDevices() {
-        exitDevice();
-        updateDevices();
+        synchronized (BLEDeviceService.class) {
+            exitDevice();
+            updateDevices();
+        }
     }
 
     @Override

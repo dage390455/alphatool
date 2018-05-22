@@ -38,7 +38,8 @@ import static android.view.View.VISIBLE;
  * Created by sensoro on 16/8/11.
  */
 
-public class SettingStationActivity extends BaseActivity implements Constants, OnPositiveButtonClickListener, View.OnClickListener, SensoroWriteCallback, SensoroConnectionCallback {
+public class SettingStationActivity extends BaseActivity implements Constants, OnPositiveButtonClickListener, View
+        .OnClickListener, SensoroWriteCallback, SensoroConnectionCallback {
     private static final String TAG = SettingStationActivity.class.getSimpleName();
     @BindView(R.id.settings_station_rl_access_mode)
     RelativeLayout accessModeLayout;
@@ -84,6 +85,7 @@ public class SettingStationActivity extends BaseActivity implements Constants, O
     TextView passwordTextView;
     @BindView(R.id.settings_station_tv_encrypt)
     TextView encryptTextView;
+
     @BindView(R.id.image_ip_assignment)
     ImageView assignmentImageView;
     @BindView(R.id.image_ip_address)
@@ -106,6 +108,7 @@ public class SettingStationActivity extends BaseActivity implements Constants, O
     private String[] accessModeItems;
     private String[] encryptItems;
     private String encrypt;
+
     private SensoroStationConnection sensoroConnection;
     private SensoroStation sensoroStation;
     private int accessMode;
@@ -166,6 +169,8 @@ public class SettingStationActivity extends BaseActivity implements Constants, O
         encryptLayout.setOnClickListener(this);
         backView.setOnClickListener(this);
         saveView.setOnClickListener(this);
+//        sgl_drLayout.setVisibility(GONE);
+//        sgl_freqLayout.setVisibility(GONE);
 
     }
 
@@ -237,7 +242,8 @@ public class SettingStationActivity extends BaseActivity implements Constants, O
         try {
             String[] assignmentArray = this.getResources().getStringArray(R.array.assignment_array);
             accessMode = sensoroStation.getAccessMode();
-            if (accessMode == ProtoStationMsgV2.NwkAccessMode.NWK_MODE_CELLULAR_VALUE && stationType.equals("station")) {
+            if (accessMode == ProtoStationMsgV2.NwkAccessMode.NWK_MODE_CELLULAR_VALUE && stationType.equals
+                    ("station")) {
                 accessMode = 1;
             }
             assignmentTextView.setText(assignmentArray[sensoroStation.getAllocationMode()]);
@@ -270,10 +276,11 @@ public class SettingStationActivity extends BaseActivity implements Constants, O
 //            } else {
 //                staticLayout.setVisibility(VISIBLE);
 //            }
-            } else {
+            }  else {
                 String[] accessModeArray = this.getResources().getStringArray(R.array.gateway_access_mode_array);
                 accessModeTextView.setText(accessModeArray[sensoroStation.getAccessMode()]);
-//            if (sensoroStation.getAllocationMode() == ProtoStationMsgV2.IPAllocationMode.IP_ALLOC_DHCP_VALUE || sensoroStation.getAccessMode() == ProtoStationMsgV2.NwkAccessMode.NWK_MODE_WIFI_VALUE) {
+//            if (sensoroStation.getAllocationMode() == ProtoStationMsgV2.IPAllocationMode.IP_ALLOC_DHCP_VALUE ||
+// sensoroStation.getAccessMode() == ProtoStationMsgV2.NwkAccessMode.NWK_MODE_WIFI_VALUE) {
 //                staticLayout.setVisibility(GONE);
 //            } else {
 //                staticLayout.setVisibility(VISIBLE);
@@ -383,12 +390,14 @@ public class SettingStationActivity extends BaseActivity implements Constants, O
                 finish();
                 break;
             case R.id.settings_station_rl_ip_assignment:
-                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(assignmentItems, sensoroStation.getAllocationMode());
+                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(assignmentItems, sensoroStation
+                        .getAllocationMode());
                 dialogFragment.show(getFragmentManager(), SETTINGS_IP_ASSIGNMENT);
                 break;
             case R.id.settings_station_rl_access_mode:
                 int access_mode = sensoroStation.getAccessMode();
-                if (access_mode == ProtoStationMsgV2.NwkAccessMode.NWK_MODE_CELLULAR_VALUE && stationType.equals("station")) {
+                if (access_mode == ProtoStationMsgV2.NwkAccessMode.NWK_MODE_CELLULAR_VALUE && stationType.equals
+                        ("station")) {
                     access_mode = 1;
                 }
                 dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(accessModeItems, access_mode);

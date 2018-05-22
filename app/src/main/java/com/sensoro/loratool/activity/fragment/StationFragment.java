@@ -269,6 +269,7 @@ public class StationFragment extends Fragment implements AdapterView.OnItemClick
 
     public void cloud() {
         Intent intent = new Intent(mContext, AdvanceSettingStationActivity.class);
+        intent.putExtra(Constants.EXTRA_NAME_STATION_TYPE, targetStationInfo.getDeviceType());
         intent.putExtra(Constants.EXTRA_NAME_STATION, targetSensoroStation);
         startActivity(intent);
     }

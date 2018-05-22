@@ -142,7 +142,6 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         hasDelay = false;
         hasMaxEirp = false;
     }
-
     protected SensoroDevice(Parcel in) {
         super(in);
         major = in.readInt();
@@ -971,7 +970,6 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
     public boolean hasSensorParam() {
         return hasSensorParam;
     }
-
     public void setHasSensorParam(boolean hasSensorParam) {
         this.hasSensorParam = hasSensorParam;
     }

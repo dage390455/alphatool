@@ -12,9 +12,7 @@ import android.util.Log;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.sensoro.loratool.ble.scanner.SensoroUUID;
-import com.sensoro.loratool.proto.ProtoMsgCfgV1U1;
 import com.sensoro.loratool.proto.ProtoStationMsgV2;
-import com.sensoro.loratool.proto.ProtoStd1U1;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -116,7 +114,8 @@ public class SensoroStationConnection {
 
             if (status == BluetoothGatt.GATT_SUCCESS) {//发现服务
                 List<BluetoothGattService> gattServiceList = gatt.getServices();
-                if (bluetoothLEHelper4.checkGattServices(gattServiceList, BluetoothLEHelper4.GattInfo.SENSORO_STATION_SERVICE_UUID)) {
+                if (bluetoothLEHelper4.checkGattServices(gattServiceList, BluetoothLEHelper4.GattInfo
+                        .SENSORO_STATION_SERVICE_UUID)) {
                     bluetoothLEHelper4.listenDescriptor(BluetoothLEHelper4.GattInfo.SENSORO_STATION_READ_CHAR_UUID);
                 } else {
                     sensoroConnectionCallback.onConnectedFailure(ResultCode.SYSTEM_ERROR);
@@ -155,7 +154,8 @@ public class SensoroStationConnection {
             // check pwd
             if (characteristic.getUuid().equals(BluetoothLEHelper4.GattInfo.SENSORO_STATION_AUTHORIZATION_CHAR_UUID)) {
                 if (status == BluetoothGatt.GATT_SUCCESS) {
-                    bluetoothLEHelper4.listenOnCharactertisticRead(BluetoothLEHelper4.GattInfo.SENSORO_STATION_READ_CHAR_UUID);
+                    bluetoothLEHelper4.listenOnCharactertisticRead(BluetoothLEHelper4.GattInfo
+                            .SENSORO_STATION_READ_CHAR_UUID);
                 } else if (status == BluetoothGatt.GATT_WRITE_NOT_PERMITTED) {
                     sensoroConnectionCallback.onConnectedFailure(ResultCode.PASSWORD_ERR);
                     disconnect();
@@ -281,7 +281,8 @@ public class SensoroStationConnection {
                 }
                 break;
             case CmdType.CMD_R_CFG:
-                //格式: length + version + retCode, 当数据为多包的情况下,onCharacteristicRead接收的第一个包数据不完整,因此,onCharacteristicChanged会不断被接收到数据,直到每次接收到的数据累加等于length
+                //格式: length + version + retCode, 当数据为多包的情况下,onCharacteristicRead接收的第一个包数据不完整,因此,
+                // onCharacteristicChanged会不断被接收到数据,直到每次接收到的数据累加等于length
                 //多包的情况下,可将第一次包的数据放到BufferByte里
                 //数据是否写入成功
                 if (byteBuffer != null) {
@@ -319,7 +320,8 @@ public class SensoroStationConnection {
         sensoroStation.setAdns(msgCfg.getAdns());
         sensoroStation.setGateway(msgCfg.getGateway());
         sensoroStation.setEncrpt(msgCfg.getEncrypt());
-
+        sensoroStation.setSgl_dr(msgCfg.getSglDr());
+        sensoroStation.setSgl_freq(msgCfg.getSglFreq());
         sensoroStation.setPwd(msgCfg.getPwd());
         sensoroStation.setSid(msgCfg.getSsid());
         sensoroStation.setNetid(msgCfg.getNetid());
@@ -329,13 +331,17 @@ public class SensoroStationConnection {
 
     }
 
-    public void writeStationAdvanceConfiguration(SensoroStationConfiguration sensoroStationConfiguration, SensoroWriteCallback writeCallback) {
+    public void writeStationAdvanceConfiguration(SensoroStationConfiguration sensoroStationConfiguration,
+                                                 SensoroWriteCallback writeCallback) {
         writeCallbackHashMap.put(CmdType.CMD_W_CFG, writeCallback);
         ProtoStationMsgV2.StationMsg.Builder msgBuilder = ProtoStationMsgV2.StationMsg.newBuilder();
         msgBuilder.setNetid(sensoroStationConfiguration.netid);
         msgBuilder.setMcdomain(sensoroStationConfiguration.cloudaddress);
         msgBuilder.setMcport(sensoroStationConfiguration.cloudport);
         msgBuilder.setKey(sensoroStationConfiguration.key);
+        //
+        msgBuilder.setSglDr(sensoroStationConfiguration.sgl_dr);
+        msgBuilder.setSglFreq(sensoroStationConfiguration.sgl_freq);
         ProtoStationMsgV2.StationMsg stationMsg = msgBuilder.build();
         byte[] data = stationMsg.toByteArray();
         int data_length = data.length;
@@ -352,13 +358,15 @@ public class SensoroStationConnection {
         System.arraycopy(version_data, 0, total_data, 2, 1);
         System.arraycopy(data, 0, total_data, 3, data_length);
 
-        int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG, BluetoothLEHelper4.GattInfo.SENSORO_STATION_WRITE_CHAR_UUID);
+        int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG,
+                BluetoothLEHelper4.GattInfo.SENSORO_STATION_WRITE_CHAR_UUID);
         if (resultCode != ResultCode.SUCCESS) {
             writeCallback.onWriteFailure(resultCode, CmdType.CMD_NULL);
         }
     }
 
-    public void writeStationConfiguration(SensoroStationConfiguration sensoroStationConfiguration, SensoroWriteCallback writeCallback) {
+    public void writeStationConfiguration(SensoroStationConfiguration sensoroStationConfiguration,
+                                          SensoroWriteCallback writeCallback) {
         writeCallbackHashMap.put(CmdType.CMD_W_CFG, writeCallback);
         ProtoStationMsgV2.StationMsg.Builder msgBuilder = ProtoStationMsgV2.StationMsg.newBuilder();
         msgBuilder.setPwd(sensoroStationConfiguration.pwd);
@@ -387,18 +395,19 @@ public class SensoroStationConnection {
         System.arraycopy(version_data, 0, total_data, 2, 1);
         System.arraycopy(data, 0, total_data, 3, data_length);
 
-        int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG, BluetoothLEHelper4.GattInfo.SENSORO_STATION_WRITE_CHAR_UUID);
+        int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG,
+                BluetoothLEHelper4.GattInfo.SENSORO_STATION_WRITE_CHAR_UUID);
         if (resultCode != ResultCode.SUCCESS) {
             writeCallback.onWriteFailure(resultCode, CmdType.CMD_NULL);
         }
     }
 
 
-
     private void writePassword(String newPassword, SensoroWriteCallback writeCallback) {
         writeCallbackHashMap.put(CmdType.CMD_SET_PASSWORD, writeCallback);
 
-        int resultCode = bluetoothLEHelper4.setPassword(newPassword, BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
+        int resultCode = bluetoothLEHelper4.setPassword(newPassword, BluetoothLEHelper4.GattInfo
+                .SENSORO_DEVICE_WRITE_CHAR_UUID);
         if (resultCode != ResultCode.SUCCESS) {
             writeCallback.onWriteFailure(resultCode, CmdType.CMD_NULL);
         }

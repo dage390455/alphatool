@@ -25,6 +25,28 @@ public class SensoroStation extends BLEDevice implements Parcelable, Cloneable {
     String sid;
     String pwd;
     String encrpt;
+
+    public int getSgl_dr() {
+        return sgl_dr;
+    }
+
+    public void setSgl_dr(int sgl_dr) {
+        this.sgl_dr = sgl_dr;
+    }
+
+    //单通道基站DR
+    int sgl_dr;
+
+    public int getSgl_freq() {
+        return sgl_freq;
+    }
+
+    public void setSgl_freq(int sgl_freq) {
+        this.sgl_freq = sgl_freq;
+    }
+
+    int sgl_freq;
+
     int accessMode;
     int allocationMode;
     int rssi;
@@ -64,6 +86,8 @@ public class SensoroStation extends BLEDevice implements Parcelable, Cloneable {
         key = in.readString();
         lastFoundTime = in.readLong();
         rssi = in.readInt();
+        sgl_dr = in.readInt();
+        sgl_freq = in.readInt();
     }
 
     @Override
@@ -98,6 +122,8 @@ public class SensoroStation extends BLEDevice implements Parcelable, Cloneable {
         parcel.writeString(key);
         parcel.writeLong(lastFoundTime);
         parcel.writeInt(rssi);
+        parcel.writeInt(sgl_dr);
+        parcel.writeInt(sgl_freq);
     }
 
     public static final Creator<SensoroStation> CREATOR = new Creator<SensoroStation>() {
