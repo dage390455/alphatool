@@ -59,12 +59,13 @@ public abstract class BLEScanner {
             useAndroidLScanner = true;
         }
 
-//        if (useAndroidLScanner) {
-//            return new BLEScannerForLollipop(context, bleScanCallback);
-//        } else {
-//            return new BLEScannerForJellyBean(context, bleScanCallback);
-//        }
-        return new BLEScannerForJellyBean(context, bleScanCallback);
+        if (useAndroidLScanner) {
+            return new BLEScannerForLollipop(context, bleScanCallback);
+        } else {
+            return new BLEScannerForJellyBean(context, bleScanCallback);
+        }
+        //TODO 这里统一采用老版本，比较实时
+//        return new BLEScannerForJellyBean(context, bleScanCallback);
     }
 
     public void start() {

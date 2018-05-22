@@ -30,7 +30,7 @@ class BLEScannerForLollipop extends BLEScanner {
     protected BLEScannerForLollipop(Context context, BLEScanCallback bleScanCallback) {
         super(context, bleScanCallback);
 
-        scanSettings = (new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_POWER)).build();
+        scanSettings = (new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_BALANCED)).build();
     }
 
     @Override
