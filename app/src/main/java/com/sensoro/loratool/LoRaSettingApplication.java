@@ -6,7 +6,6 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.widget.Toast;
 
-import com.sensoro.lora.setting.server.ILoRaSettingServer;
 import com.sensoro.lora.setting.server.LoRaSettingServerImpl;
 import com.sensoro.lora.setting.server.bean.DeviceInfo;
 import com.sensoro.loratool.ble.BLEDevice;
@@ -36,7 +35,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class LoRaSettingApplication extends Application implements BLEDeviceListener<BLEDevice> {
 
     public IStation station;
-    public ILoRaSettingServer loRaSettingServer;
+    public LoRaSettingServerImpl loRaSettingServer;
     private List<StationInfo> stationInfoList = new ArrayList<>();
     private List<DeviceInfo> deviceInfoList = new ArrayList<>();
     private ConcurrentHashMap<String, SensoroDevice> sensoroDeviceMap = new ConcurrentHashMap<>();

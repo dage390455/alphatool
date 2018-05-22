@@ -322,6 +322,14 @@
         <item>WS LPG</item>
         <item>WS GAS</item>
         <item>BH WaterPressure</item>
+        //新添加字段
+        <item>Chip standard</item>
+        <item>Chip enhanced</item>
+        <item>Tester</item>
+        <item>Single Channel Temp Humi</item>
+        <item>Sanjiang CH4</item>
+        <item>Sanjiang LPG</item>
+        <item>Concox Tacker</item>
     </string-array>
     <string-array name="filter_device_band_array">
         <item>SE433</item>
@@ -337,6 +345,7 @@
     <string-array name="filter_station_hardware_array">
         <item>α Station</item>
         <item>α Gateway</item>
+        <item>α Mini</item>
     </string-array>
     <string-array name="filter_signal_array">
         <item>-40</item>

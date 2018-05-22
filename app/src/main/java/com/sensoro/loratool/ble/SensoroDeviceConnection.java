@@ -8,6 +8,7 @@ import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.google.protobuf.ByteString;
@@ -60,15 +61,21 @@ public class SensoroDeviceConnection {
             disconnect();
         }
     };
-    private BluetoothGattCallback bluetoothGattCallback = new BluetoothGattCallback() {
+    private final BluetoothGattCallback bluetoothGattCallback = new BluetoothGattCallback() {
 
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             super.onConnectionStateChange(gatt, status, newState);
-
+            bluetoothLEHelper4.bluetoothGatt = gatt;
             if (newState == BluetoothProfile.STATE_CONNECTED) {//连接成功
                 if (status == BluetoothGatt.GATT_SUCCESS) {
-                    gatt.discoverServices();
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } finally {
+                        gatt.discoverServices();
+                    }
                 } else {
                     sensoroConnectionCallback.onConnectedFailure(ResultCode.BLUETOOTH_ERROR);
                     disconnect();
@@ -79,11 +86,12 @@ public class SensoroDeviceConnection {
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             super.onServicesDiscovered(gatt, status);
-
+            bluetoothLEHelper4.bluetoothGatt = gatt;
             if (status == BluetoothGatt.GATT_SUCCESS) {//发现服务
                 List<BluetoothGattService> gattServiceList = gatt.getServices();
 
-                if (bluetoothLEHelper4.checkGattServices(gattServiceList, BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_SERVICE_UUID)) {
+                if (bluetoothLEHelper4.checkGattServices(gattServiceList, BluetoothLEHelper4.GattInfo
+                        .SENSORO_DEVICE_SERVICE_UUID)) {
                     if (!isContainSignal) {
                         listenType = ListenType.READ_CHAR;
                         bluetoothLEHelper4.listenDescriptor(BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_READ_CHAR_UUID);
@@ -104,13 +112,15 @@ public class SensoroDeviceConnection {
         @Override
         public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
             super.onDescriptorWrite(gatt, descriptor, status);
+            bluetoothLEHelper4.bluetoothGatt = gatt;
             if (descriptor.getUuid().equals(BluetoothLEHelper4.GattInfo.CLIENT_CHARACTERISTIC_CONFIG)) {
                 if (status == BluetoothGatt.GATT_SUCCESS) {
                     switch (listenType) {
                         case SIGNAL_CHAR:
                             // 监听读特征成功
                             listenType = ListenType.READ_CHAR;
-                            bluetoothLEHelper4.listenDescriptor(BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_READ_CHAR_UUID);
+                            bluetoothLEHelper4.listenDescriptor(BluetoothLEHelper4.GattInfo
+                                    .SENSORO_DEVICE_READ_CHAR_UUID);
                             break;
                         case READ_CHAR:
                             UUID auth_uuid = BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_AUTHORIZATION_CHAR_UUID;
@@ -133,6 +143,7 @@ public class SensoroDeviceConnection {
         @Override
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             super.onCharacteristicWrite(gatt, characteristic, status);
+            bluetoothLEHelper4.bluetoothGatt = gatt;
             parseCharacteristicWrite(characteristic, status);
 
         }
@@ -141,7 +152,8 @@ public class SensoroDeviceConnection {
             // check pwd
             if (characteristic.getUuid().equals(BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_AUTHORIZATION_CHAR_UUID)) {
                 if (status == BluetoothGatt.GATT_SUCCESS) {
-                    bluetoothLEHelper4.listenOnCharactertisticRead(BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_READ_CHAR_UUID);
+                    bluetoothLEHelper4.listenOnCharactertisticRead(BluetoothLEHelper4.GattInfo
+                            .SENSORO_DEVICE_READ_CHAR_UUID);
                 } else if (status == BluetoothGatt.GATT_WRITE_NOT_PERMITTED) {
                     sensoroConnectionCallback.onConnectedFailure(ResultCode.PASSWORD_ERR);
                     disconnect();
@@ -201,6 +213,7 @@ public class SensoroDeviceConnection {
         @Override
         public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             super.onCharacteristicRead(gatt, characteristic, status);
+            bluetoothLEHelper4.bluetoothGatt = gatt;
             parseCharacteristicRead(characteristic, status);
         }
 
@@ -246,6 +259,7 @@ public class SensoroDeviceConnection {
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
             super.onCharacteristicChanged(gatt, characteristic);
+            bluetoothLEHelper4.bluetoothGatt = gatt;
             try {
                 parseChangedData(characteristic);
             } catch (InvalidProtocolBufferException e) {
@@ -293,7 +307,7 @@ public class SensoroDeviceConnection {
      * @param sensoroConnectionCallback The callback of beacon connection.
      * @throws Exception
      */
-    public void connect(String password, SensoroConnectionCallback sensoroConnectionCallback) throws Exception {
+    public void connect(String password, final SensoroConnectionCallback sensoroConnectionCallback) throws Exception {
         if (context == null) {
             throw new Exception("Context is null");
         }
@@ -308,7 +322,9 @@ public class SensoroDeviceConnection {
         initData();
         // 开始连接，启动连接超时
         handler.postDelayed(connectTimeoutRunnable, CONNECT_TIME_OUT);
-
+        if (bluetoothLEHelper4 != null) {
+            bluetoothLEHelper4.close();
+        }
         this.sensoroConnectionCallback = sensoroConnectionCallback;
 
         if (!bluetoothLEHelper4.initialize()) {
@@ -316,9 +332,21 @@ public class SensoroDeviceConnection {
             disconnect();
         }
 
-        if (!bluetoothLEHelper4.connect(macAddress, bluetoothGattCallback)) {
-            sensoroConnectionCallback.onConnectedFailure(ResultCode.INVALID_PARAM);
-            disconnect();
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            if (!bluetoothLEHelper4.connect(macAddress, bluetoothGattCallback)) {
+                sensoroConnectionCallback.onConnectedFailure(ResultCode.INVALID_PARAM);
+                disconnect();
+            }
+        } else {
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    if (!bluetoothLEHelper4.connect(macAddress, bluetoothGattCallback)) {
+                        sensoroConnectionCallback.onConnectedFailure(ResultCode.INVALID_PARAM);
+                        disconnect();
+                    }
+                }
+            });
         }
     }
 
@@ -361,7 +389,8 @@ public class SensoroDeviceConnection {
                 }
                 break;
             case CmdType.CMD_R_CFG:
-                //格式: length + version + retCode, 当数据为多包的情况下,onCharacteristicRead接收的第一个包数据不完整,因此,onCharacteristicChanged会不断被接收到数据,直到每次接收到的数据累加等于length
+                //格式: length + version + retCode, 当数据为多包的情况下,onCharacteristicRead接收的第一个包数据不完整,因此,
+                // onCharacteristicChanged会不断被接收到数据,直到每次接收到的数据累加等于length
                 //多包的情况下,可将第一次包的数据放到BufferByte里
                 //数据是否写入成功
                 if (byteBuffer != null) {
@@ -412,7 +441,8 @@ public class SensoroDeviceConnection {
                     ProtoMsgTest1U1.MsgTest msgCfg = ProtoMsgTest1U1.MsgTest.parseFrom(data);
                     if (msgCfg.hasRetCode()) {
                         if (msgCfg.getRetCode() == 0) {
-                            writeCallbackHashMap.get(CmdType.CMD_SIGNAL).onWriteSuccess(null, CmdType.CMD_SIGNAL);//指令发送成功,可以正常接收数据
+                            writeCallbackHashMap.get(CmdType.CMD_SIGNAL).onWriteSuccess(null, CmdType.CMD_SIGNAL);
+                            //指令发送成功,可以正常接收数据
                         } else {
                             writeCallbackHashMap.get(CmdType.CMD_SIGNAL).onWriteFailure(0, CmdType.CMD_SIGNAL);
                         }
@@ -446,7 +476,8 @@ public class SensoroDeviceConnection {
                 } catch (Exception e) {
                     e.printStackTrace();
                     disconnect();
-                    writeCallbackHashMap.get(CmdType.CMD_SIGNAL).onWriteFailure(ResultCode.PARSE_ERROR, CmdType.CMD_SIGNAL);
+                    writeCallbackHashMap.get(CmdType.CMD_SIGNAL).onWriteFailure(ResultCode.PARSE_ERROR, CmdType
+                            .CMD_SIGNAL);
                 }
             }
         }
@@ -804,16 +835,21 @@ public class SensoroDeviceConnection {
         }
     }
 
-    public void writeDeviceAdvanceConfiguration(SensoroDeviceConfiguration deviceConfiguration, SensoroWriteCallback writeCallback) throws InvalidProtocolBufferException {
+    public void writeDeviceAdvanceConfiguration(SensoroDeviceConfiguration deviceConfiguration, SensoroWriteCallback
+            writeCallback) throws InvalidProtocolBufferException {
         writeCallbackHashMap.put(CmdType.CMD_W_CFG, writeCallback);
         switch (dataVersion) {
             case DATA_VERSION_03: {
                 ProtoMsgCfgV1U1.MsgCfgV1u1.Builder msgCfgBuilder = ProtoMsgCfgV1U1.MsgCfgV1u1.newBuilder();
-                msgCfgBuilder.setDevEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration.devEui))));
-                msgCfgBuilder.setAppEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration.appEui))));
+                msgCfgBuilder.setDevEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration.devEui)
+                )));
+                msgCfgBuilder.setAppEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration.appEui)
+                )));
                 msgCfgBuilder.setAppKey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration.appKey)));
-                msgCfgBuilder.setAppSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration.appSkey)));
-                msgCfgBuilder.setNwkSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration.nwkSkey)));
+                msgCfgBuilder.setAppSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration
+                        .appSkey)));
+                msgCfgBuilder.setNwkSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration
+                        .nwkSkey)));
                 msgCfgBuilder.setDevAddr(deviceConfiguration.devAdr);
                 msgCfgBuilder.setLoraDr(deviceConfiguration.getLoraDr());
                 msgCfgBuilder.setLoraAdr(deviceConfiguration.loadAdr);
@@ -834,7 +870,8 @@ public class SensoroDeviceConnection {
                 System.arraycopy(version_data, 0, total_data, 2, 1);
                 System.arraycopy(data, 0, total_data, 3, data_length);
 
-                int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG, BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
+                int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG,
+                        BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
                 if (resultCode != ResultCode.SUCCESS) {
                     writeCallback.onWriteFailure(resultCode, CmdType.CMD_NULL);
                 }
@@ -843,11 +880,15 @@ public class SensoroDeviceConnection {
             case DATA_VERSION_04: {
                 ProtoStd1U1.MsgStd.Builder msgStdBuilder = ProtoStd1U1.MsgStd.newBuilder();
                 ProtoMsgCfgV1U1.MsgCfgV1u1.Builder msgCfgBuilder = ProtoMsgCfgV1U1.MsgCfgV1u1.newBuilder();
-                msgCfgBuilder.setDevEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration.devEui))));
-                msgCfgBuilder.setAppEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration.appEui))));
+                msgCfgBuilder.setDevEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration.devEui)
+                )));
+                msgCfgBuilder.setAppEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration.appEui)
+                )));
                 msgCfgBuilder.setAppKey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration.appKey)));
-                msgCfgBuilder.setAppSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration.appSkey)));
-                msgCfgBuilder.setNwkSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration.nwkSkey)));
+                msgCfgBuilder.setAppSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration
+                        .appSkey)));
+                msgCfgBuilder.setNwkSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration
+                        .nwkSkey)));
                 msgCfgBuilder.setDevAddr(deviceConfiguration.devAdr);
                 msgCfgBuilder.setLoraDr(deviceConfiguration.getLoraDr());
                 msgCfgBuilder.setLoraAdr(deviceConfiguration.loadAdr);
@@ -872,7 +913,8 @@ public class SensoroDeviceConnection {
                 System.arraycopy(version_data, 0, total_data, 2, 1);
                 System.arraycopy(data, 0, total_data, 3, data_length);
 
-                int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG, BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
+                int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG,
+                        BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
                 if (resultCode != ResultCode.SUCCESS) {
                     writeCallback.onWriteFailure(resultCode, CmdType.CMD_NULL);
                 }
@@ -882,19 +924,24 @@ public class SensoroDeviceConnection {
                 MsgNode1V1M5.MsgNode.Builder builder = MsgNode1V1M5.MsgNode.newBuilder();
                 MsgNode1V1M5.LoraParam.Builder loraParamBuilder = MsgNode1V1M5.LoraParam.newBuilder();
                 if (deviceConfiguration.hasDevEui()) {
-                    loraParamBuilder.setDevEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration.devEui))));
+                    loraParamBuilder.setDevEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration
+                            .devEui))));
                 }
                 if (deviceConfiguration.hasAppEui()) {
-                    loraParamBuilder.setAppEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration.appEui))));
+                    loraParamBuilder.setAppEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration
+                            .appEui))));
                 }
                 if (deviceConfiguration.hasAppKey()) {
-                    loraParamBuilder.setAppKey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration.appKey)));
+                    loraParamBuilder.setAppKey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration
+                            .appKey)));
                 }
                 if (deviceConfiguration.hasAppSkey()) {
-                    loraParamBuilder.setAppSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration.appSkey)));
+                    loraParamBuilder.setAppSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration
+                            .appSkey)));
                 }
                 if (deviceConfiguration.hasNwkSkey()) {
-                    loraParamBuilder.setNwkSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration.nwkSkey)));
+                    loraParamBuilder.setNwkSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration
+                            .nwkSkey)));
                 }
                 if (deviceConfiguration.hasDevAddr()) {
                     loraParamBuilder.setDevAddr(deviceConfiguration.devAdr);
@@ -925,7 +972,8 @@ public class SensoroDeviceConnection {
                 System.arraycopy(version_data, 0, total_data, 2, 1);
                 System.arraycopy(data, 0, total_data, 3, data_length);
 
-                int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG, BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
+                int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG,
+                        BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
                 if (resultCode != ResultCode.SUCCESS) {
                     writeCallback.onWriteFailure(resultCode, CmdType.CMD_NULL);
                 }
@@ -938,7 +986,8 @@ public class SensoroDeviceConnection {
 
     }
 
-    public void writeModuleConfiguration(SensoroDeviceConfiguration deviceConfiguration, SensoroWriteCallback writeCallback) throws InvalidProtocolBufferException {
+    public void writeModuleConfiguration(SensoroDeviceConfiguration deviceConfiguration, SensoroWriteCallback
+            writeCallback) throws InvalidProtocolBufferException {
         writeCallbackHashMap.put(CmdType.CMD_W_CFG, writeCallback);
         ProtoMsgCfgV1U1.MsgCfgV1u1.Builder msgCfgBuilder = ProtoMsgCfgV1U1.MsgCfgV1u1.newBuilder();
         msgCfgBuilder.setLoraTxp(deviceConfiguration.loraTxp);
@@ -958,13 +1007,15 @@ public class SensoroDeviceConnection {
         byte[] version_data = SensoroUUID.intToByteArray(4, 1);
         System.arraycopy(version_data, 0, total_data, 2, 1);
         System.arraycopy(data, 0, total_data, 3, data_length);
-        int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG, BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
+        int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG,
+                BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
         if (resultCode != ResultCode.SUCCESS) {
             writeCallback.onWriteFailure(resultCode, CmdType.CMD_NULL);
         }
     }
 
-    public void writeData05Configuration(SensoroDeviceConfiguration sensoroDeviceConfiguration, SensoroWriteCallback writeCallback) throws InvalidProtocolBufferException {
+    public void writeData05Configuration(SensoroDeviceConfiguration sensoroDeviceConfiguration, SensoroWriteCallback
+            writeCallback) throws InvalidProtocolBufferException {
         writeCallbackHashMap.put(CmdType.CMD_W_CFG, writeCallback);
         MsgNode1V1M5.MsgNode.Builder msgNodeBuilder = MsgNode1V1M5.MsgNode.newBuilder();
         SensoroSensorConfiguration sensorConfiguration = sensoroDeviceConfiguration.getSensorConfiguration();
@@ -1087,7 +1138,8 @@ public class SensoroDeviceConnection {
         byte[] version_data = SensoroUUID.intToByteArray(5, 1);
         System.arraycopy(version_data, 0, total_data, 2, 1);
         System.arraycopy(data, 0, total_data, 3, data_length);
-        int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG, BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
+        int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG,
+                BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
         if (resultCode != ResultCode.SUCCESS) {
             writeCallback.onWriteFailure(resultCode, CmdType.CMD_NULL);
         }
@@ -1125,13 +1177,15 @@ public class SensoroDeviceConnection {
         byte[] version_data = SensoroUUID.intToByteArray(5, 1);
         System.arraycopy(version_data, 0, total_data, 2, 1);
         System.arraycopy(data, 0, total_data, 3, data_length);
-        int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, cmdType, BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
+        int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, cmdType, BluetoothLEHelper4.GattInfo
+                .SENSORO_DEVICE_WRITE_CHAR_UUID);
         if (resultCode != ResultCode.SUCCESS) {
             writeCallback.onWriteFailure(resultCode, CmdType.CMD_NULL);
         }
     }
 
-    public void writeDataConfiguration(SensoroDeviceConfiguration deviceConfiguration, SensoroWriteCallback writeCallback) throws InvalidProtocolBufferException {
+    public void writeDataConfiguration(SensoroDeviceConfiguration deviceConfiguration, SensoroWriteCallback
+            writeCallback) throws InvalidProtocolBufferException {
         writeCallbackHashMap.put(CmdType.CMD_W_CFG, writeCallback);
         ProtoMsgCfgV1U1.MsgCfgV1u1.Builder msgCfgBuilder = ProtoMsgCfgV1U1.MsgCfgV1u1.newBuilder();
         msgCfgBuilder.setLoraInt(deviceConfiguration.loraInt.intValue());
@@ -1173,7 +1227,8 @@ public class SensoroDeviceConnection {
                                 builder.setFrame(ByteString.copyFrom(SensoroUtils.encodeUrl(sensoroSlot.getFrame())));
                                 break;
                             default:
-                                builder.setFrame(ByteString.copyFrom(SensoroUtils.HexString2Bytes(sensoroSlot.getFrame())));
+                                builder.setFrame(ByteString.copyFrom(SensoroUtils.HexString2Bytes(sensoroSlot
+                                        .getFrame())));
                                 break;
                         }
                         break;
@@ -1202,7 +1257,8 @@ public class SensoroDeviceConnection {
                 byte[] version_data = SensoroUUID.intToByteArray(3, 1);
                 System.arraycopy(version_data, 0, total_data, 2, 1);
                 System.arraycopy(data, 0, total_data, 3, data_length);
-                int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG, BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
+                int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG,
+                        BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
                 if (resultCode != ResultCode.SUCCESS) {
                     writeCallback.onWriteFailure(resultCode, CmdType.CMD_NULL);
                 }
@@ -1225,7 +1281,8 @@ public class SensoroDeviceConnection {
                 byte[] version_data = SensoroUUID.intToByteArray(4, 1);
                 System.arraycopy(version_data, 0, total_data, 2, 1);
                 System.arraycopy(data, 0, total_data, 3, data_length);
-                int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG, BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
+                int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG,
+                        BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
                 if (resultCode != ResultCode.SUCCESS) {
                     writeCallback.onWriteFailure(resultCode, CmdType.CMD_NULL);
                 }
@@ -1236,7 +1293,8 @@ public class SensoroDeviceConnection {
         }
     }
 
-    public void writeMultiData05Configuration(SensoroDeviceConfiguration deviceConfiguration, SensoroWriteCallback writeCallback) throws InvalidProtocolBufferException {
+    public void writeMultiData05Configuration(SensoroDeviceConfiguration deviceConfiguration, SensoroWriteCallback
+            writeCallback) throws InvalidProtocolBufferException {
         writeCallbackHashMap.put(CmdType.CMD_W_CFG, writeCallback);
         MsgNode1V1M5.MsgNode.Builder msgNodeBuilder = MsgNode1V1M5.MsgNode.newBuilder();
         if (deviceConfiguration.hasLoraParam()) {
@@ -1341,13 +1399,15 @@ public class SensoroDeviceConnection {
         byte[] version_data = SensoroUUID.intToByteArray(5, 1);
         System.arraycopy(version_data, 0, total_data, 2, 1);
         System.arraycopy(data, 0, total_data, 3, data_length);
-        int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG, BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
+        int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG,
+                BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
         if (resultCode != ResultCode.SUCCESS) {
             writeCallback.onWriteFailure(resultCode, CmdType.CMD_NULL);
         }
     }
 
-    public void writeMultiDataConfiguration(SensoroDeviceConfiguration deviceConfiguration, SensoroWriteCallback writeCallback) throws InvalidProtocolBufferException {
+    public void writeMultiDataConfiguration(SensoroDeviceConfiguration deviceConfiguration, SensoroWriteCallback
+            writeCallback) throws InvalidProtocolBufferException {
         writeCallbackHashMap.put(CmdType.CMD_W_CFG, writeCallback);
         ProtoMsgCfgV1U1.MsgCfgV1u1.Builder msgCfgBuilder = ProtoMsgCfgV1U1.MsgCfgV1u1.newBuilder();
 
@@ -1390,7 +1450,8 @@ public class SensoroDeviceConnection {
                                 builder.setFrame(ByteString.copyFrom(SensoroUtils.encodeUrl(sensoroSlot.getFrame())));
                                 break;
                             default:
-                                builder.setFrame(ByteString.copyFrom(SensoroUtils.HexString2Bytes(sensoroSlot.getFrame())));
+                                builder.setFrame(ByteString.copyFrom(SensoroUtils.HexString2Bytes(sensoroSlot
+                                        .getFrame())));
                                 break;
                         }
                         break;
@@ -1420,7 +1481,8 @@ public class SensoroDeviceConnection {
                 byte[] version_data = SensoroUUID.intToByteArray(3, 1);
                 System.arraycopy(version_data, 0, total_data, 2, 1);
                 System.arraycopy(data, 0, total_data, 3, data_length);
-                int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG, BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
+                int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG,
+                        BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
                 if (resultCode != ResultCode.SUCCESS) {
                     writeCallback.onWriteFailure(resultCode, CmdType.CMD_NULL);
                 }
@@ -1443,7 +1505,8 @@ public class SensoroDeviceConnection {
                 byte[] version_data = SensoroUUID.intToByteArray(4, 1);
                 System.arraycopy(version_data, 0, total_data, 2, 1);
                 System.arraycopy(data, 0, total_data, 3, data_length);
-                int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG, BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
+                int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG,
+                        BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
                 if (resultCode != ResultCode.SUCCESS) {
                     writeCallback.onWriteFailure(resultCode, CmdType.CMD_NULL);
                 }
@@ -1477,7 +1540,8 @@ public class SensoroDeviceConnection {
                 System.arraycopy(version_data, 0, total_data, 2, 1);
                 System.arraycopy(data, 0, total_data, 3, data_length);
 
-                int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG, BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
+                int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG,
+                        BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
                 if (resultCode != ResultCode.SUCCESS) {
                     writeCallback.onWriteFailure(ResultCode.CODE_DEVICE_DFU_ERROR, CmdType.CMD_NULL);
                 }
@@ -1506,7 +1570,8 @@ public class SensoroDeviceConnection {
                 System.arraycopy(version_data, 0, total_data, 2, 1);
                 System.arraycopy(data, 0, total_data, 3, data_length);
 
-                int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG, BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
+                int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG,
+                        BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
                 if (resultCode != ResultCode.SUCCESS) {
                     writeCallback.onWriteFailure(ResultCode.CODE_DEVICE_DFU_ERROR, CmdType.CMD_NULL);
                 }
@@ -1532,7 +1597,8 @@ public class SensoroDeviceConnection {
                 System.arraycopy(version_data, 0, total_data, 2, 1);
                 System.arraycopy(data, 0, total_data, 3, data_length);
 
-                int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG, BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
+                int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG,
+                        BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
                 if (resultCode != ResultCode.SUCCESS) {
                     writeCallback.onWriteFailure(ResultCode.CODE_DEVICE_DFU_ERROR, CmdType.CMD_NULL);
                 }
@@ -1568,7 +1634,8 @@ public class SensoroDeviceConnection {
                 System.arraycopy(version_data, 0, total_data, 2, 1);
                 System.arraycopy(data, 0, total_data, 3, data_length);
 
-                int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_SIGNAL, BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_SIGNAL_UUID);
+                int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_SIGNAL,
+                        BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_SIGNAL_UUID);
                 if (resultCode != ResultCode.SUCCESS) {
                     writeCallback.onWriteFailure(resultCode, CmdType.CMD_NULL);
                 }

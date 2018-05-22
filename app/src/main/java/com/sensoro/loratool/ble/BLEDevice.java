@@ -133,7 +133,7 @@ public class BLEDevice implements Parcelable, Cloneable{
         }
         BLEDevice thatDevice = (BLEDevice) that;
 
-        return (thatDevice.macAddress.equals(this.macAddress));
+        return (thatDevice.sn.equals(this.sn));
     }
 
     public int getType() {
@@ -146,6 +146,6 @@ public class BLEDevice implements Parcelable, Cloneable{
 
     @Override
     public int hashCode() {
-        return macAddress.hashCode();
+        return sn.hashCode();
     }
 }

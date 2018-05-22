@@ -166,16 +166,26 @@ public class SearchStationActivity extends AppCompatActivity implements View.OnC
             }
         });
         mPopupView.setAlpha(0.8f);
-        if (Constants.permission[4]) {
-            configLayout.setVisibility(View.GONE);
+        //TODO
+//        if (Constants.permission[4]) {
+//            configLayout.setVisibility(View.GONE);
+//        }
+//        if (Constants.permission[5]) {
+//            cloudLayout.setVisibility(View.GONE);
+//        }
+//        if (Constants.permission[6]) {
+//            upgradeLayout.setVisibility(View.GONE);
+//        }
+        if (!Constants.permission[0]) {
+            configLayout.setVisibility(GONE);
+        } else {
+            configLayout.setVisibility(View.VISIBLE);
         }
-        if (Constants.permission[5]) {
-            cloudLayout.setVisibility(View.GONE);
+        if (!Constants.permission[2]) {
+            cloudLayout.setVisibility(GONE);
+        } else {
+            cloudLayout.setVisibility(View.VISIBLE);
         }
-        if (Constants.permission[6]) {
-            upgradeLayout.setVisibility(View.GONE);
-        }
-
     }
 
     public void initSearchHistory() {
@@ -204,8 +214,8 @@ public class SearchStationActivity extends AppCompatActivity implements View.OnC
                 mSearchHistoryLayout.setVisibility(View.GONE);
                 mSearchDeviceLayout.setVisibility(View.VISIBLE);
                 mClearKeywordIv.setVisibility(View.VISIBLE);
-                progressDialog.setMessage(getString(R.string.tips_loading_device_data));
-                progressDialog.show();
+//                progressDialog.setMessage(getString(R.string.tips_loading_device_data));
+//                progressDialog.show();
                 mKeywordEt.clearFocus();
                 dismissInputMethodManager(view);
                 filterStationList(mKeywordEt.getText().toString());

@@ -25,7 +25,10 @@ import java.util.Map;
 
 public class FilterDeviceActivity extends BaseActivity {
 
-    public static final String DEVICE_HARDWARE_TYPE[] = {"chip", "module", "node", "co2", "co", "no2", "so2", "nh3", "tvoc", "o3", "pm", "leak", "temp_humi", "ch4", "lpg", "cover", "smoke", "angle", "gps", "op_node", "flame", "op_chip", "winsen_ch4", "winsen_lpg", "winsen_gas", "bhenergy_water"};
+    public static final String DEVICE_HARDWARE_TYPE[] = {"chip", "module", "node", "co2", "co", "no2", "so2", "nh3",
+            "tvoc", "o3", "pm", "leak", "temp_humi", "ch4", "lpg", "cover", "smoke", "angle", "gps", "op_node",
+            "flame", "op_chip", "winsen_ch4", "winsen_lpg", "winsen_gas", "bhenergy_water", "chip_s", "chip_e",
+            "tester", "temp_humi_one", "fhsj_ch4", "fhsj_lpg","concox_tracker"};
     private ExpandableListView mMenuListView;
     private TextView saveTextView;
     private FilterDeviceInfoAdapter filterDeviceInfoAdapter;
@@ -77,7 +80,7 @@ public class FilterDeviceActivity extends BaseActivity {
         String[] nearArray = getResources().getStringArray(R.array.filter_near_array);
         String[] enableArray = getResources().getStringArray(R.array.filter_enable);
         if (enableFilterSet != null) {
-            for (int i = 0 ; i < enableArray.length; i ++) {
+            for (int i = 0; i < enableArray.length; i++) {
                 String enable = enableArray[i];
                 FilterData filterData = new FilterData();
                 filterData.setId(i);
@@ -206,7 +209,6 @@ public class FilterDeviceActivity extends BaseActivity {
         }
 
 
-
         if (bandSet != null) {
             for (int i = 0; i < bandArray.length; i++) {
                 String band = bandArray[i];
@@ -262,7 +264,8 @@ public class FilterDeviceActivity extends BaseActivity {
 
     public void saveData() {
         try {
-            SharedPreferences sharedPreferences = getSharedPreferences(Constants.PREFERENCE_FILTER, Context.MODE_PRIVATE);
+            SharedPreferences sharedPreferences = getSharedPreferences(Constants.PREFERENCE_FILTER, Context
+                    .MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.remove("device_enable_filter");
             editor.remove("device_signal");

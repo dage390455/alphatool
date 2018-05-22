@@ -216,11 +216,23 @@ public class StationInfo extends ResponseBase implements Parcelable, Comparable 
         StationInfo anotherStationInfo = (StationInfo) another;
         if (this.sort > anotherStationInfo.sort) {
             return -1;
-        }else if (this.sort == anotherStationInfo.sort) {
+        } else if (this.sort == anotherStationInfo.sort) {
             return 0;
-        }
-        else {
+        } else {
             return 1;
         }
     }
+
+//    @Override
+//    public boolean equals(Object obj) {
+//        if (this == obj) {
+//            return true;
+//        }
+//        if (obj instanceof StationInfo) {
+//            StationInfo stationInfo = (StationInfo) obj;
+//            return this.name.equals(stationInfo.name) && this.station_ssid.equals(stationInfo.station_ssid);
+//        } else {
+//            return false;
+//        }
+//    }
 }

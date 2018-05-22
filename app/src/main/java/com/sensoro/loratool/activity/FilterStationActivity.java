@@ -12,7 +12,6 @@ import com.sensoro.loratool.R;
 import com.sensoro.loratool.adapter.FilterStationInfoAdapter;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.model.FilterData;
-import com.sensoro.loratool.widget.StatusBarCompat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +25,7 @@ import java.util.Map;
 
 public class FilterStationActivity extends BaseActivity {
 
-    public static final String STATION_HARDWARE_TYPE[] = {"station", "gateway"};
+    public static final String STATION_HARDWARE_TYPE[] = {"station", "gateway","scgateway"};
     private Map<String, List<FilterData>> dataSet = new HashMap<>();
     private ExpandableListView mMenuListView;
     private FilterStationInfoAdapter filterInfoAdapter;

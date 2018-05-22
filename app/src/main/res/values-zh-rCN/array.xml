@@ -320,6 +320,14 @@
         <item>炜盛液化气</item>
         <item>炜盛人工煤气</item>
         <item>博海粤能水压传感器</item>
+        //新添加字段
+        <item>芯片标准版</item>
+        <item>芯片增强版</item>
+        <item>路测器</item>
+        <item>单通道温度传感器</item>
+        <item>泛海三江天然气</item>
+        <item>泛海三江液化气</item>
+        <item>康凯斯定位器</item>
     </string-array>
     <string-array name="filter_device_band_array">
         <item>SE433</item>
@@ -335,6 +343,7 @@
     <string-array name="filter_station_hardware_array">
         <item>α 基站</item>
         <item>α 网关</item>
+        <item>α 路由</item>
     </string-array>
     <string-array name="filter_signal_array">
         <item>-40</item>
