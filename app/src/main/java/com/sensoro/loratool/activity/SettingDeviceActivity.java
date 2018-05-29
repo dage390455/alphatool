@@ -344,6 +344,37 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     @BindView(R.id.settings_device_custom_package3_state)
     SwitchCompat customPackage3SwitchCompat;
 
+    /**
+     * 温度传感器
+     */
+    @BindView(R.id.settings_device_ll_temperature_pressure)
+    LinearLayout settingsDeviceLlTemperaturePressure;
+
+    @BindView(R.id.settings_device_rl_temperature_pressure_upper)
+    RelativeLayout settingsDeviceRlTemperaturePressureUpper;
+
+    @BindView(R.id.settings_device_tv_temperature_pressure_upper_limit)
+    TextView settingsDeviceTvTemperaturePressureUpperLimit;
+
+    @BindView(R.id.settings_device_rl_temperature_pressure_lower)
+    RelativeLayout settingsDeviceRlTemperaturePressureLower;
+
+    @BindView(R.id.settings_device_tv_temperature_pressure_lower_limit)
+    TextView settingsDeviceTvTemperaturePressureLowerLimit;
+
+    @BindView(R.id.settings_device_rl_temperature_pressure_step_upper)
+    RelativeLayout settingsDeviceRlTemperaturePressureStepUpper;
+
+    @BindView(R.id.settings_device_tv_temperature_pressure_upper_step_limit)
+    TextView settingsDeviceTvTemperaturePressureUpperStepLimit;
+
+    @BindView(R.id.settings_device_rl_temperature_pressure_step_lower)
+    RelativeLayout settingsDeviceRlTemperaturePressureStepLower;
+
+    @BindView(R.id.settings_device_tv_temperature_pressure_lower_step_limit)
+    TextView settingsDeviceTvTemperaturePressureLowerStepLimit;
+
+
     private String[] blePowerItems;
     private String[] bleTimeItems;
     private String[] loraTxpItems;
@@ -405,13 +436,16 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     private LoRaSettingApplication application;
     private SensoroDeviceConfiguration deviceConfiguration;
     private ProgressDialog progressDialog;
+    private Integer alarmHigh;
+    private Integer alarmLow;
+    private Integer alarmStepHigh;
+    private Integer alarmStepLow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init();
         MobclickAgent.onPageStart("设备配置");
-        MobclickAgent.onResume(this);
     }
 
     @Override
@@ -537,6 +571,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     }
 
     private void registerUiEvent() {
+        //TODO????
         setContentView(R.layout.activity_setting_device);
         ButterKnife.bind(this);
         resetRootLayout();
@@ -594,6 +629,10 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         yawAngleLowerRelativeLayout.setOnClickListener(this);
         waterPressureUpperRelativeLayout.setOnClickListener(this);
         waterPressureLowerRelativeLayout.setOnClickListener(this);
+        settingsDeviceRlTemperaturePressureUpper.setOnClickListener(this);
+        settingsDeviceRlTemperaturePressureLower.setOnClickListener(this);
+        settingsDeviceRlTemperaturePressureStepUpper.setOnClickListener(this);
+        settingsDeviceRlTemperaturePressureStepLower.setOnClickListener(this);
     }
 
     private void refresh() {
@@ -630,7 +669,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     bleTurnOffTime = sensoroDevice.getBleOffTime();
                     bleTurnOnTime = sensoroDevice.getBleOnTime();
                     Calendar cal = Calendar.getInstance(Locale.getDefault());
-                    int zoneOffset = cal.get(java.util.Calendar.ZONE_OFFSET);
+                    int zoneOffset = cal.get(Calendar.ZONE_OFFSET);
                     int offset = zoneOffset / 60 / 60 / 1000;
                     bleTurnOnTime += offset;
                     bleTurnOffTime += offset;
@@ -700,7 +739,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         } else {
                             findViewById(R.id.settings_device_ll_sensor_enable).setVisibility(GONE);
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
@@ -874,8 +913,41 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 } else {
                     appParamLayout.setVisibility(GONE);
                 }
-
-
+                /**
+                 * 设置单通道温度值
+                 */
+                boolean hasMultiTemperature = sensoroDevice.hasMultiTemperature();
+                settingsDeviceLlTemperaturePressure.setVisibility(hasMultiTemperature ? VISIBLE : GONE);
+                if (hasMultiTemperature) {
+                    if (sensoroDevice.hasAlarmHigh()) {
+                        settingsDeviceRlTemperaturePressureUpper.setVisibility(VISIBLE);
+                        alarmHigh = sensoroDevice.getAlarmHigh();
+                        settingsDeviceTvTemperaturePressureUpperLimit.setText(alarmHigh / 100f + "");
+                    } else {
+                        settingsDeviceRlTemperaturePressureUpper.setVisibility(GONE);
+                    }
+                    if (sensoroDevice.hasAlarmLow()) {
+                        settingsDeviceRlTemperaturePressureLower.setVisibility(VISIBLE);
+                        alarmLow = sensoroDevice.getAlarmLow();
+                        settingsDeviceTvTemperaturePressureLowerLimit.setText(alarmLow / 100f + "");
+                    } else {
+                        settingsDeviceRlTemperaturePressureLower.setVisibility(GONE);
+                    }
+                    if (sensoroDevice.hasAlarmStepHigh()) {
+                        settingsDeviceRlTemperaturePressureStepUpper.setVisibility(VISIBLE);
+                        alarmStepHigh = sensoroDevice.getAlarmStepHigh();
+                        settingsDeviceTvTemperaturePressureUpperStepLimit.setText(alarmStepHigh / 100f + "");
+                    } else {
+                        settingsDeviceRlTemperaturePressureStepUpper.setVisibility(GONE);
+                    }
+                    if (sensoroDevice.hasAlarmStepLow()) {
+                        settingsDeviceRlTemperaturePressureStepLower.setVisibility(VISIBLE);
+                        alarmStepLow = sensoroDevice.getAlarmStepLow();
+                        settingsDeviceTvTemperaturePressureUpperStepLimit.setText(alarmStepLow / 100f + "");
+                    } else {
+                        settingsDeviceRlTemperaturePressureStepLower.setVisibility(GONE);
+                    }
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(this, R.string.connect_failed, Toast.LENGTH_SHORT).show();
@@ -1407,7 +1479,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 sensoroSlotArray[7].setActived(isCustomPackage3Enabled ? 1 : 0);
             }
             Calendar cal = Calendar.getInstance(Locale.getDefault());
-            int zoneOffset = cal.get(java.util.Calendar.ZONE_OFFSET);
+            int zoneOffset = cal.get(Calendar.ZONE_OFFSET);
             int offset = zoneOffset / 60 / 60 / 1000;
             int saveTurnOnTime = 0;
             int saveTurnOffTime = 0;
@@ -1567,7 +1639,30 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     sensorBuilder.setWaterPressureAlarmLow(waterPressureAlarmLow);
                 }
             }
-
+            boolean hasMultiTemperature = sensoroDevice.hasMultiTemperature();
+            builder.setHasMultiTemperature(hasMultiTemperature);
+            if (hasMultiTemperature) {
+                boolean hasAlarmHigh = sensoroDevice.hasAlarmHigh();
+                builder.setHasAlarmHigh(hasAlarmHigh);
+                if (hasAlarmHigh) {
+                    builder.setAlarmHigh(alarmHigh);
+                }
+                boolean hasAlarmLow = sensoroDevice.hasAlarmLow();
+                builder.setHasAlarmLow(hasAlarmLow);
+                if (hasAlarmLow) {
+                    builder.setAlarmLow(alarmLow);
+                }
+                boolean hasAlarmStepHigh = sensoroDevice.hasAlarmStepHigh();
+                builder.setHasAlarmStepHigh(hasAlarmStepHigh);
+                if (hasAlarmStepHigh) {
+                    builder.setAlarmStepHigh(alarmStepHigh);
+                }
+                boolean hasAlarmStepLow = sensoroDevice.hasAlarmStepLow();
+                builder.setHasAlarmStepLow(hasAlarmStepLow);
+                if (hasAlarmStepLow) {
+                    builder.setAlarmStepLow(alarmStepLow);
+                }
+            }
             builder.setBleTurnOnTime(saveTurnOnTime)
                     .setBleTurnOffTime(saveTurnOffTime)
                     .setBleInt(bleInt)
@@ -2005,7 +2100,23 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 msgCfgBuilder.setWaterPressure(builder);
             }
         }
-
+        //添加单通道温度传感器支持
+        if (sensoroDevice.hasMultiTemperature()) {
+            MsgNode1V1M5.MultiSensorDataInt.Builder builder = MsgNode1V1M5.MultiSensorDataInt.newBuilder();
+            if (sensoroDevice.hasAlarmHigh()) {
+                builder.setAlarmHigh(alarmHigh);
+            }
+            if (sensoroDevice.hasAlarmLow()) {
+                builder.setAlarmLow(alarmLow);
+            }
+            if (sensoroDevice.hasAlarmStepHigh()) {
+                builder.setAlarmStepHigh(alarmStepHigh);
+            }
+            if (sensoroDevice.hasAlarmStepLow()) {
+                builder.setAlarmStepLow(alarmStepLow);
+            }
+            msgCfgBuilder.setMultiTemp(builder);
+        }
         MsgNode1V1M5.MsgNode msgCfg = msgCfgBuilder.build();
         byte[] data = msgCfg.toByteArray();
         dataString = new String(Base64.encode(data, Base64.DEFAULT));
@@ -2373,7 +2484,23 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 break;
             case R.id.settings_device_tv_save:
                 saveConfiguration();
-
+                break;
+            //TODO 单通道温度传感器
+            case R.id.settings_device_rl_temperature_pressure_upper:
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(alarmHigh / 100f));
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_TEMPERATURE_PRESSURE_UPPER);
+                break;
+            case R.id.settings_device_rl_temperature_pressure_lower:
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(alarmLow / 100f));
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_TEMPERATURE_PRESSURE_LOWER);
+                break;
+            case R.id.settings_device_rl_temperature_pressure_step_upper:
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(alarmStepHigh / 100f));
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_TEMPERATURE_PRESSURE_STEP_UPPER);
+                break;
+            case R.id.settings_device_rl_temperature_pressure_step_lower:
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(alarmStepLow / 100f));
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_TEMPERATURE_PRESSURE_STEP_LOWER);
                 break;
             default:
                 break;
@@ -2910,6 +3037,49 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 appParamConfirm = 0;
             }
             confirmTextView.setText(getResources().getStringArray(R.array.status_array)[index]);
+        } else if (SETTINGS_DEVICE_TEMPERATURE_PRESSURE_UPPER.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                float f = Float.parseFloat(temp);
+                this.alarmHigh = (int) (f * 100);
+                settingsDeviceTvTemperaturePressureUpperLimit.setText(f + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+        } else if (SETTINGS_DEVICE_TEMPERATURE_PRESSURE_LOWER.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                float f = Float.parseFloat(temp);
+                this.alarmLow = (int) (f * 100);
+                settingsDeviceTvTemperaturePressureLowerLimit.setText(f + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+
+        } else if (SETTINGS_DEVICE_TEMPERATURE_PRESSURE_STEP_UPPER.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                float f = Float.parseFloat(temp);
+                this.alarmStepHigh = (int) (f * 100);
+                settingsDeviceTvTemperaturePressureUpperStepLimit.setText(f + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+
+        } else if (SETTINGS_DEVICE_TEMPERATURE_PRESSURE_STEP_LOWER.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                float f = Float.parseFloat(temp);
+                this.alarmStepLow = (int) (f * 100);
+                settingsDeviceTvTemperaturePressureLowerStepLimit.setText(f + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 

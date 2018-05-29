@@ -95,6 +95,93 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
     SensoroSensor sensoroSensor;
     public long lastFoundTime;
 
+    public Integer getAlarmStepHigh() {
+        return alarmStepHigh;
+    }
+
+    public void setAlarmStepHigh(Integer alarmStepHigh) {
+        this.alarmStepHigh = alarmStepHigh;
+    }
+
+    public Integer getAlarmStepLow() {
+        return alarmStepLow;
+    }
+
+    public void setAlarmStepLow(Integer alarmStepLow) {
+        this.alarmStepLow = alarmStepLow;
+    }
+
+    public boolean hasAlarmStepHigh() {
+        return hasAlarmStepHigh;
+    }
+
+    public void setHasAlarmStepHigh(boolean hasAlarmStepHigh) {
+        this.hasAlarmStepHigh = hasAlarmStepHigh;
+    }
+
+    public boolean hasAlarmStepLow() {
+        return hasAlarmStepLow;
+    }
+
+    public void setHasAlarmStepLow(boolean hasAlarmStepLow) {
+        this.hasAlarmStepLow = hasAlarmStepLow;
+    }
+
+    /**
+     * 报警设定的上下限的步长支持
+     */
+    Integer alarmStepHigh;
+    Integer alarmStepLow;
+    Integer alarmHigh;
+    Integer alarmLow;
+    boolean hasAlarmHigh;
+    boolean hasAlarmLow;
+    boolean hasAlarmStepHigh;
+    boolean hasAlarmStepLow;
+    boolean hasMultiTemperature;
+    public boolean hasMultiTemperature() {
+        return hasMultiTemperature;
+    }
+
+    public void setHasMultiTemperature(boolean hasMultiTemperature) {
+        this.hasMultiTemperature = hasMultiTemperature;
+    }
+
+
+
+    public Integer getAlarmHigh() {
+        return alarmHigh;
+    }
+
+    public void setAlarmHigh(Integer alarmHigh) {
+        this.alarmHigh = alarmHigh;
+    }
+
+    public Integer getAlarmLow() {
+        return alarmLow;
+    }
+
+    public void setAlarmLow(Integer alarmLow) {
+        this.alarmLow = alarmLow;
+    }
+
+    public boolean hasAlarmHigh() {
+        return hasAlarmHigh;
+    }
+
+    public void setHasAlarmHigh(boolean hasAlarmHigh) {
+        this.hasAlarmHigh = hasAlarmHigh;
+    }
+
+    public boolean hasAlarmLow() {
+        return hasAlarmLow;
+    }
+
+    public void setHasAlarmLow(boolean hasAlarmLow) {
+        this.hasAlarmLow = hasAlarmLow;
+    }
+
+
     public SensoroDevice() {
         lastFoundTime = System.currentTimeMillis();
         sn = null;
@@ -142,6 +229,7 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         hasDelay = false;
         hasMaxEirp = false;
     }
+
     protected SensoroDevice(Parcel in) {
         super(in);
         major = in.readInt();
@@ -184,8 +272,8 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         band = in.readString();
         uploadInterval = (Integer) in.readSerializable();
         confirm = (Integer) in.readSerializable();
-        activation = (Integer)in.readSerializable();
-        delay = (Integer)in.readSerializable();
+        activation = (Integer) in.readSerializable();
+        delay = (Integer) in.readSerializable();
         hasBleInterval = in.readByte() != 0;
         hasBleOffTime = in.readByte() != 0;
         hasBleOnOff = in.readByte() != 0;
@@ -212,6 +300,10 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         hasSensorBroadcast = in.readByte() != 0;
         hasSensorParam = in.readByte() != 0;
         hasDelay = in.readByte() != 0;
+        alarmStepHigh = (Integer) in.readSerializable();
+        alarmStepLow = (Integer) in.readSerializable();
+        alarmHigh = (Integer) in.readSerializable();
+        alarmLow = (Integer) in.readSerializable();
     }
 
     @Override
@@ -290,6 +382,10 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         out.writeByte((byte) (hasSensorBroadcast ? 1 : 0));
         out.writeByte((byte) (hasSensorParam ? 1 : 0));
         out.writeByte((byte) (hasDelay ? 1 : 0));
+        out.writeSerializable(alarmStepHigh);
+        out.writeSerializable(alarmStepLow);
+        out.writeSerializable(alarmHigh);
+        out.writeSerializable(alarmLow);
     }
 
     public static final Creator<SensoroDevice> CREATOR = new Creator<SensoroDevice>() {
@@ -970,6 +1066,7 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
     public boolean hasSensorParam() {
         return hasSensorParam;
     }
+
     public void setHasSensorParam(boolean hasSensorParam) {
         this.hasSensorParam = hasSensorParam;
     }

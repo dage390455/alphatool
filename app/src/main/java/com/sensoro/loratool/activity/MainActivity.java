@@ -43,8 +43,6 @@ import net.simonvt.menudrawer.Position;
 import java.util.ArrayList;
 import java.util.List;
 
-import permissions.dispatcher.NeedsPermission;
-
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.sensoro.loratool.constant.Constants.PREFERENCE_KEY_SESSION_ID;
@@ -213,7 +211,7 @@ public class MainActivity extends BaseActivity
         });
         getAPPVersionCode();
         if (checkDeviceHasNavigationBar()) {
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(MATCH_PARENT,WRAP_CONTENT);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
             params.setMargins(0, 0, 0, getResources().getDimensionPixelSize(R.dimen.y200));
             params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, -1);
             mainExitLinearLayout.setLayoutParams(params);
@@ -327,10 +325,10 @@ public class MainActivity extends BaseActivity
                 switch (bleDevice.getType()) {
                     case BLEDevice.TYPE_DEVICE:
                         SensoroDevice sensoroDevice = (SensoroDevice) bleDevice;
+                        deviceFragment.refreshNew(sensoroDevice);
                         if (sensoroDevice.getSensoroSensor() != null) {
                             deviceFragment.refreshSensorNew(sensoroDevice.getSensoroSensor());
                         }
-                        deviceFragment.refreshNew(sensoroDevice);
                         break;
                     case BLEDevice.TYPE_SENSOR:
                         deviceFragment.refreshSensorNew((SensoroSensor) bleDevice);
@@ -371,9 +369,16 @@ public class MainActivity extends BaseActivity
         for (int i = 0; i < deviceList.size(); i++) {
             BLEDevice bleDevice = deviceList.get(i);
             switch (bleDevice.getType()) {
+//                case BLEDevice.TYPE_SENSOR:
+//                    SensoroSensor sensoroSensor = (SensoroSensor) bleDevice;
+//                    deviceFragment.refreshSensor(sensoroSensor);
+//                    break;
                 case BLEDevice.TYPE_SENSOR:
                     SensoroSensor sensoroSensor = (SensoroSensor) bleDevice;
                     deviceFragment.refreshSensor(sensoroSensor);
+                    break;
+                case BLEDevice.TYPE_DEVICE:
+                    deviceFragment.refreshNew((SensoroDevice) bleDevice);
                     break;
             }
         }

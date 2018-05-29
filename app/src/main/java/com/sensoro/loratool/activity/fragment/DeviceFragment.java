@@ -457,10 +457,10 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
             if (!Constants.permission[6]) {
                 upgradeLayout.setVisibility(View.GONE);
             }
-            if (!isSupportBasicConfig(selectedDeviceInfo)) {
+            if (isNotSupportBasicConfig(selectedDeviceInfo)) {
                 configLayout.setVisibility(View.GONE);
             }
-            if (!isSupportCloudConfig(selectedDeviceInfo)) {
+            if (isNotSupportCloudConfig(selectedDeviceInfo)) {
                 cloudLayout.setVisibility(View.GONE);
             }
             mBottomPopupWindow.showAtLocation(mPtrListView, Gravity.BOTTOM, 0, 0);
@@ -498,18 +498,12 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
     }
 
 
-    private boolean isSupportBasicConfig(DeviceInfo deviceInfo) {
-        if (deviceInfo.getDeviceType().equals("op_chip")) {
-            return false;
-        }
-        return true;
+    private boolean isNotSupportBasicConfig(DeviceInfo deviceInfo) {
+        return deviceInfo.getDeviceType().equals("op_chip");
     }
 
-    private boolean isSupportCloudConfig(DeviceInfo deviceInfo) {
-        if (deviceInfo.getDeviceType().equals("op_chip")) {
-            return false;
-        }
-        return true;
+    private boolean isNotSupportCloudConfig(DeviceInfo deviceInfo) {
+        return deviceInfo.getDeviceType().equals("op_chip");
     }
 
     private boolean isSupportDevice() {
@@ -554,13 +548,12 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
 
 
     public boolean isAllDeviceNearBy() {
-        boolean isNearBy = true;
         for (String key : mTargetDeviceInfoMap.keySet()) {
             if (!mDeviceInfoAdapter.getNearByDeviceMap().containsKey(key)) {
-                isNearBy = false;
+                return false;
             }
         }
-        return isNearBy;
+        return true;
     }
 
     private void config() {
@@ -728,6 +721,9 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
                             break;
                         case R.id.menu_iv_upgrade:
                             upgrade(tempMap);
+                            mBottomPopupWindow.dismiss();
+                            break;
+                        default:
                             mBottomPopupWindow.dismiss();
                             break;
                     }

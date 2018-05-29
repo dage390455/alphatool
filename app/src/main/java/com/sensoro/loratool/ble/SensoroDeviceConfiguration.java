@@ -45,7 +45,7 @@ public class SensoroDeviceConfiguration {
     Boolean isCustomPackage1Enabled = null;
     Boolean isCustomPackage2Enabled = null;
     Boolean isCustomPackage3Enabled = null;
-    SensoroSlot []sensoroSlots = null;
+    SensoroSlot[] sensoroSlots = null;
     Integer classBEnabled = null;
     Integer classBDateRate = null;
     Integer classBPeriodicity = null;
@@ -75,10 +75,23 @@ public class SensoroDeviceConfiguration {
     boolean hasCustom;
     boolean hasFlame;
     boolean hasDelay;
+    boolean hasAlarmHigh;
+    boolean hasAlarmLow;
+    boolean hasAlarmStepHigh;
+    boolean hasAlarmStepLow;
+    boolean hasMultiTemperature;
+    /**
+     * 报警设定的上下限的步长支持
+     */
+    Integer alarmStepHigh;
+    Integer alarmStepLow;
+    Integer alarmHigh;
+    Integer alarmLow;
 
     protected SensoroDeviceConfiguration() {
 
     }
+
     protected SensoroDeviceConfiguration(Builder builder) {
         password = builder.password;
         isIBeaconEnabled = builder.isIBeaconEnabled;
@@ -147,6 +160,16 @@ public class SensoroDeviceConfiguration {
         hasCustom = builder.hasCustom;
         hasFlame = builder.hasFlame;
         hasDelay = builder.hasDelay;
+        //
+        alarmStepHigh = builder.alarmStepHigh;
+        alarmStepLow = builder.alarmStepLow;
+        alarmHigh = builder.alarmHigh;
+        alarmLow = builder.alarmLow;
+        hasAlarmHigh = builder.hasAlarmHigh;
+        hasAlarmLow = builder.hasAlarmLow;
+        hasAlarmStepHigh = builder.hasAlarmStepHigh;
+        hasAlarmStepLow = builder.hasAlarmStepLow;
+        hasMultiTemperature = builder.hasMultiTemperature;
     }
 
     public String getPassword() {
@@ -480,7 +503,7 @@ public class SensoroDeviceConfiguration {
         private Boolean isCustomPackage1Enabled = null;
         private Boolean isCustomPackage2Enabled = null;
         private Boolean isCustomPackage3Enabled = null;
-        private SensoroSlot []sensoroSlots;
+        private SensoroSlot[] sensoroSlots;
         private Integer classBEnabled;
         private Integer classBDataRate;
         private Integer classBPeriodicity;
@@ -489,6 +512,92 @@ public class SensoroDeviceConfiguration {
         private Integer uploadIntervalData;
         private Integer confirmData;
         private Integer delay;
+
+        public Integer getAlarmStepHigh() {
+            return alarmStepHigh;
+        }
+
+        public void setAlarmStepHigh(Integer alarmStepHigh) {
+            this.alarmStepHigh = alarmStepHigh;
+        }
+
+        public Integer getAlarmStepLow() {
+            return alarmStepLow;
+        }
+
+        public void setAlarmStepLow(Integer alarmStepLow) {
+            this.alarmStepLow = alarmStepLow;
+        }
+
+        public Integer getAlarmHigh() {
+            return alarmHigh;
+        }
+
+        public void setAlarmHigh(Integer alarmHigh) {
+            this.alarmHigh = alarmHigh;
+        }
+
+        public Integer getAlarmLow() {
+            return alarmLow;
+        }
+
+        public void setAlarmLow(Integer alarmLow) {
+            this.alarmLow = alarmLow;
+        }
+
+        /**
+         * 报警设定的上下限的步长支持
+         */
+        Integer alarmStepHigh;
+        Integer alarmStepLow;
+        Integer alarmHigh;
+        Integer alarmLow;
+        boolean hasAlarmHigh;
+        boolean hasAlarmLow;
+        boolean hasAlarmStepHigh;
+        boolean hasAlarmStepLow;
+        boolean hasMultiTemperature;
+
+        public boolean hasAlarmHigh() {
+            return hasAlarmHigh;
+        }
+
+        public void setHasAlarmHigh(boolean hasAlarmHigh) {
+            this.hasAlarmHigh = hasAlarmHigh;
+        }
+
+        public boolean hasAlarmLow() {
+            return hasAlarmLow;
+        }
+
+        public void setHasAlarmLow(boolean hasAlarmLow) {
+            this.hasAlarmLow = hasAlarmLow;
+        }
+
+        public boolean hasAlarmStepHigh() {
+            return hasAlarmStepHigh;
+        }
+
+        public void setHasAlarmStepHigh(boolean hasAlarmStepHigh) {
+            this.hasAlarmStepHigh = hasAlarmStepHigh;
+        }
+
+        public boolean hasAlarmStepLow() {
+            return hasAlarmStepLow;
+        }
+
+        public void setHasAlarmStepLow(boolean hasAlarmStepLow) {
+            this.hasAlarmStepLow = hasAlarmStepLow;
+        }
+
+        public boolean hasMultiTemperature() {
+            return hasMultiTemperature;
+        }
+
+        public void setHasMultiTemperature(boolean hasMultiTemperature) {
+            this.hasMultiTemperature = hasMultiTemperature;
+        }
+
         private List<Integer> channelList;
         private boolean hasDelay;
         private boolean hasUploadInterval;
@@ -510,7 +619,12 @@ public class SensoroDeviceConfiguration {
         private boolean hasCustom;
         private boolean hasFlame;
         private SensoroSensorConfiguration sensorConfiguration;
+
         public Builder() {
+            this.alarmHigh = null;
+            this.alarmLow = null;
+            this.alarmStepHigh = null;
+            this.alarmStepLow = null;
             this.password = "";
             this.isIBeaconEnabled = null;
             this.proximityUUID = null;
@@ -605,7 +719,6 @@ public class SensoroDeviceConfiguration {
             this.minor = minor;
             return this;
         }
-
 
 
         public Builder setEddystoneUIDEnabled(boolean isEddystoneUIDEnabled) {
@@ -748,7 +861,7 @@ public class SensoroDeviceConfiguration {
             return this;
         }
 
-        public Builder setSensoroSlotArray(SensoroSlot []sensoroSlots) {
+        public Builder setSensoroSlotArray(SensoroSlot[] sensoroSlots) {
             this.sensoroSlots = sensoroSlots;
             return this;
         }
@@ -757,6 +870,7 @@ public class SensoroDeviceConfiguration {
             this.sensorBroadcastEnabled = enabled;
             return this;
         }
+
         public Builder setClassBEnabled(int enabled) {
             this.classBEnabled = enabled;
             return this;
@@ -781,6 +895,7 @@ public class SensoroDeviceConfiguration {
             this.sensorConfiguration = sensorConfiguration;
             return this;
         }
+
         public Builder setUploadIntervalData(Integer uploadInterval) {
             this.uploadIntervalData = uploadInterval;
             return this;

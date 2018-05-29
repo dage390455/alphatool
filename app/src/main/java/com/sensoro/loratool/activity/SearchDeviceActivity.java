@@ -63,7 +63,9 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
  * Created by sensoro on 17/7/11.
  */
 
-public class SearchDeviceActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener, Constants, TextView.OnEditorActionListener, TextWatcher, LoRaSettingApplication.SensoroDeviceListener {
+public class SearchDeviceActivity extends AppCompatActivity implements View.OnClickListener, AdapterView
+        .OnItemClickListener, Constants, TextView.OnEditorActionListener, TextWatcher, LoRaSettingApplication
+        .SensoroDeviceListener {
     @BindView(R.id.tab_bar_keyword_et)
     EditText mKeywordEt;
     @BindView(R.id.tab_bar_cancel_tv)
@@ -104,6 +106,7 @@ public class SearchDeviceActivity extends AppCompatActivity implements View.OnCl
 
     private DeviceInfo selectedDeviceInfo;
     private SensoroDevice mTargetDevice;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -218,7 +221,7 @@ public class SearchDeviceActivity extends AppCompatActivity implements View.OnCl
     public void save() {
         String text = mKeywordEt.getText().toString();
         String oldText = mPref.getString(PREFERENCE_KEY_HISTORY_KEYWORD, "");
-        if (!TextUtils.isEmpty(text) ) {
+        if (!TextUtils.isEmpty(text)) {
             if (mHistoryKeywords.contains(text)) {
                 List<String> list = new ArrayList<String>();
                 for (String o : oldText.split(",")) {
@@ -229,7 +232,7 @@ public class SearchDeviceActivity extends AppCompatActivity implements View.OnCl
                 list.add(0, text);
                 mHistoryKeywords = list;
                 StringBuffer stringBuffer = new StringBuffer();
-                for (int i = 0; i < list.size() ; i++) {
+                for (int i = 0; i < list.size(); i++) {
                     if (i == (list.size() - 1)) {
                         stringBuffer.append(list.get(i));
                     } else {
@@ -257,7 +260,8 @@ public class SearchDeviceActivity extends AppCompatActivity implements View.OnCl
                 cloudLayout.setVisibility(GONE);
                 upgradeLayout.setVisibility(GONE);
                 signalLayout.setVisibility(GONE);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(clear_layout_width, clear_layout_height);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(clear_layout_width,
+                        clear_layout_height);
                 params.gravity = Gravity.CENTER;
                 clearImageView.setLayoutParams(params);
                 clearLayout.setVisibility(VISIBLE);
@@ -267,7 +271,8 @@ public class SearchDeviceActivity extends AppCompatActivity implements View.OnCl
                 cloudLayout.setVisibility(VISIBLE);
                 upgradeLayout.setVisibility(VISIBLE);
                 signalLayout.setVisibility(VISIBLE);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(clear_layout_width, clear_layout_height);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(clear_layout_width,
+                        clear_layout_height);
                 params.gravity = Gravity.CENTER;
                 clearImageView.setLayoutParams(params);
             }
@@ -290,36 +295,26 @@ public class SearchDeviceActivity extends AppCompatActivity implements View.OnCl
                 upgradeLayout.setVisibility(View.GONE);
             }
 
-            if (!isSupportBasicConfig(selectedDeviceInfo)) {
+            if (isNotSupportBasicConfig(selectedDeviceInfo)) {
                 configLayout.setVisibility(View.GONE);
             }
-            if (!isSupportCloudConfig(selectedDeviceInfo)) {
+            if (isSupportCloudConfig(selectedDeviceInfo)) {
                 cloudLayout.setVisibility(View.GONE);
             }
             mBottomPopupWindow.showAtLocation(mSearchDeviceLv, Gravity.BOTTOM, 0, 0);
         }
     }
 
-    private boolean isSupportBasicConfig(DeviceInfo deviceInfo) {
-        if (deviceInfo.getDeviceType().equals("op_chip")) {
-            return false;
-        }
-        return true;
+    private boolean isNotSupportBasicConfig(DeviceInfo deviceInfo) {
+        return deviceInfo.getDeviceType().equals("op_chip");
     }
 
     private boolean isSupportCloudConfig(DeviceInfo deviceInfo) {
-        if (deviceInfo.getDeviceType().equals("op_chip")) {
-            return false;
-        }
-        return true;
+        return deviceInfo.getDeviceType().equals("op_chip");
     }
 
     public boolean isDeviceNearBy() {
-        boolean isNearBy = true;
-        if (!mDeviceInfoAdapter.getNearByDeviceMap().containsKey(selectedDeviceInfo.getSn())) {
-            isNearBy = false;
-        }
-        return isNearBy;
+        return mDeviceInfoAdapter.getNearByDeviceMap().containsKey(selectedDeviceInfo.getSn());
     }
 
     public void cleanHistory() {
@@ -465,6 +460,7 @@ public class SearchDeviceActivity extends AppCompatActivity implements View.OnCl
                 mBottomPopupWindow.dismiss();
                 break;
             default:
+                mBottomPopupWindow.dismiss();
                 break;
         }
     }
@@ -538,7 +534,7 @@ public class SearchDeviceActivity extends AppCompatActivity implements View.OnCl
                         mDeviceInfoAdapter.refreshNew((SensoroDevice) bleDevice, true);
                         break;
                     case BLEDevice.TYPE_SENSOR:
-                        mDeviceInfoAdapter.refreshSensorNew( (SensoroSensor) bleDevice);
+                        mDeviceInfoAdapter.refreshSensorNew((SensoroSensor) bleDevice);
                         break;
                 }
             }

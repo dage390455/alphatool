@@ -802,7 +802,31 @@ public class SensoroDeviceConnection {
             sensoroSensor.setSmoke(msgNode.getSmoke().getData());
             sensoroSensor.setSmokeStatus(msgNode.getSmoke().getError().getNumber());//None Noraml, Unknown fault
             sensoroSensor.setHasSmoke(msgNode.hasSmoke());
-
+            boolean hasMultiTemp = msgNode.hasMultiTemp();
+            sensoroDevice.setHasMultiTemperature(hasMultiTemp);
+            if (hasMultiTemp) {
+                MsgNode1V1M5.MultiSensorDataInt multiTemp = msgNode.getMultiTemp();
+                boolean hasAlarmStepHigh = multiTemp.hasAlarmStepHigh();
+                boolean hasAlarmStepLow = multiTemp.hasAlarmStepLow();
+                boolean hasAlarmHigh = multiTemp.hasAlarmHigh();
+                boolean hasAlarmLow = multiTemp.hasAlarmLow();
+                sensoroDevice.setHasAlarmHigh(hasAlarmHigh);
+                sensoroDevice.setHasAlarmLow(hasAlarmLow);
+                sensoroDevice.setHasAlarmStepHigh(hasAlarmStepHigh);
+                sensoroDevice.setHasAlarmStepLow(hasAlarmStepLow);
+                if (hasAlarmStepHigh) {
+                    sensoroDevice.setAlarmStepHigh(multiTemp.getAlarmStepHigh());
+                }
+                if (hasAlarmStepLow) {
+                    sensoroDevice.setAlarmStepLow(multiTemp.getAlarmStepLow());
+                }
+                if (hasAlarmHigh) {
+                    sensoroDevice.setAlarmHigh(multiTemp.getAlarmHigh());
+                }
+                if (hasAlarmLow) {
+                    sensoroDevice.setAlarmLow(multiTemp.getAlarmLow());
+                }
+            }
             sensoroDevice.setSensoroSensor(sensoroSensor);
             sensoroDevice.setDataVersion(DATA_VERSION_05);
             sensoroDevice.setHasSensorParam(true);
@@ -1110,8 +1134,23 @@ public class SensoroDeviceConnection {
             }
             msgNodeBuilder.setAppParam(appBuilder);
         }
-
-
+        //添加单通道温度传感器支持
+        if (sensoroDeviceConfiguration.hasMultiTemperature) {
+            MsgNode1V1M5.MultiSensorDataInt.Builder builder = MsgNode1V1M5.MultiSensorDataInt.newBuilder();
+            if (sensoroDeviceConfiguration.hasAlarmHigh) {
+                builder.setAlarmHigh(sensoroDeviceConfiguration.alarmHigh);
+            }
+            if (sensoroDeviceConfiguration.hasAlarmLow) {
+                builder.setAlarmLow(sensoroDeviceConfiguration.alarmLow);
+            }
+            if (sensoroDeviceConfiguration.hasAlarmStepHigh) {
+                builder.setAlarmStepHigh(sensoroDeviceConfiguration.alarmStepHigh);
+            }
+            if (sensoroDeviceConfiguration.hasAlarmStepLow) {
+                builder.setAlarmStepLow(sensoroDeviceConfiguration.alarmStepLow);
+            }
+            msgNodeBuilder.setMultiTemp(builder);
+        }
         MsgNode1V1M5.LoraParam.Builder loraBuilder = MsgNode1V1M5.LoraParam.newBuilder();
         loraBuilder.setTxPower(sensoroDeviceConfiguration.getLoraTxp());
 //        loraBuilder.setMaxEIRP(sensoroDeviceConfiguration.getLoraEirp());

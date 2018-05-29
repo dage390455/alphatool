@@ -274,5 +274,11 @@ public interface Constants {
     String SETTINGS_STATION_CLOUD_PORT = "Settings_station_cloud_port";
     String SETTINGS_STATION_KEY = "Settings_station_key";
 
+    //单通道传感器设置
+    String SETTINGS_DEVICE_TEMPERATURE_PRESSURE_UPPER = "settings_device_temperature_pressure_upper";
+    String SETTINGS_DEVICE_TEMPERATURE_PRESSURE_LOWER = "settings_device_temperature_pressure_lower";
+    String SETTINGS_DEVICE_TEMPERATURE_PRESSURE_STEP_UPPER = "settings_device_temperature_pressure_step_upper";
+    String SETTINGS_DEVICE_TEMPERATURE_PRESSURE_STEP_LOWER = "settings_device_temperature_pressure_step_lower";
+
 }
 

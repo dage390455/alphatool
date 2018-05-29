@@ -338,6 +338,7 @@
     <string name="sensor_angle_roll">横滚角</string>
     <string name="sensor_angle_yaw">偏航角</string>
     <string name="sensor_water_pressure">水压</string>
+    <string name="sensor_temperature_pressure">温度传感器</string>
     <string name="command">命令</string>
     <string name="zero_calibrate">校零</string>
     <string name="zero_calibrate_success">校零成功</string>
@@ -464,6 +465,8 @@
     <string name="setting_text_station_network">基站网络</string>
     <string name="setting_text_upper_limit">上限值</string>
     <string name="setting_text_lower_limit">下限值</string>
+    <string name="setting_text_step_upper_limit">上限步长值</string>
+    <string name="setting_text_step_lower_limit">下限步长值</string>
     <string name="disabled">关闭</string>
     <string name="enabled">开启</string>
     <string name="setting_beacon">设置</string>

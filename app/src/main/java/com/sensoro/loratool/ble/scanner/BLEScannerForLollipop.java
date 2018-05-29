@@ -71,9 +71,11 @@ class BLEScannerForLollipop extends BLEScanner {
                         .setDeviceName(scanBLEFilter.getDeviceName())
                         .setDeviceAddress(scanBLEFilter.getDeviceAddress())
                         .setServiceUuid(scanBLEFilter.getServiceUuid(), scanBLEFilter.getServiceUuidMask())
-                        .setManufacturerData(scanBLEFilter.getManufacturerId(), scanBLEFilter.getManufacturerData(), scanBLEFilter.getManufacturerDataMask());
+                        .setManufacturerData(scanBLEFilter.getManufacturerId(), scanBLEFilter.getManufacturerData(),
+                                scanBLEFilter.getManufacturerDataMask());
                 if (scanBLEFilter.getServiceDataUuid() != null) {
-                    scanFilter = builder.setServiceData(scanBLEFilter.getServiceDataUuid(), scanBLEFilter.getServiceData(), scanBLEFilter.getServiceDataMask()).build();
+                    scanFilter = builder.setServiceData(scanBLEFilter.getServiceDataUuid(), scanBLEFilter
+                            .getServiceData(), scanBLEFilter.getServiceDataMask()).build();
                 } else {
                     scanFilter = builder.build();
                 }
@@ -100,9 +102,12 @@ class BLEScannerForLollipop extends BLEScanner {
         @Override
         public void onScanResult(int callbackType, ScanResult scanResult) {
             ScanRecord scanRecord = scanResult.getScanRecord();
-            ScanBLERecord scanBLERecord = new ScanBLERecord(scanRecord.getServiceUuids(), scanRecord.getManufacturerSpecificData(), scanRecord.getServiceData(),
-                    scanRecord.getAdvertiseFlags(), scanRecord.getTxPowerLevel(), scanRecord.getDeviceName(), scanRecord.getBytes());
-            ScanBLEResult scanBLEResult = new ScanBLEResult(scanResult.getDevice(), scanBLERecord, scanResult.getRssi(), scanResult.getTimestampNanos());
+            ScanBLERecord scanBLERecord = new ScanBLERecord(scanRecord.getServiceUuids(), scanRecord
+                    .getManufacturerSpecificData(), scanRecord.getServiceData(),
+                    scanRecord.getAdvertiseFlags(), scanRecord.getTxPowerLevel(), scanRecord.getDeviceName(),
+                    scanRecord.getBytes());
+            ScanBLEResult scanBLEResult = new ScanBLEResult(scanResult.getDevice(), scanBLERecord, scanResult.getRssi
+                    (), scanResult.getTimestampNanos());
             bleScanCallback.onLeScan(scanBLEResult);
         }
 
@@ -111,9 +116,12 @@ class BLEScannerForLollipop extends BLEScanner {
 //            Log.d(TAG, "onBatchScanResults");
             for (ScanResult scanResult : results) {
                 ScanRecord scanRecord = scanResult.getScanRecord();
-                ScanBLERecord scanBLERecord = new ScanBLERecord(scanRecord.getServiceUuids(), scanRecord.getManufacturerSpecificData(), scanRecord.getServiceData(),
-                        scanRecord.getAdvertiseFlags(), scanRecord.getTxPowerLevel(), scanRecord.getDeviceName(), scanRecord.getBytes());
-                ScanBLEResult scanBLEResult = new ScanBLEResult(scanResult.getDevice(), scanBLERecord, scanResult.getRssi(), scanResult.getTimestampNanos());
+                ScanBLERecord scanBLERecord = new ScanBLERecord(scanRecord.getServiceUuids(), scanRecord
+                        .getManufacturerSpecificData(), scanRecord.getServiceData(),
+                        scanRecord.getAdvertiseFlags(), scanRecord.getTxPowerLevel(), scanRecord.getDeviceName(),
+                        scanRecord.getBytes());
+                ScanBLEResult scanBLEResult = new ScanBLEResult(scanResult.getDevice(), scanBLERecord, scanResult
+                        .getRssi(), scanResult.getTimestampNanos());
                 bleScanCallback.onLeScan(scanBLEResult);
             }
         }

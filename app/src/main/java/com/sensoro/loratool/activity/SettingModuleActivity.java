@@ -46,7 +46,8 @@ import butterknife.ButterKnife;
  * Created by sensoro on 17/3/31.
  */
 
-public class SettingModuleActivity extends BaseActivity implements Constants, View.OnClickListener,SensoroConnectionCallback, SensoroWriteCallback, OnPositiveButtonClickListener {
+public class SettingModuleActivity extends BaseActivity implements Constants, View.OnClickListener,
+        SensoroConnectionCallback, SensoroWriteCallback, OnPositiveButtonClickListener {
     //transimit power
     @BindView(R.id.module_rl_lora_transmit_power)
     RelativeLayout loraTxpRelativeLayout;
@@ -108,6 +109,7 @@ public class SettingModuleActivity extends BaseActivity implements Constants, Vi
         initLoraParam();
         connectDevice();
     }
+
     private void initLoraParam() {
         int txp_array[] = Constants.LORA_SE433_TXP;
         switch (band) {
@@ -263,8 +265,10 @@ public class SettingModuleActivity extends BaseActivity implements Constants, Vi
                 }
                 break;
             case R.id.module_rl_lora_transmit_power:
-//                DialogFragment dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(loraTxpItems, getLoraTxpIndex(sensoroDevice.getLoraTxp()));
-                DialogFragment dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(loraTxpItems, ParamUtil.getLoraTxpIndex(band, loraTxp));
+//                DialogFragment dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(loraTxpItems,
+// getLoraTxpIndex(sensoroDevice.getLoraTxp()));
+                DialogFragment dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(loraTxpItems, ParamUtil
+                        .getLoraTxpIndex(band, loraTxp));
                 dialogFragment.show(getFragmentManager(), SETTINGS_LORA_TXP);
                 break;
             case R.id.module_tv_save:
@@ -301,7 +305,8 @@ public class SettingModuleActivity extends BaseActivity implements Constants, Vi
                     .setClassBPeriodicity(sensoroDevice.getClassBPeriodicity())
                     .setClassBDataRate(sensoroDevice.getClassBDataRate());
         }
-        if (sensoroDevice.getPassword() == null || (sensoroDevice.getPassword() != null && !sensoroDevice.getPassword().equals(""))) {
+        if (sensoroDevice.getPassword() == null || (sensoroDevice.getPassword() != null && !sensoroDevice.getPassword
+                ().equals(""))) {
             builder.setPassword(sensoroDevice.getPassword());
         }
         deviceConfiguration = builder.build();
@@ -363,7 +368,8 @@ public class SettingModuleActivity extends BaseActivity implements Constants, Vi
 //                            builder.setFrame(ByteString.copyFrom(SensoroUtils.encodeUrl(sensoroSlot.getFrame())));
 //                            break;
 //                        default:
-//                            builder.setFrame(ByteString.copyFrom(SensoroUtils.HexString2Bytes(sensoroSlot.getFrame())));
+//                            builder.setFrame(ByteString.copyFrom(SensoroUtils.HexString2Bytes(sensoroSlot.getFrame
+// ())));
 //                            break;
 //                    }
 //                }

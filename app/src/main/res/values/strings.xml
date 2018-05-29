@@ -333,6 +333,7 @@
     <string name="sensor_angle_roll">Roll</string>
     <string name="sensor_angle_yaw">Yaw</string>
     <string name="sensor_water_pressure">Water Pressure</string>
+    <string name="sensor_temperature_pressure">Temperature Pressure</string>
     <string name="command">Command</string>
     <string name="zero_calibrate">Zero Calibrate</string>
     <string name="zero_calibrate_success">Zero Calibrate Success</string>
@@ -459,6 +460,8 @@
     <string name="setting_text_station_network">Station Network</string>
     <string name="setting_text_upper_limit">Upper Limit</string>
     <string name="setting_text_lower_limit">Lower Limit</string>
+    <string name="setting_text_step_upper_limit">Upper Step Limit</string>
+    <string name="setting_text_step_lower_limit">Lower Step Limit</string>
     <string name="disabled">Disabled</string>
     <string name="enabled">Enable</string>
     <string name="setting_beacon">Settings</string>

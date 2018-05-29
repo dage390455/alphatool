@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,10 +59,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
     }
 
     public boolean isNearBy(String sn) {
-        if (mNearByDeviceMap.containsKey(sn)) {
-            return true;
-        }
-        return false;
+        return mNearByDeviceMap.containsKey(sn);
     }
 
     public ConcurrentHashMap<String, DeviceInfo> getCacheData() {
@@ -77,7 +75,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
         for (int i = 0; i < list.size(); i++) {
             DeviceInfo deviceInfo = list.get(i);
             if (!mCacheDeviceInfoMap.containsKey(deviceInfo.getSn())) {
-                mCacheDeviceInfoMap.put(deviceInfo.getSn(), list.get(i));
+                mCacheDeviceInfoMap.put(deviceInfo.getSn(), deviceInfo);
             }
         }
         filter();
@@ -142,7 +140,6 @@ public class DeviceInfoAdapter extends BaseAdapter {
             mDeviceInfoList.add(cacheDeviceInfo);
             notifyDataSetChanged();
         }
-
     }
 
     public void refreshGone(SensoroDevice sensoroDevice, boolean isSearchStatus) {
@@ -152,14 +149,14 @@ public class DeviceInfoAdapter extends BaseAdapter {
         }
         //TODO 修改删除方式
         if (mNearByDeviceMap.containsKey(sn)) {
-            mNearByDeviceMap.remove(sn);
+            mNearByDeviceMap.remove(sn,sensoroDevice);
             for (int j = 0; j < mDeviceInfoList.size(); j++) {
                 final DeviceInfo deviceInfo = mDeviceInfoList.get(j);
                 if (sn.equalsIgnoreCase(deviceInfo.getSn()) && isFilterNearby() && !isSearchStatus) {
 //                    mNearByDeviceMap.remove(sn);
                     mDeviceInfoList.remove(deviceInfo);
                     deviceInfo.setSelected(false);
-                    notifyDataSetChanged();
+//                    notifyDataSetChanged();
                     break;
                 }
             }
@@ -199,7 +196,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
     }
 
 
-    public void filter() {
+    public synchronized void filter() {
 
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(Constants.PREFERENCE_FILTER, Context
                 .MODE_PRIVATE);
@@ -400,7 +397,9 @@ public class DeviceInfoAdapter extends BaseAdapter {
             isFitSignalable = true;
         }
 
-        return isFitSignalable && isFitableFirmware && isFitHardwareable && isFitableBand;
+        boolean b = isFitSignalable && isFitableFirmware && isFitHardwareable && isFitableBand;
+//        boolean b = isFitSignalable && isFitableFirmware && isFitHardwareable;
+        return b;
     }
 
     public LinearLayout getItemLayout(View view) {
@@ -582,7 +581,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
                 itemViewHolder.nearByTextView.setVisibility(GONE);
                 deviceInfo.setConnectable(false);
             }
-            if (version == null) {
+            if (TextUtils.isEmpty(version)) {
                 itemViewHolder.versionTextView.setText("-");
             } else {
                 itemViewHolder.versionTextView.setText("V" + version);

@@ -236,9 +236,28 @@ public class DeviceInfo implements Parcelable, Comparable {
         return 0;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        try {
+            if (obj instanceof DeviceInfo) {
+                return this.sn.equals(((DeviceInfo) obj).sn);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     public String get_id() {
         return _id;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.sn.hashCode();
     }
 
     public void set_id(String _id) {

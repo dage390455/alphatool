@@ -273,6 +273,13 @@
         <item>1.3</item>
         <item>1.4</item>
         <item>1.5</item>
+        <item>1.6</item>
+        <item>1.7</item>
+        <item>1.8</item>
+        <item>1.9</item>
+        <item>2.0</item>
+        <item>2.1</item>
+        <item>2.2</item>
     </string-array>
     <string-array name="filter_station_firmware_array">
         <item>0.1</item>
@@ -328,17 +335,19 @@
         <item>泛海三江天然气</item>
         <item>泛海三江液化气</item>
         <item>康凯斯定位器</item>
+        <item>C端追踪器</item>
     </string-array>
     <string-array name="filter_device_band_array">
         <item>SE433</item>
         <item>SE470</item>
-        <item>SE780</item>
         <item>SE915</item>
+        <item>SE780</item>
         <item>US915</item>
         <item>EU433</item>
         <item>EU868</item>
         <item>AU915</item>
         <item>AS923</item>
+        <item>CN470</item>
     </string-array>
     <string-array name="filter_station_hardware_array">
         <item>α 基站</item>

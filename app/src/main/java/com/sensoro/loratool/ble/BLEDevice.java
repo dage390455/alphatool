@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by sensoro on 16/8/12.
  */
 
-public class BLEDevice implements Parcelable, Cloneable{
+public class BLEDevice implements Parcelable, Cloneable {
 
     public static final int TYPE_DEVICE = 0x00;
     public static final int TYPE_SENSOR = 0x01;
@@ -128,12 +128,11 @@ public class BLEDevice implements Parcelable, Cloneable{
 
     @Override
     public boolean equals(Object that) {
-        if (!(that instanceof BLEDevice)) {
-            return false;
+        if ((that instanceof BLEDevice)) {
+            BLEDevice thatDevice = (BLEDevice) that;
+            return thatDevice.sn.equals(this.sn) || thatDevice.macAddress.equals(this.macAddress);
         }
-        BLEDevice thatDevice = (BLEDevice) that;
-
-        return (thatDevice.sn.equals(this.sn));
+        return false;
     }
 
     public int getType() {
@@ -146,6 +145,6 @@ public class BLEDevice implements Parcelable, Cloneable{
 
     @Override
     public int hashCode() {
-        return sn.hashCode();
+        return sn.hashCode() ^ this.macAddress.hashCode();
     }
 }
