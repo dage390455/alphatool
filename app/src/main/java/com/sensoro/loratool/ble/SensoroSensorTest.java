@@ -1,0 +1,263 @@
+package com.sensoro.loratool.ble;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+/**
+ * Created by sensoro on 17/1/19.
+ */
+
+public class SensoroSensorTest extends BLEDevice implements Parcelable, Cloneable {
+
+//    Float temperature;// 温度
+//    Float light; // 光线照度
+//    Float humidity;//湿度
+//    Float co;
+//    Float co2;
+//    Float no2;
+//    Float methane;
+//    Float level;
+//
+//    Integer accelerometerCount; // 加速度计数器
+//    byte[] customize;
+//
+//    Float ch20;
+//    Float ch4;
+//    Float coverStatus;
+//    Float so2;
+//    Float gps;
+//    Integer leak;
+//    Float lpg;
+//    Float magnetism;
+//    Float o3;
+//    Float pm1;
+//    Float pm25;
+//    Float pm10;
+//    Float smoke;
+//    Float pitch;
+//    Float roll;
+//    Float yaw;
+//    Integer smokeStatus;
+//    Float gas;
+//    Integer flame;
+//    Float waterPressure;
+//
+//    Float temp;
+
+    public SensoroData temperature;// 温度
+    public SensoroData light; // 光线照度
+    public SensoroData humidity;//湿度
+    public SensoroData co;
+    public SensoroData co2;
+    public SensoroData no2;
+    public SensoroData methane;
+    public SensoroData level;
+
+    public SensoroData accelerometerCount; // 加速度计数器
+
+    public byte[] customize;
+
+    public SensoroData ch20;
+    public SensoroData ch4;
+    public SensoroData coverStatus;
+    public SensoroData so2;
+    public SensoroData gps;
+    public SensoroData leak;
+    public SensoroData lpg;
+    public SensoroData magnetism;
+    public SensoroData o3;
+    public SensoroData pm1;
+    public SensoroData pm25;
+    public SensoroData pm10;
+    public SensoroData smoke;
+    public SensoroData pitch;
+    public SensoroData roll;
+    public SensoroData yaw;
+    public SensoroData smokeStatus;
+    public SensoroData gas;
+    public SensoroData flame;
+    public SensoroData waterPressure;
+
+    public SensoroData temp;
+    public SensoroData multiTemperature;
+    //
+    public boolean hasAcceleration;
+    public boolean hasAngle;
+    public boolean hasBattery;
+    public boolean hasCh2O;
+    public boolean hasCh4;
+    public boolean hasCover;
+    public boolean hasGps;
+    public boolean hasCo;
+    public boolean hasCo2;
+    public boolean hasNo2;
+    public boolean hasSo2;
+    public boolean hasGyroscope;
+    public boolean hasLeak;
+    public boolean hasHumidity;
+    public boolean hasTemperature;
+    public boolean hasLevel;
+    public boolean hasLight;
+    public boolean hasLpg;
+    public boolean hasMagnetism;
+    public boolean hasO3;
+    public boolean hasPm1;
+    public boolean hasPm25;
+    public boolean hasPm10;
+    public boolean hasSmoke;
+    public boolean hasPitch;
+    public boolean hasRoll;
+    public boolean hasYaw;
+    public boolean hasFlame;
+    public boolean hasGas;
+    public boolean hasWaterPressure;
+
+
+    public SensoroSensorTest() {
+    }
+
+    protected SensoroSensorTest(Parcel in) {
+        super(in);
+        temperature = (SensoroData) in.readSerializable();
+        light = (SensoroData) in.readSerializable();
+        humidity = (SensoroData) in.readSerializable();
+        accelerometerCount = (SensoroData) in.readSerializable();
+        leak = (SensoroData) in.readSerializable();
+        co = (SensoroData) in.readSerializable();
+        co2 = (SensoroData) in.readSerializable();
+        no2 = (SensoroData) in.readSerializable();
+        methane = (SensoroData) in.readSerializable();
+        lpg = (SensoroData) in.readSerializable();
+        pm1 = (SensoroData) in.readSerializable();
+        pm25 = (SensoroData) in.readSerializable();
+        pm10 = (SensoroData) in.readSerializable();
+        coverStatus = (SensoroData) in.readSerializable();
+        level = (SensoroData) in.readSerializable();
+        smokeStatus = (SensoroData) in.readSerializable();
+        flame = (SensoroData) in.readSerializable();
+        pitch = (SensoroData) in.readSerializable();
+        roll = (SensoroData) in.readSerializable();
+        yaw = (SensoroData) in.readSerializable();
+        gas = (SensoroData) in.readSerializable();
+        waterPressure = (SensoroData) in.readSerializable();
+        customize = in.createByteArray();
+        hasAcceleration = in.readByte() != 0;
+        hasAngle = in.readByte() != 0;
+        hasBattery = in.readByte() != 0;
+        hasCh2O = in.readByte() != 0;
+        hasCh4 = in.readByte() != 0;
+        hasCo = in.readByte() != 0;
+        hasCo2 = in.readByte() != 0;
+        hasCover = in.readByte() != 0;
+        hasGps = in.readByte() != 0;
+        hasGyroscope = in.readByte() != 0;
+        hasHumidity = in.readByte() != 0;
+        hasLeak = in.readByte() != 0;
+        hasLevel = in.readByte() != 0;
+        hasLight = in.readByte() != 0;
+        hasLpg = in.readByte() != 0;
+        hasMagnetism = in.readByte() != 0;
+        hasNo2 = in.readByte() != 0;
+        hasO3 = in.readByte() != 0;
+        hasPm1 = in.readByte() != 0;
+        hasPm25 = in.readByte() != 0;
+        hasPm10 = in.readByte() != 0;
+        hasSmoke = in.readByte() != 0;
+        hasSo2 = in.readByte() != 0;
+        hasTemperature = in.readByte() != 0;
+        hasPitch = in.readByte() != 0;
+        hasRoll = in.readByte() != 0;
+        hasYaw = in.readByte() != 0;
+        hasFlame = in.readByte() != 0;
+        hasGas = in.readByte() != 0;
+        hasWaterPressure = in.readByte() != 0;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        super.writeToParcel(parcel, i);
+        parcel.writeSerializable(temperature);
+        parcel.writeSerializable(light);
+        parcel.writeSerializable(humidity);
+        parcel.writeSerializable(accelerometerCount);
+        parcel.writeSerializable(leak);
+        parcel.writeSerializable(co);
+        parcel.writeSerializable(co2);
+        parcel.writeSerializable(no2);
+        parcel.writeSerializable(methane);
+        parcel.writeSerializable(lpg);
+        parcel.writeSerializable(pm1);
+        parcel.writeSerializable(pm25);
+        parcel.writeSerializable(pm10);
+        parcel.writeSerializable(coverStatus);
+        parcel.writeSerializable(level);
+        parcel.writeSerializable(smokeStatus);
+        parcel.writeSerializable(flame);
+        parcel.writeSerializable(pitch);
+        parcel.writeSerializable(roll);
+        parcel.writeSerializable(yaw);
+        parcel.writeSerializable(gas);
+        parcel.writeSerializable(waterPressure);
+        parcel.writeByteArray(customize);
+        parcel.writeByte((byte) (hasAcceleration ? 1 : 0));
+        parcel.writeByte((byte) (hasAngle ? 1 : 0));
+        parcel.writeByte((byte) (hasBattery ? 1 : 0));
+        parcel.writeByte((byte) (hasCh2O ? 1 : 0));
+        parcel.writeByte((byte) (hasCh4 ? 1 : 0));
+        parcel.writeByte((byte) (hasCo ? 1 : 0));
+        parcel.writeByte((byte) (hasCo2 ? 1 : 0));
+        parcel.writeByte((byte) (hasCover ? 1 : 0));
+        parcel.writeByte((byte) (hasGps ? 1 : 0));
+        parcel.writeByte((byte) (hasGyroscope ? 1 : 0));
+        parcel.writeByte((byte) (hasHumidity ? 1 : 0));
+        parcel.writeByte((byte) (hasLeak ? 1 : 0));
+        parcel.writeByte((byte) (hasLevel ? 1 : 0));
+        parcel.writeByte((byte) (hasLight ? 1 : 0));
+        parcel.writeByte((byte) (hasLpg ? 1 : 0));
+        parcel.writeByte((byte) (hasMagnetism ? 1 : 0));
+        parcel.writeByte((byte) (hasNo2 ? 1 : 0));
+        parcel.writeByte((byte) (hasO3 ? 1 : 0));
+        parcel.writeByte((byte) (hasPm1 ? 1 : 0));
+        parcel.writeByte((byte) (hasPm25 ? 1 : 0));
+        parcel.writeByte((byte) (hasPm10 ? 1 : 0));
+        parcel.writeByte((byte) (hasSmoke ? 1 : 0));
+        parcel.writeByte((byte) (hasSo2 ? 1 : 0));
+        parcel.writeByte((byte) (hasTemperature ? 1 : 0));
+        parcel.writeByte((byte) (hasPitch ? 1 : 0));
+        parcel.writeByte((byte) (hasRoll ? 1 : 0));
+        parcel.writeByte((byte) (hasYaw ? 1 : 0));
+        parcel.writeByte((byte) (hasFlame ? 1 : 0));
+        parcel.writeByte((byte) (hasGas ? 1 : 0));
+        parcel.writeByte((byte) (hasWaterPressure ? 1 : 0));
+    }
+
+    public static final Creator<SensoroSensorTest> CREATOR = new Creator<SensoroSensorTest>() {
+
+        @Override
+        public SensoroSensorTest createFromParcel(Parcel parcel) {
+            return new SensoroSensorTest(parcel);
+        }
+
+        @Override
+        public SensoroSensorTest[] newArray(int size) {
+            return new SensoroSensorTest[size];
+        }
+    };
+
+    @Override
+    public SensoroSensorTest clone() throws CloneNotSupportedException {
+        SensoroSensorTest newSensor = null;
+        try {
+            newSensor = (SensoroSensorTest) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return newSensor;
+    }
+
+}

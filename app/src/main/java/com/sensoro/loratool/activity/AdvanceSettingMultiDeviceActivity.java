@@ -635,7 +635,7 @@ public class AdvanceSettingMultiDeviceActivity extends BaseActivity implements C
             String unsetString = getString(R.string.setting_unset);
             String devEui = devEuiTextView.getText().toString();
             if (devEui.equals("") || devEui.equals(unsetString)) {
-                devEui = targetDevice.getDevUi();
+                devEui = targetDevice.getDevEui();
             }
             String appEui = appEuiTextView.getText().toString();
             if (appEui.equals("") || appEui.equals(unsetString)) {

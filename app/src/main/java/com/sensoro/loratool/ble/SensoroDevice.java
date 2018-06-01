@@ -25,7 +25,7 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
     int accelerometerCount; // accelerometer count.
     int power;//功率
     float sf;//BL间隔
-    String devUi;
+    String devEui;
     String appEui;
     String appKey;
     String appSkey;
@@ -90,6 +90,35 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
     boolean hasSensorParam;
     boolean hasCustomPackage;
     boolean hasDelay;
+
+    public boolean hasSglFrequency() {
+        return hasSglFrequency;
+    }
+
+    public void setHasSglFrequency(boolean hasSglFrequency) {
+        this.hasSglFrequency = hasSglFrequency;
+    }
+
+    boolean hasSglFrequency;
+
+    public boolean hasSglDatarate() {
+        return hasSglDatarate;
+    }
+
+    public void setHasSglDatarate(boolean hasSglDatarate) {
+        this.hasSglDatarate = hasSglDatarate;
+    }
+
+    boolean hasSglDatarate;
+    public boolean hasSglStatus() {
+        return hasSglStatus;
+    }
+
+    public void setHasSglStatus(boolean hasSglStatus) {
+        this.hasSglStatus = hasSglStatus;
+    }
+
+    transient boolean hasSglStatus;
     transient boolean hasMaxEirp;
     SensoroSlot slotArray[];
     SensoroSensor sensoroSensor;
@@ -228,6 +257,8 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         hasSensorParam = false;
         hasDelay = false;
         hasMaxEirp = false;
+        hasSglFrequency=false;
+        hasSglDatarate=false;
     }
 
     protected SensoroDevice(Parcel in) {
@@ -241,7 +272,7 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         power = in.readInt();
         sf = in.readFloat();
         lastFoundTime = in.readLong();
-        devUi = in.readString();
+        devEui = in.readString();
         appEui = in.readString();
         appKey = in.readString();
         appSkey = in.readString();
@@ -300,6 +331,8 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         hasSensorBroadcast = in.readByte() != 0;
         hasSensorParam = in.readByte() != 0;
         hasDelay = in.readByte() != 0;
+        hasSglFrequency=in.readByte()!=0;
+        hasSglDatarate=in.readByte()!=0;
         alarmStepHigh = (Integer) in.readSerializable();
         alarmStepLow = (Integer) in.readSerializable();
         alarmHigh = (Integer) in.readSerializable();
@@ -323,7 +356,7 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         out.writeInt(power);
         out.writeFloat(sf);
         out.writeLong(lastFoundTime);
-        out.writeString(devUi);
+        out.writeString(devEui);
         out.writeString(appEui);
         out.writeString(appKey);
         out.writeString(appSkey);
@@ -382,6 +415,8 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         out.writeByte((byte) (hasSensorBroadcast ? 1 : 0));
         out.writeByte((byte) (hasSensorParam ? 1 : 0));
         out.writeByte((byte) (hasDelay ? 1 : 0));
+        out.writeByte((byte) (hasSglFrequency ? 1 : 0));
+        out.writeByte((byte) (hasSglDatarate ? 1 : 0));
         out.writeSerializable(alarmStepHigh);
         out.writeSerializable(alarmStepLow);
         out.writeSerializable(alarmHigh);
@@ -495,12 +530,12 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         this.power = power;
     }
 
-    public String getDevUi() {
-        return devUi;
+    public String getDevEui() {
+        return devEui;
     }
 
-    public void setDevUi(String devUi) {
-        this.devUi = devUi;
+    public void setDevEui(String devEui) {
+        this.devEui = devEui;
     }
 
     public String getAppEui() {

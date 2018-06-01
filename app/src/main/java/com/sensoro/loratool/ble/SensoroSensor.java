@@ -60,7 +60,7 @@ public class SensoroSensor extends BLEDevice implements Parcelable, Cloneable {
     Float yawAngleAlarmLow;
     Float waterPressureAlarmHigh;
     Float waterPressureAlarmLow;
-
+    boolean hasAlarmHigh;
     boolean hasAcceleration;
     boolean hasAngle;
     boolean hasBattery;

@@ -1668,7 +1668,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     .setBleInt(bleInt)
                     .setBleTxp(bleTxp)
                     .setLoraTxp(loraTxp)
-                    .setDevEui(sensoroDevice.getDevUi())
+                    .setDevEui(sensoroDevice.getDevEui())
                     .setAppEui(sensoroDevice.getAppEui())
                     .setAppKey(sensoroDevice.getAppKey())
                     .setAppSkey(sensoroDevice.getAppSkey())

@@ -201,7 +201,7 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
     private void refresh() {
         try {
             if (sensoroDevice.hasDevEui()) {
-                devEuiTextView.setText(sensoroDevice.getDevUi().toUpperCase());
+                devEuiTextView.setText(sensoroDevice.getDevEui().toUpperCase());
                 devEuiRelativeLayout.setVisibility(VISIBLE);
             } else {
                 devEuiRelativeLayout.setVisibility(GONE);
