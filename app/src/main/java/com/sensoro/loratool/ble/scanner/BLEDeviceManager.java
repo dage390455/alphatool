@@ -65,8 +65,10 @@ public class BLEDeviceManager {
     public static BLEDeviceManager getInstance(Context context) {
         if (instance == null) {
             synchronized (BLEDeviceManager.class) {
-                instance = new BLEDeviceManager();
-                instance.mContext = context;
+                if (instance == null) {
+                    instance = new BLEDeviceManager();
+                    instance.mContext = context;
+                }
             }
         }
         return instance;
@@ -217,9 +219,9 @@ public class BLEDeviceManager {
     }
 
     private interface SensoroDeviceServiceBoundListener {
-         void onSuccess();
+        void onSuccess();
 
-         void onFailure(Object errorMessage);
+        void onFailure(Object errorMessage);
     }
 
 

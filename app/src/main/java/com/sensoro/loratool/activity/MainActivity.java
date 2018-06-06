@@ -30,7 +30,7 @@ import com.sensoro.loratool.activity.fragment.StationFragment;
 import com.sensoro.loratool.adapter.MenuInfoAdapter;
 import com.sensoro.loratool.ble.BLEDevice;
 import com.sensoro.loratool.ble.SensoroDevice;
-import com.sensoro.loratool.ble.SensoroSensor;
+import com.sensoro.loratool.ble.SensoroSensorTest;
 import com.sensoro.loratool.ble.SensoroStation;
 import com.sensoro.loratool.ble.scanner.BLEDeviceManager;
 import com.sensoro.loratool.constant.Constants;
@@ -291,8 +291,8 @@ public class MainActivity extends BaseActivity
                     Toast.LENGTH_SHORT).show();
             exitTime = System.currentTimeMillis();
         } else {
-            finish();
             System.exit(0);
+            finish();
         }
     }
 
@@ -306,7 +306,6 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (resultCode == Constants.RESULT_FILTER) {
             if (mainPager.getCurrentItem() == 0) {
                 deviceFragment.filterDevice();
@@ -326,12 +325,12 @@ public class MainActivity extends BaseActivity
                     case BLEDevice.TYPE_DEVICE:
                         SensoroDevice sensoroDevice = (SensoroDevice) bleDevice;
                         deviceFragment.refreshNew(sensoroDevice);
-                        if (sensoroDevice.getSensoroSensor() != null) {
-                            deviceFragment.refreshSensorNew(sensoroDevice.getSensoroSensor());
+                        if (sensoroDevice.getSensoroSensorTest() != null) {
+                            deviceFragment.refreshSensorNew(sensoroDevice.getSensoroSensorTest());
                         }
                         break;
                     case BLEDevice.TYPE_SENSOR:
-                        deviceFragment.refreshSensorNew((SensoroSensor) bleDevice);
+                        deviceFragment.refreshSensorNew((SensoroSensorTest) bleDevice);
                         break;
                     case BLEDevice.TYPE_STATION:
                         stationFragment.refreshNew((SensoroStation) bleDevice);
@@ -352,7 +351,7 @@ public class MainActivity extends BaseActivity
                         deviceFragment.refreshGone((SensoroDevice) bleDevice);
                         break;
                     case BLEDevice.TYPE_SENSOR:
-                        deviceFragment.refreshSensorGone((SensoroSensor) bleDevice);
+                        deviceFragment.refreshSensorGone((SensoroSensorTest) bleDevice);
                         break;
                     case BLEDevice.TYPE_STATION:
                         stationFragment.refreshGone((SensoroStation) bleDevice);
@@ -374,7 +373,7 @@ public class MainActivity extends BaseActivity
 //                    deviceFragment.refreshSensor(sensoroSensor);
 //                    break;
                 case BLEDevice.TYPE_SENSOR:
-                    SensoroSensor sensoroSensor = (SensoroSensor) bleDevice;
+                    SensoroSensorTest sensoroSensor = (SensoroSensorTest) bleDevice;
                     deviceFragment.refreshSensor(sensoroSensor);
                     break;
                 case BLEDevice.TYPE_DEVICE:

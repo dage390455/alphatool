@@ -19,14 +19,13 @@ import android.widget.TextView;
 import com.sensoro.lora.setting.server.bean.DeviceInfo;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.ble.SensoroDevice;
-import com.sensoro.loratool.ble.SensoroSensor;
+import com.sensoro.loratool.ble.SensoroSensorTest;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.utils.DateUtil;
 import com.sensoro.loratool.widget.BatteryView;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -45,9 +44,9 @@ public class DeviceInfoAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mInflater;
     private final List<DeviceInfo> mDeviceInfoList = Collections.synchronizedList(new ArrayList<DeviceInfo>());
-    private ConcurrentHashMap<String, DeviceInfo> mCacheDeviceInfoMap = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<String, SensoroDevice> mNearByDeviceMap = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<String, SensoroSensor> mSensorMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, DeviceInfo> mCacheDeviceInfoMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, SensoroDevice> mNearByDeviceMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, SensoroSensorTest> mSensorMap = new ConcurrentHashMap<>();
 
     public DeviceInfoAdapter(Context context) {
         this.mContext = context;
@@ -93,9 +92,11 @@ public class DeviceInfoAdapter extends BaseAdapter {
     }
 
     public void appendSearchData(List<DeviceInfo> list) {
-        HashMap<String, String> tempMap = new HashMap<>();
+        final HashSet<String> hashSet = new HashSet<>();
+//        HashMap<String, String> tempMap = new HashMap<>();
         for (int i = 0; i < mDeviceInfoList.size(); i++) {
-            tempMap.put(mDeviceInfoList.get(i).getSn(), mDeviceInfoList.get(i).getSn());
+            hashSet.add(mDeviceInfoList.get(i).getSn());
+//            tempMap.put(mDeviceInfoList.get(i).getSn(), mDeviceInfoList.get(i).getSn());
         }
         for (int j = 0; j < list.size(); j++) {
             DeviceInfo deviceInfo = list.get(j);
@@ -104,10 +105,9 @@ public class DeviceInfoAdapter extends BaseAdapter {
             } else {
                 deviceInfo.setSort(0);
             }
-            if (!tempMap.containsKey(deviceInfo.getSn())) {
+            if (!hashSet.contains(deviceInfo.getSn())) {
                 mDeviceInfoList.add(deviceInfo);
             }
-
         }
 //        DeviceInfoComparator comparator = new DeviceInfoComparator();
 //        Collections.sort(mDeviceInfoList, comparator);
@@ -116,12 +116,9 @@ public class DeviceInfoAdapter extends BaseAdapter {
 
     public void refreshNew(SensoroDevice sensoroDevice, boolean isSearchStatus) {
         String sn = sensoroDevice.getSn();
-        if (sn.endsWith("DDFA")) {
-            Log.e("", "refreshNew: " + sn);
-        }
         if (!mNearByDeviceMap.containsKey(sn)) {
             mNearByDeviceMap.put(sn, sensoroDevice);
-            notifyDataSetChanged();
+//            notifyDataSetChanged();
         }
         final DeviceInfo cacheDeviceInfo = mCacheDeviceInfoMap.get(sn);
         if (isSearchStatus || cacheDeviceInfo == null) {
@@ -138,33 +135,33 @@ public class DeviceInfoAdapter extends BaseAdapter {
         }
         if (!isContains && isFitable(sensoroDevice, cacheDeviceInfo)) {
             mDeviceInfoList.add(cacheDeviceInfo);
-            notifyDataSetChanged();
         }
+        notifyDataSetChanged();
     }
 
     public void refreshGone(SensoroDevice sensoroDevice, boolean isSearchStatus) {
         String sn = sensoroDevice.getSn();
-        if (sn.endsWith("DDFA")) {
-            Log.e("", "refreshGone: " + sn);
-        }
         //TODO 修改删除方式
         if (mNearByDeviceMap.containsKey(sn)) {
-            mNearByDeviceMap.remove(sn,sensoroDevice);
+            mNearByDeviceMap.remove(sn, sensoroDevice);
             for (int j = 0; j < mDeviceInfoList.size(); j++) {
                 final DeviceInfo deviceInfo = mDeviceInfoList.get(j);
-                if (sn.equalsIgnoreCase(deviceInfo.getSn()) && isFilterNearby() && !isSearchStatus) {
-//                    mNearByDeviceMap.remove(sn);
-                    mDeviceInfoList.remove(deviceInfo);
+                if (sn.equalsIgnoreCase(deviceInfo.getSn())) {
+                    deviceInfo.setSort(0);
                     deviceInfo.setSelected(false);
+                    if (isFilterNearby() && !isSearchStatus) {
+//                        mNearByDeviceMap.remove(sn);
+                        mDeviceInfoList.remove(deviceInfo);
 //                    notifyDataSetChanged();
-                    break;
+                        break;
+                    }
                 }
             }
             notifyDataSetChanged();
         }
     }
 
-    public void refreshSensorNew(final SensoroSensor sensoroSensor) {
+    public void refreshSensorNew(final SensoroSensorTest sensoroSensor) {
         if (!mSensorMap.containsKey(sensoroSensor.getSn())) {
             mSensorMap.put(sensoroSensor.getSn(), sensoroSensor);
             notifyDataSetChanged();
@@ -172,14 +169,14 @@ public class DeviceInfoAdapter extends BaseAdapter {
 
     }
 
-    public void refreshSensor(SensoroSensor sensoroSensor) {
+    public void refreshSensor(SensoroSensorTest sensoroSensor) {
         if (mSensorMap.containsKey(sensoroSensor.getSn())) {
             mSensorMap.replace(sensoroSensor.getSn(), mSensorMap.get(sensoroSensor.getSn()), sensoroSensor);
             notifyDataSetChanged();
         }
     }
 
-    public void refreshSensorGone(final SensoroSensor sensoroSensor) {
+    public void refreshSensorGone(final SensoroSensorTest sensoroSensor) {
         if (mSensorMap.containsKey(sensoroSensor.getSn())) {
             mSensorMap.remove(sensoroSensor.getSn());
             notifyDataSetChanged();
@@ -196,16 +193,16 @@ public class DeviceInfoAdapter extends BaseAdapter {
     }
 
 
-    public synchronized void filter() {
+    public void filter() {
 
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(Constants.PREFERENCE_FILTER, Context
                 .MODE_PRIVATE);
-        HashSet<String> firmwareSet = (HashSet) sharedPreferences.getStringSet("device_firmware", null);
-        HashSet<String> hardwareSet = (HashSet) sharedPreferences.getStringSet("device_hardware", null);
-        HashSet<String> bandSet = (HashSet) sharedPreferences.getStringSet("device_band", null);
-        HashSet<String> signalSet = (HashSet) sharedPreferences.getStringSet("device_signal", null);
-        HashSet<String> nearSet = (HashSet) sharedPreferences.getStringSet("device_near", null);
-        HashSet<String> enableFilterSet = (HashSet) sharedPreferences.getStringSet("device_enable_filter", null);
+        final HashSet<String> firmwareSet = (HashSet) sharedPreferences.getStringSet("device_firmware", null);
+        final HashSet<String> hardwareSet = (HashSet) sharedPreferences.getStringSet("device_hardware", null);
+        final HashSet<String> bandSet = (HashSet) sharedPreferences.getStringSet("device_band", null);
+        final HashSet<String> signalSet = (HashSet) sharedPreferences.getStringSet("device_signal", null);
+        final HashSet<String> nearSet = (HashSet) sharedPreferences.getStringSet("device_near", null);
+        final HashSet<String> enableFilterSet = (HashSet) sharedPreferences.getStringSet("device_enable_filter", null);
         boolean isClose = false;
         if (enableFilterSet != null) {
             for (String switchString : enableFilterSet) {
@@ -218,7 +215,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
 
         if ((firmwareSet != null && hardwareSet != null && signalSet != null && nearSet != null && bandSet != null)
                 && !isClose) {
-            List<DeviceInfo> tempFirmwareList = new ArrayList<>();
+            final List<DeviceInfo> tempFirmwareList = new ArrayList<>();
             for (String firmWare : firmwareSet) {
                 for (String key : mCacheDeviceInfoMap.keySet()) {
                     DeviceInfo deviceInfo = mCacheDeviceInfoMap.get(key);
@@ -231,7 +228,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
                 }
             }
 
-            List<DeviceInfo> tempHardwareList = new ArrayList<>();
+            final List<DeviceInfo> tempHardwareList = new ArrayList<>();
             for (String hardware : hardwareSet) {
                 for (int i = 0; i < tempFirmwareList.size(); i++) {
                     String deviceType = tempFirmwareList.get(i).getDeviceType();
@@ -245,7 +242,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
                 }
             }
             tempFirmwareList.clear();
-            List<DeviceInfo> tempBandList = new ArrayList<>();
+            final List<DeviceInfo> tempBandList = new ArrayList<>();
             for (String bandData : bandSet) {
                 for (int i = 0; i < tempHardwareList.size(); i++) {
                     String band = tempHardwareList.get(i).getBand();
@@ -260,7 +257,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
             }
 
             tempHardwareList.clear();
-            List<DeviceInfo> tempSignalList = new ArrayList<>();
+            final List<DeviceInfo> tempSignalList = new ArrayList<>();
             for (String signal : signalSet) {
                 for (int i = 0; i < tempBandList.size(); i++) {
                     if (tempBandList.get(i).getRssi() >= Integer.parseInt(signal)) {
@@ -269,7 +266,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
                 }
             }
             tempBandList.clear();
-            List<DeviceInfo> deviceInfoList = new ArrayList<>();
+            final List<DeviceInfo> deviceInfoList = new ArrayList<>();
             for (String near : nearSet) {
                 if (near.equals("1")) {//near
                     for (int i = 0; i < tempSignalList.size(); i++) {
@@ -308,8 +305,8 @@ public class DeviceInfoAdapter extends BaseAdapter {
     public boolean isFilterNearby() {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(Constants.PREFERENCE_FILTER, Context
                 .MODE_PRIVATE);
-        HashSet<String> nearSet = (HashSet) sharedPreferences.getStringSet("device_near", null);
-        HashSet<String> enableFilterSet = (HashSet) sharedPreferences.getStringSet("device_enable_filter", null);
+        final HashSet<String> nearSet = (HashSet) sharedPreferences.getStringSet("device_near", null);
+        final HashSet<String> enableFilterSet = (HashSet) sharedPreferences.getStringSet("device_enable_filter", null);
         if (enableFilterSet != null) {
             for (String switchString : enableFilterSet) {
                 if (switchString.equals("1")) {//close
@@ -332,12 +329,12 @@ public class DeviceInfoAdapter extends BaseAdapter {
     public boolean isFitable(SensoroDevice sensoroDevice, DeviceInfo deviceInfo) {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(Constants.PREFERENCE_FILTER, Context
                 .MODE_PRIVATE);
-        HashSet<String> firmwareSet = (HashSet) sharedPreferences.getStringSet("device_firmware", null);
-        HashSet<String> hardwareSet = (HashSet) sharedPreferences.getStringSet("device_hardware", null);
-        HashSet<String> bandSet = (HashSet) sharedPreferences.getStringSet("device_band", null);
-        HashSet<String> signalSet = (HashSet) sharedPreferences.getStringSet("device_signal", null);
-        HashSet<String> nearSet = (HashSet) sharedPreferences.getStringSet("device_near", null);
-        HashSet<String> enableFilterSet = (HashSet) sharedPreferences.getStringSet("device_enable_filter", null);
+        final HashSet<String> firmwareSet = (HashSet) sharedPreferences.getStringSet("device_firmware", null);
+        final HashSet<String> hardwareSet = (HashSet) sharedPreferences.getStringSet("device_hardware", null);
+        final HashSet<String> bandSet = (HashSet) sharedPreferences.getStringSet("device_band", null);
+        final HashSet<String> signalSet = (HashSet) sharedPreferences.getStringSet("device_signal", null);
+        final HashSet<String> nearSet = (HashSet) sharedPreferences.getStringSet("device_near", null);
+        final HashSet<String> enableFilterSet = (HashSet) sharedPreferences.getStringSet("device_enable_filter", null);
         if (enableFilterSet != null) {
             for (String switchString : enableFilterSet) {
                 if (switchString.equals("1")) {//close
@@ -397,9 +394,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
             isFitSignalable = true;
         }
 
-        boolean b = isFitSignalable && isFitableFirmware && isFitHardwareable && isFitableBand;
-//        boolean b = isFitSignalable && isFitableFirmware && isFitHardwareable;
-        return b;
+        return isFitSignalable && isFitableFirmware && isFitHardwareable && isFitableBand;
     }
 
     public LinearLayout getItemLayout(View view) {
@@ -630,90 +625,95 @@ public class DeviceInfoAdapter extends BaseAdapter {
             itemViewHolder.sensorRollAngleLayout.setVisibility(GONE);
             itemViewHolder.sensorYawAngleLayout.setVisibility(GONE);
             itemViewHolder.sensorWaterPressureLayout.setVisibility(GONE);
-            SensoroSensor sensoroSensor = mSensorMap.get(deviceInfo_sn);
+            SensoroSensorTest sensoroSensor = mSensorMap.get(deviceInfo_sn);
             if (sensoroSensor != null && isNearby) {
                 int sensor_counter = 0;
-                if (sensoroSensor.getTemperature() != null) {
+                if (sensoroSensor.hasTemperature && sensoroSensor.temperature.has_data) {
                     sensor_counter++;
                     itemViewHolder.sensorTempLayout.setVisibility(VISIBLE);
-                    itemViewHolder.sensorTempTextView.setText(String.format("%.1f", sensoroSensor.getTemperature()) +
+                    itemViewHolder.sensorTempTextView.setText(String.format("%.1f", sensoroSensor.temperature
+                            .data_float) +
                             " ℃");
                 }
-                if (sensoroSensor.getHumidity() != null) {
+                if (sensoroSensor.hasHumidity && sensoroSensor.humidity.has_data) {
                     sensor_counter++;
                     itemViewHolder.sensorHumidityLayout.setVisibility(VISIBLE);
-                    itemViewHolder.sensorHumidityTextView.setText(String.format("%.1f", sensoroSensor.getHumidity())
+                    itemViewHolder.sensorHumidityTextView.setText(String.format("%.1f", sensoroSensor.humidity
+                            .data_float)
                             + " RH%");
                 }
-                if (sensoroSensor.getLight() != null) {
+                if (sensoroSensor.hasLight && sensoroSensor.light.has_data) {
                     sensor_counter++;
                     itemViewHolder.sensorLightLayout.setVisibility(VISIBLE);
-                    itemViewHolder.sensorLightTextView.setText(String.format("%.1f", sensoroSensor.getLight()) + " LX");
+                    itemViewHolder.sensorLightTextView.setText(String.format("%.1f", sensoroSensor.light.data_float)
+                            + " LX");
                 }
 
-                if (sensoroSensor.getCo() != null) {
+                if (sensoroSensor.hasCo && sensoroSensor.co.has_data) {
                     sensor_counter++;
                     itemViewHolder.sensorCoLayout.setVisibility(VISIBLE);
-                    itemViewHolder.sensorCoTextView.setText("" + String.format("%.1f", sensoroSensor.getCo()));
+                    itemViewHolder.sensorCoTextView.setText("" + String.format("%.1f", sensoroSensor.co.data_float));
                 }
 
-                if (sensoroSensor.getCo2() != null) {
+                if (sensoroSensor.hasCo2 && sensoroSensor.co2.has_data) {
                     sensor_counter++;
-                    itemViewHolder.sensorCo2TextView.setText("" + String.format("%.1f", sensoroSensor.getCo2()));
+                    itemViewHolder.sensorCo2TextView.setText("" + String.format("%.1f", sensoroSensor.co2.data_float));
                     itemViewHolder.sensorCo2Layout.setVisibility(VISIBLE);
                 }
-                if (sensoroSensor.getNo2() != null) {
+                if (sensoroSensor.hasNo2 && sensoroSensor.no2.has_data) {
                     sensor_counter++;
-                    itemViewHolder.sensorNo2TextView.setText("" + String.format("%.1f", sensoroSensor.getNo2()));
+                    itemViewHolder.sensorNo2TextView.setText("" + String.format("%.1f", sensoroSensor.no2.data_float));
                     itemViewHolder.sensorNo2Layout.setVisibility(VISIBLE);
                 }
-                if (sensoroSensor.getCh4() != null) {
+                if (sensoroSensor.hasCh4 && sensoroSensor.ch4.has_data) {
                     sensor_counter++;
-                    itemViewHolder.sensorCh4TextView.setText("" + String.format("%.1f", sensoroSensor.getCh4()));
+                    itemViewHolder.sensorCh4TextView.setText("" + String.format("%.1f", sensoroSensor.ch4.data_float));
                     itemViewHolder.sensorCh4Layout.setVisibility(VISIBLE);
                 }
-                if (sensoroSensor.getLpg() != null) {
+                if (sensoroSensor.hasLpg && sensoroSensor.lpg.has_data) {
                     sensor_counter++;
-                    itemViewHolder.sensorLpgTextView.setText("" + String.format("%.1f", sensoroSensor.getLpg()));
+                    itemViewHolder.sensorLpgTextView.setText("" + String.format("%.1f", sensoroSensor.lpg.data_float));
                     itemViewHolder.sensorLpgLayout.setVisibility(VISIBLE);
                 }
-                if (sensoroSensor.getPm25() != null) {
+                if (sensoroSensor.hasPm25 && sensoroSensor.pm25.has_data) {
                     sensor_counter++;
-                    itemViewHolder.sensorPm25TextView.setText("" + String.format("%.1f", sensoroSensor.getPm25()));
+                    itemViewHolder.sensorPm25TextView.setText("" + String.format("%.1f", sensoroSensor
+                            .pm25.data_float));
                     itemViewHolder.sensorPm25Layout.setVisibility(VISIBLE);
                 }
-                if (sensoroSensor.getPm10() != null) {
+                if (sensoroSensor.hasPm10 && sensoroSensor.pm10.has_data) {
                     sensor_counter++;
-                    itemViewHolder.sensorPm10TextView.setText("" + String.format("%.1f", sensoroSensor.getPm10()));
+                    itemViewHolder.sensorPm10TextView.setText("" + String.format("%.1f", sensoroSensor
+                            .pm10.data_float));
                     itemViewHolder.sensorPm10Layout.setVisibility(VISIBLE);
                 }
-                if (sensoroSensor.getPitchAngle() != null) {
+                if (sensoroSensor.hasPitch && sensoroSensor.pitch.has_data) {
                     sensor_counter++;
                     itemViewHolder.sensorPitchAngleTextView.setText("P " + String.format("%.1f", sensoroSensor
-                            .getPitchAngle()) + "°。");
+                            .pitch.data_float) + "°。");
                     itemViewHolder.sensorPitchAngleLayout.setVisibility(VISIBLE);
                 }
-                if (sensoroSensor.getRollAngle() != null) {
+                if (sensoroSensor.hasRoll && sensoroSensor.roll.has_data) {
                     sensor_counter++;
                     itemViewHolder.sensorRollAngleTextView.setText("R " + String.format("%.1f", sensoroSensor
-                            .getRollAngle()) + "°。");
+                            .roll.data_float) + "°。");
                     itemViewHolder.sensorRollAngleLayout.setVisibility(VISIBLE);
                 }
-                if (sensoroSensor.getYawAngle() != null) {
+                if (sensoroSensor.hasYaw && sensoroSensor.yaw.has_data) {
                     sensor_counter++;
                     itemViewHolder.sensorYawAngleTextView.setText("Y " + String.format("%.1f", sensoroSensor
-                            .getYawAngle()) + "°。");
+                            .yaw.data_float) + "°。");
                     itemViewHolder.sensorYawAngleLayout.setVisibility(VISIBLE);
                 }
-                if (sensoroSensor.getWaterPressure() != null) {
+                if (sensoroSensor.hasWaterPressure && sensoroSensor.waterPressure.has_data) {
                     sensor_counter++;
                     itemViewHolder.sensorWaterPressureTextView.setText("WaterPressure " + String.format("%.1f",
-                            sensoroSensor.getWaterPressure()) + "");
+                            sensoroSensor.waterPressure.data_float) + "");
                     itemViewHolder.sensorWaterPressureLayout.setVisibility(VISIBLE);
                 }
-                if (sensoroSensor.getLeak() != null) {
+                if (sensoroSensor.hasLeak && sensoroSensor.leak.has_data) {
                     sensor_counter++;
-                    if (sensoroSensor.getLeak() == 0) {
+                    if (sensoroSensor.leak.data_int == 0) {
                         Drawable drawableNormal = mContext.getResources().getDrawable(R.mipmap.ic_leak_normal);
                         drawableNormal.setBounds(0, 0, drawableNormal != null ? drawableNormal.getMinimumWidth() : 0,
                                 drawableNormal.getMinimumHeight());
@@ -856,11 +856,12 @@ public class DeviceInfoAdapter extends BaseAdapter {
 
     @Override
     public void notifyDataSetChanged() {
-        ArrayList<DeviceInfo> deviceInfos = new ArrayList<>(mDeviceInfoList);
+        //去重复并排序
+        final HashSet<DeviceInfo> deviceInfos = new HashSet<>(mDeviceInfoList);
         mDeviceInfoList.clear();
         mDeviceInfoList.addAll(deviceInfos);
+//        Collections.sort(mDeviceInfoList);
         deviceInfos.clear();
-        deviceInfos = null;
         super.notifyDataSetChanged();
     }
 }

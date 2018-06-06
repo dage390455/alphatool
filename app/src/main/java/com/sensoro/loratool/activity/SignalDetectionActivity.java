@@ -19,8 +19,8 @@ import com.sensoro.loratool.adapter.SignalArrayAdapter;
 import com.sensoro.loratool.ble.BLEDevice;
 import com.sensoro.loratool.ble.CmdType;
 import com.sensoro.loratool.ble.SensoroConnectionCallback;
-import com.sensoro.loratool.ble.SensoroDeviceConnection;
 import com.sensoro.loratool.ble.SensoroDevice;
+import com.sensoro.loratool.ble.SensoroDeviceConnection;
 import com.sensoro.loratool.ble.SensoroWriteCallback;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.event.OnPositiveButtonClickListener;
@@ -42,7 +42,8 @@ import butterknife.OnClick;
  * Created by sensoro on 16/9/26.
  */
 
-public class SignalDetectionActivity extends BaseActivity implements OnPositiveButtonClickListener, SensoroConnectionCallback, SensoroWriteCallback {
+public class SignalDetectionActivity extends BaseActivity implements OnPositiveButtonClickListener,
+        SensoroConnectionCallback, SensoroWriteCallback {
 
     @BindView(R.id.signal_freq)
     TextView freqTextView;
@@ -66,14 +67,14 @@ public class SignalDetectionActivity extends BaseActivity implements OnPositiveB
     private int sendCount;
     private int receiveCount;
     private int selectedFreq;
-    private int buttonStatus;
+    private int buttonStatus = STOP;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sensoroDevice = this.getIntent().getParcelableExtra(Constants.EXTRA_NAME_DEVICE);
         band = this.getIntent().getStringExtra(Constants.EXTRA_NAME_BAND);
-        connect();
+        init();
         MobclickAgent.onPageStart("设备信号检测");
     }
 
@@ -143,15 +144,27 @@ public class SignalDetectionActivity extends BaseActivity implements OnPositiveB
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mSignalAdapter);
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.y100);
-        RecycleViewDivider mDivider = new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL, spacingInPixels, android.R.color.black, false);
+        RecycleViewDivider mDivider = new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL, spacingInPixels,
+                android.R.color.black, false);
         mRecyclerView.addItemDecoration(mDivider);
-        sendCount = 0;
-        receiveCount = 0;
-        buttonStatus = STOP;
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage(getString(R.string.connecting));
+        progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+//                    SignalDetectionActivity.this.finish();
+                if (sensoroDeviceConnection!=null){
+                    sensoroDeviceConnection.disconnect();
+                }
+            }
+        });
+        progressDialog.setCanceledOnTouchOutside(false);
+        sensoroDeviceConnection = new SensoroDeviceConnection(this, sensoroDevice, true);
     }
 
     private void showChoiceDialog() {
-        DialogFragment dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(ParamUtil.getLoraBandText(this, band), 0);
+        DialogFragment dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(ParamUtil.getLoraBandText(this,
+                band), 0);
         dialogFragment.show(getFragmentManager(), "SETTINGS_SIGNAL");
     }
 
@@ -170,31 +183,26 @@ public class SignalDetectionActivity extends BaseActivity implements OnPositiveB
         signalData.setDownlinkTxPower(msgTest.getDownlinkTxPower());
         Calendar calendar = Calendar.getInstance();
         signalData.setDate(DateUtil.getFullDate(calendar.getTimeInMillis()));
-        mSignalAdapter.appendData(signalData);
-        mSignalAdapter.notifyDataSetChanged();
-        if (msgTest.getDownlinkSNR() != 0 && msgTest.getDownlinkFreq() != 0 && msgTest.getDownlinkRSSI() != 0 && msgTest.getDownlinkSNR() != 0 && msgTest.getDownlinkTxPower() != 0) {
+
+        if (msgTest.getDownlinkSNR() != 0 && msgTest.getDownlinkFreq() != 0 && msgTest.getDownlinkRSSI() != 0 &&
+                msgTest.getDownlinkSNR() != 0 && msgTest.getDownlinkTxPower() != 0) {
             receiveCount++;
         }
         sendCount++;
-        sendTextView.setText(getString(R.string.send) + " " + sendCount);
-        receiveTextView.setText(getString(R.string.receive) + " " + receiveCount);
         float rate = (float) (receiveCount) / sendCount * 100;
         String rateString = String.format("%.1f", rate);
+        //
+
+        sendTextView.setText(getString(R.string.send) + " " + sendCount);
+        receiveTextView.setText(getString(R.string.receive) + " " + receiveCount);
         rateTextView.setText(getString(R.string.success_rate) + " " + rateString + "%");
+        mSignalAdapter.appendData(signalData);
+        mSignalAdapter.notifyDataSetChanged();
     }
 
     private void connect() {
         try {
-            progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage(getString(R.string.connecting));
             progressDialog.show();
-            progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialogInterface) {
-                    SignalDetectionActivity.this.finish();
-                }
-            });
-            sensoroDeviceConnection = new SensoroDeviceConnection(this, sensoroDevice, true);
             sensoroDeviceConnection.connect(sensoroDevice.getPassword(), this);
         } catch (Exception e) {
             e.printStackTrace();
@@ -203,7 +211,8 @@ public class SignalDetectionActivity extends BaseActivity implements OnPositiveB
 
     private void sendDetectionCmd() {
 
-        sensoroDeviceConnection.writeSignalData(selectedFreq, sensoroDevice.getLoraDr(), sensoroDevice.getLoraTxp(), 5, this);
+        sensoroDeviceConnection.writeSignalData(selectedFreq, sensoroDevice.getLoraDr(), sensoroDevice.getLoraTxp(),
+                5, this);
 
     }
 
@@ -215,12 +224,11 @@ public class SignalDetectionActivity extends BaseActivity implements OnPositiveB
     @OnClick(R.id.signal_play)
     public void play() {
         if (buttonStatus == STOP) {
-            sendDetectionCmd();
+            connect();
         } else {
             buttonStatus = STOP;
             signalPlayButton.setImageResource(R.mipmap.ic_play);
             sensoroDeviceConnection.disconnect();
-            this.finish();
         }
 
     }
@@ -235,8 +243,16 @@ public class SignalDetectionActivity extends BaseActivity implements OnPositiveB
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 progressDialog.dismiss();
-                init();
+                sendCount = 0;
+                receiveCount = 0;
+                buttonStatus = STOP;
+                sendDetectionCmd();
                 Toast.makeText(SignalDetectionActivity.this, R.string.connect_success, Toast.LENGTH_SHORT).show();
             }
         });
@@ -249,7 +265,12 @@ public class SignalDetectionActivity extends BaseActivity implements OnPositiveB
             @Override
             public void run() {
                 progressDialog.dismiss();
-                SignalDetectionActivity.this.finish();
+                sendCount = 0;
+                receiveCount = 0;
+                buttonStatus = STOP;
+                if (sensoroDeviceConnection!=null){
+                    sensoroDeviceConnection.disconnect();
+                }
                 Toast.makeText(SignalDetectionActivity.this, R.string.connect_failed, Toast.LENGTH_SHORT).show();
             }
         });
@@ -279,6 +300,7 @@ public class SignalDetectionActivity extends BaseActivity implements OnPositiveB
             }
         });
     }
+
     @Override
     public void onWriteFailure(int errorCode, final int cmd) {
 
@@ -301,7 +323,7 @@ public class SignalDetectionActivity extends BaseActivity implements OnPositiveB
                 freqTextView.setText(getString(R.string.random));
             } else {
                 selectedFreq = ParamUtil.getLoraBandIntArray(band)[index];
-                freqTextView.setText((float)selectedFreq/1000000 + " MHz");
+                freqTextView.setText((float) selectedFreq / 1000000 + " MHz");
             }
         }
     }

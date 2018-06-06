@@ -9,40 +9,6 @@ import android.os.Parcelable;
 
 public class SensoroSensorTest extends BLEDevice implements Parcelable, Cloneable {
 
-//    Float temperature;// 温度
-//    Float light; // 光线照度
-//    Float humidity;//湿度
-//    Float co;
-//    Float co2;
-//    Float no2;
-//    Float methane;
-//    Float level;
-//
-//    Integer accelerometerCount; // 加速度计数器
-//    byte[] customize;
-//
-//    Float ch20;
-//    Float ch4;
-//    Float coverStatus;
-//    Float so2;
-//    Float gps;
-//    Integer leak;
-//    Float lpg;
-//    Float magnetism;
-//    Float o3;
-//    Float pm1;
-//    Float pm25;
-//    Float pm10;
-//    Float smoke;
-//    Float pitch;
-//    Float roll;
-//    Float yaw;
-//    Integer smokeStatus;
-//    Float gas;
-//    Integer flame;
-//    Float waterPressure;
-//
-//    Float temp;
 
     public SensoroData temperature;// 温度
     public SensoroData light; // 光线照度
@@ -52,7 +18,6 @@ public class SensoroSensorTest extends BLEDevice implements Parcelable, Cloneabl
     public SensoroData no2;
     public SensoroData methane;
     public SensoroData level;
-
     public SensoroData accelerometerCount; // 加速度计数器
 
     public byte[] customize;
@@ -73,15 +38,12 @@ public class SensoroSensorTest extends BLEDevice implements Parcelable, Cloneabl
     public SensoroData pitch;
     public SensoroData roll;
     public SensoroData yaw;
-    public SensoroData smokeStatus;
     public SensoroData gas;
     public SensoroData flame;
     public SensoroData waterPressure;
-
-    public SensoroData temp;
     public SensoroData multiTemperature;
     //
-    public boolean hasAcceleration;
+    public boolean hasAccelerometerCount;
     public boolean hasAngle;
     public boolean hasBattery;
     public boolean hasCh2O;
@@ -111,7 +73,8 @@ public class SensoroSensorTest extends BLEDevice implements Parcelable, Cloneabl
     public boolean hasFlame;
     public boolean hasGas;
     public boolean hasWaterPressure;
-
+    public boolean hasMultiTemp;
+    public boolean hasMethane;
 
     public SensoroSensorTest() {
     }
@@ -119,6 +82,13 @@ public class SensoroSensorTest extends BLEDevice implements Parcelable, Cloneabl
     protected SensoroSensorTest(Parcel in) {
         super(in);
         temperature = (SensoroData) in.readSerializable();
+        o3 = (SensoroData) in.readSerializable();
+        smoke = (SensoroData) in.readSerializable();
+        magnetism = (SensoroData) in.readSerializable();
+        gps = (SensoroData) in.readSerializable();
+        so2 = (SensoroData) in.readSerializable();
+        ch4 = (SensoroData) in.readSerializable();
+        ch20 = (SensoroData) in.readSerializable();
         light = (SensoroData) in.readSerializable();
         humidity = (SensoroData) in.readSerializable();
         accelerometerCount = (SensoroData) in.readSerializable();
@@ -133,15 +103,15 @@ public class SensoroSensorTest extends BLEDevice implements Parcelable, Cloneabl
         pm10 = (SensoroData) in.readSerializable();
         coverStatus = (SensoroData) in.readSerializable();
         level = (SensoroData) in.readSerializable();
-        smokeStatus = (SensoroData) in.readSerializable();
         flame = (SensoroData) in.readSerializable();
         pitch = (SensoroData) in.readSerializable();
         roll = (SensoroData) in.readSerializable();
         yaw = (SensoroData) in.readSerializable();
         gas = (SensoroData) in.readSerializable();
+        multiTemperature = (SensoroData) in.readSerializable();
         waterPressure = (SensoroData) in.readSerializable();
         customize = in.createByteArray();
-        hasAcceleration = in.readByte() != 0;
+        hasAccelerometerCount = in.readByte() != 0;
         hasAngle = in.readByte() != 0;
         hasBattery = in.readByte() != 0;
         hasCh2O = in.readByte() != 0;
@@ -171,6 +141,8 @@ public class SensoroSensorTest extends BLEDevice implements Parcelable, Cloneabl
         hasFlame = in.readByte() != 0;
         hasGas = in.readByte() != 0;
         hasWaterPressure = in.readByte() != 0;
+        hasMultiTemp = in.readByte() != 0;
+        hasMethane = in.readByte() != 0;
     }
 
     @Override
@@ -182,6 +154,13 @@ public class SensoroSensorTest extends BLEDevice implements Parcelable, Cloneabl
     public void writeToParcel(Parcel parcel, int i) {
         super.writeToParcel(parcel, i);
         parcel.writeSerializable(temperature);
+        parcel.writeSerializable(smoke);
+        parcel.writeSerializable(o3);
+        parcel.writeSerializable(magnetism);
+        parcel.writeSerializable(gps);
+        parcel.writeSerializable(so2);
+        parcel.writeSerializable(ch4);
+        parcel.writeSerializable(ch20);
         parcel.writeSerializable(light);
         parcel.writeSerializable(humidity);
         parcel.writeSerializable(accelerometerCount);
@@ -196,15 +175,15 @@ public class SensoroSensorTest extends BLEDevice implements Parcelable, Cloneabl
         parcel.writeSerializable(pm10);
         parcel.writeSerializable(coverStatus);
         parcel.writeSerializable(level);
-        parcel.writeSerializable(smokeStatus);
         parcel.writeSerializable(flame);
         parcel.writeSerializable(pitch);
         parcel.writeSerializable(roll);
         parcel.writeSerializable(yaw);
         parcel.writeSerializable(gas);
         parcel.writeSerializable(waterPressure);
+        parcel.writeSerializable(multiTemperature);
         parcel.writeByteArray(customize);
-        parcel.writeByte((byte) (hasAcceleration ? 1 : 0));
+        parcel.writeByte((byte) (hasAccelerometerCount ? 1 : 0));
         parcel.writeByte((byte) (hasAngle ? 1 : 0));
         parcel.writeByte((byte) (hasBattery ? 1 : 0));
         parcel.writeByte((byte) (hasCh2O ? 1 : 0));
@@ -234,6 +213,8 @@ public class SensoroSensorTest extends BLEDevice implements Parcelable, Cloneabl
         parcel.writeByte((byte) (hasFlame ? 1 : 0));
         parcel.writeByte((byte) (hasGas ? 1 : 0));
         parcel.writeByte((byte) (hasWaterPressure ? 1 : 0));
+        parcel.writeByte((byte) (hasMultiTemp ? 1 : 0));
+        parcel.writeByte((byte) (hasMethane ? 1 : 0));
     }
 
     public static final Creator<SensoroSensorTest> CREATOR = new Creator<SensoroSensorTest>() {

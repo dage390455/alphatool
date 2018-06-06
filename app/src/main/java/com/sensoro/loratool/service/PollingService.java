@@ -31,7 +31,7 @@ import java.util.concurrent.Executors;
 
 public class PollingService extends Service {
     private static final String TAG = "LongRunningService";
-    private ExecutorService executorService ;
+    private ExecutorService executorService;
 
     @Override
     public void onCreate() {
@@ -80,10 +80,11 @@ public class PollingService extends Service {
                     jsonArray.put(jsonObject);
                 }
                 jsonDataObject.put("devices", jsonArray.toString());
-                String decodeString = "{\"devices\":"+jsonArray.toString()+"}";
+                String decodeString = "{\"devices\":" + jsonArray.toString() + "}";
                 LoRaSettingApplication loRaSettingApplication = (LoRaSettingApplication) this.getApplication();
                 Log.d("decodeString", "===>" + decodeString);
-                loRaSettingApplication.loRaSettingServer.updateDevices(decodeString, new Response.Listener<ResponseBase>() {
+                loRaSettingApplication.loRaSettingServer.updateDevices(decodeString, new Response
+                        .Listener<ResponseBase>() {
                     @Override
                     public void onResponse(ResponseBase responseBase) {
                         if (responseBase.getErr_code() == 0) {
@@ -110,7 +111,7 @@ public class PollingService extends Service {
             JSONObject jsonData = new JSONObject();
             try {
                 JSONArray jsonArray = new JSONArray();
-                for (int i = 0; i < upgradeDataList.size(); i ++) {
+                for (int i = 0; i < upgradeDataList.size(); i++) {
                     UpgradeData upgradeData = upgradeDataList.get(i);
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("sns", upgradeData.getData());

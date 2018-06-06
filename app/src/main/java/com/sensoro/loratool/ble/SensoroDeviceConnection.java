@@ -667,7 +667,6 @@ public class SensoroDeviceConnection {
         SensoroDevice sensoroDevice = new SensoroDevice();
         try {
             MsgNode1V1M5.MsgNode msgNode = MsgNode1V1M5.MsgNode.parseFrom(data);
-            MsgNode1V1M5.MsgNode msgNode1 = MsgNode1V1M5.MsgNode.newBuilder().build();
             boolean hasAppParam = msgNode.hasAppParam();
             sensoroDevice.setHasAppParam(hasAppParam);
             if (hasAppParam) {
@@ -801,93 +800,429 @@ public class SensoroDeviceConnection {
                 }
 
             }
+            //
+//            SensoroSensor sensoroSensor = new SensoroSensor();
+            SensoroSensorTest sensoroSensorTest = new SensoroSensorTest();
+            boolean hasFlame = msgNode.hasFlame();
+            sensoroSensorTest.hasFlame = hasFlame;
+            if (hasFlame) {//aae7e4 ble on off temp lower disable
+                MsgNode1V1M5.SensorDataInt flame = msgNode.getFlame();
+                sensoroSensorTest.flame = new SensoroData();
+                boolean hasData = flame.hasData();
+                sensoroSensorTest.flame.has_data = hasData;
+                if (hasData) {
+                    sensoroSensorTest.flame.data_int = flame.getData();
+                }
+            }
+            boolean hasPitch = msgNode.hasPitch();
+            sensoroSensorTest.hasPitch = hasPitch;
+            if (hasPitch) {
+                MsgNode1V1M5.SensorData pitch = msgNode.getPitch();
+                sensoroSensorTest.pitch = new SensoroData();
+                boolean hasAlarmHigh = pitch.hasAlarmHigh();
+                sensoroSensorTest.pitch.has_alarmHigh = hasAlarmHigh;
+                if (hasAlarmHigh) {
+                    sensoroSensorTest.pitch.alarmHigh_float = pitch.getAlarmHigh();
+                }
+                boolean hasAlarmLow = pitch.hasAlarmLow();
+                sensoroSensorTest.pitch.has_alarmLow = hasAlarmLow;
+                if (hasAlarmLow) {
+                    sensoroSensorTest.pitch.alarmLow_float = pitch.getAlarmLow();
+                }
+                boolean hasData = pitch.hasData();
+                sensoroSensorTest.pitch.has_data = hasData;
+                if (hasData) {
+                    sensoroSensorTest.pitch.data_float = pitch.getData();
+                }
+            }
+            boolean hasRoll = msgNode.hasRoll();
+            sensoroSensorTest.hasRoll = hasRoll;
+            if (hasRoll) {
+                MsgNode1V1M5.SensorData roll = msgNode.getRoll();
+                sensoroSensorTest.roll = new SensoroData();
+                boolean hasAlarmHigh = roll.hasAlarmHigh();
+                sensoroSensorTest.roll.has_alarmHigh = hasAlarmHigh;
+                if (hasAlarmHigh) {
+                    sensoroSensorTest.roll.alarmHigh_float = roll.getAlarmHigh();
+                }
+                boolean hasAlarmLow = roll.hasAlarmLow();
+                sensoroSensorTest.roll.has_alarmLow = hasAlarmLow;
+                if (hasAlarmLow) {
+                    sensoroSensorTest.roll.alarmLow_float = roll.getAlarmLow();
+                }
+                boolean hasData = roll.hasData();
+                sensoroSensorTest.roll.has_data = hasData;
+                if (hasData) {
+                    sensoroSensorTest.roll.data_float = roll.getData();
+                }
+            }
+            boolean hasYaw = msgNode.hasYaw();
+            sensoroSensorTest.hasYaw = hasYaw;
+            if (hasYaw) {
+                MsgNode1V1M5.SensorData yaw = msgNode.getYaw();
+                sensoroSensorTest.yaw = new SensoroData();
+                boolean hasAlarmHigh = yaw.hasAlarmHigh();
+                sensoroSensorTest.yaw.has_alarmHigh = hasAlarmHigh;
+                if (hasAlarmHigh) {
+                    sensoroSensorTest.yaw.alarmHigh_float = yaw.getAlarmHigh();
+                }
+                boolean hasAlarmLow = yaw.hasAlarmLow();
+                sensoroSensorTest.yaw.has_alarmLow = hasAlarmLow;
+                if (hasAlarmLow) {
+                    sensoroSensorTest.yaw.alarmLow_float = yaw.getAlarmLow();
+                }
+                boolean hasData = yaw.hasData();
+                sensoroSensorTest.yaw.has_data = hasData;
+                if (hasData) {
+                    sensoroSensorTest.yaw.data_float = yaw.getData();
+                }
+            }
+            boolean hasWaterPressure = msgNode.hasWaterPressure();
+            sensoroSensorTest.hasWaterPressure = hasWaterPressure;
+            if (hasWaterPressure) {
 
-//            SensoroSensorTest sensoroSensorTest = new SensoroSensorTest();
+                MsgNode1V1M5.SensorData waterPressure = msgNode.getWaterPressure();
+                sensoroSensorTest.waterPressure = new SensoroData();
+                boolean hasAlarmHigh = waterPressure.hasAlarmHigh();
+                sensoroSensorTest.waterPressure.has_alarmHigh = hasAlarmHigh;
+                if (hasAlarmHigh) {
+                    sensoroSensorTest.waterPressure.alarmHigh_float = waterPressure.getAlarmHigh();
+                }
+                boolean hasAlarmLow = waterPressure.hasAlarmLow();
+                sensoroSensorTest.waterPressure.has_alarmLow = hasAlarmLow;
+                if (hasAlarmLow) {
+                    sensoroSensorTest.waterPressure.alarmLow_float = waterPressure.getAlarmLow();
+                }
+                boolean hasData = waterPressure.hasData();
+                sensoroSensorTest.waterPressure.has_data = hasData;
+                if (hasData) {
+                    sensoroSensorTest.waterPressure.data_float = waterPressure.getData();
+                }
+            }
+            boolean hasCh2O = msgNode.hasCh2O();
+            sensoroSensorTest.hasCh2O = hasCh2O;
+            if (hasCh2O) {
+                MsgNode1V1M5.SensorData ch2O = msgNode.getCh2O();
+                sensoroSensorTest.ch20 = new SensoroData();
+                boolean hasData = ch2O.hasData();
+                sensoroSensorTest.ch20.has_data = hasData;
+                if (hasData) {
+                    sensoroSensorTest.ch20.data_float = ch2O.getData();
+                }
+            }
+            boolean hasCh4 = msgNode.hasCh4();
+            sensoroSensorTest.hasCh4 = hasCh4;
+            if (hasCh4) {
+                MsgNode1V1M5.SensorData ch4 = msgNode.getCh4();
+                sensoroSensorTest.ch4 = new SensoroData();
+                boolean hasData = ch4.hasData();
+                sensoroSensorTest.ch4.has_data = hasData;
+                if (hasData) {
+                    sensoroSensorTest.ch4.data_float = ch4.getData();
+                }
+                boolean hasAlarmHigh = ch4.hasAlarmHigh();
+                sensoroSensorTest.ch4.has_alarmHigh = hasAlarmHigh;
+                if (hasAlarmHigh) {
+                    sensoroSensorTest.ch4.alarmHigh_float = ch4.getAlarmHigh();
+                }
+            }
+            boolean hasCover = msgNode.hasCover();
+            sensoroSensorTest.hasCover = hasCover;
+            if (hasCover) {
+                //TODO
+//                sensoroSensor.setCoverStatus(cover.getData());
+                MsgNode1V1M5.SensorData cover = msgNode.getCover();
+                sensoroSensorTest.coverStatus = new SensoroData();
+                boolean hasData = cover.hasData();
+                sensoroSensorTest.coverStatus.has_data = hasData;
+                if (hasData) {
+                    sensoroSensorTest.coverStatus.data_float = cover.getData();
+                }
+            }
+            boolean hasCo = msgNode.hasCo();
+            sensoroSensorTest.hasCo = hasCo;
+            if (hasCo) {
+                MsgNode1V1M5.SensorData co = msgNode.getCo();
+                sensoroSensorTest.co = new SensoroData();
+                boolean hasData = co.hasData();
+                sensoroSensorTest.co.has_data = hasData;
+                if (hasData) {
+                    sensoroSensorTest.co.data_float = co.getData();
+                }
+                boolean hasAlarmHigh = co.hasAlarmHigh();
+                sensoroSensorTest.co.has_alarmHigh = hasAlarmHigh;
+                if (hasAlarmHigh) {
+                    sensoroSensorTest.co.alarmHigh_float = co.getAlarmHigh();
+                }
+            }
+            boolean hasCo2 = msgNode.hasCo2();
+            sensoroSensorTest.hasCo2 = hasCo2;
+            if (hasCo2) {
+                MsgNode1V1M5.SensorData co2 = msgNode.getCo2();
+                sensoroSensorTest.co2 = new SensoroData();
+                boolean hasData = co2.hasData();
+                sensoroSensorTest.co2.has_data = hasData;
+                if (hasData) {
+                    sensoroSensorTest.co2.data_float = co2.getData();
+                }
+                boolean hasAlarmHigh = co2.hasAlarmHigh();
+                sensoroSensorTest.co2.has_alarmHigh = hasAlarmHigh;
+                if (hasAlarmHigh) {
+                    sensoroSensorTest.co2.alarmHigh_float = co2.getAlarmHigh();
+                }
+            }
+            boolean hasNo2 = msgNode.hasNo2();
+            sensoroSensorTest.hasNo2 = hasNo2;
+            if (hasNo2) {
+                MsgNode1V1M5.SensorData no2 = msgNode.getNo2();
+                sensoroSensorTest.no2 = new SensoroData();
+                boolean hasData = no2.hasData();
+                sensoroSensorTest.no2.has_data = hasData;
+                if (hasData) {
+                    sensoroSensorTest.no2.data_float = no2.getData();
+                }
+                boolean hasAlarmHigh = no2.hasAlarmHigh();
+                sensoroSensorTest.no2.has_alarmHigh = hasAlarmHigh;
+                if (hasAlarmHigh) {
+                    sensoroSensorTest.no2.alarmHigh_float = no2.getAlarmHigh();
+                }
+
+            }
+            boolean hasSo2 = msgNode.hasSo2();
+            sensoroSensorTest.hasSo2 = hasSo2;
+            if (hasSo2) {
+                MsgNode1V1M5.SensorData so2 = msgNode.getSo2();
+                sensoroSensorTest.so2 = new SensoroData();
+                boolean hasData = so2.hasData();
+                sensoroSensorTest.so2.has_data = hasData;
+                if (hasData) {
+                    sensoroSensorTest.so2.data_float = so2.getData();
+                }
+                boolean hasAlarmHigh = so2.hasAlarmHigh();
+                sensoroSensorTest.so2.has_alarmHigh = hasAlarmHigh;
+                if (hasAlarmHigh) {
+                    sensoroSensorTest.so2.alarmHigh_float = so2.getAlarmHigh();
+                }
+//                sensoroSensor.setHasSo2(msgNode.hasSo2());
+            }
+
+            boolean hasHumidity = msgNode.hasHumidity();
+            sensoroSensorTest.hasHumidity = hasHumidity;
+            if (hasHumidity) {
+                MsgNode1V1M5.SensorData humidity = msgNode.getHumidity();
+                sensoroSensorTest.humidity = new SensoroData();
+                boolean hasData = humidity.hasData();
+                sensoroSensorTest.humidity.has_data = hasData;
+                if (hasData) {
+                    sensoroSensorTest.humidity.data_float = humidity.getData();
+                }
+                boolean hasAlarmHigh = humidity.hasAlarmHigh();
+                sensoroSensorTest.humidity.has_alarmHigh = hasAlarmHigh;
+                if (hasAlarmHigh) {
+                    sensoroSensorTest.humidity.alarmHigh_float = humidity.getAlarmHigh();
+                }
+                boolean hasAlarmLow = humidity.hasAlarmLow();
+                sensoroSensorTest.humidity.has_alarmLow = hasAlarmLow;
+                if (hasAlarmLow) {
+                    sensoroSensorTest.humidity.alarmLow_float = humidity.getAlarmLow();
+                }
+            }
+            boolean hasTemperature = msgNode.hasTemperature();
+            sensoroSensorTest.hasTemperature = hasTemperature;
+            if (hasTemperature) {
+                MsgNode1V1M5.SensorData temperature = msgNode.getTemperature();
+                sensoroSensorTest.temperature = new SensoroData();
+                boolean hasData = temperature.hasData();
+                sensoroSensorTest.temperature.has_data = hasData;
+                if (hasData) {
+                    sensoroSensorTest.temperature.data_float = temperature.getData();
+                }
+                boolean hasAlarmHigh = temperature.hasAlarmHigh();
+                sensoroSensorTest.temperature.has_alarmHigh = hasAlarmHigh;
+                if (hasAlarmHigh) {
+                    sensoroSensorTest.temperature.alarmHigh_float = temperature.getAlarmHigh();
+                }
+                boolean hasAlarmLow = temperature.hasAlarmLow();
+                sensoroSensorTest.temperature.has_alarmLow = hasAlarmLow;
+                if (hasAlarmLow) {
+                    sensoroSensorTest.temperature.alarmLow_float = temperature.getAlarmLow();
+                }
+            }
+            boolean hasLight = msgNode.hasLight();
+            sensoroSensorTest.hasLight = hasLight;
+            if (hasLight) {
+                MsgNode1V1M5.SensorData light = msgNode.getLight();
+                sensoroSensorTest.light = new SensoroData();
+                boolean hasData = light.hasData();
+                sensoroSensorTest.light.has_data = hasData;
+                if (hasData) {
+                    sensoroSensorTest.light.data_float = light.getData();
+                }
+            }
+            boolean hasLevel = msgNode.hasLevel();
+            sensoroSensorTest.hasLevel = hasLevel;
+            if (hasLevel) {
+                MsgNode1V1M5.SensorData level = msgNode.getLevel();
+                sensoroSensorTest.level = new SensoroData();
+                boolean hasData = level.hasData();
+                sensoroSensorTest.level.has_data = hasData;
+                if (hasData) {
+                    sensoroSensorTest.level.data_float = level.getData();
+                }
+
+            }
+            boolean hasLpg = msgNode.hasLpg();
+            sensoroSensorTest.hasLpg = hasLpg;
+            if (hasLpg) {
+                MsgNode1V1M5.SensorData lpg = msgNode.getLpg();
+                sensoroSensorTest.lpg = new SensoroData();
+                boolean hasData = lpg.hasData();
+                sensoroSensorTest.lpg.has_data = hasData;
+                if (hasData) {
+                    sensoroSensorTest.lpg.data_float = lpg.getData();
+                }
+                boolean hasAlarmHigh = lpg.hasAlarmHigh();
+                sensoroSensorTest.lpg.has_alarmHigh = hasAlarmHigh;
+                if (hasAlarmHigh) {
+                    sensoroSensorTest.lpg.alarmHigh_float = lpg.getAlarmHigh();
+                }
+            }
+            boolean hasO3 = msgNode.hasO3();
+            sensoroSensorTest.hasO3 = hasO3;
+            if (hasO3) {
+                MsgNode1V1M5.SensorData o3 = msgNode.getO3();
+                sensoroSensorTest.o3 = new SensoroData();
+                boolean hasData = o3.hasData();
+                sensoroSensorTest.o3.has_data = hasData;
+                if (hasData) {
+                    sensoroSensorTest.o3.data_float = o3.getData();
+                }
+            }
+            boolean hasPm1 = msgNode.hasPm1();
+            sensoroSensorTest.hasPm1 = hasPm1;
+            if (hasPm1) {
+                MsgNode1V1M5.SensorData pm1 = msgNode.getPm1();
+                sensoroSensorTest.pm1 = new SensoroData();
+                boolean hasData = pm1.hasData();
+                sensoroSensorTest.pm1.has_data = hasData;
+                if (hasData) {
+                    sensoroSensorTest.pm1.data_float = pm1.getData();
+                }
+            }
+            boolean hasPm25 = msgNode.hasPm25();
+            sensoroSensorTest.hasPm25 = hasPm25;
+            if (hasPm25) {
+                MsgNode1V1M5.SensorData pm25 = msgNode.getPm25();
+                sensoroSensorTest.pm25 = new SensoroData();
+                boolean hasData = pm25.hasData();
+                sensoroSensorTest.pm25.has_data = hasData;
+                if (hasData) {
+                    sensoroSensorTest.pm25.data_float = pm25.getData();
+                }
+                boolean hasAlarmHigh = pm25.hasAlarmHigh();
+                sensoroSensorTest.pm25.has_alarmHigh = hasAlarmHigh;
+                if (hasAlarmHigh) {
+                    sensoroSensorTest.pm25.alarmHigh_float = pm25.getAlarmHigh();
+                }
+            }
+            boolean hasPm10 = msgNode.hasPm10();
+            sensoroSensorTest.hasPm10 = hasPm10;
+            if (hasPm10) {
+                MsgNode1V1M5.SensorData pm10 = msgNode.getPm10();
+                sensoroSensorTest.pm10 = new SensoroData();
+                boolean hasData = pm10.hasData();
+                sensoroSensorTest.pm10.has_data = hasData;
+                if (hasData) {
+                    sensoroSensorTest.pm10.data_float = pm10.getData();
+                }
+                boolean hasAlarmHigh = pm10.hasAlarmHigh();
+                sensoroSensorTest.pm10.has_alarmHigh = hasAlarmHigh;
+                if (hasAlarmHigh) {
+                    sensoroSensorTest.pm10.alarmHigh_float = pm10.getAlarmHigh();
+                }
+            }
+            boolean hasSmoke = msgNode.hasSmoke();
+            sensoroSensorTest.hasSmoke = hasSmoke;
+            if (hasSmoke) {
+                MsgNode1V1M5.SensorData smoke = msgNode.getSmoke();
+                sensoroSensorTest.smoke = new SensoroData();
+                boolean hasData = smoke.hasData();
+                sensoroSensorTest.smoke.has_data = hasData;
+                if (hasData) {
+                    sensoroSensorTest.smoke.data_float = smoke.getData();
+                }
+                sensoroSensorTest.smoke.has_status = true;
+                sensoroSensorTest.smoke.status = smoke.getError().getNumber();
+            }
+
+            boolean hasMultiTemp = msgNode.hasMultiTemp();
+            sensoroSensorTest.hasMultiTemp = hasMultiTemp;
+            if (hasMultiTemp) {
+                MsgNode1V1M5.MultiSensorDataInt multiTemp = msgNode.getMultiTemp();
+                sensoroSensorTest.multiTemperature=new SensoroData();
+                boolean hasAlarmHigh = multiTemp.hasAlarmHigh();
+                sensoroSensorTest.multiTemperature.has_alarmHigh = hasAlarmHigh;
+                if (hasAlarmHigh) {
+                    sensoroSensorTest.multiTemperature.alarmHigh_int = multiTemp.getAlarmHigh();
+                }
+                boolean hasAlarmLow = multiTemp.hasAlarmLow();
+                sensoroSensorTest.multiTemperature.has_alarmLow = hasAlarmLow;
+                if (hasAlarmLow) {
+                    sensoroSensorTest.multiTemperature.alarmLow_int = multiTemp.getAlarmLow();
+                }
+                boolean hasAlarmStepHigh = multiTemp.hasAlarmStepHigh();
+                sensoroSensorTest.multiTemperature.has_alarmStepHigh = hasAlarmStepHigh;
+                if (hasAlarmStepHigh) {
+                    sensoroSensorTest.multiTemperature.alarmStepHigh_int = multiTemp.getAlarmStepHigh();
+                }
+                boolean hasAlarmStepLow = multiTemp.hasAlarmStepLow();
+                sensoroSensorTest.multiTemperature.has_alarmStepLow = hasAlarmStepLow;
+                if (hasAlarmStepLow) {
+                    sensoroSensorTest.multiTemperature.alarmStepLow_int = multiTemp.getAlarmStepLow();
+                }
+            }
+            sensoroDevice.setSensoroSensorTest(sensoroSensorTest);
+            sensoroDevice.setDataVersion(DATA_VERSION_05);
+            sensoroDevice.setHasSensorParam(true);
+            sensoroDevice.setHasEddyStone(false);
+            sensoroDevice.setHasIbeacon(false);
+            sensoroDevice.setHasLoraInterval(false);
+            sensoroDevice.setHasSensorBroadcast(false);
+            sensoroDevice.setHasCustomPackage(false);
+            /////////////
+//            SensoroSensor sensoroSensor = new SensoroSensor();
 //            boolean hasFlame = msgNode.hasFlame();
-//            sensoroSensorTest.hasFlame = hasFlame;
+//            sensoroSensor.setHasFlame(hasFlame);
 //            if (hasFlame) {//aae7e4 ble on off temp lower disable
-//                MsgNode1V1M5.SensorDataInt flame = msgNode.getFlame();
-//                sensoroSensorTest.flame = new SensoroData();
-//                boolean hasData = flame.hasData();
-//                sensoroSensorTest.flame.has_data_int = hasData;
-//                if (hasData) {
-//                    sensoroSensorTest.flame.data_int = flame.getData();
-//                }
+//                sensoroSensor.setFlame(msgNode.getFlame().getData());
 //            }
 //            boolean hasPitch = msgNode.hasPitch();
-//            sensoroSensorTest.hasPitch = hasPitch;
+//            sensoroSensor.setHasPitchAngle(hasPitch);
 //            if (hasPitch) {
 //                MsgNode1V1M5.SensorData pitch = msgNode.getPitch();
-//                sensoroSensorTest.pitch = new SensoroData();
 //                boolean hasAlarmHigh = pitch.hasAlarmHigh();
-//                sensoroSensorTest.pitch.has_alarmHigh_float = hasAlarmHigh;
-//                if (hasAlarmHigh) {
-//                    sensoroSensorTest.pitch.alarmHigh_float = pitch.getAlarmHigh();
-//                }
-//                boolean hasAlarmLow = pitch.hasAlarmLow();
-//                sensoroSensorTest.pitch.has_alarmLow_float = hasAlarmLow;
-//                if (hasAlarmLow) {
-//                    sensoroSensorTest.pitch.alarmLow_float = pitch.getAlarmLow();
-//                }
-//                boolean hasData = pitch.hasData();
-//                sensoroSensorTest.pitch.has_data_float = hasData;
-//                if (hasData) {
-//                    sensoroSensorTest.pitch.data_float = pitch.getData();
-//                }
+////                sensoroSensor.
+//                sensoroSensor.setPitchAngleAlarmHigh(pitch.getAlarmHigh());
+//                sensoroSensor.setPitchAngleAlarmLow(pitch.getAlarmLow());
+//                sensoroSensor.setPitchAngle(pitch.getData());
 //            }
-//            boolean hasRoll = msgNode.hasRoll();
-//            sensoroSensorTest.hasRoll = hasRoll;
-//            if (hasRoll) {
-//                MsgNode1V1M5.SensorData roll = msgNode.getRoll();
-//                sensoroSensorTest.roll = new SensoroData();
-//                boolean hasAlarmHigh = roll.hasAlarmHigh();
-//                sensoroSensorTest.roll.has_alarmHigh_float = hasAlarmHigh;
-//                if (hasAlarmHigh) {
-//                    sensoroSensorTest.roll.alarmHigh_float = roll.getAlarmHigh();
-//                }
-//                boolean hasAlarmLow = roll.hasAlarmLow();
-//                sensoroSensorTest.roll.has_alarmLow_float = hasAlarmLow;
-//                if (hasAlarmLow) {
-//                    sensoroSensorTest.roll.alarmLow_float = roll.getAlarmLow();
-//                }
-//                boolean hasData = roll.hasData();
-//                sensoroSensorTest.roll.has_data_float = hasData;
-//                if (hasData) {
-//                    sensoroSensorTest.roll.data_float = roll.getData();
-//                }
+//            if (msgNode.hasRoll()) {
+//                sensoroSensor.setRollAngleAlarmHigh(msgNode.getRoll().getAlarmHigh());
+//                sensoroSensor.setRollAngleAlarmLow(msgNode.getRoll().getAlarmLow());
+//                sensoroSensor.setRollAngle(msgNode.getRoll().getData());
+//                sensoroSensor.setHasRollAngle(msgNode.hasRoll());
 //            }
-//            boolean hasYaw = msgNode.hasYaw();
-//            sensoroSensorTest.hasYaw = hasYaw;
-//            if (hasYaw) {
-//                MsgNode1V1M5.SensorData yaw = msgNode.getYaw();
-//                sensoroSensorTest.yaw = new SensoroData();
-//                boolean hasAlarmHigh = yaw.hasAlarmHigh();
-//                sensoroSensorTest.yaw.has_alarmHigh_float = hasAlarmHigh;
-//                if (hasAlarmHigh) {
-//                    sensoroSensorTest.yaw.alarmHigh_float = yaw.getAlarmHigh();
-//                }
-//                boolean hasAlarmLow = yaw.hasAlarmLow();
-//                sensoroSensorTest.yaw.has_alarmLow_float = hasAlarmLow;
-//                if (hasAlarmLow) {
-//                    sensoroSensorTest.yaw.alarmLow_float = yaw.getAlarmLow();
-//                }
-//                boolean hasData = yaw.hasData();
-//                sensoroSensorTest.yaw.has_data_float = hasData;
-//                if (hasData) {
-//                    sensoroSensorTest.yaw.data_float = yaw.getData();
-//                }
+//            if (msgNode.hasYaw()) {
+//                sensoroSensor.setYawAngleAlarmHigh(msgNode.getYaw().getAlarmHigh());
+//                sensoroSensor.setYawAngleAlarmLow(msgNode.getYaw().getAlarmLow());
+//                sensoroSensor.setYawAngle(msgNode.getYaw().getData());
+//                sensoroSensor.setHasYawAngle(msgNode.hasYaw());
 //            }
-//            boolean hasWaterPressure = msgNode.hasWaterPressure();
-//            sensoroSensorTest.hasWaterPressure=hasWaterPressure;
-//            if (hasWaterPressure) {
-//
-//                MsgNode1V1M5.SensorData waterPressure = msgNode.getWaterPressure();
-//                sensoroSensorTest.waterPressure=new SensoroData();
-//                if (waterPressure.hasAlarmHigh())
-//                sensoroSensor.setWaterPressureAlarmHigh(waterPressure.getAlarmHigh());
-//                sensoroSensor.setWaterPressureAlarmLow(waterPressure.getAlarmLow());
-//                sensoroSensor.setWaterPressure(waterPressure.getData());
-//                sensoroSensor.setHasWaterPressure(hasWaterPressure);
+//            if (msgNode.hasWaterPressure()) {
+//                sensoroSensor.setWaterPressureAlarmHigh(msgNode.getWaterPressure().getAlarmHigh());
+//                sensoroSensor.setWaterPressureAlarmLow(msgNode.getWaterPressure().getAlarmLow());
+//                sensoroSensor.setWaterPressure(msgNode.getWaterPressure().getData());
+//                sensoroSensor.setHasWaterPressure(msgNode.hasWaterPressure());
 //            }
 //            sensoroDevice.setHasLoraParam(hasLoraParam);
 //            sensoroSensor.setCh20(msgNode.getCh2O().getData());
@@ -939,26 +1274,26 @@ public class SensoroDeviceConnection {
 //            boolean hasMultiTemp = msgNode.hasMultiTemp();
 //            sensoroDevice.setHasMultiTemperature(hasMultiTemp);
 //            if (hasMultiTemp) {
-//                MsgNode1V1M5.MultiSensorDataInt multiTemp = msgNode.getMultiTemp();
-//                boolean hasAlarmStepHigh = multiTemp.hasAlarmStepHigh();
-//                boolean hasAlarmStepLow = multiTemp.hasAlarmStepLow();
-//                boolean hasAlarmHigh = multiTemp.hasAlarmHigh();
-//                boolean hasAlarmLow = multiTemp.hasAlarmLow();
+//                MsgNode1V1M5.MultiSensorDataInt multiTemperature = msgNode.getMultiTemp();
+//                boolean hasAlarmStepHigh = multiTemperature.hasAlarmStepHigh();
+//                boolean hasAlarmStepLow = multiTemperature.hasAlarmStepLow();
+//                boolean hasAlarmHigh = multiTemperature.hasAlarmHigh();
+//                boolean hasAlarmLow = multiTemperature.hasAlarmLow();
 //                sensoroDevice.setHasAlarmHigh(hasAlarmHigh);
 //                sensoroDevice.setHasAlarmLow(hasAlarmLow);
 //                sensoroDevice.setHasAlarmStepHigh(hasAlarmStepHigh);
 //                sensoroDevice.setHasAlarmStepLow(hasAlarmStepLow);
 //                if (hasAlarmStepHigh) {
-//                    sensoroDevice.setAlarmStepHigh(multiTemp.getAlarmStepHigh());
+//                    sensoroDevice.setAlarmStepHigh(multiTemperature.getAlarmStepHigh());
 //                }
 //                if (hasAlarmStepLow) {
-//                    sensoroDevice.setAlarmStepLow(multiTemp.getAlarmStepLow());
+//                    sensoroDevice.setAlarmStepLow(multiTemperature.getAlarmStepLow());
 //                }
 //                if (hasAlarmHigh) {
-//                    sensoroDevice.setAlarmHigh(multiTemp.getAlarmHigh());
+//                    sensoroDevice.setAlarmHigh(multiTemperature.getAlarmHigh());
 //                }
 //                if (hasAlarmLow) {
-//                    sensoroDevice.setAlarmLow(multiTemp.getAlarmLow());
+//                    sensoroDevice.setAlarmLow(multiTemperature.getAlarmLow());
 //                }
 //            }
 //            sensoroDevice.setSensoroSensor(sensoroSensor);
@@ -969,121 +1304,6 @@ public class SensoroDeviceConnection {
 //            sensoroDevice.setHasLoraInterval(false);
 //            sensoroDevice.setHasSensorBroadcast(false);
 //            sensoroDevice.setHasCustomPackage(false);
-            /////////////
-            SensoroSensor sensoroSensor = new SensoroSensor();
-            boolean hasFlame = msgNode.hasFlame();
-            sensoroSensor.setHasFlame(hasFlame);
-            if (hasFlame) {//aae7e4 ble on off temp lower disable
-                sensoroSensor.setFlame(msgNode.getFlame().getData());
-            }
-            boolean hasPitch = msgNode.hasPitch();
-            sensoroSensor.setHasPitchAngle(hasPitch);
-            if (hasPitch) {
-                MsgNode1V1M5.SensorData pitch = msgNode.getPitch();
-                boolean hasAlarmHigh = pitch.hasAlarmHigh();
-//                sensoroSensor.
-                sensoroSensor.setPitchAngleAlarmHigh(pitch.getAlarmHigh());
-                sensoroSensor.setPitchAngleAlarmLow(pitch.getAlarmLow());
-                sensoroSensor.setPitchAngle(pitch.getData());
-            }
-            if (msgNode.hasRoll()) {
-                sensoroSensor.setRollAngleAlarmHigh(msgNode.getRoll().getAlarmHigh());
-                sensoroSensor.setRollAngleAlarmLow(msgNode.getRoll().getAlarmLow());
-                sensoroSensor.setRollAngle(msgNode.getRoll().getData());
-                sensoroSensor.setHasRollAngle(msgNode.hasRoll());
-            }
-            if (msgNode.hasYaw()) {
-                sensoroSensor.setYawAngleAlarmHigh(msgNode.getYaw().getAlarmHigh());
-                sensoroSensor.setYawAngleAlarmLow(msgNode.getYaw().getAlarmLow());
-                sensoroSensor.setYawAngle(msgNode.getYaw().getData());
-                sensoroSensor.setHasYawAngle(msgNode.hasYaw());
-            }
-            if (msgNode.hasWaterPressure()) {
-                sensoroSensor.setWaterPressureAlarmHigh(msgNode.getWaterPressure().getAlarmHigh());
-                sensoroSensor.setWaterPressureAlarmLow(msgNode.getWaterPressure().getAlarmLow());
-                sensoroSensor.setWaterPressure(msgNode.getWaterPressure().getData());
-                sensoroSensor.setHasWaterPressure(msgNode.hasWaterPressure());
-            }
-            sensoroDevice.setHasLoraParam(hasLoraParam);
-            sensoroSensor.setCh20(msgNode.getCh2O().getData());
-            sensoroSensor.setHasCh2O(msgNode.hasCh2O());
-            sensoroSensor.setCh4(msgNode.getCh4().getData());
-            sensoroSensor.setCh4AlarmHigh(msgNode.getCh4().getAlarmHigh());
-            sensoroSensor.setHasCh4(msgNode.hasCh4());
-            sensoroSensor.setCoverStatus(msgNode.getCover().getData());
-            sensoroSensor.setHasCover(msgNode.hasCover());
-            sensoroSensor.setCo(msgNode.getCo().getData());
-            sensoroSensor.setCoAlarmHigh(msgNode.getCo().getAlarmHigh());
-            sensoroSensor.setHasCo(msgNode.hasCo());
-            sensoroSensor.setCo2(msgNode.getCo2().getData());
-            sensoroSensor.setCo2AlarmHigh(msgNode.getCo2().getAlarmHigh());
-            sensoroSensor.setHasCo2(msgNode.hasCo2());
-            sensoroSensor.setNo2(msgNode.getNo2().getData());
-            sensoroSensor.setNo2AlarmHigh(msgNode.getNo2().getAlarmHigh());
-            sensoroSensor.setHasNo2(msgNode.hasNo2());
-            sensoroSensor.setSo2(msgNode.getSo2().getData());
-            sensoroSensor.setHasSo2(msgNode.hasSo2());
-            sensoroSensor.setHumidity(msgNode.getHumidity().getData());
-            sensoroSensor.setHasHumidity(msgNode.hasHumidity());
-            sensoroSensor.setTemperature(msgNode.getTemperature().getData());
-            sensoroSensor.setHasTemperature(msgNode.hasTemperature());
-            sensoroSensor.setLight(msgNode.getLight().getData());
-            sensoroSensor.setHasLight(msgNode.hasLight());
-            sensoroSensor.setLevel(msgNode.getLevel().getData());
-            sensoroSensor.setHasLevel(msgNode.hasLevel());
-            sensoroSensor.setLpg(msgNode.getLpg().getData());
-            sensoroSensor.setLpgAlarmHigh(msgNode.getLpg().getAlarmHigh());
-            sensoroSensor.setHasLpg(msgNode.hasLpg());
-            sensoroSensor.setO3(msgNode.getO3().getData());
-            sensoroSensor.setHasO3(msgNode.hasO3());
-            sensoroSensor.setPm1(msgNode.getPm1().getData());
-            sensoroSensor.setHasPm1(msgNode.hasPm1());
-            sensoroSensor.setPm25(msgNode.getPm25().getData());
-            sensoroSensor.setPm25AlarmHigh(msgNode.getPm25().getAlarmHigh());
-            sensoroSensor.setHasPm25(msgNode.hasPm25());
-            sensoroSensor.setPm10(msgNode.getPm10().getData());
-            sensoroSensor.setPm10AlarmHigh(msgNode.getPm10().getAlarmHigh());
-            sensoroSensor.setHasPm10(msgNode.hasPm10());
-            sensoroSensor.setTempAlarmHigh(msgNode.getTemperature().getAlarmHigh());
-            sensoroSensor.setTempAlarmLow(msgNode.getTemperature().getAlarmLow());
-            sensoroSensor.setHumidityAlarmHigh(msgNode.getHumidity().getAlarmHigh());
-            sensoroSensor.setHumidityAlarmLow(msgNode.getHumidity().getAlarmLow());
-            sensoroSensor.setSmoke(msgNode.getSmoke().getData());
-            sensoroSensor.setSmokeStatus(msgNode.getSmoke().getError().getNumber());//None Noraml, Unknown fault
-            sensoroSensor.setHasSmoke(msgNode.hasSmoke());
-            boolean hasMultiTemp = msgNode.hasMultiTemp();
-            sensoroDevice.setHasMultiTemperature(hasMultiTemp);
-            if (hasMultiTemp) {
-                MsgNode1V1M5.MultiSensorDataInt multiTemp = msgNode.getMultiTemp();
-                boolean hasAlarmStepHigh = multiTemp.hasAlarmStepHigh();
-                boolean hasAlarmStepLow = multiTemp.hasAlarmStepLow();
-                boolean hasAlarmHigh = multiTemp.hasAlarmHigh();
-                boolean hasAlarmLow = multiTemp.hasAlarmLow();
-                sensoroDevice.setHasAlarmHigh(hasAlarmHigh);
-                sensoroDevice.setHasAlarmLow(hasAlarmLow);
-                sensoroDevice.setHasAlarmStepHigh(hasAlarmStepHigh);
-                sensoroDevice.setHasAlarmStepLow(hasAlarmStepLow);
-                if (hasAlarmStepHigh) {
-                    sensoroDevice.setAlarmStepHigh(multiTemp.getAlarmStepHigh());
-                }
-                if (hasAlarmStepLow) {
-                    sensoroDevice.setAlarmStepLow(multiTemp.getAlarmStepLow());
-                }
-                if (hasAlarmHigh) {
-                    sensoroDevice.setAlarmHigh(multiTemp.getAlarmHigh());
-                }
-                if (hasAlarmLow) {
-                    sensoroDevice.setAlarmLow(multiTemp.getAlarmLow());
-                }
-            }
-            sensoroDevice.setSensoroSensor(sensoroSensor);
-            sensoroDevice.setDataVersion(DATA_VERSION_05);
-            sensoroDevice.setHasSensorParam(true);
-            sensoroDevice.setHasEddyStone(false);
-            sensoroDevice.setHasIbeacon(false);
-            sensoroDevice.setHasLoraInterval(false);
-            sensoroDevice.setHasSensorBroadcast(false);
-            sensoroDevice.setHasCustomPackage(false);
 
 
         } catch (Exception e) {
@@ -1412,6 +1632,224 @@ public class SensoroDeviceConnection {
         bleBuilder.setBleOffTime(sensoroDeviceConfiguration.getBleTurnOffTime());
         bleBuilder.setBleOnTime(sensoroDeviceConfiguration.getBleTurnOnTime());
         bleBuilder.setBleTxp(sensoroDeviceConfiguration.getBleTxp());
+        msgNodeBuilder.setBleParam(bleBuilder);
+        msgNodeBuilder.setLoraParam(loraBuilder);
+        byte[] data = msgNodeBuilder.build().toByteArray();
+        int data_length = data.length;
+
+        int total_length = data_length + 3;
+
+        byte[] total_data = new byte[total_length];
+
+        byte[] length_data = SensoroUUID.intToByteArray(data_length + 1, 2);
+        System.arraycopy(length_data, 0, total_data, 0, 2);
+        byte[] version_data = SensoroUUID.intToByteArray(5, 1);
+        System.arraycopy(version_data, 0, total_data, 2, 1);
+        System.arraycopy(data, 0, total_data, 3, data_length);
+        int resultCode = bluetoothLEHelper4.writeConfigurations(total_data, CmdType.CMD_W_CFG,
+                BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_WRITE_CHAR_UUID);
+        if (resultCode != ResultCode.SUCCESS) {
+            writeCallback.onWriteFailure(resultCode, CmdType.CMD_NULL);
+        }
+    }
+
+    public void writeData05Configuration(SensoroDevice sensoroDevice, SensoroWriteCallback
+            writeCallback) throws InvalidProtocolBufferException {
+        writeCallbackHashMap.put(CmdType.CMD_W_CFG, writeCallback);
+        MsgNode1V1M5.MsgNode.Builder msgNodeBuilder = MsgNode1V1M5.MsgNode.newBuilder();
+        SensoroSensorTest sensoroSensorTest = sensoroDevice.getSensoroSensorTest();
+        if (sensoroSensorTest.hasCh4) {
+            MsgNode1V1M5.SensorData.Builder ch4Builder = MsgNode1V1M5.SensorData.newBuilder();
+            if (sensoroSensorTest.ch4.has_data) {
+                ch4Builder.setData(sensoroSensorTest.ch4.data_float);
+            }
+            if (sensoroSensorTest.ch4.has_alarmHigh) {
+                ch4Builder.setAlarmHigh(sensoroSensorTest.ch4.alarmHigh_float);
+            }
+            msgNodeBuilder.setCh4(ch4Builder);
+        }
+        if (sensoroSensorTest.hasCo) {
+            MsgNode1V1M5.SensorData.Builder coBuilder = MsgNode1V1M5.SensorData.newBuilder();
+            if (sensoroSensorTest.co.has_data) {
+                coBuilder.setData(sensoroSensorTest.co.data_float);
+            }
+            if (sensoroSensorTest.co.has_alarmHigh) {
+                coBuilder.setAlarmHigh(sensoroSensorTest.co.alarmHigh_float);
+            }
+            msgNodeBuilder.setCo(coBuilder);
+        }
+
+        if (sensoroSensorTest.hasCo2) {
+            MsgNode1V1M5.SensorData.Builder co2Builder = MsgNode1V1M5.SensorData.newBuilder();
+            if (sensoroSensorTest.co2.has_data) {
+                co2Builder.setData(sensoroSensorTest.co2.data_float);
+            }
+            if (sensoroSensorTest.co2.has_alarmHigh) {
+                co2Builder.setAlarmHigh(sensoroSensorTest.co2.alarmHigh_float);
+            }
+            msgNodeBuilder.setCo2(co2Builder);
+        }
+        if (sensoroSensorTest.hasNo2) {
+            MsgNode1V1M5.SensorData.Builder no2Builder = MsgNode1V1M5.SensorData.newBuilder();
+            if (sensoroSensorTest.no2.has_data) {
+                no2Builder.setData(sensoroSensorTest.no2.data_float);
+            }
+            if (sensoroSensorTest.no2.has_alarmHigh) {
+                no2Builder.setAlarmHigh(sensoroSensorTest.no2.alarmHigh_float);
+            }
+            msgNodeBuilder.setNo2(no2Builder);
+        }
+
+        if (sensoroSensorTest.hasLpg) {
+            MsgNode1V1M5.SensorData.Builder lpgBuilder = MsgNode1V1M5.SensorData.newBuilder();
+            if (sensoroSensorTest.lpg.has_data) {
+                lpgBuilder.setData(sensoroSensorTest.lpg.data_float);
+            }
+            if (sensoroSensorTest.lpg.has_alarmHigh) {
+                lpgBuilder.setAlarmHigh(sensoroSensorTest.lpg.alarmHigh_float);
+            }
+            msgNodeBuilder.setLpg(lpgBuilder);
+        }
+
+        if (sensoroSensorTest.hasPm10) {
+            MsgNode1V1M5.SensorData.Builder pm10Builder = MsgNode1V1M5.SensorData.newBuilder();
+            if (sensoroSensorTest.pm10.has_data) {
+                pm10Builder.setData(sensoroSensorTest.pm10.data_float);
+            }
+            if (sensoroSensorTest.pm10.has_alarmHigh) {
+                pm10Builder.setAlarmHigh(sensoroSensorTest.pm10.alarmHigh_float);
+            }
+            msgNodeBuilder.setPm10(pm10Builder);
+        }
+        if (sensoroSensorTest.hasPm25) {
+            MsgNode1V1M5.SensorData.Builder pm25Builder = MsgNode1V1M5.SensorData.newBuilder();
+            if (sensoroSensorTest.pm25.has_data) {
+                pm25Builder.setData(sensoroSensorTest.pm25.data_float);
+            }
+            if (sensoroSensorTest.pm25.has_alarmHigh) {
+                pm25Builder.setAlarmHigh(sensoroSensorTest.pm25.alarmHigh_float);
+            }
+            msgNodeBuilder.setPm25(pm25Builder);
+        }
+        if (sensoroSensorTest.hasTemperature) {
+            MsgNode1V1M5.SensorData.Builder tempBuilder = MsgNode1V1M5.SensorData.newBuilder();
+            if (sensoroSensorTest.temperature.has_data) {
+                tempBuilder.setData(sensoroSensorTest.temperature.data_float);
+            }
+            if (sensoroSensorTest.temperature.has_alarmHigh) {
+                tempBuilder.setAlarmHigh(sensoroSensorTest.temperature.alarmHigh_float);
+            }
+            if (sensoroSensorTest.temperature.has_alarmLow) {
+                tempBuilder.setAlarmLow(sensoroSensorTest.temperature.alarmLow_float);
+            }
+            msgNodeBuilder.setTemperature(tempBuilder);
+        }
+        if (sensoroSensorTest.hasHumidity) {
+            MsgNode1V1M5.SensorData.Builder humidityBuilder = MsgNode1V1M5.SensorData.newBuilder();
+            if (sensoroSensorTest.humidity.has_data) {
+                humidityBuilder.setData(sensoroSensorTest.humidity.data_float);
+            }
+            if (sensoroSensorTest.humidity.has_alarmHigh) {
+                humidityBuilder.setAlarmHigh(sensoroSensorTest.humidity.alarmHigh_float);
+            }
+            if (sensoroSensorTest.humidity.has_alarmLow) {
+                humidityBuilder.setAlarmLow(sensoroSensorTest.humidity.alarmLow_float);
+            }
+            msgNodeBuilder.setHumidity(humidityBuilder);
+        }
+        if (sensoroSensorTest.hasPitch) {
+            MsgNode1V1M5.SensorData.Builder pitchBuilder = MsgNode1V1M5.SensorData.newBuilder();
+            if (sensoroSensorTest.pitch.has_data) {
+                pitchBuilder.setData(sensoroSensorTest.pitch.data_float);
+            }
+            if (sensoroSensorTest.pitch.has_alarmHigh) {
+                pitchBuilder.setAlarmHigh(sensoroSensorTest.pitch.alarmHigh_float);
+            }
+            if (sensoroSensorTest.pitch.has_alarmLow) {
+                pitchBuilder.setAlarmLow(sensoroSensorTest.pitch.alarmLow_float);
+            }
+            msgNodeBuilder.setPitch(pitchBuilder);
+        }
+        if (sensoroSensorTest.hasRoll) {
+            MsgNode1V1M5.SensorData.Builder rollAngleBuilder = MsgNode1V1M5.SensorData.newBuilder();
+            if (sensoroSensorTest.roll.has_data) {
+                rollAngleBuilder.setData(sensoroSensorTest.roll.data_float);
+            }
+            if (sensoroSensorTest.roll.has_alarmHigh) {
+                rollAngleBuilder.setAlarmHigh(sensoroSensorTest.roll.alarmHigh_float);
+            }
+            if (sensoroSensorTest.roll.has_alarmLow) {
+                rollAngleBuilder.setAlarmLow(sensoroSensorTest.roll.alarmLow_float);
+            }
+            msgNodeBuilder.setRoll(rollAngleBuilder);
+        }
+        if (sensoroSensorTest.hasYaw) {
+            MsgNode1V1M5.SensorData.Builder yawAngleBuilder = MsgNode1V1M5.SensorData.newBuilder();
+            if (sensoroSensorTest.yaw.has_data) {
+                yawAngleBuilder.setData(sensoroSensorTest.yaw.data_float);
+            }
+            if (sensoroSensorTest.yaw.has_alarmHigh) {
+                yawAngleBuilder.setAlarmHigh(sensoroSensorTest.yaw.alarmHigh_float);
+            }
+            if (sensoroSensorTest.yaw.has_alarmLow) {
+                yawAngleBuilder.setAlarmLow(sensoroSensorTest.yaw.alarmLow_float);
+            }
+            msgNodeBuilder.setYaw(yawAngleBuilder);
+        }
+        if (sensoroSensorTest.hasWaterPressure) {
+            MsgNode1V1M5.SensorData.Builder waterPressureBuilder = MsgNode1V1M5.SensorData.newBuilder();
+            if (sensoroSensorTest.waterPressure.has_data) {
+                waterPressureBuilder.setData(sensoroSensorTest.waterPressure.data_float);
+            }
+            if (sensoroSensorTest.waterPressure.has_alarmHigh) {
+                waterPressureBuilder.setAlarmHigh(sensoroSensorTest.waterPressure.alarmHigh_float);
+            }
+            if (sensoroSensorTest.waterPressure.has_alarmLow) {
+                waterPressureBuilder.setAlarmLow(sensoroSensorTest.waterPressure.alarmLow_float);
+            }
+            msgNodeBuilder.setWaterPressure(waterPressureBuilder);
+        }
+        if (sensoroSensorTest.hasMultiTemp) {
+            MsgNode1V1M5.MultiSensorDataInt.Builder builder = MsgNode1V1M5.MultiSensorDataInt.newBuilder();
+            if (sensoroSensorTest.multiTemperature.has_alarmHigh) {
+                builder.setAlarmHigh(sensoroSensorTest.multiTemperature.alarmHigh_int);
+            }
+            if (sensoroSensorTest.multiTemperature.has_alarmLow) {
+                builder.setAlarmLow(sensoroSensorTest.multiTemperature.alarmLow_int);
+            }
+            if (sensoroSensorTest.multiTemperature.has_alarmStepHigh) {
+                builder.setAlarmStepHigh(sensoroSensorTest.multiTemperature.alarmStepHigh_int);
+            }
+            if (sensoroSensorTest.multiTemperature.has_alarmStepLow) {
+                builder.setAlarmStepLow(sensoroSensorTest.multiTemperature.alarmStepLow_int);
+            }
+            msgNodeBuilder.setMultiTemp(builder);
+        }
+        if (sensoroDevice.hasAppParam()) {
+            MsgNode1V1M5.AppParam.Builder appBuilder = MsgNode1V1M5.AppParam.newBuilder();
+            if (sensoroDevice.hasUploadInterval()) {
+                appBuilder.setUploadInterval(sensoroDevice.getUploadInterval());
+            }
+
+            if (sensoroDevice.hasConfirm()) {
+                appBuilder.setConfirm(sensoroDevice.getConfirm());
+            }
+            msgNodeBuilder.setAppParam(appBuilder);
+        }
+        //添加单通道温度传感器支持
+
+        MsgNode1V1M5.LoraParam.Builder loraBuilder = MsgNode1V1M5.LoraParam.newBuilder();
+        loraBuilder.setTxPower(sensoroDevice.getLoraTxp());
+//        loraBuilder.setMaxEIRP(sensoroDeviceConfiguration.getLoraEirp());
+//        loraBuilder.setSglStatus(sensoroDeviceConfiguration.getSglStatus());
+//        loraBuilder.setSglFrequency(sensoroDeviceConfiguration.getSglFrequency());
+//        loraBuilder.setSglDatarate(sensoroDeviceConfiguration.getSglDatarate());
+
+        MsgNode1V1M5.BleParam.Builder bleBuilder = MsgNode1V1M5.BleParam.newBuilder();
+        bleBuilder.setBleInterval(sensoroDevice.getBleInt());
+        bleBuilder.setBleOffTime(sensoroDevice.getBleOffTime());
+        bleBuilder.setBleOnTime(sensoroDevice.getBleOnTime());
+        bleBuilder.setBleTxp(sensoroDevice.getBleTxp());
         msgNodeBuilder.setBleParam(bleBuilder);
         msgNodeBuilder.setLoraParam(loraBuilder);
         byte[] data = msgNodeBuilder.build().toByteArray();

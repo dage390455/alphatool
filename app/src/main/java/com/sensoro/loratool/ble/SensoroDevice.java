@@ -121,7 +121,8 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
     transient boolean hasSglStatus;
     transient boolean hasMaxEirp;
     SensoroSlot slotArray[];
-    SensoroSensor sensoroSensor;
+//    SensoroSensor sensoroSensor;
+    private SensoroSensorTest sensoroSensorTest;
     public long lastFoundTime;
 
     public Integer getAlarmStepHigh() {
@@ -294,7 +295,8 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         humidityInterval = in.readInt();
         isDfu = (in.readByte() != 0);
         slotArray = (SensoroSlot[]) in.readParcelableArray(SensoroSlot.class.getClassLoader());
-        sensoroSensor = in.readParcelable(SensoroSensor.class.getClassLoader());
+//        sensoroSensor = in.readParcelable(SensoroSensor.class.getClassLoader());
+        sensoroSensorTest = in.readParcelable(SensoroSensorTest.class.getClassLoader());
         classBEnabled = in.readInt();
         classBDataRate = in.readInt();
         classBPeriodicity = in.readInt();
@@ -378,7 +380,8 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         out.writeInt(humidityInterval);
         out.writeByte((byte) (isDfu ? 1 : 0));
         out.writeParcelableArray(slotArray, flags);
-        out.writeParcelable(sensoroSensor, flags);
+//        out.writeParcelable(sensoroSensor, flags);
+        out.writeParcelable(sensoroSensorTest, flags);
         out.writeInt(classBEnabled);
         out.writeInt(classBDataRate);
         out.writeInt(classBPeriodicity);
@@ -986,12 +989,20 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         this.hasConfirm = hasConfirm;
     }
 
-    public SensoroSensor getSensoroSensor() {
-        return sensoroSensor;
+//    public SensoroSensor getSensoroSensor() {
+//        return sensoroSensor;
+//    }
+//
+//    public void setSensoroSensor(SensoroSensor sensoroSensor) {
+//        this.sensoroSensor = sensoroSensor;
+//    }
+
+    public SensoroSensorTest getSensoroSensorTest() {
+        return sensoroSensorTest;
     }
 
-    public void setSensoroSensor(SensoroSensor sensoroSensor) {
-        this.sensoroSensor = sensoroSensor;
+    public void setSensoroSensorTest(SensoroSensorTest sensoroSensorTest) {
+        this.sensoroSensorTest = sensoroSensorTest;
     }
 
     public boolean hasLoraInterval() {

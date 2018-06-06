@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -35,7 +36,7 @@ import com.sensoro.loratool.ble.SensoroConnectionCallback;
 import com.sensoro.loratool.ble.SensoroDevice;
 import com.sensoro.loratool.ble.SensoroDeviceConfiguration;
 import com.sensoro.loratool.ble.SensoroDeviceConnection;
-import com.sensoro.loratool.ble.SensoroSensorConfiguration;
+import com.sensoro.loratool.ble.SensoroSensorTest;
 import com.sensoro.loratool.ble.SensoroSlot;
 import com.sensoro.loratool.ble.SensoroUtils;
 import com.sensoro.loratool.ble.SensoroWriteCallback;
@@ -383,38 +384,38 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
 
     private boolean isIBeaconEnabled;
     private String uuid;
-    private int major;
-    private int minor;
-
-    private float bleInt;
-    private int bleTxp;
-    private int bleTurnOnTime;
-    private int bleTurnOffTime;
-
-    private float loraInt;
-    private int loraTxp;
-
-    private float coAlarmHigh;
-    private float co2AlarmHigh;
-    private float no2AlarmHigh;
-    private float ch4AlarmHigh;
-    private float lpgAlarmHigh;
-    private float pm25AlarmHigh;
-    private float pm10AlarmHigh;
-    private float tempAlarmHigh;
-    private float tempAlarmLow;
-    private float humidityAlarmHigh;
-    private float humidityAlarmLow;
-    private float pitchAngleAlarmHigh;
-    private float pitchAngleAlarmLow;
-    private float rollAngleAlarmHigh;
-    private float rollAngleAlarmLow;
-    private float yawAngleAlarmHigh;
-    private float yawAngleAlarmLow;
-    private float waterPressureAlarmHigh;
-    private float waterPressureAlarmLow;
-    private int uploadInterval;
-    private int appParamConfirm;
+//    private int major;
+//    private int minor;
+//
+//    private float bleInt;
+//    private int bleTxp;
+//    private int bleTurnOnTime;
+//    private int bleTurnOffTime;
+//
+//    private float loraInt;
+//    private int loraTxp;
+//
+//    private float coAlarmHigh;
+//    private float co2AlarmHigh;
+//    private float no2AlarmHigh;
+//    private float ch4AlarmHigh;
+//    private float lpgAlarmHigh;
+//    private float pm25AlarmHigh;
+//    private float pm10AlarmHigh;
+//    private float tempAlarmHigh;
+//    private float tempAlarmLow;
+//    private float humidityAlarmHigh;
+//    private float humidityAlarmLow;
+//    private float pitchAngleAlarmHigh;
+//    private float pitchAngleAlarmLow;
+//    private float rollAngleAlarmHigh;
+//    private float rollAngleAlarmLow;
+//    private float yawAngleAlarmHigh;
+//    private float yawAngleAlarmLow;
+//    private float waterPressureAlarmHigh;
+//    private float waterPressureAlarmLow;
+//    private int uploadInterval;
+//    private int appParamConfirm;
 
     private SensoroSlot sensoroSlotArray[];
     private String[] slotItems;
@@ -436,10 +437,11 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     private LoRaSettingApplication application;
     private SensoroDeviceConfiguration deviceConfiguration;
     private ProgressDialog progressDialog;
-    private Integer alarmHigh;
-    private Integer alarmLow;
-    private Integer alarmStepHigh;
-    private Integer alarmStepLow;
+    private SensoroSensorTest sensoroSensor;
+    //    private Integer alarmHigh;
+//    private Integer alarmLow;
+//    private Integer alarmStepHigh;
+//    private Integer alarmStepLow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -499,10 +501,15 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         this.slotItems = this.getResources().getStringArray(R.array.eddystone_slot_array);
         isIBeaconEnabled = true;
         uuid = "7274242C-B265-4F59-9F51-F70FB4B42150";
-        major = 10001;
-        minor = 10002;
-        bleTurnOffTime = 0;
-        bleTurnOnTime = 0;
+//        major = 10001;
+//        minor = 10002;
+//        bleTurnOffTime = 0;
+//        bleTurnOnTime = 0;
+        sensoroDevice.setBleOnTime(0);
+        sensoroDevice.setBleOffTime(0);
+        sensoroDevice.setMinor(10002);
+        sensoroDevice.setMajor(10001);
+        //
         custom_package1 = "";
         custom_package2 = "";
         custom_package3 = "";
@@ -646,8 +653,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     eddyStoneSlot3Item1.setText(this.getString(R.string.slot1_name));
                     uuid = sensoroDevice.getProximityUUID();
                     eddyStoneSlot4Item1.setText(this.getString(R.string.slot1_name));
-                    major = sensoroDevice.getMajor();
-                    minor = sensoroDevice.getMinor();
+                    int major = sensoroDevice.getMajor();
+                    int minor = sensoroDevice.getMinor();
                     if (uuid != null) {
                         StringBuilder uuidString = new StringBuilder(uuid.toUpperCase());
                         uuidString.insert(8, "-");
@@ -664,10 +671,10 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 }
 
                 if (sensoroDevice.hasBleParam()) {
-                    bleInt = sensoroDevice.getBleInt();
-                    bleTxp = sensoroDevice.getBleTxp();
-                    bleTurnOffTime = sensoroDevice.getBleOffTime();
-                    bleTurnOnTime = sensoroDevice.getBleOnTime();
+                    float bleInt = sensoroDevice.getBleInt();
+                    int bleTxp = sensoroDevice.getBleTxp();
+                    int bleTurnOffTime = sensoroDevice.getBleOffTime();
+                    int bleTurnOnTime = sensoroDevice.getBleOnTime();
                     Calendar cal = Calendar.getInstance(Locale.getDefault());
                     int zoneOffset = cal.get(Calendar.ZONE_OFFSET);
                     int offset = zoneOffset / 60 / 60 / 1000;
@@ -692,8 +699,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 }
 
                 if (sensoroDevice.hasLoraParam()) {
-                    loraInt = sensoroDevice.getLoraInt();
-                    loraTxp = sensoroDevice.getLoraTxp();
+                    float loraInt = sensoroDevice.getLoraInt();
+                    int loraTxp = sensoroDevice.getLoraTxp();
                     if (sensoroDevice.hasMaxEirp()) {
                         loraEirpRelativeLayout.setVisibility(VISIBLE);
                         loraTxpRelativeLayout.setVisibility(GONE);
@@ -753,83 +760,122 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
 
                 if (sensoroDevice.hasSensorParam()) {
                     sensorParamLayout.setVisibility(VISIBLE);
-                    if (sensoroDevice.getSensoroSensor().hasCo()) {
+                    if (sensoroSensor.hasCo) {
                         coLinearLayout.setVisibility(VISIBLE);
                         coLinearLayout.setOnClickListener(this);
-                        coAlarmHigh = sensoroDevice.getSensoroSensor().getCoAlarmHigh();
-                        coTextView.setText(sensoroDevice.getSensoroSensor().getCoAlarmHigh() + "");
+                        if (sensoroSensor.co.has_alarmStepHigh) {
+                            Float coAlarmHigh = sensoroSensor.co.alarmHigh_float;
+                            coTextView.setText(coAlarmHigh + "");
+                        }
+
                     } else {
                         coLinearLayout.setVisibility(GONE);
                     }
-                    if (sensoroDevice.getSensoroSensor().hasCo2()) {
+                    if (sensoroSensor.hasCo2) {
                         co2LinearLayout.setVisibility(VISIBLE);
                         co2LinearLayout.setOnClickListener(this);
-                        co2AlarmHigh = sensoroDevice.getSensoroSensor().getCo2AlarmHigh();
-                        co2TextView.setText(sensoroDevice.getSensoroSensor().getCo2AlarmHigh() + "");
+                        if (sensoroSensor.co2.has_alarmHigh) {
+                            Float co2AlarmHigh = sensoroSensor.co2.alarmHigh_float;
+                            co2TextView.setText(co2AlarmHigh + "");
+                        }
+
                     } else {
                         co2LinearLayout.setVisibility(GONE);
                     }
-                    if (sensoroDevice.getSensoroSensor().hasNo2()) {
+                    if (sensoroSensor.hasNo2) {
                         no2LinearLayout.setVisibility(VISIBLE);
                         no2LinearLayout.setOnClickListener(this);
-                        no2AlarmHigh = sensoroDevice.getSensoroSensor().getNo2AlarmHigh();
-                        no2TextView.setText(sensoroDevice.getSensoroSensor().getNo2AlarmHigh() + "");
+                        if (sensoroSensor.no2.has_alarmHigh) {
+                            Float no2AlarmHigh = sensoroSensor.no2.alarmHigh_float;
+                            no2TextView.setText(no2AlarmHigh + "");
+                        }
+
                     } else {
                         no2LinearLayout.setVisibility(GONE);
                     }
-                    if (sensoroDevice.getSensoroSensor().hasCh4()) {
+                    if (sensoroSensor.hasCh4) {
                         ch4LinearLayout.setVisibility(VISIBLE);
                         ch4LinearLayout.setOnClickListener(this);
-                        ch4AlarmHigh = sensoroDevice.getSensoroSensor().getCh4AlarmHigh();
-                        ch4TextView.setText(sensoroDevice.getSensoroSensor().getCh4AlarmHigh() + "");
+                        if (sensoroSensor.ch4.has_alarmHigh) {
+                            Float ch4AlarmHigh = sensoroSensor.ch4.alarmHigh_float;
+                            ch4TextView.setText(ch4AlarmHigh + "");
+                        }
+
                     } else {
                         ch4LinearLayout.setVisibility(GONE);
                     }
-                    if (sensoroDevice.getSensoroSensor().hasLpg()) {
+                    if (sensoroSensor.hasLpg) {
                         lpgLinearLayout.setVisibility(VISIBLE);
                         lpgLinearLayout.setOnClickListener(this);
-                        lpgTextView.setText(sensoroDevice.getSensoroSensor().getLpgAlarmHigh() + "");
+                        if (sensoroSensor.lpg.has_alarmHigh) {
+                            Float lpgAlarmHigh = sensoroSensor.lpg.alarmHigh_float;
+                            lpgTextView.setText(lpgAlarmHigh + "");
+                        }
                     } else {
                         lpgLinearLayout.setVisibility(GONE);
                     }
-                    if (sensoroDevice.getSensoroSensor().hasPm25()) {
+                    if (sensoroSensor.hasPm25) {
                         pm25LinearLayout.setVisibility(VISIBLE);
                         pm25LinearLayout.setOnClickListener(this);
-                        pm25AlarmHigh = sensoroDevice.getSensoroSensor().getPm25AlarmHigh();
-                        pm25TextView.setText(sensoroDevice.getSensoroSensor().getPm25AlarmHigh() + "");
+                        if (sensoroSensor.pm25.has_alarmHigh) {
+                            Float pm25AlarmHigh = sensoroSensor.pm25.alarmHigh_float;
+                            pm25TextView.setText(pm25AlarmHigh + "");
+                        }
+
                     } else {
                         pm25LinearLayout.setVisibility(GONE);
                     }
-                    if (sensoroDevice.getSensoroSensor().hasPm10()) {
+                    if (sensoroSensor.hasPm10) {
                         pm10LinearLayout.setVisibility(VISIBLE);
                         pm10LinearLayout.setOnClickListener(this);
-                        pm10AlarmHigh = sensoroDevice.getSensoroSensor().getPm10AlarmHigh();
-                        pm10TextView.setText(sensoroDevice.getSensoroSensor().getPm10AlarmHigh() + "");
+                        if (sensoroSensor.pm10.has_alarmHigh) {
+                            Float pm10AlarmHigh = sensoroSensor.pm10.alarmHigh_float;
+                            pm10TextView.setText(pm10AlarmHigh + "");
+                        }
+
                     } else {
                         pm10LinearLayout.setVisibility(GONE);
                     }
-                    if (sensoroDevice.getSensoroSensor().hasTemperature()) {
-                        tempAlarmHigh = sensoroDevice.getSensoroSensor().getTempAlarmHigh();
-                        tempAlarmLow = sensoroDevice.getSensoroSensor().getTempAlarmLow();
-                        tempUpperTextView.setText(sensoroDevice.getSensoroSensor().getTempAlarmHigh() + "");
-                        tempLowerTextView.setText(sensoroDevice.getSensoroSensor().getTempAlarmLow() + "");
-                        tempLinearLayout.setVisibility(VISIBLE);
+                    if (sensoroSensor.hasTemperature) {
+                        boolean has_alarmHigh = sensoroSensor.temperature.has_alarmHigh;
+                        if (has_alarmHigh) {
+                            Float tempAlarmHigh = sensoroSensor.temperature.alarmHigh_float;
+                            tempUpperTextView.setText(tempAlarmHigh + "");
+                        }
+                        boolean has_alarmLow = sensoroSensor.temperature.has_alarmLow;
+                        if (has_alarmLow) {
+                            Float tempAlarmLow = sensoroSensor.temperature.alarmLow_float;
+                            tempLowerTextView.setText(tempAlarmLow + "");
+                        }
+
+                        tempLinearLayout.setVisibility(has_alarmHigh || has_alarmLow ? VISIBLE : GONE);
                     } else {
                         tempLinearLayout.setVisibility(GONE);
                     }
-                    if (sensoroDevice.getSensoroSensor().hasHumidity()) {
-                        humidityAlarmHigh = sensoroDevice.getSensoroSensor().getHumidityAlarmHigh();
-                        humidityAlarmLow = sensoroDevice.getSensoroSensor().getHumidityAlarmLow();
-                        humidityUpperTextView.setText(sensoroDevice.getSensoroSensor().getHumidityAlarmHigh() + "");
-                        humidityLowerTextView.setText(sensoroDevice.getSensoroSensor().getHumidityAlarmLow() + "");
-                        humidityLinearLayout.setVisibility(VISIBLE);
+                    if (sensoroSensor.hasHumidity) {
+                        boolean has_alarmHigh = sensoroSensor.humidity.has_alarmHigh;
+                        if (has_alarmHigh) {
+                            Float humidityAlarmHigh = sensoroSensor.humidity.alarmHigh_float;
+                            humidityUpperTextView.setText(humidityAlarmHigh + "");
+                        }
+                        boolean has_alarmLow = sensoroSensor.humidity.has_alarmLow;
+                        if (has_alarmLow) {
+                            Float humidityAlarmLow = sensoroSensor.humidity.alarmLow_float;
+                            humidityLowerTextView.setText(humidityAlarmLow + "");
+                        }
+                        humidityLinearLayout.setVisibility(has_alarmHigh || has_alarmLow ? VISIBLE : GONE);
+//                        humidityAlarmHigh = sensoroSensor.getHumidityAlarmHigh();
+//                        humidityAlarmLow = sensoroSensor.getHumidityAlarmLow();
+//                        humidityUpperTextView.setText(sensoroSensor.getHumidityAlarmHigh() + "");
+//                        humidityLowerTextView.setText(sensoroSensor.getHumidityAlarmLow() + "");
+//                        humidityLinearLayout.setVisibility(VISIBLE);
                     } else {
                         humidityLinearLayout.setVisibility(GONE);
                     }
 
-                    if (sensoroDevice.getSensoroSensor().hasSmoke()) {
+                    if (sensoroSensor.hasSmoke) {
                         smokeLinearLayout.setVisibility(VISIBLE);
-                        if (sensoroDevice.getSensoroSensor().getSmokeStatus() == 0) {
+                        if (sensoroSensor.smoke.status == 0) {
                             smokeStatusTextView.setText(getResources().getStringArray(R.array.smoke_status_array)[0]);
                         } else {
                             smokeStatusTextView.setText(getResources().getStringArray(R.array.smoke_status_array)[1]);
@@ -839,48 +885,130 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         smokeLinearLayout.setVisibility(GONE);
                     }
 
-                    if (sensoroDevice.getSensoroSensor().hasPitchAngle()) {
-                        pitchAngleLinearLayout.setVisibility(VISIBLE);
-                        pitchAngleAlarmHigh = sensoroDevice.getSensoroSensor().getPitchAngleAlarmHigh();
-                        pitchAngleAlarmLow = sensoroDevice.getSensoroSensor().getPitchAngleAlarmLow();
-                        pitchAngleUpperTextView.setText(sensoroDevice.getSensoroSensor().getPitchAngleAlarmHigh() + "");
-                        pitchAngleLowerTextView.setText(sensoroDevice.getSensoroSensor().getPitchAngleAlarmLow() + "");
+                    if (sensoroSensor.hasPitch) {
+                        boolean has_alarmHigh = sensoroSensor.pitch.has_alarmHigh;
+                        if (has_alarmHigh) {
+                            Float pitchAngleAlarmHigh = sensoroSensor.pitch.alarmHigh_float;
+                            pitchAngleUpperTextView.setText(pitchAngleAlarmHigh + "");
+                        }
+                        boolean has_alarmLow = sensoroSensor.pitch.has_alarmLow;
+                        if (has_alarmLow) {
+                            Float pitchAngleAlarmLow = sensoroSensor.pitch.alarmLow_float;
+                            pitchAngleLowerTextView.setText(pitchAngleAlarmLow + "");
+                        }
+                        pitchAngleLinearLayout.setVisibility(has_alarmHigh || has_alarmLow ? VISIBLE : GONE);
+
+//                        pitchAngleLinearLayout.setVisibility(VISIBLE);
+//                        pitchAngleAlarmHigh = sensoroSensor.getPitchAngleAlarmHigh();
+//                        pitchAngleAlarmLow = sensoroSensor.getPitchAngleAlarmLow();
+//                        pitchAngleUpperTextView.setText(sensoroSensor.getPitchAngleAlarmHigh() + "");
+//                        pitchAngleLowerTextView.setText(sensoroSensor.getPitchAngleAlarmLow() + "");
                     } else {
                         pitchAngleLinearLayout.setVisibility(GONE);
                     }
-                    if (sensoroDevice.getSensoroSensor().hasRollAngle()) {
-                        rollAngleLinearLayout.setVisibility(VISIBLE);
-                        rollAngleAlarmHigh = sensoroDevice.getSensoroSensor().getRollAngleAlarmHigh();
-                        rollAngleAlarmLow = sensoroDevice.getSensoroSensor().getRollAngleAlarmLow();
-                        rollAngleUpperTextView.setText(sensoroDevice.getSensoroSensor().getRollAngleAlarmHigh() + "");
-                        rollAngleLowerTextView.setText(sensoroDevice.getSensoroSensor().getRollAngleAlarmLow() + "");
+                    if (sensoroSensor.hasRoll) {
+                        boolean has_alarmHigh = sensoroSensor.roll.has_alarmHigh;
+                        if (has_alarmHigh) {
+                            Float rollAngleAlarmHigh = sensoroSensor.roll.alarmHigh_float;
+                            rollAngleUpperTextView.setText(rollAngleAlarmHigh + "");
+                        }
+                        boolean has_alarmLow = sensoroSensor.roll.has_alarmLow;
+                        if (has_alarmLow) {
+                            Float rollAngleAlarmLow = sensoroSensor.roll.alarmLow_float;
+                            rollAngleLowerTextView.setText(rollAngleAlarmLow + "");
+                        }
+                        rollAngleLinearLayout.setVisibility(has_alarmHigh || has_alarmLow ? VISIBLE : GONE);
+
+//                        rollAngleLinearLayout.setVisibility(VISIBLE);
+//                        rollAngleAlarmHigh = sensoroSensor.getRollAngleAlarmHigh();
+//                        rollAngleAlarmLow = sensoroSensor.getRollAngleAlarmLow();
+//                        rollAngleUpperTextView.setText(sensoroSensor.getRollAngleAlarmHigh() + "");
+//                        rollAngleLowerTextView.setText(sensoroSensor.getRollAngleAlarmLow() + "");
                     } else {
                         rollAngleLinearLayout.setVisibility(GONE);
                     }
-                    if (sensoroDevice.getSensoroSensor().hasYawAngle()) {
-                        yawAngleLinearLayout.setVisibility(VISIBLE);
-                        yawAngleAlarmHigh = sensoroDevice.getSensoroSensor().getYawAngleAlarmHigh();
-                        yawAngleAlarmLow = sensoroDevice.getSensoroSensor().getYawAngleAlarmLow();
-                        yawAngleUpperTextView.setText(sensoroDevice.getSensoroSensor().getYawAngleAlarmHigh() + "");
-                        yawAngleLowerTextView.setText(sensoroDevice.getSensoroSensor().getYawAngleAlarmLow() + "");
+                    if (sensoroSensor.hasYaw) {
+                        boolean has_alarmHigh = sensoroSensor.yaw.has_alarmHigh;
+                        if (has_alarmHigh) {
+                            Float yawAngleAlarmHigh = sensoroSensor.yaw.alarmHigh_float;
+                            yawAngleUpperTextView.setText(yawAngleAlarmHigh + "");
+                        }
+                        boolean has_alarmLow = sensoroSensor.yaw.has_alarmLow;
+                        if (has_alarmLow) {
+                            Float yawAngleAlarmLow = sensoroSensor.yaw.alarmLow_float;
+                            yawAngleLowerTextView.setText(yawAngleAlarmLow + "");
+                        }
+                        yawAngleLinearLayout.setVisibility(has_alarmHigh || has_alarmLow ? VISIBLE : GONE);
+
+//                        yawAngleLinearLayout.setVisibility(VISIBLE);
+//                        yawAngleAlarmHigh = sensoroSensor.getYawAngleAlarmHigh();
+//                        yawAngleAlarmLow = sensoroSensor.getYawAngleAlarmLow();
+//                        yawAngleUpperTextView.setText(sensoroSensor.getYawAngleAlarmHigh() + "");
+//                        yawAngleLowerTextView.setText(sensoroSensor.getYawAngleAlarmLow() + "");
                     } else {
                         yawAngleLinearLayout.setVisibility(GONE);
                     }
 
-                    if (sensoroDevice.getSensoroSensor().hasWaterPressure()) {
-                        waterPressureLinearLayout.setVisibility(VISIBLE);
-                        waterPressureAlarmHigh = sensoroDevice.getSensoroSensor().getWaterPressureAlarmHigh();
-                        waterPressureAlarmLow = sensoroDevice.getSensoroSensor().getWaterPressureAlarmLow();
-                        waterPressureUpperTextView.setText(sensoroDevice.getSensoroSensor().getWaterPressureAlarmHigh
-                                () + "");
-                        waterPressureLowerTextView.setText(sensoroDevice.getSensoroSensor().getWaterPressureAlarmLow
-                                () + "");
+                    if (sensoroSensor.hasWaterPressure) {
+                        boolean has_alarmHigh = sensoroSensor.waterPressure.has_alarmHigh;
+                        if (has_alarmHigh) {
+                            Float waterPressureAlarmHigh = sensoroSensor.waterPressure.alarmHigh_float;
+                            waterPressureUpperTextView.setText(waterPressureAlarmHigh + "");
+                        }
+                        boolean has_alarmLow = sensoroSensor.waterPressure.has_alarmLow;
+                        if (has_alarmLow) {
+                            Float waterPressureAlarmLow = sensoroSensor.waterPressure.alarmLow_float;
+                            waterPressureLowerTextView.setText(waterPressureAlarmLow + "");
+                        }
+                        waterPressureLinearLayout.setVisibility(has_alarmHigh || has_alarmLow ? VISIBLE : GONE);
+
+//                        waterPressureLinearLayout.setVisibility(VISIBLE);
+//                        waterPressureAlarmHigh = sensoroSensor.getWaterPressureAlarmHigh();
+//                        waterPressureAlarmLow = sensoroSensor.getWaterPressureAlarmLow();
+//                        waterPressureUpperTextView.setText(sensoroSensor.getWaterPressureAlarmHigh
+//                                () + "");
+//                        waterPressureLowerTextView.setText(sensoroSensor.getWaterPressureAlarmLow
+//                                () + "");
                     } else {
                         waterPressureLinearLayout.setVisibility(GONE);
                     }
-
-                    if (sensoroDevice.getSensoroSensor().hasPitchAngle() || sensoroDevice.getSensoroSensor()
-                            .hasRollAngle() || sensoroDevice.getSensoroSensor().hasYawAngle()) {
+                    /**
+                     * 设置单通道温度值
+                     */
+                    boolean hasMultiTemperature = sensoroSensor.hasMultiTemp;
+                    settingsDeviceLlTemperaturePressure.setVisibility(hasMultiTemperature ? VISIBLE : GONE);
+                    if (hasMultiTemperature) {
+                        if (sensoroSensor.multiTemperature.has_alarmHigh) {
+                            settingsDeviceRlTemperaturePressureUpper.setVisibility(VISIBLE);
+                            Integer alarmHigh = sensoroSensor.multiTemperature.alarmHigh_int;
+                            settingsDeviceTvTemperaturePressureUpperLimit.setText(alarmHigh / 100f + "");
+                        } else {
+                            settingsDeviceRlTemperaturePressureUpper.setVisibility(GONE);
+                        }
+                        if (sensoroSensor.multiTemperature.has_alarmLow) {
+                            settingsDeviceRlTemperaturePressureLower.setVisibility(VISIBLE);
+                            Integer alarmLow = sensoroSensor.multiTemperature.alarmLow_int;
+                            settingsDeviceTvTemperaturePressureLowerLimit.setText(alarmLow / 100f + "");
+                        } else {
+                            settingsDeviceRlTemperaturePressureLower.setVisibility(GONE);
+                        }
+                        if (sensoroSensor.multiTemperature.has_alarmStepHigh) {
+                            settingsDeviceRlTemperaturePressureStepUpper.setVisibility(VISIBLE);
+                            Integer alarmStepHigh = sensoroSensor.multiTemperature.alarmStepHigh_int;
+                            settingsDeviceTvTemperaturePressureUpperStepLimit.setText(alarmStepHigh / 100f + "");
+                        } else {
+                            settingsDeviceRlTemperaturePressureStepUpper.setVisibility(GONE);
+                        }
+                        if (sensoroSensor.multiTemperature.has_alarmStepLow) {
+                            settingsDeviceRlTemperaturePressureStepLower.setVisibility(VISIBLE);
+                            Integer alarmStepLow = sensoroSensor.multiTemperature.alarmStepLow_int;
+                            settingsDeviceTvTemperaturePressureUpperStepLimit.setText(alarmStepLow / 100f + "");
+                        } else {
+                            settingsDeviceRlTemperaturePressureStepLower.setVisibility(GONE);
+                        }
+                    }
+                    if (sensoroSensor.hasPitch || sensoroSensor
+                            .hasRoll || sensoroSensor.hasYaw) {
                         zeroCommandLinearLayout.setVisibility(VISIBLE);
                     } else {
                         zeroCommandLinearLayout.setVisibility(GONE);
@@ -895,7 +1023,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     if (sensoroDevice.hasUploadInterval()) {
                         uploadIntervalLayout.setVisibility(VISIBLE);
                         uploadIntervalLayout.setOnClickListener(this);
-                        uploadInterval = sensoroDevice.getUploadInterval();
+                        Integer uploadInterval = sensoroDevice.getUploadInterval();
                         uploadIntervalTextView.setText(sensoroDevice.getUploadInterval() + "s");
                     } else {
                         uploadIntervalLayout.setVisibility(GONE);
@@ -903,7 +1031,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     if (sensoroDevice.hasConfirm()) {
                         confirmLayout.setVisibility(VISIBLE);
                         confirmLayout.setOnClickListener(this);
-                        appParamConfirm = sensoroDevice.getConfirm();
+                        Integer appParamConfirm = sensoroDevice.getConfirm();
 
                         confirmTextView.setText(this.getResources().getStringArray(R.array.status_array)
                                 [sensoroDevice.getConfirm() == 0 ? 1 : 0]);
@@ -912,41 +1040,6 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     }
                 } else {
                     appParamLayout.setVisibility(GONE);
-                }
-                /**
-                 * 设置单通道温度值
-                 */
-                boolean hasMultiTemperature = sensoroDevice.hasMultiTemperature();
-                settingsDeviceLlTemperaturePressure.setVisibility(hasMultiTemperature ? VISIBLE : GONE);
-                if (hasMultiTemperature) {
-                    if (sensoroDevice.hasAlarmHigh()) {
-                        settingsDeviceRlTemperaturePressureUpper.setVisibility(VISIBLE);
-                        alarmHigh = sensoroDevice.getAlarmHigh();
-                        settingsDeviceTvTemperaturePressureUpperLimit.setText(alarmHigh / 100f + "");
-                    } else {
-                        settingsDeviceRlTemperaturePressureUpper.setVisibility(GONE);
-                    }
-                    if (sensoroDevice.hasAlarmLow()) {
-                        settingsDeviceRlTemperaturePressureLower.setVisibility(VISIBLE);
-                        alarmLow = sensoroDevice.getAlarmLow();
-                        settingsDeviceTvTemperaturePressureLowerLimit.setText(alarmLow / 100f + "");
-                    } else {
-                        settingsDeviceRlTemperaturePressureLower.setVisibility(GONE);
-                    }
-                    if (sensoroDevice.hasAlarmStepHigh()) {
-                        settingsDeviceRlTemperaturePressureStepUpper.setVisibility(VISIBLE);
-                        alarmStepHigh = sensoroDevice.getAlarmStepHigh();
-                        settingsDeviceTvTemperaturePressureUpperStepLimit.setText(alarmStepHigh / 100f + "");
-                    } else {
-                        settingsDeviceRlTemperaturePressureStepUpper.setVisibility(GONE);
-                    }
-                    if (sensoroDevice.hasAlarmStepLow()) {
-                        settingsDeviceRlTemperaturePressureStepLower.setVisibility(VISIBLE);
-                        alarmStepLow = sensoroDevice.getAlarmStepLow();
-                        settingsDeviceTvTemperaturePressureUpperStepLimit.setText(alarmStepLow / 100f + "");
-                    } else {
-                        settingsDeviceRlTemperaturePressureStepLower.setVisibility(GONE);
-                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1483,33 +1576,33 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             int offset = zoneOffset / 60 / 60 / 1000;
             int saveTurnOnTime = 0;
             int saveTurnOffTime = 0;
-            if ((bleTurnOnTime - offset) < 0) {
-                saveTurnOnTime = 24 + (bleTurnOnTime - offset);
-            } else if ((bleTurnOnTime - offset) == 0) {
+            if ((sensoroDevice.getBleOnTime() - offset) < 0) {
+                saveTurnOnTime = 24 + (sensoroDevice.getBleOnTime() - offset);
+            } else if ((sensoroDevice.getBleOnTime() - offset) == 0) {
                 saveTurnOnTime = 0;
             } else {
-                saveTurnOnTime = (bleTurnOnTime - offset);
+                saveTurnOnTime = (sensoroDevice.getBleOnTime() - offset);
             }
-            if ((bleTurnOffTime - offset) < 0) {
-                saveTurnOffTime = 24 + (bleTurnOffTime - offset);
-            } else if ((bleTurnOffTime - offset) == 0) {
+            if ((sensoroDevice.getBleOffTime() - offset) < 0) {
+                saveTurnOffTime = 24 + (sensoroDevice.getBleOffTime() - offset);
+            } else if ((sensoroDevice.getBleOffTime() - offset) == 0) {
                 saveTurnOffTime = 0;
             } else {
-                saveTurnOffTime = (bleTurnOffTime - offset);
+                saveTurnOffTime = (sensoroDevice.getBleOffTime() - offset);
             }
 
             SensoroDeviceConfiguration.Builder builder = new SensoroDeviceConfiguration.Builder();
 
             builder.setIBeaconEnabled(isIBeaconEnabled)
                     .setProximityUUID(uuid)
-                    .setMajor(major)
-                    .setMinor(minor)
+                    .setMajor(sensoroDevice.getMajor())
+                    .setMinor(sensoroDevice.getMinor())
                     .setBleTurnOnTime(saveTurnOnTime)
                     .setBleTurnOffTime(saveTurnOffTime)
-                    .setBleInt(bleInt)
-                    .setBleTxp(bleTxp)
-                    .setLoraTxp(loraTxp)
-                    .setLoraInt(loraInt)
+                    .setBleInt(sensoroDevice.getBleInt())
+                    .setBleTxp(sensoroDevice.getBleTxp())
+                    .setLoraTxp(sensoroDevice.getLoraTxp())
+                    .setLoraInt(sensoroDevice.getLoraInt())
                     .setAppEui(sensoroDevice.getAppEui())
                     .setAppKey(sensoroDevice.getAppKey())
                     .setAppSkey(sensoroDevice.getAppSkey())
@@ -1545,145 +1638,192 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             int offset = zoneOffset / 60 / 60 / 1000;
             int saveTurnOnTime = 0;
             int saveTurnOffTime = 0;
-            if ((bleTurnOnTime - offset) < 0) {
-                saveTurnOnTime = 24 + (bleTurnOnTime - offset);
-            } else if ((bleTurnOnTime - offset) == 0) {
+            if ((sensoroDevice.getBleOnTime() - offset) < 0) {
+                saveTurnOnTime = 24 + (sensoroDevice.getBleOffTime() - offset);
+            } else if ((sensoroDevice.getBleOnTime() - offset) == 0) {
                 saveTurnOnTime = 0;
             } else {
-                saveTurnOnTime = (bleTurnOnTime - offset);
+                saveTurnOnTime = (sensoroDevice.getBleOnTime() - offset);
             }
-            if ((bleTurnOffTime - offset) < 0) {
-                saveTurnOffTime = 24 + (bleTurnOffTime - offset);
-            } else if ((bleTurnOffTime - offset) == 0) {
+            if ((sensoroDevice.getBleOffTime() - offset) < 0) {
+                saveTurnOffTime = 24 + (sensoroDevice.getBleOffTime() - offset);
+            } else if ((sensoroDevice.getBleOffTime() - offset) == 0) {
                 saveTurnOffTime = 0;
             } else {
-                saveTurnOffTime = (bleTurnOffTime - offset);
+                saveTurnOffTime = (sensoroDevice.getBleOffTime() - offset);
             }
-            SensoroDeviceConfiguration.Builder builder = new SensoroDeviceConfiguration.Builder();
-            SensoroSensorConfiguration.Builder sensorBuilder = new SensoroSensorConfiguration.Builder();
-            if (sensoroDevice.hasSensorParam()) {
-                if (sensoroDevice.getSensoroSensor().hasCo()) {
-                    sensorBuilder.setCoAlarmHigh(coAlarmHigh);
-                    sensorBuilder.setCoData(sensoroDevice.getSensoroSensor().getCo());
-                    sensorBuilder.setHasCo(sensoroDevice.getSensoroSensor().hasCo());
-                }
-                if (sensoroDevice.getSensoroSensor().hasCo2()) {
-                    sensorBuilder.setCo2AlarmHigh(co2AlarmHigh);
-                    sensorBuilder.setCo2Data(sensoroDevice.getSensoroSensor().getCo2());
-                    sensorBuilder.setHasCo2(sensoroDevice.getSensoroSensor().hasCo2());
-                }
-                if (sensoroDevice.getSensoroSensor().hasNo2()) {
-                    sensorBuilder.setNo2AlarmHigh(no2AlarmHigh);
-                    sensorBuilder.setNo2Data(sensoroDevice.getSensoroSensor().getNo2());
-                    sensorBuilder.setHasNo2(sensoroDevice.getSensoroSensor().hasNo2());
-                }
-                if (sensoroDevice.getSensoroSensor().hasCh4()) {
-                    sensorBuilder.setCh4AlarmHigh(ch4AlarmHigh);
-                    sensorBuilder.setCh4Data(sensoroDevice.getSensoroSensor().getCh4());
-                    sensorBuilder.setHasCh4(sensoroDevice.getSensoroSensor().hasCh4());
-                }
-                if (sensoroDevice.getSensoroSensor().hasLpg()) {
-                    sensorBuilder.setLpgAlarmHigh(lpgAlarmHigh);
-                    sensorBuilder.setLpgData(sensoroDevice.getSensoroSensor().getLpg());
-                    sensorBuilder.setHasLpg(sensoroDevice.getSensoroSensor().hasLpg());
-                }
-                if (sensoroDevice.getSensoroSensor().hasPm10()) {
-                    sensorBuilder.setPm10AlarmHigh(pm10AlarmHigh);
-                    sensorBuilder.setPm10Data(sensoroDevice.getSensoroSensor().getPm10());
-                    sensorBuilder.setHasPm10(sensoroDevice.getSensoroSensor().hasPm10());
-                }
-                if (sensoroDevice.getSensoroSensor().hasPm25()) {
-                    sensorBuilder.setPm25AlarmHigh(pm25AlarmHigh);
-                    sensorBuilder.setPm25Data(sensoroDevice.getSensoroSensor().getPm25());
-                    sensorBuilder.setHasPm25(sensoroDevice.getSensoroSensor().hasPm25());
-                }
-                if (sensoroDevice.getSensoroSensor().hasTemperature()) {
-                    sensorBuilder.setTempAlarmHigh(tempAlarmHigh);
-                    sensorBuilder.setTempAlarmLow(tempAlarmLow);
-                    sensorBuilder.setHasTemperature(sensoroDevice.getSensoroSensor().hasTemperature());
-                }
-                if (sensoroDevice.getSensoroSensor().hasHumidity()) {
-                    sensorBuilder.setHumidityHigh(humidityAlarmHigh);
-                    sensorBuilder.setHumidityLow(humidityAlarmLow);
-                    sensorBuilder.setHasHumidity(sensoroDevice.getSensoroSensor().hasHumidity());
-                }
-                if (sensoroDevice.hasAppParam()) {
-                    builder.setHasUploadInterval(sensoroDevice.hasUploadInterval());
-                    if (sensoroDevice.hasUploadInterval()) {
-                        builder.setUploadIntervalData(uploadInterval);
-                    }
-                    if (sensoroDevice.hasConfirm()) {
-                        builder.setConfirmData(appParamConfirm);
-                    }
-                    builder.setHasConfirm(sensoroDevice.hasConfirm());
-                    builder.setHasAppParam(sensoroDevice.hasAppParam());
-                }
-                if (sensoroDevice.getSensoroSensor().hasPitchAngle()) {
-                    sensorBuilder.setHasPitchAngle(sensoroDevice.getSensoroSensor().hasPitchAngle());
-                    sensorBuilder.setPitchAngleAlarmHigh(pitchAngleAlarmHigh);
-                    sensorBuilder.setPitchAngleAlarmLow(pitchAngleAlarmLow);
-                }
-                if (sensoroDevice.getSensoroSensor().hasRollAngle()) {
-                    sensorBuilder.setHasRollAngle(sensoroDevice.getSensoroSensor().hasRollAngle());
-                    sensorBuilder.setRollAngleAlarmHigh(rollAngleAlarmHigh);
-                    sensorBuilder.setRollAngleAlarmLow(rollAngleAlarmLow);
-                }
-                if (sensoroDevice.getSensoroSensor().hasYawAngle()) {
-                    sensorBuilder.setHasYawAngle(sensoroDevice.getSensoroSensor().hasYawAngle());
-                    sensorBuilder.setYawAngleAlarmHigh(yawAngleAlarmHigh);
-                    sensorBuilder.setYawAngleAlarmLow(yawAngleAlarmLow);
-                }
-                if (sensoroDevice.getSensoroSensor().hasWaterPressure()) {
-                    sensorBuilder.setHasWaterPressure(sensoroDevice.getSensoroSensor().hasWaterPressure());
-                    sensorBuilder.setWaterPressureAlarmHigh(waterPressureAlarmHigh);
-                    sensorBuilder.setWaterPressureAlarmLow(waterPressureAlarmLow);
-                }
+//            SensoroDeviceConfiguration.Builder builder = new SensoroDeviceConfiguration.Builder();
+//            SensoroSensorConfiguration.Builder sensorBuilder = new SensoroSensorConfiguration.Builder();
+//            if (sensoroDevice.hasSensorParam()) {
+//                SensoroSensorTest sensoroSensorTest = sensoroDevice.getSensoroSensorTest();
+//                if (sensoroSensorTest.hasCo) {
+//                    sensorBuilder.setCoAlarmHigh(coAlarmHigh);
+//                    sensorBuilder.setCoData(sensoroSensorTest.co.data_float);
+//                    sensorBuilder.setHasCo(sensoroSensorTest.hasCo);
+//                }
+//                if (sensoroSensorTest.hasCo2) {
+//                    sensorBuilder.setCo2AlarmHigh(co2AlarmHigh);
+//                    sensorBuilder.setCo2Data(sensoroSensorTest.co.data_float);
+//                    sensorBuilder.setHasCo2(sensoroSensorTest.hasCo2);
+//                }
+//                if (sensoroSensorTest.hasNo2) {
+//                    sensorBuilder.setNo2AlarmHigh(no2AlarmHigh);
+//                    sensorBuilder.setNo2Data(sensoroSensorTest.no2.data_float);
+//                    sensorBuilder.setHasNo2(sensoroSensorTest.hasNo2);
+//                }
+//                if (sensoroSensorTest.hasCh4) {
+//                    sensorBuilder.setCh4AlarmHigh(ch4AlarmHigh);
+//                    sensorBuilder.setCh4Data(sensoroSensorTest.ch4.data_float);
+//                    sensorBuilder.setHasCh4(sensoroSensorTest.hasCh4);
+//                }
+//                if (sensoroSensorTest.hasLpg) {
+//                    sensorBuilder.setLpgAlarmHigh(lpgAlarmHigh);
+//                    sensorBuilder.setLpgData(sensoroSensorTest.lpg.data_float);
+//                    sensorBuilder.setHasLpg(sensoroSensorTest.hasLpg);
+//                }
+//                if (sensoroSensorTest.hasPm10) {
+//                    sensorBuilder.setPm10AlarmHigh(pm10AlarmHigh);
+//                    sensorBuilder.setPm10Data(sensoroSensorTest.pm10.data_float);
+//                    sensorBuilder.setHasPm10(sensoroSensorTest.hasPm10);
+//                }
+//                if (sensoroSensorTest.hasPm25) {
+//                    sensorBuilder.setPm25AlarmHigh(pm25AlarmHigh);
+//                    sensorBuilder.setPm25Data(sensoroSensorTest.pm25.data_float);
+//                    sensorBuilder.setHasPm25(sensoroSensorTest.hasPm25);
+//                }
+//                if (sensoroSensorTest.hasTemperature) {
+//                    if (sensoroSensorTest.temperature.has_data) {
+//
+//                    }
+////                    if (sensoroSensorTest.temperature.has_alarmHigh) {
+//                        sensorBuilder.setTempAlarmHigh(tempAlarmHigh);
+////                    }
+////                    if (sensoroSensorTest.temperature.has_alarmLow) {
+//                        sensorBuilder.setTempAlarmLow(tempAlarmLow);
+////                    }
+//                    sensorBuilder.setHasTemperature(sensoroSensorTest.hasTemperature);
+//                }
+//                if (sensoroSensorTest.hasHumidity) {
+//                    if (sensoroSensorTest.humidity.has_data) {
+//
+//                    }
+////                    if (sensoroSensorTest.humidity.has_alarmHigh) {
+//                        sensorBuilder.setHumidityHigh(humidityAlarmHigh);
+////                    }
+////                    if (sensoroSensorTest.humidity.has_alarmLow) {
+//                        sensorBuilder.setHumidityLow(humidityAlarmLow);
+////                    }
+//                    sensorBuilder.setHasHumidity(sensoroSensorTest.hasHumidity);
+//                }
+//                if (sensoroDevice.hasAppParam()) {
+//                    builder.setHasUploadInterval(sensoroDevice.hasUploadInterval());
+//                    if (sensoroDevice.hasUploadInterval()) {
+//                        builder.setUploadIntervalData(uploadInterval);
+//                    }
+//                    if (sensoroDevice.hasConfirm()) {
+//                        builder.setConfirmData(appParamConfirm);
+//                    }
+//                    builder.setHasConfirm(sensoroDevice.hasConfirm());
+//                    builder.setHasAppParam(sensoroDevice.hasAppParam());
+//                }
+//                if (sensoroSensorTest.hasPitch) {
+//                    sensorBuilder.setHasPitchAngle(sensoroSensorTest.hasPitch);
+//
+//                    if (sensoroSensorTest.pitch.has_data) {
+//
+//                    }
+////                    if (sensoroSensorTest.pitch.has_alarmHigh) {
+//                        sensorBuilder.setPitchAngleAlarmHigh(pitchAngleAlarmHigh);
+////                    }
+////                    if (sensoroSensorTest.pitch.has_alarmLow) {
+//                        sensorBuilder.setPitchAngleAlarmLow(pitchAngleAlarmLow);
+////                    }
+//                }
+//                if (sensoroSensorTest.hasRoll) {
+//                    sensorBuilder.setHasRollAngle(sensoroSensorTest.hasRoll);
+//                    if (sensoroSensorTest.roll.has_data) {
+//
+//                    }
+////                    if (sensoroSensorTest.roll.has_alarmHigh) {
+//                        sensorBuilder.setRollAngleAlarmHigh(rollAngleAlarmHigh);
+////                    }
+////                    if (sensoroSensorTest.roll.has_alarmLow) {
+//                        sensorBuilder.setRollAngleAlarmLow(rollAngleAlarmLow);
+////                    }
+//                }
+//                if (sensoroSensorTest.hasYaw) {
+//                    sensorBuilder.setHasYawAngle(sensoroSensorTest.hasYaw);
+//                    if (sensoroSensorTest.yaw.has_data) {
+//
+//                    }
+////                    if (sensoroSensorTest.yaw.has_alarmHigh) {
+//                        sensorBuilder.setYawAngleAlarmHigh(yawAngleAlarmHigh);
+////                    }
+////                    if (sensoroSensorTest.yaw.has_alarmLow) {
+//                        sensorBuilder.setYawAngleAlarmLow(yawAngleAlarmLow);
+////                    }
+//                }
+//                if (sensoroSensorTest.hasWaterPressure) {
+//                    sensorBuilder.setHasWaterPressure(sensoroSensorTest.hasWaterPressure);
+//                    if (sensoroSensorTest.waterPressure.has_data) {
+//
+//                    }
+////                    if (sensoroSensorTest.waterPressure.has_alarmHigh) {
+//                        sensorBuilder.setWaterPressureAlarmHigh(waterPressureAlarmHigh);
+////                    }
+////                    if (sensoroSensorTest.waterPressure.has_alarmLow) {
+//                        sensorBuilder.setWaterPressureAlarmLow(waterPressureAlarmLow);
+////                    }
+//                }
+//                boolean hasMultiTemperature = sensoroSensorTest.hasMultiTemp;
+//                builder.setHasMultiTemperature(hasMultiTemperature);
+//                if (hasMultiTemperature) {
+//                    boolean hasAlarmHigh = sensoroSensorTest.multiTemperature.has_alarmHigh;
+//                    builder.setHasAlarmHigh(hasAlarmHigh);
+//                    if (hasAlarmHigh) {
+//                        builder.setAlarmHigh(alarmHigh);
+//                    }
+//                    boolean hasAlarmLow = sensoroSensorTest.multiTemperature.has_alarmLow;
+//                    builder.setHasAlarmLow(hasAlarmLow);
+//                    if (hasAlarmLow) {
+//                        builder.setAlarmLow(alarmLow);
+//                    }
+//                    boolean hasAlarmStepHigh = sensoroSensorTest.multiTemperature.has_alarmStepHigh;
+//                    builder.setHasAlarmStepHigh(hasAlarmStepHigh);
+//                    if (hasAlarmStepHigh) {
+//                        builder.setAlarmStepHigh(alarmStepHigh);
+//                    }
+//                    boolean hasAlarmStepLow = sensoroSensorTest.multiTemperature.has_alarmStepLow;
+//                    builder.setHasAlarmStepLow(hasAlarmStepLow);
+//                    if (hasAlarmStepLow) {
+//                        builder.setAlarmStepLow(alarmStepLow);
+//                    }
+//                }
+//            }
+            sensoroDevice.setBleOnTime(saveTurnOnTime);
+            sensoroDevice.setBleOffTime(saveTurnOffTime);
+//            builder.setBleTurnOnTime(saveTurnOnTime)
+//                    .setBleTurnOffTime(saveTurnOffTime)
+//                    .setBleInt(bleInt)
+//                    .setBleTxp(bleTxp)
+//                    .setLoraTxp(loraTxp)
+//                    .setDevEui(sensoroDevice.getDevEui())
+//                    .setAppEui(sensoroDevice.getAppEui())
+//                    .setAppKey(sensoroDevice.getAppKey())
+//                    .setAppSkey(sensoroDevice.getAppSkey())
+//                    .setNwkSkey(sensoroDevice.getNwkSkey())
+//                    .setDevAdr(sensoroDevice.getDevAdr())
+//                    .setLoraDr(sensoroDevice.getLoraDr())
+//                    .setLoraAdr(sensoroDevice.getLoraAdr());
+            if (sensoroDevice.getPassword() == null || (!TextUtils.isEmpty(sensoroDevice.getPassword()))) {
+//                builder.setPassword(sensoroDevice.getPassword());
+            } else {
+//                sensoroDevice.
             }
-            boolean hasMultiTemperature = sensoroDevice.hasMultiTemperature();
-            builder.setHasMultiTemperature(hasMultiTemperature);
-            if (hasMultiTemperature) {
-                boolean hasAlarmHigh = sensoroDevice.hasAlarmHigh();
-                builder.setHasAlarmHigh(hasAlarmHigh);
-                if (hasAlarmHigh) {
-                    builder.setAlarmHigh(alarmHigh);
-                }
-                boolean hasAlarmLow = sensoroDevice.hasAlarmLow();
-                builder.setHasAlarmLow(hasAlarmLow);
-                if (hasAlarmLow) {
-                    builder.setAlarmLow(alarmLow);
-                }
-                boolean hasAlarmStepHigh = sensoroDevice.hasAlarmStepHigh();
-                builder.setHasAlarmStepHigh(hasAlarmStepHigh);
-                if (hasAlarmStepHigh) {
-                    builder.setAlarmStepHigh(alarmStepHigh);
-                }
-                boolean hasAlarmStepLow = sensoroDevice.hasAlarmStepLow();
-                builder.setHasAlarmStepLow(hasAlarmStepLow);
-                if (hasAlarmStepLow) {
-                    builder.setAlarmStepLow(alarmStepLow);
-                }
-            }
-            builder.setBleTurnOnTime(saveTurnOnTime)
-                    .setBleTurnOffTime(saveTurnOffTime)
-                    .setBleInt(bleInt)
-                    .setBleTxp(bleTxp)
-                    .setLoraTxp(loraTxp)
-                    .setDevEui(sensoroDevice.getDevEui())
-                    .setAppEui(sensoroDevice.getAppEui())
-                    .setAppKey(sensoroDevice.getAppKey())
-                    .setAppSkey(sensoroDevice.getAppSkey())
-                    .setNwkSkey(sensoroDevice.getNwkSkey())
-                    .setDevAdr(sensoroDevice.getDevAdr())
-                    .setLoraDr(sensoroDevice.getLoraDr())
-                    .setLoraAdr(sensoroDevice.getLoraAdr());
-            if (sensoroDevice.getPassword() == null || (sensoroDevice.getPassword() != null && !sensoroDevice
-                    .getPassword().equals(""))) {
-                builder.setPassword(sensoroDevice.getPassword());
-            }
-            SensoroSensorConfiguration sensorConfiguration = sensorBuilder.build();
-            builder.setSensorConfiguration(sensorConfiguration);
-            deviceConfiguration = builder.build();
-            sensoroDeviceConnection.writeData05Configuration(deviceConfiguration, this);
+//            SensoroSensorConfiguration sensorConfiguration = sensorBuilder.build();
+//            builder.setSensorConfiguration(sensorConfiguration);
+//            deviceConfiguration = builder.build();
+            sensoroDeviceConnection.writeData05Configuration(sensoroDevice, this);
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
@@ -1781,6 +1921,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         String sn = sensoroDevice.getSn();
         String firmwareVersion = sensoroDevice.getFirmwareVersion();
         sensoroDevice = (SensoroDevice) bleDevice;
+        sensoroSensor = sensoroDevice.getSensoroSensorTest();
         sensoroDevice.setFirmwareVersion(firmwareVersion);
         sensoroDevice.setSn(sn);
         runOnUiThread(new Runnable() {
@@ -1973,7 +2114,10 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     }
 
     protected void postUpdateData05() {
-        if (deviceConfiguration == null) {
+//        if (deviceConfiguration == null) {
+//            return;
+//        }
+        if (sensoroDevice == null) {
             return;
         }
         String dataString = null;
@@ -1981,141 +2125,183 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         MsgNode1V1M5.MsgNode.Builder msgCfgBuilder = MsgNode1V1M5.MsgNode.newBuilder();
         if (sensoroDevice.hasLoraParam()) {
             MsgNode1V1M5.LoraParam.Builder loraParamBuilder = MsgNode1V1M5.LoraParam.newBuilder();
-            loraParamBuilder.setTxPower(deviceConfiguration.getLoraTxp());
+            loraParamBuilder.setTxPower(sensoroDevice.getLoraTxp());
             if (sensoroDevice.hasDevEui()) {
-                loraParamBuilder.setDevEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration
+                loraParamBuilder.setDevEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((sensoroDevice
                         .getDevEui()))));
             }
             if (sensoroDevice.hasAppEui()) {
-                loraParamBuilder.setAppEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration
+                loraParamBuilder.setAppEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((sensoroDevice
                         .getAppEui()))));
             }
             if (sensoroDevice.hasAppKey()) {
-                loraParamBuilder.setAppKey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration
+                loraParamBuilder.setAppKey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(sensoroDevice
                         .getAppKey())));
             }
             if (sensoroDevice.hasAppSkey()) {
-                loraParamBuilder.setAppSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration
+                loraParamBuilder.setAppSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(sensoroDevice
                         .getAppSkey())));
             }
             if (sensoroDevice.hasNwkSkey()) {
-                loraParamBuilder.setNwkSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(deviceConfiguration
+                loraParamBuilder.setNwkSkey(ByteString.copyFrom(SensoroUtils.HexString2Bytes(sensoroDevice
                         .getNwkSkey())));
             }
             if (sensoroDevice.hasDevAddr()) {
-                loraParamBuilder.setDevAddr(deviceConfiguration.getDevAdr());
+                loraParamBuilder.setDevAddr(sensoroDevice.getDevAdr());
             }
             msgCfgBuilder.setLoraParam(loraParamBuilder);
         }
         if (sensoroDevice.hasBleParam()) {
             MsgNode1V1M5.BleParam.Builder bleParamBuilder = MsgNode1V1M5.BleParam.newBuilder();
-            bleParamBuilder.setBleOnTime(deviceConfiguration.getBleTurnOnTime());
-            bleParamBuilder.setBleOffTime(deviceConfiguration.getBleTurnOffTime());
-            bleParamBuilder.setBleTxp(deviceConfiguration.getBleTxp());
-            bleParamBuilder.setBleInterval(deviceConfiguration.getBleInt());
+            bleParamBuilder.setBleOnTime(sensoroDevice.getBleOnTime());
+            bleParamBuilder.setBleOffTime(sensoroDevice.getBleOffTime());
+            bleParamBuilder.setBleTxp(sensoroDevice.getBleTxp());
+            bleParamBuilder.setBleInterval(sensoroDevice.getBleInt());
             msgCfgBuilder.setBleParam(bleParamBuilder);
         }
         if (sensoroDevice.hasAppParam()) {
             MsgNode1V1M5.AppParam.Builder appParamBuilder = MsgNode1V1M5.AppParam.newBuilder();
             if (sensoroDevice.hasUploadInterval()) {
-                appParamBuilder.setUploadInterval(deviceConfiguration.getUploadIntervalData());
+                appParamBuilder.setUploadInterval(sensoroDevice.getUploadInterval());
                 msgCfgBuilder.setAppParam(appParamBuilder);
             }
             if (sensoroDevice.hasConfirm()) {
-                appParamBuilder.setConfirm(deviceConfiguration.getConfirmData());
+                appParamBuilder.setConfirm(sensoroDevice.getConfirm());
                 msgCfgBuilder.setAppParam(appParamBuilder);
             }
         }
         if (sensoroDevice.hasSensorParam()) {
-            if (sensoroDevice.getSensoroSensor().hasCo()) {
+            if (sensoroSensor.hasCo) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
-                builder.setAlarmHigh(coAlarmHigh);
+                builder.setAlarmHigh(sensoroSensor.co.alarmHigh_float);
                 msgCfgBuilder.setCo(builder);
             }
-            if (sensoroDevice.getSensoroSensor().hasCo2()) {
+            if (sensoroSensor.hasCo2) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
-                builder.setAlarmHigh(co2AlarmHigh);
+                builder.setAlarmHigh(sensoroSensor.co2.alarmHigh_float);
                 msgCfgBuilder.setCo2(builder);
             }
-            if (sensoroDevice.getSensoroSensor().hasNo2()) {
+            if (sensoroSensor.hasNo2) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
-                builder.setAlarmHigh(no2AlarmHigh);
+                builder.setAlarmHigh(sensoroSensor.no2.alarmHigh_float);
                 msgCfgBuilder.setNo2(builder);
             }
-            if (sensoroDevice.getSensoroSensor().hasCh4()) {
+            if (sensoroSensor.hasCh4) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
-                builder.setAlarmHigh(ch4AlarmHigh);
+                builder.setAlarmHigh(sensoroSensor.ch4.alarmHigh_float);
                 msgCfgBuilder.setCh4(builder);
             }
-            if (sensoroDevice.getSensoroSensor().hasLpg()) {
+            if (sensoroSensor.hasLpg) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
-                builder.setAlarmHigh(lpgAlarmHigh);
+                builder.setAlarmHigh(sensoroSensor.lpg.alarmHigh_float);
                 msgCfgBuilder.setLpg(builder);
             }
-            if (sensoroDevice.getSensoroSensor().hasPm10()) {
+            if (sensoroSensor.hasPm10) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
-                builder.setAlarmHigh(pm10AlarmHigh);
+                builder.setAlarmHigh(sensoroSensor.pm10.alarmHigh_float);
                 msgCfgBuilder.setPm10(builder);
             }
-            if (sensoroDevice.getSensoroSensor().hasPm25()) {
+            if (sensoroSensor.hasPm25) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
-                builder.setAlarmHigh(pm25AlarmHigh);
+                builder.setAlarmHigh(sensoroSensor.pm25.alarmHigh_float);
                 msgCfgBuilder.setPm25(builder);
             }
 
-            if (sensoroDevice.getSensoroSensor().hasTemperature()) {
+            if (sensoroSensor.hasTemperature) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
-                builder.setAlarmHigh(tempAlarmHigh);
-                builder.setAlarmLow(tempAlarmLow);
+                if (sensoroSensor.temperature.has_data) {
+                    builder.setData(sensoroSensor.temperature.data_float);
+                }
+                if (sensoroSensor.temperature.has_alarmHigh) {
+                    builder.setAlarmHigh(sensoroSensor.temperature.alarmHigh_float);
+                }
+                if (sensoroSensor.temperature.has_alarmLow) {
+                    builder.setAlarmLow(sensoroSensor.temperature.alarmLow_float);
+                }
                 msgCfgBuilder.setTemperature(builder);
             }
-            if (sensoroDevice.getSensoroSensor().hasHumidity()) {
+            if (sensoroSensor.hasHumidity) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
-                builder.setAlarmHigh(humidityAlarmHigh);
-                builder.setAlarmLow(humidityAlarmLow);
+                if (sensoroSensor.humidity.has_data) {
+                    builder.setData(sensoroSensor.humidity.data_float);
+                }
+                if (sensoroSensor.humidity.has_alarmHigh) {
+                    builder.setAlarmHigh(sensoroSensor.humidity.alarmHigh_float);
+                }
+                if (sensoroSensor.humidity.has_alarmLow) {
+                    builder.setAlarmLow(sensoroSensor.humidity.alarmLow_float);
+                }
                 msgCfgBuilder.setHumidity(builder);
             }
-            if (sensoroDevice.getSensoroSensor().hasPitchAngle()) {
+            if (sensoroSensor.hasPitch) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
-                builder.setAlarmHigh(pitchAngleAlarmHigh);
-                builder.setAlarmLow(pitchAngleAlarmLow);
+                if (sensoroSensor.pitch.has_data) {
+                    builder.setData(sensoroSensor.pitch.data_float);
+                }
+                if (sensoroSensor.pitch.has_alarmHigh) {
+                    builder.setAlarmHigh(sensoroSensor.pitch.alarmHigh_float);
+                }
+                if (sensoroSensor.pitch.has_alarmLow) {
+                    builder.setAlarmLow(sensoroSensor.pitch.alarmLow_float);
+                }
                 msgCfgBuilder.setPitch(builder);
             }
-            if (sensoroDevice.getSensoroSensor().hasRollAngle()) {
+            if (sensoroSensor.hasRoll) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
-                builder.setAlarmHigh(rollAngleAlarmHigh);
-                builder.setAlarmLow(rollAngleAlarmLow);
+                if (sensoroSensor.roll.has_data) {
+                    builder.setData(sensoroSensor.roll.data_float);
+                }
+                if (sensoroSensor.roll.has_alarmHigh) {
+                    builder.setAlarmHigh(sensoroSensor.roll.alarmHigh_float);
+                }
+                if (sensoroSensor.roll.has_alarmLow) {
+                    builder.setAlarmLow(sensoroSensor.roll.alarmLow_float);
+                }
                 msgCfgBuilder.setRoll(builder);
             }
-            if (sensoroDevice.getSensoroSensor().hasYawAngle()) {
+            if (sensoroSensor.hasYaw) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
-                builder.setAlarmHigh(yawAngleAlarmHigh);
-                builder.setAlarmLow(yawAngleAlarmLow);
+                if (sensoroSensor.yaw.has_data) {
+                    builder.setData(sensoroSensor.yaw.data_float);
+                }
+                if (sensoroSensor.yaw.has_alarmHigh) {
+                    builder.setAlarmHigh(sensoroSensor.yaw.alarmHigh_float);
+                }
+                if (sensoroSensor.yaw.has_alarmLow) {
+                    builder.setAlarmLow(sensoroSensor.yaw.alarmLow_float);
+                }
                 msgCfgBuilder.setYaw(builder);
             }
-            if (sensoroDevice.getSensoroSensor().hasWaterPressure()) {
+            if (sensoroSensor.hasWaterPressure) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
-                builder.setAlarmHigh(waterPressureAlarmHigh);
-                builder.setAlarmLow(waterPressureAlarmLow);
+                if (sensoroSensor.waterPressure.has_data) {
+                    builder.setData(sensoroSensor.waterPressure.data_float);
+                }
+                if (sensoroSensor.waterPressure.has_alarmHigh) {
+                    builder.setAlarmHigh(sensoroSensor.waterPressure.alarmHigh_float);
+                }
+                if (sensoroSensor.waterPressure.has_alarmLow) {
+                    builder.setAlarmLow(sensoroSensor.waterPressure.alarmLow_float);
+                }
                 msgCfgBuilder.setWaterPressure(builder);
             }
-        }
-        //添加单通道温度传感器支持
-        if (sensoroDevice.hasMultiTemperature()) {
-            MsgNode1V1M5.MultiSensorDataInt.Builder builder = MsgNode1V1M5.MultiSensorDataInt.newBuilder();
-            if (sensoroDevice.hasAlarmHigh()) {
-                builder.setAlarmHigh(alarmHigh);
+            //添加单通道温度传感器支持
+            if (sensoroSensor.hasMultiTemp) {
+                MsgNode1V1M5.MultiSensorDataInt.Builder builder = MsgNode1V1M5.MultiSensorDataInt.newBuilder();
+                if (sensoroSensor.multiTemperature.has_alarmHigh) {
+                    builder.setAlarmHigh(sensoroSensor.multiTemperature.alarmHigh_int);
+                }
+                if (sensoroSensor.multiTemperature.has_alarmLow) {
+                    builder.setAlarmLow(sensoroSensor.multiTemperature.alarmLow_int);
+                }
+                if (sensoroSensor.multiTemperature.has_alarmStepHigh) {
+                    builder.setAlarmStepHigh(sensoroSensor.multiTemperature.alarmStepHigh_int);
+                }
+                if (sensoroSensor.multiTemperature.has_alarmStepLow) {
+                    builder.setAlarmStepLow(sensoroSensor.multiTemperature.alarmStepLow_int);
+                }
+                msgCfgBuilder.setMultiTemp(builder);
             }
-            if (sensoroDevice.hasAlarmLow()) {
-                builder.setAlarmLow(alarmLow);
-            }
-            if (sensoroDevice.hasAlarmStepHigh()) {
-                builder.setAlarmStepHigh(alarmStepHigh);
-            }
-            if (sensoroDevice.hasAlarmStepLow()) {
-                builder.setAlarmStepLow(alarmStepLow);
-            }
-            msgCfgBuilder.setMultiTemp(builder);
         }
         MsgNode1V1M5.MsgNode msgCfg = msgCfgBuilder.build();
         byte[] data = msgCfg.toByteArray();
@@ -2298,33 +2484,33 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 dialogFragment.show(getFragmentManager(), SETTINGS_UUID);
                 break;
             case R.id.settings_device_rl_major:
-                dialogFragment = SettingsMajorMinorDialogFragment.newInstance(major);
+                dialogFragment = SettingsMajorMinorDialogFragment.newInstance(sensoroDevice.getMajor());
                 dialogFragment.show(getFragmentManager(), SETTINGS_MAJOR);
                 break;
             case R.id.settings_device_rl_minor:
-                dialogFragment = SettingsMajorMinorDialogFragment.newInstance(minor);
+                dialogFragment = SettingsMajorMinorDialogFragment.newInstance(sensoroDevice.getMinor());
                 dialogFragment.show(getFragmentManager(), SETTINGS_MINOR);
                 break;
             case R.id.settings_device_rl_power:
                 dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(blePowerItems, ParamUtil
-                        .getBleTxpIndex(deviceType, bleTxp));
+                        .getBleTxpIndex(deviceType, sensoroDevice.getBleTxp()));
                 dialogFragment.show(getFragmentManager(), SETTINGS_BLE_POWER);
                 break;
             case R.id.settings_device_rl_adv_interval:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(bleInt));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroDevice.getBleInt()));
                 dialogFragment.show(getFragmentManager(), SETTINGS_ADV_INTERVAL);
                 break;
             case R.id.settings_device_ll_turnon_time:
-                int showTurnOnTime = bleTurnOnTime;
-                if (bleTurnOnTime >= 24) {
+                int showTurnOnTime = sensoroDevice.getBleOnTime();
+                if (sensoroDevice.getBleOnTime() >= 24) {
                     showTurnOnTime -= 24;
                 }
                 dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(bleTimeItems, showTurnOnTime);
                 dialogFragment.show(getFragmentManager(), SETTINGS_BLE_TURNON_TIME);
                 break;
             case R.id.settings_device_ll_turnoff_time:
-                int showTurnOffTime = bleTurnOffTime;
-                if (bleTurnOffTime >= 24) {
+                int showTurnOffTime = sensoroDevice.getBleOffTime();
+                if (sensoroDevice.getBleOffTime() >= 24) {
                     showTurnOffTime -= 24;
                 }
                 dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(bleTimeItems, showTurnOffTime);
@@ -2332,15 +2518,16 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 break;
             case R.id.settings_device_rl_lora_txp:
                 dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(loraTxpItems, ParamUtil
-                        .getLoraTxpIndex(band, loraTxp));
+                        .getLoraTxpIndex(band, sensoroDevice.getLoraTxp()));
                 dialogFragment.show(getFragmentManager(), SETTINGS_LORA_TXP);
                 break;
             case R.id.settings_device_rl_lora_ad_interval:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(loraInt));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroDevice.getLoraInt()));
                 dialogFragment.show(getFragmentManager(), SETTINGS_LORA_INT);
                 break;
             case R.id.settings_device_rl_lora_eirp:
-                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(loraEirpItems, loraTxp);
+                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(loraEirpItems, sensoroDevice
+                        .getLoraTxp());
                 dialogFragment.show(getFragmentManager(), SETTINGS_LORA_EIRP);
                 break;
             case R.id.settings_device_rl_slot1_item1:
@@ -2385,83 +2572,103 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 dialogFragment.show(getFragmentManager(), SETTINGS_CUSTOM_PACKAGE3);
                 break;
             case R.id.settings_device_ll_co:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(coAlarmHigh));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.co
+                        .alarmHigh_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_CO);
                 break;
             case R.id.settings_device_ll_co2:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(co2AlarmHigh));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
+                        .co2.alarmHigh_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_CO2);
                 break;
             case R.id.settings_device_ll_ch4:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(ch4AlarmHigh));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
+                        .ch4.alarmHigh_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_CH4);
                 break;
             case R.id.settings_device_ll_no2:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(no2AlarmHigh));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
+                        .no2.alarmHigh_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_NO2);
                 break;
             case R.id.settings_device_ll_lpg:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(lpgAlarmHigh));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.lpg
+                        .alarmHigh_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_LPG);
                 break;
             case R.id.settings_device_ll_pm10:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(pm10AlarmHigh));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
+                        .pm10.alarmHigh_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_PM10);
                 break;
             case R.id.settings_device_ll_pm25:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(pm25AlarmHigh));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
+                        .pm25.alarmHigh_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_PM25);
                 break;
             case R.id.settings_device_rl_temp_upper:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(tempAlarmHigh));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.temperature
+                        .alarmHigh_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_TEMP_UPPER);
                 break;
             case R.id.settings_device_rl_temp_lower:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(tempAlarmLow));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.temperature
+                        .alarmLow_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_TEMP_LOWER);
                 break;
             case R.id.settings_device_rl_humidity_upper:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(humidityAlarmHigh));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.humidity
+                        .alarmHigh_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_HUMIDITY_UPPER);
                 break;
             case R.id.settings_device_rl_humidity_lower:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(humidityAlarmLow));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.humidity
+                        .alarmLow_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_HUMIDITY_LOWER);
                 break;
             case R.id.settings_device_rl_pitch_angle_upper:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(pitchAngleAlarmHigh));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.pitch
+                        .alarmHigh_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_PITCH_ANGLE_UPPER);
                 break;
             case R.id.settings_device_rl_pitch_angle_lower:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(pitchAngleAlarmLow));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.pitch
+                        .alarmLow_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_PITCH_ANGLE_LOWER);
                 break;
             case R.id.settings_device_rl_roll_angle_upper:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(rollAngleAlarmHigh));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.roll
+                        .alarmHigh_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_ROLL_ANGLE_UPPER);
                 break;
             case R.id.settings_device_rl_roll_angle_lower:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(rollAngleAlarmLow));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.roll
+                        .alarmLow_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_ROLL_ANGLE_LOWER);
                 break;
             case R.id.settings_device_rl_yaw_angle_upper:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(yawAngleAlarmHigh));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.yaw
+                        .alarmHigh_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_YAW_ANGLE_UPPER);
                 break;
             case R.id.settings_device_rl_yaw_angle_lower:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(yawAngleAlarmLow));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.yaw
+                        .alarmLow_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_YAW_ANGLE_LOWER);
                 break;
             case R.id.settings_device_rl_water_pressure_upper:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(waterPressureAlarmHigh));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.waterPressure
+                        .alarmHigh_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_WATER_PRESSURE_UPPER);
                 break;
             case R.id.settings_device_rl_water_pressure_lower:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(waterPressureAlarmLow));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.waterPressure
+                        .alarmLow_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_WATER_PRESSURE_LOWER);
                 break;
             case R.id.settings_device_rl_app_param_upload:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(uploadInterval));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroDevice
+                        .getUploadInterval()));
                 dialogFragment.show(getFragmentManager(), SETTINGS_APP_PARAM_UPLOAD);
                 break;
             case R.id.settings_device_rl_app_param_confirm:
@@ -2487,19 +2694,23 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 break;
             //TODO 单通道温度传感器
             case R.id.settings_device_rl_temperature_pressure_upper:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(alarmHigh / 100f));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
+                        .multiTemperature.alarmHigh_int / 100f));
                 dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_TEMPERATURE_PRESSURE_UPPER);
                 break;
             case R.id.settings_device_rl_temperature_pressure_lower:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(alarmLow / 100f));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
+                        .multiTemperature.alarmLow_int / 100f));
                 dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_TEMPERATURE_PRESSURE_LOWER);
                 break;
             case R.id.settings_device_rl_temperature_pressure_step_upper:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(alarmStepHigh / 100f));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
+                        .multiTemperature.alarmStepHigh_int / 100f));
                 dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_TEMPERATURE_PRESSURE_STEP_UPPER);
                 break;
             case R.id.settings_device_rl_temperature_pressure_step_lower:
-                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(alarmStepLow / 100f));
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
+                        .multiTemperature.alarmStepLow_int / 100f));
                 dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_TEMPERATURE_PRESSURE_STEP_LOWER);
                 break;
             default:
@@ -2746,39 +2957,41 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             uuidTextView.setText(uuid);
         } else if (tag.equals(SETTINGS_MAJOR)) {
             int major = bundle.getInt(SettingsMajorMinorDialogFragment.VALUE);
-            this.major = major;
+            sensoroDevice.setMajor(major);
             majorTextView.setText(String.format("0x%04X", major));
         } else if (tag.equals(SETTINGS_MINOR)) {
             int minor = bundle.getInt(SettingsMajorMinorDialogFragment.VALUE);
-            this.minor = minor;
+            sensoroDevice.setMinor(minor);
             minorTextView.setText(String.format("0x%04X", minor));
         } else if (tag.equals(SETTINGS_BLE_POWER)) {
             int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
-            bleTxp = ParamUtil.getBleTxp(deviceType, index);
+            int bleTxp = ParamUtil.getBleTxp(deviceType, index);
+            sensoroDevice.setBleTxp(bleTxp);
             powerTextView.setText(blePowerItems[index]);
         } else if (tag.equals(SETTINGS_ADV_INTERVAL)) {
             String bleInt = bundle.getString(SettingsInputDialogFragment.INPUT);
-            this.bleInt = Double.valueOf(bleInt).intValue();
+            sensoroDevice.setBleInt(Double.valueOf(bleInt).intValue());
             advIntervalTextView.setText(bleInt + " ms");
         } else if (tag.equals(SETTINGS_BLE_TURNON_TIME)) {
             int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
-            bleTurnOnTime = index;
+            sensoroDevice.setBleOnTime(index);
             turnOnTexView.setText(bleTimeItems[index]);
         } else if (tag.equals(SETTINGS_BLE_TURNOFF_TIME)) {
             int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
-            bleTurnOffTime = index;
+            sensoroDevice.setBleOffTime(index);
             turnOffTextView.setText(bleTimeItems[index]);
         } else if (tag.equals(SETTINGS_LORA_TXP)) {
             int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
-            loraTxp = ParamUtil.getLoraTxp(band, index);
+            sensoroDevice.setLoraTxp(ParamUtil.getLoraTxp(band, index));
             loraTxpTextView.setText(loraTxpItems[index]);
         } else if (tag.equals(SETTINGS_LORA_EIRP)) {
             int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
-            loraTxp = index;
-            loraEirpTextView.setText(loraEirpValues[loraTxp]);
+            sensoroDevice.setLoraTxp(index);
+            loraEirpTextView.setText(loraEirpValues[index]);
         } else if (tag.equals(SETTINGS_LORA_INT)) {
             String text = bundle.getString(SettingsInputDialogFragment.INPUT);
-            loraInt = Float.valueOf(text);
+            Float loraInt = Float.valueOf(text);
+            sensoroDevice.setLoraInt(loraInt);
             loraAdIntervalTextView.setText(loraInt + "s");
         } else if (tag.equals(SETTINGS_EDDYSTONE1)) {
             int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
@@ -2951,97 +3164,100 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             }
         } else if (tag.equals(SETTINGS_SENSOR_CO)) {
             String co = bundle.getString(SettingsInputDialogFragment.INPUT);
-            this.coAlarmHigh = Float.valueOf(co).intValue();
+            sensoroSensor.co.alarmHigh_float = Float.valueOf(co);
             coTextView.setText(co + "");
         } else if (tag.equals(SETTINGS_SENSOR_CO2)) {
             String co2 = bundle.getString(SettingsInputDialogFragment.INPUT);
-            this.co2AlarmHigh = Float.valueOf(co2).intValue();
+            sensoroSensor.co2.alarmHigh_float = Float.valueOf(co2);
             co2TextView.setText(co2 + "");
         } else if (tag.equals(SETTINGS_SENSOR_NO2)) {
             String no2 = bundle.getString(SettingsInputDialogFragment.INPUT);
-            this.no2AlarmHigh = Float.valueOf(no2).intValue();
+            sensoroSensor.no2.alarmHigh_float = Float.valueOf(no2);
             no2TextView.setText(no2 + "");
         } else if (tag.equals(SETTINGS_SENSOR_CH4)) {
             String ch4 = bundle.getString(SettingsInputDialogFragment.INPUT);
-            this.ch4AlarmHigh = Float.valueOf(ch4).intValue();
+            sensoroSensor.ch4.alarmHigh_float = Float.valueOf(ch4);
             ch4TextView.setText(ch4 + "");
         } else if (tag.equals(SETTINGS_SENSOR_LPG)) {
             String lpg = bundle.getString(SettingsInputDialogFragment.INPUT);
-            this.lpgAlarmHigh = Float.valueOf(lpg).intValue();
+            sensoroSensor.lpg.alarmHigh_float = Float.valueOf(lpg);
             lpgTextView.setText(lpg + " ");
         } else if (tag.equals(SETTINGS_SENSOR_PM25)) {
             String pm25 = bundle.getString(SettingsInputDialogFragment.INPUT);
-            this.pm25AlarmHigh = Float.valueOf(pm25).intValue();
+            sensoroSensor.pm25.alarmHigh_float = Float.valueOf(pm25);
             pm25TextView.setText(pm25 + "");
         } else if (tag.equals(SETTINGS_SENSOR_PM10)) {
             String pm10 = bundle.getString(SettingsInputDialogFragment.INPUT);
-            this.pm10AlarmHigh = Float.valueOf(pm10).intValue();
+            sensoroSensor.pm10.alarmHigh_float = Float.valueOf(pm10);
             pm10TextView.setText(pm10 + "");
         } else if (tag.equals(SETTINGS_SENSOR_TEMP_UPPER)) {
             String tempHigh = bundle.getString(SettingsInputDialogFragment.INPUT);
-            this.tempAlarmHigh = Float.valueOf(tempHigh).intValue();
+            sensoroSensor.temperature.alarmHigh_float = Float.valueOf(tempHigh);
             tempUpperTextView.setText(tempHigh + "");
         } else if (tag.equals(SETTINGS_SENSOR_TEMP_LOWER)) {
             String tempLow = bundle.getString(SettingsInputDialogFragment.INPUT);
-            this.tempAlarmLow = Float.valueOf(tempLow).intValue();
+            sensoroSensor.temperature.alarmLow_float = Float.valueOf(tempLow);
             tempLowerTextView.setText(tempLow + "");
         } else if (tag.equals(SETTINGS_SENSOR_HUMIDITY_UPPER)) {
             String humidityHigh = bundle.getString(SettingsInputDialogFragment.INPUT);
-            this.humidityAlarmHigh = Float.valueOf(humidityHigh).intValue();
+            sensoroSensor.humidity.alarmHigh_float = Float.valueOf(humidityHigh);
             humidityUpperTextView.setText(humidityHigh + "");
         } else if (tag.equals(SETTINGS_SENSOR_HUMIDITY_LOWER)) {
             String humidityLow = bundle.getString(SettingsInputDialogFragment.INPUT);
-            this.humidityAlarmLow = Float.valueOf(humidityLow).intValue();
+            sensoroSensor.humidity.alarmLow_float = Float.valueOf(humidityLow);
             humidityLowerTextView.setText(humidityLow + "");
         } else if (tag.equals(SETTINGS_SENSOR_PITCH_ANGLE_UPPER)) {
             String pitchHigh = bundle.getString(SettingsInputDialogFragment.INPUT);
-            this.pitchAngleAlarmHigh = Float.valueOf(pitchHigh).intValue();
+            sensoroSensor.pitch.alarmHigh_float = Float.valueOf(pitchHigh);
             pitchAngleUpperTextView.setText(pitchHigh + "");
         } else if (tag.equals(SETTINGS_SENSOR_PITCH_ANGLE_LOWER)) {
             String pitchLow = bundle.getString(SettingsInputDialogFragment.INPUT);
-            this.pitchAngleAlarmLow = Float.valueOf(pitchLow).intValue();
+            sensoroSensor.pitch.alarmLow_float = Float.valueOf(pitchLow);
             pitchAngleLowerTextView.setText(pitchLow + "");
         } else if (tag.equals(SETTINGS_SENSOR_ROLL_ANGLE_UPPER)) {
             String rollHigh = bundle.getString(SettingsInputDialogFragment.INPUT);
-            this.rollAngleAlarmHigh = Float.valueOf(rollHigh).intValue();
+            sensoroSensor.roll.alarmHigh_float = Float.valueOf(rollHigh);
             rollAngleUpperTextView.setText(rollHigh + "");
         } else if (tag.equals(SETTINGS_SENSOR_ROLL_ANGLE_LOWER)) {
             String rollLower = bundle.getString(SettingsInputDialogFragment.INPUT);
-            this.rollAngleAlarmLow = Float.valueOf(rollLower).intValue();
+            sensoroSensor.roll.alarmLow_float = Float.valueOf(rollLower);
             rollAngleLowerTextView.setText(rollLower + "");
         } else if (tag.equals(SETTINGS_SENSOR_YAW_ANGLE_UPPER)) {
             String yawHigh = bundle.getString(SettingsInputDialogFragment.INPUT);
-            this.yawAngleAlarmHigh = Float.valueOf(yawHigh).intValue();
+            sensoroSensor.yaw.alarmHigh_float = Float.valueOf(yawHigh);
             yawAngleUpperTextView.setText(yawHigh + "");
         } else if (tag.equals(SETTINGS_SENSOR_YAW_ANGLE_LOWER)) {
             String yawLower = bundle.getString(SettingsInputDialogFragment.INPUT);
-            this.yawAngleAlarmLow = Float.valueOf(yawLower).intValue();
+            sensoroSensor.yaw.alarmLow_float = Float.valueOf(yawLower);
             yawAngleLowerTextView.setText(yawLower + "");
         } else if (tag.equals(SETTINGS_SENSOR_WATER_PRESSURE_UPPER)) {
             String waterHigh = bundle.getString(SettingsInputDialogFragment.INPUT);
-            this.waterPressureAlarmHigh = Float.valueOf(waterHigh).intValue();
+            sensoroSensor.waterPressure.alarmHigh_float = Float.valueOf(waterHigh);
             waterPressureUpperTextView.setText(waterHigh + "");
         } else if (tag.equals(SETTINGS_SENSOR_WATER_PRESSURE_LOWER)) {
             String waterLower = bundle.getString(SettingsInputDialogFragment.INPUT);
-            this.waterPressureAlarmLow = Float.valueOf(waterLower).intValue();
+            sensoroSensor.waterPressure.alarmLow_float = Float.valueOf(waterLower);
             waterPressureLowerTextView.setText(waterLower + "");
         } else if (tag.equals(SETTINGS_APP_PARAM_UPLOAD)) {
             String upload = bundle.getString(SettingsInputDialogFragment.INPUT);
-            this.uploadInterval = Integer.valueOf(upload);
+            Integer uploadInterval = Integer.valueOf(upload);
+            sensoroDevice.setUploadInterval(uploadInterval);
             uploadIntervalTextView.setText(uploadInterval + "s");
         } else if (tag.equals(SETTINGS_APP_PARAM_CONFIRM)) {
             int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
+            int appParamConfirm;
             if (index == 0) {
                 appParamConfirm = 1;
             } else {
                 appParamConfirm = 0;
             }
+            sensoroDevice.setConfirm(appParamConfirm);
             confirmTextView.setText(getResources().getStringArray(R.array.status_array)[index]);
         } else if (SETTINGS_DEVICE_TEMPERATURE_PRESSURE_UPPER.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 float f = Float.parseFloat(temp);
-                this.alarmHigh = (int) (f * 100);
+                sensoroSensor.multiTemperature.alarmHigh_int = (int) (f * 100);
                 settingsDeviceTvTemperaturePressureUpperLimit.setText(f + "");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -3051,7 +3267,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 float f = Float.parseFloat(temp);
-                this.alarmLow = (int) (f * 100);
+                sensoroSensor.multiTemperature.alarmLow_int = (int) (f * 100);
                 settingsDeviceTvTemperaturePressureLowerLimit.setText(f + "");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -3062,7 +3278,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 float f = Float.parseFloat(temp);
-                this.alarmStepHigh = (int) (f * 100);
+                sensoroSensor.multiTemperature.alarmStepHigh_int = (int) (f * 100);
                 settingsDeviceTvTemperaturePressureUpperStepLimit.setText(f + "");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -3073,7 +3289,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 float f = Float.parseFloat(temp);
-                this.alarmStepLow = (int) (f * 100);
+                sensoroSensor.multiTemperature.alarmStepLow_int = (int) (f * 100);
                 settingsDeviceTvTemperaturePressureLowerStepLimit.setText(f + "");
             } catch (Exception e) {
                 e.printStackTrace();

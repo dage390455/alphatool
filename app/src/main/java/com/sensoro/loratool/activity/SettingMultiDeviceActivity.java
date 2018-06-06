@@ -34,6 +34,7 @@ import com.sensoro.loratool.ble.SensoroDevice;
 import com.sensoro.loratool.ble.SensoroDeviceConfiguration;
 import com.sensoro.loratool.ble.SensoroDeviceConnection;
 import com.sensoro.loratool.ble.SensoroSensorConfiguration;
+import com.sensoro.loratool.ble.SensoroSensorTest;
 import com.sensoro.loratool.ble.SensoroSlot;
 import com.sensoro.loratool.ble.SensoroUtils;
 import com.sensoro.loratool.ble.SensoroWriteCallback;
@@ -64,7 +65,8 @@ import butterknife.ButterKnife;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-public class SettingMultiDeviceActivity extends BaseActivity implements Constants, View.OnClickListener, OnPositiveButtonClickListener, SensoroWriteCallback, SensoroConnectionCallback {
+public class SettingMultiDeviceActivity extends BaseActivity implements Constants, View.OnClickListener,
+        OnPositiveButtonClickListener, SensoroWriteCallback, SensoroConnectionCallback {
 
     private static final String TAG = SettingMultiDeviceActivity.class.getSimpleName();
     @BindView(R.id.settings_multi_device_back)
@@ -463,7 +465,7 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
         targetDevice = targetDeviceList.get(targetDeviceIndex);
         band = getIntent().getStringExtra(Constants.EXTRA_NAME_BAND);
         deviceType = getIntent().getStringExtra(EXTRA_NAME_DEVICE_TYPE);
-        String tempItems[] = null ;
+        String tempItems[] = null;
         if (deviceType.equals("node")) {
             tempItems = BLE_NODE_TXP_ARRAY;
         } else {
@@ -649,59 +651,60 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
             }
             if (targetDevice.hasSensorParam()) {
                 sensorParamLayout.setVisibility(VISIBLE);
-                if (targetDevice.getSensoroSensor().hasCo()) {
+                SensoroSensorTest sensoroSensorTest = targetDevice.getSensoroSensorTest();
+                if (sensoroSensorTest.hasCo) {
                     coLinearLayout.setVisibility(VISIBLE);
                 } else {
                     coLinearLayout.setVisibility(GONE);
                 }
-                if (targetDevice.getSensoroSensor().hasCo2()) {
+                if (sensoroSensorTest.hasCo2) {
                     co2LinearLayout.setVisibility(VISIBLE);
                 } else {
                     co2LinearLayout.setVisibility(GONE);
                 }
-                if (targetDevice.getSensoroSensor().hasNo2()) {
+                if (sensoroSensorTest.hasNo2) {
                     no2LinearLayout.setVisibility(VISIBLE);
                 } else {
                     no2LinearLayout.setVisibility(GONE);
                 }
-                if (targetDevice.getSensoroSensor().hasCh4()) {
+                if (sensoroSensorTest.hasCh4) {
                     ch4LinearLayout.setVisibility(VISIBLE);
                 } else {
                     ch4LinearLayout.setVisibility(GONE);
                 }
-                if (targetDevice.getSensoroSensor().hasLpg()) {
+                if (sensoroSensorTest.hasLpg) {
                     lpgLinearLayout.setVisibility(VISIBLE);
                 } else {
                     lpgLinearLayout.setVisibility(GONE);
                 }
 
-                if (targetDevice.getSensoroSensor().hasPm25()) {
+                if (sensoroSensorTest.hasPm25) {
                     pm25LinearLayout.setVisibility(VISIBLE);
                 } else {
                     pm25LinearLayout.setVisibility(GONE);
                 }
-                if (targetDevice.getSensoroSensor().hasPm10()) {
+                if (sensoroSensorTest.hasPm10) {
                     pm10LinearLayout.setVisibility(VISIBLE);
                 } else {
                     pm10LinearLayout.setVisibility(GONE);
                 }
-                if (targetDevice.getSensoroSensor().hasTemperature()) {
-                    tempUpperTextView.setText(targetDevice.getSensoroSensor().getTempAlarmHigh() + "");
-                    tempLowerTextView.setText(targetDevice.getSensoroSensor().getTempAlarmLow() + "");
+                if (sensoroSensorTest.hasTemperature) {
+                    tempUpperTextView.setText(sensoroSensorTest.temperature.alarmHigh_float + "");
+                    tempLowerTextView.setText(sensoroSensorTest.temperature.alarmLow_float + "");
                     tempLinearLayout.setVisibility(VISIBLE);
                 } else {
                     tempLinearLayout.setVisibility(GONE);
                 }
-                if (targetDevice.getSensoroSensor().hasHumidity()) {
-                    humidityUpperTextView.setText(targetDevice.getSensoroSensor().getHumidityAlarmHigh() + "");
-                    humidityLowerTextView.setText(targetDevice.getSensoroSensor().getHumidityAlarmLow() + "");
+                if (sensoroSensorTest.hasHumidity) {
+                    humidityUpperTextView.setText(sensoroSensorTest.humidity.alarmHigh_float + "");
+                    humidityLowerTextView.setText(sensoroSensorTest.humidity.alarmLow_float + "");
                     humidityLinearLayout.setVisibility(VISIBLE);
                 } else {
                     humidityLinearLayout.setVisibility(GONE);
                 }
-                if (targetDevice.getSensoroSensor().hasSmoke()) {
+                if (sensoroSensorTest.hasSmoke) {
                     smokeLinearLayout.setVisibility(VISIBLE);
-                    if (targetDevice.getSensoroSensor().getSmokeStatus() == 0) {
+                    if (sensoroSensorTest.smoke.status == 0) {
                         smokeStatusTextView.setText(getResources().getStringArray(R.array.smoke_status_array)[0]);
                     } else {
                         smokeStatusTextView.setText(getResources().getStringArray(R.array.smoke_status_array)[1]);
@@ -710,31 +713,31 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                 } else {
                     smokeLinearLayout.setVisibility(GONE);
                 }
-                if (targetDevice.getSensoroSensor().hasPitchAngle()) {
+                if (sensoroSensorTest.hasPitch) {
                     pitchAngleLinearLayout.setVisibility(VISIBLE);
-                    pitchAngleUpperTextView.setText(targetDevice.getSensoroSensor().getPitchAngleAlarmHigh() + "");
-                    pitchAngleLowerTextView.setText(targetDevice.getSensoroSensor().getPitchAngleAlarmLow() + "");
+                    pitchAngleUpperTextView.setText(sensoroSensorTest.pitch.alarmHigh_float + "");
+                    pitchAngleLowerTextView.setText(sensoroSensorTest.pitch.alarmLow_float + "");
                 } else {
                     pitchAngleLinearLayout.setVisibility(GONE);
                 }
-                if (targetDevice.getSensoroSensor().hasRollAngle()) {
+                if (sensoroSensorTest.hasRoll) {
                     rollAngleLinearLayout.setVisibility(VISIBLE);
-                    rollAngleUpperTextView.setText(targetDevice.getSensoroSensor().getRollAngleAlarmHigh() + "");
-                    rollAngleLowerTextView.setText(targetDevice.getSensoroSensor().getRollAngleAlarmLow() + "");
+                    rollAngleUpperTextView.setText(sensoroSensorTest.roll.alarmHigh_float + "");
+                    rollAngleLowerTextView.setText(sensoroSensorTest.roll.alarmLow_float + "");
                 } else {
                     rollAngleLinearLayout.setVisibility(GONE);
                 }
-                if (targetDevice.getSensoroSensor().hasYawAngle()) {
+                if (sensoroSensorTest.hasYaw) {
                     yawAngleLinearLayout.setVisibility(VISIBLE);
-                    yawAngleUpperTextView.setText(targetDevice.getSensoroSensor().getYawAngleAlarmHigh() + "");
-                    yawAngleLowerTextView.setText(targetDevice.getSensoroSensor().getYawAngleAlarmLow() + "");
+                    yawAngleUpperTextView.setText(sensoroSensorTest.yaw.alarmHigh_float + "");
+                    yawAngleLowerTextView.setText(sensoroSensorTest.yaw.alarmLow_float + "");
                 } else {
                     yawAngleLinearLayout.setVisibility(GONE);
                 }
-                if (targetDevice.getSensoroSensor().hasWaterPressure()) {
+                if (sensoroSensorTest.hasWaterPressure) {
                     waterPressureLinearLayout.setVisibility(VISIBLE);
-                    waterPressureUpperTextView.setText(targetDevice.getSensoroSensor().getWaterPressureAlarmHigh() + "");
-                    waterPressureLowerTextView.setText(targetDevice.getSensoroSensor().getWaterPressureAlarmLow() + "");
+                    waterPressureUpperTextView.setText(sensoroSensorTest.waterPressure.alarmHigh_float + "");
+                    waterPressureLowerTextView.setText(sensoroSensorTest.waterPressure.alarmLow_float + "");
                 } else {
                     waterPressureLinearLayout.setVisibility(GONE);
                 }
@@ -759,7 +762,8 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
 
         } else {
             progressDialog.show();
-            progressDialog.setMessage(getString(R.string.device) + targetDevice.getSn() + getString(R.string.connect_success));
+            progressDialog.setMessage(getString(R.string.device) + targetDevice.getSn() + getString(R.string
+                    .connect_success));
             saveConfiguration();
         }
         refreshDevice();
@@ -804,54 +808,55 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
 
         if (targetDevice.hasSensorParam()) {
             sensorParamLayout.setVisibility(VISIBLE);
-            if (targetDevice.getSensoroSensor().hasCo()) {
-                coAlarmHigh = targetDevice.getSensoroSensor().getCoAlarmHigh();
+            SensoroSensorTest sensoroSensorTest = targetDevice.getSensoroSensorTest();
+            if (sensoroSensorTest.hasCo) {
+                coAlarmHigh = sensoroSensorTest.co.alarmHigh_float;
             }
-            if (targetDevice.getSensoroSensor().hasCo2()) {
-                co2AlarmHigh = targetDevice.getSensoroSensor().getCo2AlarmHigh();
+            if (sensoroSensorTest.hasCo2) {
+                co2AlarmHigh = sensoroSensorTest.co2.alarmHigh_float;
             }
-            if (targetDevice.getSensoroSensor().hasNo2()) {
-                no2AlarmHigh = targetDevice.getSensoroSensor().getNo2AlarmHigh();
+            if (sensoroSensorTest.hasNo2) {
+                no2AlarmHigh = sensoroSensorTest.no2.alarmHigh_float;
             }
-            if (targetDevice.getSensoroSensor().hasCh4()) {
-                ch4AlarmHigh = targetDevice.getSensoroSensor().getCh4AlarmHigh();
+            if (sensoroSensorTest.hasCh4) {
+                ch4AlarmHigh = sensoroSensorTest.ch4.alarmHigh_float;
             }
-            if (targetDevice.getSensoroSensor().hasLpg()) {
-                lpgAlarmHigh = targetDevice.getSensoroSensor().getLpgAlarmHigh();
+            if (sensoroSensorTest.hasLpg) {
+                lpgAlarmHigh = sensoroSensorTest.lpg.alarmHigh_float;
             }
-            if (targetDevice.getSensoroSensor().hasPm25()) {
-                pm25AlarmHigh = targetDevice.getSensoroSensor().getPm25AlarmHigh();
+            if (sensoroSensorTest.hasPm25) {
+                pm25AlarmHigh = sensoroSensorTest.pm25.alarmHigh_float;
             }
-            if (targetDevice.getSensoroSensor().hasPm10()) {
-                pm10AlarmHigh = targetDevice.getSensoroSensor().getPm10AlarmHigh();
+            if (sensoroSensorTest.hasPm10) {
+                pm10AlarmHigh = sensoroSensorTest.pm10.alarmHigh_float;
             }
-            if (targetDevice.getSensoroSensor().hasTemperature()) {
-                tempAlarmHigh = targetDevice.getSensoroSensor().getTempAlarmHigh();
-                tempAlarmLow = targetDevice.getSensoroSensor().getTempAlarmLow();
+            if (sensoroSensorTest.hasTemperature) {
+                tempAlarmHigh = sensoroSensorTest.temperature.alarmHigh_float;
+                tempAlarmLow = sensoroSensorTest.temperature.alarmLow_float;
             }
-            if (targetDevice.getSensoroSensor().hasHumidity()) {
-                humidityAlarmHigh = targetDevice.getSensoroSensor().getHumidityAlarmHigh();
-                humidityAlarmLow = targetDevice.getSensoroSensor().getHumidityAlarmLow();
+            if (sensoroSensorTest.hasHumidity) {
+                humidityAlarmHigh = sensoroSensorTest.humidity.alarmHigh_float;
+                humidityAlarmLow = sensoroSensorTest.humidity.alarmLow_float;
             }
-            if (targetDevice.getSensoroSensor().hasSmoke()) {
+            if (sensoroSensorTest.hasSmoke) {
+                //TODO ?????
+            }
+            if (sensoroSensorTest.hasPitch) {
+                pitchAngleAlarmHigh = sensoroSensorTest.pitch.alarmHigh_float;
+                pitchAngleAlarmLow = sensoroSensorTest.pitch.alarmLow_float;
+            }
+            if (sensoroSensorTest.hasRoll) {
+                rollAngleAlarmHigh = sensoroSensorTest.roll.alarmHigh_float;
+                rollAngleAlarmLow = sensoroSensorTest.roll.alarmLow_float;
+            }
+            if (sensoroSensorTest.hasYaw) {
+                yawAngleAlarmHigh = sensoroSensorTest.yaw.alarmHigh_float;
+                yawAngleAlarmLow = sensoroSensorTest.yaw.alarmLow_float;
 
             }
-            if (targetDevice.getSensoroSensor().hasPitchAngle()) {
-                pitchAngleAlarmHigh = targetDevice.getSensoroSensor().getPitchAngleAlarmHigh();
-                pitchAngleAlarmLow = targetDevice.getSensoroSensor().getPitchAngleAlarmLow();
-            }
-            if (targetDevice.getSensoroSensor().hasRollAngle()) {
-                rollAngleAlarmHigh = targetDevice.getSensoroSensor().getRollAngleAlarmHigh();
-                rollAngleAlarmLow = targetDevice.getSensoroSensor().getRollAngleAlarmLow();
-            }
-            if (targetDevice.getSensoroSensor().hasYawAngle()) {
-                yawAngleAlarmHigh = targetDevice.getSensoroSensor().getYawAngleAlarmHigh();
-                yawAngleAlarmLow = targetDevice.getSensoroSensor().getYawAngleAlarmLow();
-
-            }
-            if (targetDevice.getSensoroSensor().hasWaterPressure()) {
-                waterPressureAlarmHigh = targetDevice.getSensoroSensor().getWaterPressureAlarmHigh();
-                waterPressureAlarmLow = targetDevice.getSensoroSensor().getWaterPressureAlarmLow();
+            if (sensoroSensorTest.hasWaterPressure) {
+                waterPressureAlarmHigh = sensoroSensorTest.waterPressure.alarmHigh_float;
+                waterPressureAlarmLow = sensoroSensorTest.waterPressure.alarmLow_float;
 
             }
         }
@@ -1261,70 +1266,71 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
             SensoroDeviceConfiguration.Builder builder = new SensoroDeviceConfiguration.Builder();
             SensoroSensorConfiguration.Builder sensorBuilder = new SensoroSensorConfiguration.Builder();
             if (targetDevice.hasSensorParam()) {
-                if (targetDevice.getSensoroSensor().hasCo()) {
+                SensoroSensorTest sensoroSensorTest = targetDevice.getSensoroSensorTest();
+                if (sensoroSensorTest.hasCo) {
                     sensorBuilder.setCoAlarmHigh(coAlarmHigh);
-                    sensorBuilder.setCoData(targetDevice.getSensoroSensor().getCo());
-                    sensorBuilder.setHasCo(targetDevice.getSensoroSensor().hasCo());
+                    sensorBuilder.setCoData(sensoroSensorTest.co.data_float);
+                    sensorBuilder.setHasCo(sensoroSensorTest.hasCo);
                 }
-                if (targetDevice.getSensoroSensor().hasCo2()) {
+                if (sensoroSensorTest.hasCo2) {
                     sensorBuilder.setCo2AlarmHigh(co2AlarmHigh);
-                    sensorBuilder.setCo2Data(targetDevice.getSensoroSensor().getCo2());
-                    sensorBuilder.setHasCo2(targetDevice.getSensoroSensor().hasCo2());
+                    sensorBuilder.setCo2Data(sensoroSensorTest.co.data_float);
+                    sensorBuilder.setHasCo2(sensoroSensorTest.hasCo2);
                 }
-                if (targetDevice.getSensoroSensor().hasNo2()) {
+                if (sensoroSensorTest.hasNo2) {
                     sensorBuilder.setNo2AlarmHigh(no2AlarmHigh);
-                    sensorBuilder.setNo2Data(targetDevice.getSensoroSensor().getNo2());
-                    sensorBuilder.setHasNo2(targetDevice.getSensoroSensor().hasNo2());
+                    sensorBuilder.setNo2Data(sensoroSensorTest.no2.data_float);
+                    sensorBuilder.setHasNo2(sensoroSensorTest.hasNo2);
                 }
-                if (targetDevice.getSensoroSensor().hasCh4()) {
+                if (sensoroSensorTest.hasCh4) {
                     sensorBuilder.setCh4AlarmHigh(ch4AlarmHigh);
-                    sensorBuilder.setCh4Data(targetDevice.getSensoroSensor().getCh4());
-                    sensorBuilder.setHasCh4(targetDevice.getSensoroSensor().hasCh4());
+                    sensorBuilder.setCh4Data(sensoroSensorTest.ch4.data_float);
+                    sensorBuilder.setHasCh4(sensoroSensorTest.hasCh4);
                 }
-                if (targetDevice.getSensoroSensor().hasLpg()) {
+                if (sensoroSensorTest.hasLpg) {
                     sensorBuilder.setLpgAlarmHigh(lpgAlarmHigh);
-                    sensorBuilder.setLpgData(targetDevice.getSensoroSensor().getLpg());
-                    sensorBuilder.setHasLpg(targetDevice.getSensoroSensor().hasLpg());
+                    sensorBuilder.setLpgData(sensoroSensorTest.lpg.data_float);
+                    sensorBuilder.setHasLpg(sensoroSensorTest.hasLpg);
                 }
-                if (targetDevice.getSensoroSensor().hasPm10()) {
+                if (sensoroSensorTest.hasPm10) {
                     sensorBuilder.setPm10AlarmHigh(pm10AlarmHigh);
-                    sensorBuilder.setPm10Data(targetDevice.getSensoroSensor().getPm10());
-                    sensorBuilder.setHasPm10(targetDevice.getSensoroSensor().hasPm10());
+                    sensorBuilder.setPm10Data(sensoroSensorTest.pm10.data_float);
+                    sensorBuilder.setHasPm10(sensoroSensorTest.hasPm10);
                 }
-                if (targetDevice.getSensoroSensor().hasPm25()) {
+                if (sensoroSensorTest.hasPm25) {
                     sensorBuilder.setPm25AlarmHigh(pm25AlarmHigh);
-                    sensorBuilder.setPm25Data(targetDevice.getSensoroSensor().getPm25());
-                    sensorBuilder.setHasPm25(targetDevice.getSensoroSensor().hasPm25());
+                    sensorBuilder.setPm25Data(sensoroSensorTest.pm25.data_float);
+                    sensorBuilder.setHasPm25(sensoroSensorTest.hasPm25);
                 }
-                if (targetDevice.getSensoroSensor().hasTemperature()) {
+                if (sensoroSensorTest.hasTemperature) {
                     sensorBuilder.setTempAlarmHigh(tempAlarmHigh);
                     sensorBuilder.setTempAlarmLow(tempAlarmLow);
-                    sensorBuilder.setHasTemperature(targetDevice.getSensoroSensor().hasTemperature());
+                    sensorBuilder.setHasTemperature(sensoroSensorTest.hasTemperature);
                 }
-                if (targetDevice.getSensoroSensor().hasHumidity()) {
+                if (sensoroSensorTest.hasHumidity) {
                     sensorBuilder.setHumidityHigh(humidityAlarmHigh);
                     sensorBuilder.setHumidityLow(humidityAlarmLow);
-                    sensorBuilder.setHasHumidity(targetDevice.getSensoroSensor().hasHumidity());
+                    sensorBuilder.setHasHumidity(sensoroSensorTest.hasHumidity);
                 }
-                if (targetDevice.getSensoroSensor().hasPitchAngle()) {
+                if (sensoroSensorTest.hasPitch) {
                     sensorBuilder.setPitchAngleAlarmHigh(pitchAngleAlarmHigh);
                     sensorBuilder.setPitchAngleAlarmLow(pitchAngleAlarmLow);
-                    sensorBuilder.setHasPitchAngle(targetDevice.getSensoroSensor().hasPitchAngle());
+                    sensorBuilder.setHasPitchAngle(sensoroSensorTest.hasPitch);
                 }
-                if (targetDevice.getSensoroSensor().hasRollAngle()) {
+                if (sensoroSensorTest.hasRoll) {
                     sensorBuilder.setRollAngleAlarmHigh(rollAngleAlarmHigh);
                     sensorBuilder.setRollAngleAlarmLow(rollAngleAlarmLow);
-                    sensorBuilder.setHasRollAngle(targetDevice.getSensoroSensor().hasRollAngle());
+                    sensorBuilder.setHasRollAngle(sensoroSensorTest.hasRoll);
                 }
-                if (targetDevice.getSensoroSensor().hasYawAngle()) {
+                if (sensoroSensorTest.hasYaw) {
                     sensorBuilder.setYawAngleAlarmHigh(yawAngleAlarmHigh);
                     sensorBuilder.setYawAngleAlarmLow(yawAngleAlarmLow);
-                    sensorBuilder.setHasYawAngle(targetDevice.getSensoroSensor().hasYawAngle());
+                    sensorBuilder.setHasYawAngle(sensoroSensorTest.hasYaw);
                 }
-                if (targetDevice.getSensoroSensor().hasWaterPressure()) {
+                if (sensoroSensorTest.hasWaterPressure) {
                     sensorBuilder.setWaterPressureAlarmHigh(waterPressureAlarmHigh);
                     sensorBuilder.setWaterPressureAlarmLow(waterPressureAlarmLow);
-                    sensorBuilder.setHasWaterPressure(targetDevice.getSensoroSensor().hasWaterPressure());
+                    sensorBuilder.setHasWaterPressure(sensoroSensorTest.hasWaterPressure);
                 }
             }
 
@@ -1354,7 +1360,8 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                     .setDevAdr(targetDevice.getDevAdr())
                     .setLoraDr(targetDevice.getLoraDr())
                     .setLoraAdr(targetDevice.getLoraAdr());
-            if (targetDevice.getPassword() == null || (targetDevice.getPassword() != null && !targetDevice.getPassword().equals(""))) {
+            if (targetDevice.getPassword() == null || (targetDevice.getPassword() != null && !targetDevice
+                    .getPassword().equals(""))) {
                 builder.setPassword(targetDevice.getPassword());
             }
             SensoroSensorConfiguration sensorConfiguration = sensorBuilder.build();
@@ -1398,8 +1405,10 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                 if (cmd == CmdType.CMD_SET_SMOKE) {
                     connectDeviceWithCommand();
                 } else {
-                    progressDialog.setMessage(getString(R.string.device) + targetDevice.getSn() + getString(R.string.save_succ));
-//                Toast.makeText(getApplicationContext(), getString(R.string.device) + targetDevice.getSn() + getString(R.string.save_succ), Toast.LENGTH_SHORT).show();
+                    progressDialog.setMessage(getString(R.string.device) + targetDevice.getSn() + getString(R.string
+                            .save_succ));
+//                Toast.makeText(getApplicationContext(), getString(R.string.device) + targetDevice.getSn() +
+// getString(R.string.save_succ), Toast.LENGTH_SHORT).show();
                     switch (targetDevice.getDataVersion()) {
                         case SensoroDeviceConnection.DATA_VERSION_05:
                             postUpdateData05();
@@ -1422,8 +1431,10 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
             @Override
             public void run() {
                 System.out.println("写入失败,错误码=====>" + errorCode);
-                progressDialog.setMessage(getString(R.string.device) + targetDevice.getSn() + getString(R.string.save_fail) + " 错误码" + errorCode);
-//                Toast.makeText(getApplicationContext(), getString(R.string.device) + targetDevice.getSn() + getString(R.string.save_fail), Toast.LENGTH_SHORT).show();
+                progressDialog.setMessage(getString(R.string.device) + targetDevice.getSn() + getString(R.string
+                        .save_fail) + " 错误码" + errorCode);
+//                Toast.makeText(getApplicationContext(), getString(R.string.device) + targetDevice.getSn() +
+// getString(R.string.save_fail), Toast.LENGTH_SHORT).show();
                 save();
             }
         });
@@ -1433,7 +1444,7 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
 
     @Override
     public void onConnectedSuccess(BLEDevice bleDevice, int cmd) {
-        System.out.println(bleDevice.getSn() + "连接成功=====>" );
+        System.out.println(bleDevice.getSn() + "连接成功=====>");
         if (cmd == CmdType.CMD_SET_SMOKE) {
             if (targetDeviceIndex < (targetDeviceList.size() - 1)) {
                 targetDeviceIndex++;
@@ -1475,9 +1486,11 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
             @Override
             public void run() {
                 System.out.println("连接错误,错误码=====>" + errorCode);
-//                Toast.makeText(getApplicationContext(), getString(R.string.device) + targetDevice.getSn() + getString(R.string.connect_failed), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), getString(R.string.device) + targetDevice.getSn() +
+// getString(R.string.connect_failed), Toast.LENGTH_SHORT).show();
                 if (targetDeviceIndex != 0) {
-                    progressDialog.setMessage(getString(R.string.device) + targetDevice.getSn() + getString(R.string.connect_failed));
+                    progressDialog.setMessage(getString(R.string.device) + targetDevice.getSn() + getString(R.string
+                            .connect_failed));
                     save();
                 } else {
                     Toast.makeText(application, R.string.connect_failed, Toast.LENGTH_SHORT).show();
@@ -1497,7 +1510,8 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
         try {
             if (targetDeviceIndex != 0) {
                 progressDialog.setTitle(getString(R.string.settings));
-                progressDialog.setMessage(getString(R.string.device) + targetDevice.getSn() + getString(R.string.saving));
+                progressDialog.setMessage(getString(R.string.device) + targetDevice.getSn() + getString(R.string
+                        .saving));
             } else {
                 progressDialog.setMessage(getString(R.string.connecting));
             }
@@ -1706,72 +1720,73 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
         }
 
         if (targetDevice.hasSensorParam()) {
-            if (targetDevice.getSensoroSensor().hasCo()) {
+            SensoroSensorTest sensoroSensorTest = targetDevice.getSensoroSensorTest();
+            if (sensoroSensorTest.hasCo) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
                 builder.setAlarmHigh(coAlarmHigh);
                 msgCfgBuilder.setCo(builder);
             }
-            if (targetDevice.getSensoroSensor().hasCo2()) {
+            if (sensoroSensorTest.hasCo2) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
                 builder.setAlarmHigh(co2AlarmHigh);
                 msgCfgBuilder.setCo2(builder);
             }
-            if (targetDevice.getSensoroSensor().hasNo2()) {
+            if (sensoroSensorTest.hasNo2) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
                 builder.setAlarmHigh(no2AlarmHigh);
                 msgCfgBuilder.setNo2(builder);
             }
-            if (targetDevice.getSensoroSensor().hasCh4()) {
+            if (sensoroSensorTest.hasCh4) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
                 builder.setAlarmHigh(ch4AlarmHigh);
                 msgCfgBuilder.setCh4(builder);
             }
-            if (targetDevice.getSensoroSensor().hasLpg()) {
+            if (sensoroSensorTest.hasLpg) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
                 builder.setAlarmHigh(lpgAlarmHigh);
                 msgCfgBuilder.setLpg(builder);
             }
-            if (targetDevice.getSensoroSensor().hasPm10()) {
+            if (sensoroSensorTest.hasPm10) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
                 builder.setAlarmHigh(pm10AlarmHigh);
                 msgCfgBuilder.setPm10(builder);
             }
-            if (targetDevice.getSensoroSensor().hasPm25()) {
+            if (sensoroSensorTest.hasPm25) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
                 builder.setAlarmHigh(pm25AlarmHigh);
                 msgCfgBuilder.setPm25(builder);
             }
-            if (targetDevice.getSensoroSensor().hasTemperature()) {
+            if (sensoroSensorTest.hasTemperature) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
                 builder.setAlarmHigh(tempAlarmHigh);
                 builder.setAlarmLow(tempAlarmLow);
                 msgCfgBuilder.setTemperature(builder);
             }
-            if (targetDevice.getSensoroSensor().hasHumidity()) {
+            if (sensoroSensorTest.hasHumidity) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
                 builder.setAlarmHigh(humidityAlarmHigh);
                 builder.setAlarmLow(humidityAlarmLow);
                 msgCfgBuilder.setHumidity(builder);
             }
-            if (targetDevice.getSensoroSensor().hasPitchAngle()) {
+            if (sensoroSensorTest.hasPitch) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
                 builder.setAlarmHigh(pitchAngleAlarmHigh);
                 builder.setAlarmLow(pitchAngleAlarmLow);
                 msgCfgBuilder.setPitch(builder);
             }
-            if (targetDevice.getSensoroSensor().hasRollAngle()) {
+            if (sensoroSensorTest.hasRoll) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
                 builder.setAlarmHigh(rollAngleAlarmHigh);
                 builder.setAlarmLow(rollAngleAlarmLow);
                 msgCfgBuilder.setRoll(builder);
             }
-            if (targetDevice.getSensoroSensor().hasYawAngle()) {
+            if (sensoroSensorTest.hasYaw) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
                 builder.setAlarmHigh(yawAngleAlarmHigh);
                 builder.setAlarmLow(yawAngleAlarmLow);
                 msgCfgBuilder.setYaw(builder);
             }
-            if (targetDevice.getSensoroSensor().hasWaterPressure()) {
+            if (sensoroSensorTest.hasWaterPressure) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
                 builder.setAlarmHigh(waterPressureAlarmHigh);
                 builder.setAlarmLow(waterPressureAlarmLow);
@@ -1934,20 +1949,23 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
         switch (index) {
             case STATUS_SLOT_DISABLED:
                 eddyStoneSlot1Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot1Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot1Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot1Item2Layout.setVisibility(GONE);
                 eddyStoneSlot1Iv2.setVisibility(GONE);
                 break;
             case STATUS_SLOT_UID:
                 eddyStoneSlot1Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot1Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot1Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot1Item2.setText(this.getString(R.string.slot5_name));
                 eddyStoneSlot1Item2Value.setText(this.getString(R.string.text_null));
                 eddyStoneSlot1Item2Layout.setVisibility(VISIBLE);
                 break;
             case STATUS_SLOT_URL:
                 eddyStoneSlot1Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot1Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot1Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot1Item2.setText(this.getString(R.string.slot6_name));
                 eddyStoneSlot1Item2Value.setText(this.getString(R.string.text_null));
                 eddyStoneSlot1Item2Layout.setVisibility(VISIBLE);
@@ -1956,13 +1974,15 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                 eddyStoneSlot1Item2Layout.setVisibility(VISIBLE);
                 eddyStoneSlot1Iv2.setVisibility(VISIBLE);
                 eddyStoneSlot1Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot1Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot1Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot1Item2.setText(this.getString(R.string.eid_list));
                 eddyStoneSlot1Item2Value.setText(this.getString(R.string.text_null));
                 break;
             case STATUS_SLOT_TLM:
                 eddyStoneSlot1Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot1Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot1Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot1Iv2.setVisibility(GONE);
                 eddyStoneSlot1Item2Layout.setVisibility(GONE);
                 break;
@@ -1979,21 +1999,24 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
         switch (index) {
             case STATUS_SLOT_DISABLED:
                 eddyStoneSlot2Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot2Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot2Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot2Iv2.setVisibility(GONE);
                 eddyStoneSlot2Item2Value.setText(this.getString(R.string.text_null));
                 eddyStoneSlot2Item2Layout.setVisibility(GONE);
                 break;
             case STATUS_SLOT_UID:
                 eddyStoneSlot2Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot2Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot2Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot2Item2.setText(this.getString(R.string.slot5_name));
                 eddyStoneSlot2Item2Layout.setVisibility(VISIBLE);
 
                 break;
             case STATUS_SLOT_URL:
                 eddyStoneSlot2Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot2Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot2Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot2Item2.setText(this.getString(R.string.slot6_name));
                 eddyStoneSlot2Item2Value.setText(this.getString(R.string.text_null));
                 eddyStoneSlot2Item2Layout.setVisibility(VISIBLE);
@@ -2003,13 +2026,15 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                 eddyStoneSlot2Item2Layout.setVisibility(VISIBLE);
                 eddyStoneSlot2Iv2.setVisibility(VISIBLE);
                 eddyStoneSlot2Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot2Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot2Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot2Item2.setText(this.getString(R.string.eid_list));
                 eddyStoneSlot2Item2Value.setText(this.getString(R.string.text_null));
                 break;
             case STATUS_SLOT_TLM:
                 eddyStoneSlot2Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot2Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot2Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot2Item2Layout.setVisibility(GONE);
                 eddyStoneSlot2Iv2.setVisibility(GONE);
                 break;
@@ -2026,33 +2051,38 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
         switch (index) {
             case STATUS_SLOT_DISABLED:
                 eddyStoneSlot3Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot3Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot3Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot3Item2Layout.setVisibility(GONE);
                 eddyStoneSlot2Iv2.setVisibility(GONE);
                 break;
             case STATUS_SLOT_UID:
                 eddyStoneSlot3Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot3Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot3Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot3Item2.setText(this.getString(R.string.slot5_name));
                 eddyStoneSlot3Item2Value.setText(this.getString(R.string.text_null));
                 eddyStoneSlot3Item2Layout.setVisibility(VISIBLE);
                 break;
             case STATUS_SLOT_URL:
                 eddyStoneSlot3Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot3Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot3Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot3Item2.setText(this.getString(R.string.slot6_name));
                 eddyStoneSlot3Item2Layout.setVisibility(VISIBLE);
                 break;
             case STATUS_SLOT_EID:
                 eddyStoneSlot3Item2Layout.setVisibility(VISIBLE);
                 eddyStoneSlot3Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot3Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot3Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot3Item2.setText(this.getString(R.string.eid_list));
                 eddyStoneSlot3Iv2.setVisibility(VISIBLE);
                 break;
             case STATUS_SLOT_TLM:
                 eddyStoneSlot3Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot3Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot3Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot3Item2Layout.setVisibility(GONE);
                 eddyStoneSlot3Iv2.setVisibility(GONE);
                 break;
@@ -2069,20 +2099,23 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
         switch (index) {
             case STATUS_SLOT_DISABLED:
                 eddyStoneSlot4Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot4Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot4Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot4Item2Layout.setVisibility(GONE);
                 eddyStoneSlot4Iv2.setVisibility(GONE);
                 break;
             case STATUS_SLOT_UID:
                 eddyStoneSlot4Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot4Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot4Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot4Item2.setText(this.getString(R.string.slot5_name));
                 eddyStoneSlot4Item2Value.setText(this.getString(R.string.text_null));
                 eddyStoneSlot4Item2Layout.setVisibility(VISIBLE);
                 break;
             case STATUS_SLOT_URL:
                 eddyStoneSlot4Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot4Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot4Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot4Item2.setText(this.getString(R.string.slot6_name));
                 eddyStoneSlot4Item2Layout.setVisibility(VISIBLE);
 
@@ -2090,14 +2123,16 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
             case STATUS_SLOT_EID:
                 eddyStoneSlot4Item2Layout.setVisibility(VISIBLE);
                 eddyStoneSlot3Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot4Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot4Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot4Item2.setText(this.getString(R.string.eid_list));
                 eddyStoneSlot4Item2Value.setText(this.getString(R.string.text_null));
                 eddyStoneSlot4Iv2.setVisibility(VISIBLE);
                 break;
             case STATUS_SLOT_TLM:
                 eddyStoneSlot4Item1.setText(this.getString(R.string.slot1_name));
-                eddyStoneSlot4Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)[index]);
+                eddyStoneSlot4Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
+                        [index]);
                 eddyStoneSlot4Item2Layout.setVisibility(GONE);
                 eddyStoneSlot4Iv2.setVisibility(GONE);
                 break;
@@ -2296,7 +2331,8 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                     break;
                 case R.id.settings_multi_tv_save:
                     if (targetDeviceIndex == 0) {
-                        progressDialog.setMessage(getString(R.string.device) + targetDevice.getSn() + getString(R.string.saving));
+                        progressDialog.setMessage(getString(R.string.device) + targetDevice.getSn() + getString(R
+                                .string.saving));
                         progressDialog.show();
                         saveConfiguration();
                     } else {
@@ -2421,7 +2457,7 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                     loraTxpTextView.setText("" + loraTxp);
                 }
 
-            }  else if (tag.equals(SETTINGS_LORA_EIRP)) {
+            } else if (tag.equals(SETTINGS_LORA_EIRP)) {
                 int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
                 loraTxp = index;
                 loraEirpTextView.setText(loraEirpValues[loraTxp]);
@@ -2453,7 +2489,8 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                 String text = bundle.getString(SettingsInputDialogFragment.INPUT);
                 String regString = "[a-f0-9A-F]{32}";
                 if (!Pattern.matches(regString, text)) {
-                    SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(eddyStoneSlot1Item2Value.getText().toString());
+                    SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance
+                            (eddyStoneSlot1Item2Value.getText().toString());
                     dialogFragment.show(getFragmentManager(), SETTINGS_EDDYSTONE1_UID);
                     Toast.makeText(this, R.string.invaild_uid, Toast.LENGTH_SHORT).show();
                 } else {
@@ -2467,7 +2504,8 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                             .compile("(http|https):\\/\\/\\S*");
                     Matcher matcher2 = pattern2.matcher(text);
                     if (!matcher2.matches()) {
-                        SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(eddyStoneSlot1Item2Value.getText().toString());
+                        SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance
+                                (eddyStoneSlot1Item2Value.getText().toString());
                         dialogFragment.show(getFragmentManager(), SETTINGS_EDDYSTONE1_URL);
                         Toast.makeText(this, R.string.invaild_url, Toast.LENGTH_SHORT).show();
                     } else {
@@ -2480,7 +2518,8 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                 String text = bundle.getString(SettingsInputDialogFragment.INPUT);
                 String regString = "[a-f0-9A-F]{32}";
                 if (!Pattern.matches(regString, text)) {
-                    SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(eddyStoneSlot2Item2Value.getText().toString());
+                    SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance
+                            (eddyStoneSlot2Item2Value.getText().toString());
                     dialogFragment.show(getFragmentManager(), SETTINGS_EDDYSTONE2_UID);
                     Toast.makeText(this, R.string.invaild_uid, Toast.LENGTH_SHORT).show();
                 } else {
@@ -2494,7 +2533,8 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                             .compile("(http|https):\\/\\/\\S*");
                     Matcher matcher2 = pattern2.matcher(text);
                     if (!matcher2.matches()) {
-                        SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(eddyStoneSlot2Item2Value.getText().toString());
+                        SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance
+                                (eddyStoneSlot2Item2Value.getText().toString());
                         dialogFragment.show(getFragmentManager(), SETTINGS_EDDYSTONE2_URL);
                         Toast.makeText(this, R.string.invaild_url, Toast.LENGTH_SHORT).show();
                     } else {
@@ -2507,7 +2547,8 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                 String text = bundle.getString(SettingsInputDialogFragment.INPUT);
                 String regString = "[a-f0-9A-F]{32}";
                 if (!Pattern.matches(regString, text)) {
-                    SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(eddyStoneSlot3Item2Value.getText().toString());
+                    SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance
+                            (eddyStoneSlot3Item2Value.getText().toString());
                     dialogFragment.show(getFragmentManager(), SETTINGS_EDDYSTONE3_UID);
                     Toast.makeText(this, R.string.invaild_uid, Toast.LENGTH_SHORT).show();
                 } else {
@@ -2521,7 +2562,8 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                             .compile("(http|https):\\/\\/\\S*");
                     Matcher matcher2 = pattern2.matcher(text);
                     if (!matcher2.matches()) {
-                        SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(eddyStoneSlot3Item2Value.getText().toString());
+                        SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance
+                                (eddyStoneSlot3Item2Value.getText().toString());
                         dialogFragment.show(getFragmentManager(), SETTINGS_EDDYSTONE3_URL);
                         Toast.makeText(this, R.string.invaild_url, Toast.LENGTH_SHORT).show();
                     } else {
@@ -2534,7 +2576,8 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                 String text = bundle.getString(SettingsInputDialogFragment.INPUT);
                 String regString = "[a-f0-9A-F]{32}";
                 if (!Pattern.matches(regString, text)) {
-                    SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(eddyStoneSlot4Item2Value.getText().toString());
+                    SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance
+                            (eddyStoneSlot4Item2Value.getText().toString());
                     dialogFragment.show(getFragmentManager(), SETTINGS_EDDYSTONE4_UID);
                     Toast.makeText(this, R.string.invaild_uid, Toast.LENGTH_SHORT).show();
                 } else {
@@ -2548,7 +2591,8 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                             .compile("(http|https):\\/\\/\\S*");
                     Matcher matcher2 = pattern2.matcher(text);
                     if (!matcher2.matches()) {
-                        SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(eddyStoneSlot4Item2Value.getText().toString());
+                        SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance
+                                (eddyStoneSlot4Item2Value.getText().toString());
                         dialogFragment.show(getFragmentManager(), SETTINGS_EDDYSTONE4_URL);
                         Toast.makeText(this, R.string.invaild_url, Toast.LENGTH_SHORT).show();
                     } else {
@@ -2580,12 +2624,14 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                 } else {
                     isSensorBroadcastEnabled = false;
                 }
-                sensorStatusTextView.setText(getResources().getStringArray(R.array.multi_status_array)[writeSensorIndex]);
+                sensorStatusTextView.setText(getResources().getStringArray(R.array.multi_status_array)
+                        [writeSensorIndex]);
             } else if (tag.equals(SETTINGS_CUSTOM_PACKAGE1)) {
                 String ctp1 = bundle.getString(SettingsInputDialogFragment.INPUT);
                 String regString = "[a-f0-9A-F]{1,56}";
                 if (!Pattern.matches(regString, ctp1)) {
-                    SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(custom_package1);
+                    SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance
+                            (custom_package1);
                     dialogFragment.show(getFragmentManager(), SETTINGS_CUSTOM_PACKAGE1);
                     Toast.makeText(this, R.string.invaild_custom, Toast.LENGTH_SHORT).show();
                 } else {
@@ -2596,7 +2642,8 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                 String ctp2 = bundle.getString(SettingsInputDialogFragment.INPUT);
                 String regString = "[a-f0-9A-F]{1,56}";
                 if (!Pattern.matches(regString, ctp2)) {
-                    SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(custom_package2);
+                    SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance
+                            (custom_package2);
                     dialogFragment.show(getFragmentManager(), SETTINGS_CUSTOM_PACKAGE2);
                     Toast.makeText(this, R.string.invaild_custom, Toast.LENGTH_SHORT).show();
                 } else {
@@ -2607,7 +2654,8 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                 String ctp3 = bundle.getString(SettingsInputDialogFragment.INPUT);
                 String regString = "[a-f0-9A-F]{1,56}";
                 if (!Pattern.matches(regString, ctp3)) {
-                    SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance(custom_package3);
+                    SettingsInputDialogFragment dialogFragment = SettingsInputDialogFragment.newInstance
+                            (custom_package3);
                     dialogFragment.show(getFragmentManager(), SETTINGS_CUSTOM_PACKAGE3);
                     Toast.makeText(this, R.string.invaild_custom, Toast.LENGTH_SHORT).show();
                 } else {
@@ -2616,7 +2664,8 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                 }
             } else if (tag.equals(SETTINGS_CUSTOM_PACKAGE1_STATUS)) {
                 int writeCustom1Index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
-                customPackage1TextView.setText(getResources().getStringArray(R.array.multi_status_array)[writeCustom1Index]);
+                customPackage1TextView.setText(getResources().getStringArray(R.array.multi_status_array)
+                        [writeCustom1Index]);
                 if (writeCustom1Index == 1) {
                     isCustomPackage1Enabled = true;
                     customPackage1ValueRelativeLayout.setVisibility(VISIBLE);
@@ -2634,7 +2683,8 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                 }
             } else if (tag.equals(SETTINGS_CUSTOM_PACKAGE2_STATUS)) {
                 int writeCustom2Index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
-                customPackage2TextView.setText(getResources().getStringArray(R.array.multi_status_array)[writeCustom2Index]);
+                customPackage2TextView.setText(getResources().getStringArray(R.array.multi_status_array)
+                        [writeCustom2Index]);
                 if (writeCustom2Index == 1) {
                     isCustomPackage2Enabled = true;
                     customPackage2ValueRelativeLayout.setVisibility(VISIBLE);
@@ -2652,7 +2702,8 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                 }
             } else if (tag.equals(SETTINGS_CUSTOM_PACKAGE3_STATUS)) {
                 int writeCustom3Index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
-                customPackage3TextView.setText(getResources().getStringArray(R.array.multi_status_array)[writeCustom3Index]);
+                customPackage3TextView.setText(getResources().getStringArray(R.array.multi_status_array)
+                        [writeCustom3Index]);
                 if (writeCustom3Index == 1) {
                     isCustomPackage3Enabled = true;
                     customPackage3ValueRelativeLayout.setVisibility(VISIBLE);
@@ -2674,7 +2725,7 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                     this.coAlarmHigh = Float.valueOf(co).intValue();
                     coTextView.setText(co + "");
                 } else {
-                    this.coAlarmHigh = targetDevice.getSensoroSensor().getCoAlarmHigh();
+                    this.coAlarmHigh = targetDevice.getSensoroSensorTest().co.alarmHigh_float;
                 }
 
             } else if (tag.equals(SETTINGS_SENSOR_CO2)) {
@@ -2683,7 +2734,7 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                     this.co2AlarmHigh = Float.valueOf(co2).intValue();
                     co2TextView.setText(co2 + "");
                 } else {
-                    this.co2AlarmHigh = targetDevice.getSensoroSensor().getCo2AlarmHigh();
+                    this.co2AlarmHigh = targetDevice.getSensoroSensorTest().co2.alarmHigh_float;
                 }
 
             } else if (tag.equals(SETTINGS_SENSOR_NO2)) {
@@ -2693,7 +2744,7 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                     this.no2AlarmHigh = Float.valueOf(no2).intValue();
                     no2TextView.setText(no2 + "");
                 } else {
-                    this.no2AlarmHigh = targetDevice.getSensoroSensor().getNo2AlarmHigh();
+                    this.no2AlarmHigh = targetDevice.getSensoroSensorTest().no2.alarmHigh_float;
                 }
 
             } else if (tag.equals(SETTINGS_SENSOR_CH4)) {
@@ -2703,7 +2754,7 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                     this.ch4AlarmHigh = Float.valueOf(ch4).intValue();
                     ch4TextView.setText(ch4 + "");
                 } else {
-                    this.ch4AlarmHigh = targetDevice.getSensoroSensor().getCh4AlarmHigh();
+                    this.ch4AlarmHigh = targetDevice.getSensoroSensorTest().ch4.alarmHigh_float;
                 }
 
             } else if (tag.equals(SETTINGS_SENSOR_LPG)) {
@@ -2713,7 +2764,7 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                     this.lpgAlarmHigh = Float.valueOf(lpg).intValue();
                     lpgTextView.setText(lpg + " ");
                 } else {
-                    this.lpgAlarmHigh = targetDevice.getSensoroSensor().getLpgAlarmHigh();
+                    this.lpgAlarmHigh = targetDevice.getSensoroSensorTest().lpg.alarmHigh_float;
                 }
 
             } else if (tag.equals(SETTINGS_SENSOR_PM25)) {
@@ -2722,7 +2773,7 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                     this.pm25AlarmHigh = Float.valueOf(pm25).intValue();
                     pm25TextView.setText(pm25 + "");
                 } else {
-                    this.pm25AlarmHigh = targetDevice.getSensoroSensor().getPm25AlarmHigh();
+                    this.pm25AlarmHigh = targetDevice.getSensoroSensorTest().pm25.alarmHigh_float;
                 }
 
             } else if (tag.equals(SETTINGS_SENSOR_PM10)) {
@@ -2731,7 +2782,7 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                     this.pm10AlarmHigh = Float.valueOf(pm10).intValue();
                     pm10TextView.setText(pm10 + "");
                 } else {
-                    this.pm10AlarmHigh = targetDevice.getSensoroSensor().getPm10AlarmHigh();
+                    this.pm10AlarmHigh = targetDevice.getSensoroSensorTest().pm10.alarmHigh_float;
                 }
 
             } else if (tag.equals(SETTINGS_SENSOR_TEMP_UPPER)) {
@@ -2740,7 +2791,7 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                     this.tempAlarmHigh = Float.valueOf(tempHigh).intValue();
                     tempUpperTextView.setText(tempHigh + "");
                 } else {
-                    this.tempAlarmHigh = targetDevice.getSensoroSensor().getTempAlarmHigh();
+                    this.tempAlarmHigh = targetDevice.getSensoroSensorTest().temperature.alarmHigh_float;
                 }
 
             } else if (tag.equals(SETTINGS_SENSOR_TEMP_LOWER)) {
@@ -2749,7 +2800,7 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                     this.tempAlarmLow = Float.valueOf(tempLow).intValue();
                     tempLowerTextView.setText(tempLow + "");
                 } else {
-                    this.tempAlarmLow = targetDevice.getSensoroSensor().getTempAlarmLow();
+                    this.tempAlarmLow = targetDevice.getSensoroSensorTest().temperature.alarmLow_float;
                 }
 
             } else if (tag.equals(SETTINGS_SENSOR_HUMIDITY_UPPER)) {
@@ -2758,7 +2809,7 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                     this.humidityAlarmHigh = Float.valueOf(humidityHigh).intValue();
                     humidityUpperTextView.setText(humidityHigh + "");
                 } else {
-                    this.humidityAlarmHigh = targetDevice.getSensoroSensor().getHumidityAlarmHigh();
+                    this.humidityAlarmHigh = targetDevice.getSensoroSensorTest().humidity.alarmHigh_float;
                 }
 
             } else if (tag.equals(SETTINGS_SENSOR_HUMIDITY_LOWER)) {
@@ -2767,7 +2818,7 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                     this.humidityAlarmLow = Float.valueOf(humidityLow).intValue();
                     humidityLowerTextView.setText(humidityLow + "");
                 } else {
-                    this.humidityAlarmLow = targetDevice.getSensoroSensor().getHumidityAlarmLow();
+                    this.humidityAlarmLow = targetDevice.getSensoroSensorTest().humidity.alarmLow_float;
                 }
 
             } else if (tag.equals(SETTINGS_SENSOR_PITCH_ANGLE_UPPER)) {

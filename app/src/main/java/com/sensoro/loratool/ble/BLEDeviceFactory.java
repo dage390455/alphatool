@@ -71,7 +71,8 @@ public class BLEDeviceFactory {
             bleDevice.setHardwareVersion(hardwareVersion);
 
             int firmwareCode = (int) hardware[1] & 0xff;
-            String firmwareVersion = Integer.toHexString(firmwareCode / 16).toUpperCase() + "." + Integer.toHexString(firmwareCode % 16).toUpperCase();
+            String firmwareVersion = Integer.toHexString(firmwareCode / 16).toUpperCase() + "." + Integer.toHexString
+                    (firmwareCode % 16).toUpperCase();
             bleDevice.setFirmwareVersion(firmwareVersion);
 
             int batteryLevel = ((int) device_data[10] & 0xff);
@@ -100,18 +101,17 @@ public class BLEDeviceFactory {
     }
 
     @Deprecated
-    public SensoroSensor createSensor() {
+    public SensoroSensorTest createSensor() {
         if (scanBLEResult == null) {
             return null;
         }
         try {
             E3214 e3214 = E3214.createE3214(scanBLEResult);
             if (e3214 != null) {
-                SensoroSensor sensoroSensor = new SensoroSensor();
+                SensoroSensorTest sensoroSensor = new SensoroSensorTest();
                 sensoroSensor.setHardwareVersion(e3214.hardwareVersion);
                 sensoroSensor.setFirmwareVersion(e3214.firmwareVersion);
                 sensoroSensor.setBatteryLevel(e3214.batteryLevel == null ? 0 : e3214.batteryLevel);
-                sensoroSensor.setAccelerometerCount(e3214.accelerometerCount);
                 String address = scanBLEResult.getDevice().getAddress();
                 sensoroSensor.setMacAddress(address);
                 sensoroSensor.setRssi(scanBLEResult.getRssi());
@@ -120,25 +120,38 @@ public class BLEDeviceFactory {
                 }
                 sensoroSensor.setSn(snMap.get(address));
 
-                if (e3214.humidity != null ) {
-                    humidityMap.put(address, (float)e3214.humidity);
-
+                sensoroSensor.humidity = new SensoroData();
+                if (e3214.humidity != null) {
+                    humidityMap.put(address, (float) e3214.humidity);
+                    sensoroSensor.hasHumidity = true;
+                    sensoroSensor.humidity.has_data = true;
                 }
-                sensoroSensor.setHumidity(humidityMap.get(address));
+                sensoroSensor.humidity.data_float = humidityMap.get(address);
+//                sensoroSensor.setHumidity(humidityMap.get(address));
 
-                if (e3214.temperature != null ) {
+                sensoroSensor.temperature = new SensoroData();
+                if (e3214.temperature != null) {
                     temperatureMap.put(address, e3214.temperature);
+                    sensoroSensor.hasTemperature = true;
+                    sensoroSensor.temperature.has_data = true;
                 }
-                sensoroSensor.setTemperature(temperatureMap.get(address));
+                sensoroSensor.temperature.data_float = temperatureMap.get(address);
+
+                sensoroSensor.light = new SensoroData();
                 if (e3214.light != null) {
                     lightMap.put(address, e3214.light);
+                    sensoroSensor.hasLight = true;
+                    sensoroSensor.light.has_data = true;
                 }
-                sensoroSensor.setLight(lightMap.get(address));
+                sensoroSensor.light.data_float = lightMap.get(address);
 
+                sensoroSensor.accelerometerCount = new SensoroData();
                 if (e3214.accelerometerCount != null) {
                     accelerometerCountMap.put(address, e3214.accelerometerCount);
+                    sensoroSensor.hasAccelerometerCount = true;
+                    sensoroSensor.accelerometerCount.has_data = true;
                 }
-                sensoroSensor.accelerometerCount = accelerometerCountMap.get(address);
+                sensoroSensor.accelerometerCount.data_int = accelerometerCountMap.get(address);
 
                 if (e3214.customize != null) {
                     customizeMap.put(address, e3214.customize);
@@ -146,98 +159,152 @@ public class BLEDeviceFactory {
                 sensoroSensor.customize = customizeMap.get(sensoroSensor.macAddress);
 
 
+                sensoroSensor.leak = new SensoroData();
                 if (e3214.leak != null) {
                     leakMap.put(sensoroSensor.macAddress, e3214.leak);
+                    sensoroSensor.hasLeak = true;
+                    sensoroSensor.leak.has_data = true;
                 }
-                sensoroSensor.leak = leakMap.get(sensoroSensor.macAddress) ;
-
+                sensoroSensor.leak.data_int = leakMap.get(sensoroSensor.macAddress);
+//TODO
+                sensoroSensor.co = new SensoroData();
                 if (e3214.co != null) {
                     coMap.put(sensoroSensor.macAddress, e3214.co);
+                    sensoroSensor.hasCo = true;
+                    sensoroSensor.co.has_data = true;
                 }
-                sensoroSensor.co = coMap.get(sensoroSensor.macAddress);
+                sensoroSensor.co.data_float = coMap.get(sensoroSensor.macAddress);
 
+                sensoroSensor.co2 = new SensoroData();
                 if (e3214.co2 != null) {
-                    co2Map.put(sensoroSensor.macAddress, e3214.co2) ;
+                    co2Map.put(sensoroSensor.macAddress, e3214.co2);
+                    sensoroSensor.hasCo2 = true;
+                    sensoroSensor.co2.has_data = true;
                 }
-                sensoroSensor.co2 = co2Map.get(sensoroSensor.macAddress);
+                sensoroSensor.co2.data_float = co2Map.get(sensoroSensor.macAddress);
 
+                sensoroSensor.no2 = new SensoroData();
                 if (e3214.no2 != null) {
                     no2Map.put(sensoroSensor.macAddress, e3214.no2);
+                    sensoroSensor.hasNo2 = true;
+                    sensoroSensor.no2.has_data = true;
                 }
-                sensoroSensor.no2 = no2Map.get(sensoroSensor.macAddress) ;
+                sensoroSensor.no2.data_float = no2Map.get(sensoroSensor.macAddress);
 
+                sensoroSensor.methane = new SensoroData();
                 if (e3214.methane != null) {
-                    methaneMap.put(sensoroSensor.macAddress , e3214.methane);
+                    methaneMap.put(sensoroSensor.macAddress, e3214.methane);
+                    sensoroSensor.hasMethane = true;
+                    sensoroSensor.methane.has_data = true;
                 }
-                sensoroSensor.methane = methaneMap.get(sensoroSensor.macAddress);
+                sensoroSensor.methane.data_float = methaneMap.get(sensoroSensor.macAddress);
 
+                sensoroSensor.lpg = new SensoroData();
                 if (e3214.lpg != null) {
-                    lpgMap.put(sensoroSensor.macAddress , e3214.lpg);
+                    lpgMap.put(sensoroSensor.macAddress, e3214.lpg);
+                    sensoroSensor.hasLpg = true;
+                    sensoroSensor.lpg.has_data = true;
                 }
-                sensoroSensor.lpg = lpgMap.get(sensoroSensor.macAddress);
+                sensoroSensor.lpg.data_float = lpgMap.get(sensoroSensor.macAddress);
 
+                sensoroSensor.pm1 = new SensoroData();
                 if (e3214.pm1 != null) {
                     pm1Map.put(sensoroSensor.macAddress, e3214.pm1);
+                    sensoroSensor.hasPm1 = true;
+                    sensoroSensor.pm1.has_data = true;
                 }
-                sensoroSensor.pm1 = pm1Map.get(sensoroSensor.macAddress);
+                sensoroSensor.pm1.data_float = pm1Map.get(sensoroSensor.macAddress);
 
+                sensoroSensor.pm25 = new SensoroData();
                 if (e3214.pm25 != null) {
                     pm25Map.put(sensoroSensor.macAddress, e3214.pm25);
+                    sensoroSensor.hasPm25 = true;
+                    sensoroSensor.pm25.has_data = true;
                 }
-                sensoroSensor.pm25 = pm25Map.get(sensoroSensor.macAddress);
+                sensoroSensor.pm25.data_float = pm25Map.get(sensoroSensor.macAddress);
 
+                sensoroSensor.pm10 = new SensoroData();
                 if (e3214.pm10 != null) {
                     pm10Map.put(sensoroSensor.macAddress, e3214.pm10);
+                    sensoroSensor.hasPm10 = true;
+                    sensoroSensor.pm10.has_data = true;
                 }
-                sensoroSensor.pm10 = pm10Map.get(sensoroSensor.macAddress);
+                sensoroSensor.pm10.data_float = pm10Map.get(sensoroSensor.macAddress);
 
+                sensoroSensor.coverStatus = new SensoroData();
                 if (e3214.coverstatus != null) {
-                    coverstatusMap.put(sensoroSensor.macAddress, (float)e3214.coverstatus);
+                    coverstatusMap.put(sensoroSensor.macAddress, (float) e3214.coverstatus);
+                    sensoroSensor.hasCover = true;
+                    sensoroSensor.coverStatus.has_data = true;
                 }
-                sensoroSensor.coverStatus = coverstatusMap.get(sensoroSensor.macAddress);
+                sensoroSensor.coverStatus.data_float = coverstatusMap.get(sensoroSensor.macAddress);
 
+                sensoroSensor.level = new SensoroData();
                 if (e3214.level != null) {
                     levelMap.put(sensoroSensor.macAddress, e3214.level);
+                    sensoroSensor.hasLevel = true;
+                    sensoroSensor.level.has_data = true;
                 }
-                sensoroSensor.level = levelMap.get(sensoroSensor.macAddress);
+                sensoroSensor.level.data_float = levelMap.get(sensoroSensor.macAddress);
 
+                sensoroSensor.pitch = new SensoroData();
                 if (e3214.pitchAngle != null) {
                     pitchAngleMap.put(sensoroSensor.macAddress, e3214.pitchAngle);
+                    sensoroSensor.hasPitch = true;
+                    sensoroSensor.pitch.has_data = true;
                 }
-                sensoroSensor.pitchAngle = pitchAngleMap.get(sensoroSensor.macAddress);
+                sensoroSensor.pitch.data_float = pitchAngleMap.get(sensoroSensor.macAddress);
 
+                sensoroSensor.roll = new SensoroData();
                 if (e3214.rollAngle != null) {
                     rollAngleMap.put(sensoroSensor.macAddress, e3214.rollAngle);
+                    sensoroSensor.hasRoll = true;
+                    sensoroSensor.roll.has_data = true;
                 }
-                sensoroSensor.rollAngle = rollAngleMap.get(sensoroSensor.macAddress);
+                sensoroSensor.roll.data_float = rollAngleMap.get(sensoroSensor.macAddress);
 
+                sensoroSensor.yaw = new SensoroData();
                 if (e3214.yawAngle != null) {
                     yawAngleMap.put(sensoroSensor.macAddress, e3214.yawAngle);
+                    sensoroSensor.hasYaw = true;
+                    sensoroSensor.yaw.has_data = true;
                 }
-                sensoroSensor.yawAngle = yawAngleMap.get(sensoroSensor.macAddress);
+                sensoroSensor.yaw.data_float = yawAngleMap.get(sensoroSensor.macAddress);
 
+                sensoroSensor.flame = new SensoroData();
                 if (e3214.flame != null) {
                     flameMap.put(sensoroSensor.macAddress, e3214.flame);
+                    sensoroSensor.hasFlame = true;
+                    sensoroSensor.flame.has_data = true;
                 }
-                sensoroSensor.flame = flameMap.get(sensoroSensor.macAddress);
+                sensoroSensor.flame.data_int = flameMap.get(sensoroSensor.macAddress);
 
+                sensoroSensor.gas = new SensoroData();
                 if (e3214.artificial_gas != null) {
                     gasMap.put(sensoroSensor.macAddress, e3214.artificial_gas);
+                    sensoroSensor.hasGas = true;
+                    sensoroSensor.gas.has_data = true;
                 }
-                sensoroSensor.gas = gasMap.get(sensoroSensor.macAddress);
+                sensoroSensor.gas.data_float = gasMap.get(sensoroSensor.macAddress);
 
+                sensoroSensor.smoke = new SensoroData();
                 if (e3214.smoke != null) {
                     smokeMap.put(sensoroSensor.macAddress, e3214.smoke);
+                    sensoroSensor.hasSmoke = true;
+                    sensoroSensor.smoke.has_data = true;
                 }
-                sensoroSensor.smokeStatus = smokeMap.get(sensoroSensor.macAddress);
+                sensoroSensor.smoke.data_int = smokeMap.get(sensoroSensor.macAddress);
 
+                sensoroSensor.waterPressure = new SensoroData();
                 if (e3214.pressure != null) {
                     pressureMap.put(sensoroSensor.macAddress, e3214.pressure);
+                    sensoroSensor.hasWaterPressure = true;
+                    sensoroSensor.waterPressure.has_data = true;
                 }
-                sensoroSensor.waterPressure = pressureMap.get(sensoroSensor.macAddress);
+                sensoroSensor.waterPressure.data_float = pressureMap.get(sensoroSensor.macAddress);
 
                 sensoroSensor.setType(BLEDevice.TYPE_SENSOR);
-                if(sensoroSensor.getSn() == null) {
+                if (sensoroSensor.getSn() == null) {
                     return null;
                 }
 
@@ -274,14 +341,15 @@ public class BLEDeviceFactory {
             bleDevice.setHardwareVersion(hardwareVersion);
 
             int firmwareCode = (int) hardware[1] & 0xff;
-            String firmwareVersion = Integer.toHexString(firmwareCode / 16).toUpperCase() + "." + Integer.toHexString(firmwareCode % 16).toUpperCase();
+            String firmwareVersion = Integer.toHexString(firmwareCode / 16).toUpperCase() + "." + Integer.toHexString
+                    (firmwareCode % 16).toUpperCase();
             bleDevice.setFirmwareVersion(firmwareVersion);
 
             int workStatus = ((int) station_data[10] & 0xff);
             bleDevice.setWorkStatus(workStatus);
             //03, 0c, 30
 //            int netStatus = ((int) station_data[11] & 0xff);
-            int wifiStatus = (int)station_data[11] & 0x03;
+            int wifiStatus = (int) station_data[11] & 0x03;
             int ethStatus = ((int) station_data[11] & 0x0c) >> 2;
             int celluarStatus = ((int) station_data[11] & 0x30) >> 4;
 //            bleDevice.setNetStatus(netStatus);
@@ -296,7 +364,7 @@ public class BLEDeviceFactory {
         return null;
     }
 
-    public  BLEDevice create() {
+    public BLEDevice create() {
         if (scanBLEResult == null) {
             return null;
         }
@@ -310,15 +378,14 @@ public class BLEDeviceFactory {
         byte sensor_data[] = scanBLEResult.getScanRecord().getServiceData(sensorParcelUuid);
         byte device_data[] = scanBLEResult.getScanRecord().getServiceData(deviceParcelUuid);
         byte station_data[] = scanBLEResult.getScanRecord().getServiceData(stationParcelUuid);
-        SensoroSensor sensoroSensor = null;
+        SensoroSensorTest sensoroSensor = null;
         if (sensor_data != null) {
             E3214 e3214 = E3214.parseE3214(sensor_data);
             if (e3214 != null) {
-                sensoroSensor = new SensoroSensor();
+                sensoroSensor = new SensoroSensorTest();
                 sensoroSensor.setHardwareVersion(e3214.hardwareVersion);
                 sensoroSensor.setFirmwareVersion(e3214.firmwareVersion);
                 sensoroSensor.setBatteryLevel(e3214.batteryLevel == null ? 0 : e3214.batteryLevel);
-                sensoroSensor.setAccelerometerCount(e3214.accelerometerCount);
                 String address = scanBLEResult.getDevice().getAddress();
                 sensoroSensor.setMacAddress(address);
                 sensoroSensor.setRssi(scanBLEResult.getRssi());
@@ -327,26 +394,36 @@ public class BLEDeviceFactory {
 
                 }
                 sensoroSensor.setSn(snMap.get(address));
-
+                sensoroSensor.humidity = new SensoroData();
                 if (e3214.humidity != null) {
                     humidityMap.put(address, (float) e3214.humidity);
-
+                    sensoroSensor.hasHumidity = true;
+                    sensoroSensor.humidity.has_data = true;
                 }
-                sensoroSensor.setHumidity(humidityMap.get(address));
-
+                sensoroSensor.humidity.data_float = humidityMap.get(address);
+                sensoroSensor.temperature = new SensoroData();
                 if (e3214.temperature != null) {
                     temperatureMap.put(address, e3214.temperature);
+                    sensoroSensor.hasTemperature = true;
+                    sensoroSensor.temperature.has_data = true;
                 }
-                sensoroSensor.setTemperature(temperatureMap.get(address));
+                sensoroSensor.temperature.data_float = temperatureMap.get(address);
+
+                sensoroSensor.light = new SensoroData();
                 if (e3214.light != null) {
                     lightMap.put(address, e3214.light);
+                    sensoroSensor.hasLight = true;
+                    sensoroSensor.light.has_data = true;
                 }
-                sensoroSensor.setLight(lightMap.get(address));
+                sensoroSensor.light.data_float = lightMap.get(address);
 
+                sensoroSensor.accelerometerCount = new SensoroData();
                 if (e3214.accelerometerCount != null) {
                     accelerometerCountMap.put(address, e3214.accelerometerCount);
+                    sensoroSensor.hasAccelerometerCount = true;
+                    sensoroSensor.accelerometerCount.has_data = true;
                 }
-                sensoroSensor.accelerometerCount = accelerometerCountMap.get(address);
+                sensoroSensor.accelerometerCount.data_int = accelerometerCountMap.get(address);
 
                 if (e3214.customize != null) {
                     customizeMap.put(address, e3214.customize);
@@ -354,95 +431,150 @@ public class BLEDeviceFactory {
                 sensoroSensor.customize = customizeMap.get(sensoroSensor.macAddress);
 
 
+                sensoroSensor.leak = new SensoroData();
                 if (e3214.leak != null) {
                     leakMap.put(sensoroSensor.macAddress, e3214.leak);
+                    sensoroSensor.hasLeak = true;
+                    sensoroSensor.leak.has_data = true;
                 }
-                sensoroSensor.leak = leakMap.get(sensoroSensor.macAddress);
+                sensoroSensor.leak.data_int = leakMap.get(sensoroSensor.macAddress);
 
+                sensoroSensor.co = new SensoroData();
                 if (e3214.co != null) {
                     coMap.put(sensoroSensor.macAddress, e3214.co);
+                    sensoroSensor.hasCo = true;
+                    sensoroSensor.co.has_data = true;
                 }
-                sensoroSensor.co = coMap.get(sensoroSensor.macAddress);
+                sensoroSensor.co.data_float = coMap.get(sensoroSensor.macAddress);
 
+                sensoroSensor.co2 = new SensoroData();
                 if (e3214.co2 != null) {
                     co2Map.put(sensoroSensor.macAddress, e3214.co2);
+                    sensoroSensor.hasCo2 = true;
+                    sensoroSensor.co2.has_data = true;
                 }
-                sensoroSensor.co2 = co2Map.get(sensoroSensor.macAddress);
+                sensoroSensor.co2.data_float = co2Map.get(sensoroSensor.macAddress);
 
+                sensoroSensor.no2 = new SensoroData();
                 if (e3214.no2 != null) {
                     no2Map.put(sensoroSensor.macAddress, e3214.no2);
+                    sensoroSensor.hasNo2 = true;
+                    sensoroSensor.no2.has_data = true;
                 }
-                sensoroSensor.no2 = no2Map.get(sensoroSensor.macAddress);
+                sensoroSensor.no2.data_float = no2Map.get(sensoroSensor.macAddress);
 
+                sensoroSensor.methane = new SensoroData();
                 if (e3214.methane != null) {
                     methaneMap.put(sensoroSensor.macAddress, e3214.methane);
+                    sensoroSensor.hasMethane = true;
+                    sensoroSensor.methane.has_data = true;
                 }
-                sensoroSensor.methane = methaneMap.get(sensoroSensor.macAddress);
+                sensoroSensor.methane.data_float = methaneMap.get(sensoroSensor.macAddress);
 
+                sensoroSensor.lpg = new SensoroData();
                 if (e3214.lpg != null) {
                     lpgMap.put(sensoroSensor.macAddress, e3214.lpg);
+                    sensoroSensor.hasLpg = true;
+                    sensoroSensor.lpg.has_data = true;
                 }
-                sensoroSensor.lpg = lpgMap.get(sensoroSensor.macAddress);
+                sensoroSensor.lpg.data_float = lpgMap.get(sensoroSensor.macAddress);
 
+                sensoroSensor.pm1 = new SensoroData();
                 if (e3214.pm1 != null) {
                     pm1Map.put(sensoroSensor.macAddress, e3214.pm1);
+                    sensoroSensor.hasPm1 = true;
+                    sensoroSensor.pm1.has_data = true;
                 }
-                sensoroSensor.pm1 = pm1Map.get(sensoroSensor.macAddress);
+                sensoroSensor.pm1.data_float = pm1Map.get(sensoroSensor.macAddress);
 
+                sensoroSensor.pm25 = new SensoroData();
                 if (e3214.pm25 != null) {
                     pm25Map.put(sensoroSensor.macAddress, e3214.pm25);
+                    sensoroSensor.hasPm25 = true;
+                    sensoroSensor.pm25.has_data = true;
                 }
-                sensoroSensor.pm25 = pm25Map.get(sensoroSensor.macAddress);
+                sensoroSensor.pm25.data_float = pm25Map.get(sensoroSensor.macAddress);
 
+                sensoroSensor.pm10 = new SensoroData();
                 if (e3214.pm10 != null) {
                     pm10Map.put(sensoroSensor.macAddress, e3214.pm10);
+                    sensoroSensor.hasPm10 = true;
+                    sensoroSensor.pm10.has_data = true;
                 }
-                sensoroSensor.pm10 = pm10Map.get(sensoroSensor.macAddress);
+                sensoroSensor.pm10.data_float = pm10Map.get(sensoroSensor.macAddress);
 
+                sensoroSensor.coverStatus = new SensoroData();
                 if (e3214.coverstatus != null) {
                     coverstatusMap.put(sensoroSensor.macAddress, (float) e3214.coverstatus);
+                    sensoroSensor.hasCover = true;
+                    sensoroSensor.coverStatus.has_data = true;
                 }
-                sensoroSensor.coverStatus = coverstatusMap.get(sensoroSensor.macAddress);
+                sensoroSensor.coverStatus.data_float = coverstatusMap.get(sensoroSensor.macAddress);
 
+                sensoroSensor.level = new SensoroData();
                 if (e3214.level != null) {
                     levelMap.put(sensoroSensor.macAddress, e3214.level);
+                    sensoroSensor.hasLevel = true;
+                    sensoroSensor.level.has_data = true;
                 }
-                sensoroSensor.level = levelMap.get(sensoroSensor.macAddress);
+                sensoroSensor.level.data_float = levelMap.get(sensoroSensor.macAddress);
 
+                sensoroSensor.pitch = new SensoroData();
                 if (e3214.pitchAngle != null) {
                     pitchAngleMap.put(sensoroSensor.macAddress, e3214.pitchAngle);
+                    sensoroSensor.hasPitch = true;
+                    sensoroSensor.pitch.has_data = true;
                 }
-                sensoroSensor.pitchAngle = pitchAngleMap.get(sensoroSensor.macAddress);
+                sensoroSensor.pitch.data_float = pitchAngleMap.get(sensoroSensor.macAddress);
 
+                sensoroSensor.roll = new SensoroData();
                 if (e3214.rollAngle != null) {
                     rollAngleMap.put(sensoroSensor.macAddress, e3214.rollAngle);
+                    sensoroSensor.hasRoll = true;
+                    sensoroSensor.roll.has_data = true;
                 }
-                sensoroSensor.rollAngle = rollAngleMap.get(sensoroSensor.macAddress);
+                sensoroSensor.roll.data_float = rollAngleMap.get(sensoroSensor.macAddress);
 
+                sensoroSensor.yaw = new SensoroData();
                 if (e3214.yawAngle != null) {
                     yawAngleMap.put(sensoroSensor.macAddress, e3214.yawAngle);
+                    sensoroSensor.hasYaw = true;
+                    sensoroSensor.yaw.has_data = true;
                 }
-                sensoroSensor.yawAngle = yawAngleMap.get(sensoroSensor.macAddress);
+                sensoroSensor.yaw.data_float = yawAngleMap.get(sensoroSensor.macAddress);
+
+                sensoroSensor.flame = new SensoroData();
                 if (e3214.flame != null) {
                     flameMap.put(sensoroSensor.macAddress, e3214.flame);
+                    sensoroSensor.hasFlame = true;
+                    sensoroSensor.flame.has_data = true;
                 }
-                sensoroSensor.flame = flameMap.get(sensoroSensor.macAddress);
+                sensoroSensor.flame.data_int = flameMap.get(sensoroSensor.macAddress);
 
+                sensoroSensor.gas = new SensoroData();
                 if (e3214.artificial_gas != null) {
                     gasMap.put(sensoroSensor.macAddress, e3214.artificial_gas);
+                    sensoroSensor.hasGas = true;
+                    sensoroSensor.gas.has_data = true;
                 }
-                sensoroSensor.gas = gasMap.get(sensoroSensor.macAddress);
+                sensoroSensor.gas.data_float = gasMap.get(sensoroSensor.macAddress);
 
+                sensoroSensor.smoke = new SensoroData();
                 if (e3214.smoke != null) {
                     smokeMap.put(sensoroSensor.macAddress, e3214.smoke);
+                    sensoroSensor.hasSmoke = true;
+                    sensoroSensor.smoke.has_data = true;
                 }
-                sensoroSensor.smokeStatus = smokeMap.get(sensoroSensor.macAddress);
+                sensoroSensor.smoke.data_int = smokeMap.get(sensoroSensor.macAddress);
 
+                sensoroSensor.waterPressure = new SensoroData();
                 if (e3214.pressure != null) {
                     pressureMap.put(sensoroSensor.macAddress, e3214.pressure);
+                    sensoroSensor.hasWaterPressure = true;
+                    sensoroSensor.waterPressure.has_data = true;
                 }
-                sensoroSensor.waterPressure = pressureMap.get(sensoroSensor.macAddress);
-
+                sensoroSensor.waterPressure.data_float = pressureMap.get(sensoroSensor.macAddress);
+                //
                 sensoroSensor.setType(BLEDevice.TYPE_SENSOR);
                 if (sensoroSensor.getSn() == null) {
                     sensoroSensor = null;
@@ -462,7 +594,8 @@ public class BLEDeviceFactory {
             bleDevice.setHardwareVersion(hardwareVersion);
 
             int firmwareCode = (int) hardware[1] & 0xff;
-            String firmwareVersion = Integer.toHexString(firmwareCode / 16).toUpperCase() + "." + Integer.toHexString(firmwareCode % 16).toUpperCase();
+            String firmwareVersion = Integer.toHexString(firmwareCode / 16).toUpperCase() + "." + Integer.toHexString
+                    (firmwareCode % 16).toUpperCase();
             bleDevice.setFirmwareVersion(firmwareVersion);
 
             int batteryLevel = ((int) device_data[10] & 0xff);
@@ -483,7 +616,7 @@ public class BLEDeviceFactory {
                 bleDevice.setDfu(false);
             }
             if (sensoroSensor != null) {
-                bleDevice.setSensoroSensor(sensoroSensor);
+                bleDevice.setSensoroSensorTest(sensoroSensor);
             }
             bleDevice.setRssi(scanBLEResult.getRssi());
             bleDevice.setType(BLEDevice.TYPE_DEVICE);
@@ -501,14 +634,15 @@ public class BLEDeviceFactory {
             bleDevice.setHardwareVersion(hardwareVersion);
 
             int firmwareCode = (int) hardware[1] & 0xff;
-            String firmwareVersion = Integer.toHexString(firmwareCode / 16).toUpperCase() + "." + Integer.toHexString(firmwareCode % 16).toUpperCase();
+            String firmwareVersion = Integer.toHexString(firmwareCode / 16).toUpperCase() + "." + Integer.toHexString
+                    (firmwareCode % 16).toUpperCase();
             bleDevice.setFirmwareVersion(firmwareVersion);
 
             int workStatus = ((int) station_data[10] & 0xff);
             bleDevice.setWorkStatus(workStatus);
             //03, 0c, 30
 //            int netStatus = ((int) station_data[11] & 0xff);
-            int wifiStatus = (int)station_data[11] & 0x03;
+            int wifiStatus = (int) station_data[11] & 0x03;
             int ethStatus = ((int) station_data[11] & 0x0c) >> 2;
             int celluarStatus = ((int) station_data[11] & 0x30) >> 4;
 //            bleDevice.setNetStatus(netStatus);

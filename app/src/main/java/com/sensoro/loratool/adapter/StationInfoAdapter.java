@@ -560,11 +560,11 @@ public class StationInfoAdapter extends BaseAdapter {
 
     @Override
     public void notifyDataSetChanged() {
-        ArrayList<StationInfo> stationInfoList = new ArrayList<>(mStationInfoList);
+        final HashSet<StationInfo> stationInfoList = new HashSet<>(mStationInfoList);
         mStationInfoList.clear();
         mStationInfoList.addAll(stationInfoList);
+//        Collections.sort(mStationInfoList);
         stationInfoList.clear();
-        stationInfoList = null;
         super.notifyDataSetChanged();
     }
 }

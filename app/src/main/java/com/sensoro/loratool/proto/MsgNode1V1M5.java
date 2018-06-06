@@ -12457,17 +12457,17 @@ public final class MsgNode1V1M5 {
      */
     MsgNode1V1M5.SensorDataOrBuilder getArtificialGasOrBuilder();
 
-    // optional .MultiSensorDataInt multiTemp = 36;
+    // optional .MultiSensorDataInt multiTemperature = 36;
     /**
-     * <code>optional .MultiSensorDataInt multiTemp = 36;</code>
+     * <code>optional .MultiSensorDataInt multiTemperature = 36;</code>
      */
     boolean hasMultiTemp();
     /**
-     * <code>optional .MultiSensorDataInt multiTemp = 36;</code>
+     * <code>optional .MultiSensorDataInt multiTemperature = 36;</code>
      */
     MsgNode1V1M5.MultiSensorDataInt getMultiTemp();
     /**
-     * <code>optional .MultiSensorDataInt multiTemp = 36;</code>
+     * <code>optional .MultiSensorDataInt multiTemperature = 36;</code>
      */
     MsgNode1V1M5.MultiSensorDataIntOrBuilder getMultiTempOrBuilder();
 
@@ -13800,23 +13800,23 @@ public final class MsgNode1V1M5 {
       return artificialGas_;
     }
 
-    // optional .MultiSensorDataInt multiTemp = 36;
+    // optional .MultiSensorDataInt multiTemperature = 36;
     public static final int MULTITEMP_FIELD_NUMBER = 36;
     private MsgNode1V1M5.MultiSensorDataInt multiTemp_;
     /**
-     * <code>optional .MultiSensorDataInt multiTemp = 36;</code>
+     * <code>optional .MultiSensorDataInt multiTemperature = 36;</code>
      */
     public boolean hasMultiTemp() {
       return ((bitField1_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>optional .MultiSensorDataInt multiTemp = 36;</code>
+     * <code>optional .MultiSensorDataInt multiTemperature = 36;</code>
      */
     public MsgNode1V1M5.MultiSensorDataInt getMultiTemp() {
       return multiTemp_;
     }
     /**
-     * <code>optional .MultiSensorDataInt multiTemp = 36;</code>
+     * <code>optional .MultiSensorDataInt multiTemperature = 36;</code>
      */
     public MsgNode1V1M5.MultiSensorDataIntOrBuilder getMultiTempOrBuilder() {
       return multiTemp_;
@@ -18791,18 +18791,18 @@ public final class MsgNode1V1M5 {
         return artificialGasBuilder_;
       }
 
-      // optional .MultiSensorDataInt multiTemp = 36;
+      // optional .MultiSensorDataInt multiTemperature = 36;
       private MsgNode1V1M5.MultiSensorDataInt multiTemp_ = MsgNode1V1M5.MultiSensorDataInt.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           MultiSensorDataInt, MultiSensorDataInt.Builder, MultiSensorDataIntOrBuilder> multiTempBuilder_;
       /**
-       * <code>optional .MultiSensorDataInt multiTemp = 36;</code>
+       * <code>optional .MultiSensorDataInt multiTemperature = 36;</code>
        */
       public boolean hasMultiTemp() {
         return ((bitField1_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>optional .MultiSensorDataInt multiTemp = 36;</code>
+       * <code>optional .MultiSensorDataInt multiTemperature = 36;</code>
        */
       public MsgNode1V1M5.MultiSensorDataInt getMultiTemp() {
         if (multiTempBuilder_ == null) {
@@ -18812,7 +18812,7 @@ public final class MsgNode1V1M5 {
         }
       }
       /**
-       * <code>optional .MultiSensorDataInt multiTemp = 36;</code>
+       * <code>optional .MultiSensorDataInt multiTemperature = 36;</code>
        */
       public Builder setMultiTemp(MsgNode1V1M5.MultiSensorDataInt value) {
         if (multiTempBuilder_ == null) {
@@ -18828,7 +18828,7 @@ public final class MsgNode1V1M5 {
         return this;
       }
       /**
-       * <code>optional .MultiSensorDataInt multiTemp = 36;</code>
+       * <code>optional .MultiSensorDataInt multiTemperature = 36;</code>
        */
       public Builder setMultiTemp(
           MsgNode1V1M5.MultiSensorDataInt.Builder builderForValue) {
@@ -18842,7 +18842,7 @@ public final class MsgNode1V1M5 {
         return this;
       }
       /**
-       * <code>optional .MultiSensorDataInt multiTemp = 36;</code>
+       * <code>optional .MultiSensorDataInt multiTemperature = 36;</code>
        */
       public Builder mergeMultiTemp(MsgNode1V1M5.MultiSensorDataInt value) {
         if (multiTempBuilder_ == null) {
@@ -18861,7 +18861,7 @@ public final class MsgNode1V1M5 {
         return this;
       }
       /**
-       * <code>optional .MultiSensorDataInt multiTemp = 36;</code>
+       * <code>optional .MultiSensorDataInt multiTemperature = 36;</code>
        */
       public Builder clearMultiTemp() {
         if (multiTempBuilder_ == null) {
@@ -18874,7 +18874,7 @@ public final class MsgNode1V1M5 {
         return this;
       }
       /**
-       * <code>optional .MultiSensorDataInt multiTemp = 36;</code>
+       * <code>optional .MultiSensorDataInt multiTemperature = 36;</code>
        */
       public MsgNode1V1M5.MultiSensorDataInt.Builder getMultiTempBuilder() {
         bitField1_ |= 0x00000008;
@@ -18882,7 +18882,7 @@ public final class MsgNode1V1M5 {
         return getMultiTempFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .MultiSensorDataInt multiTemp = 36;</code>
+       * <code>optional .MultiSensorDataInt multiTemperature = 36;</code>
        */
       public MsgNode1V1M5.MultiSensorDataIntOrBuilder getMultiTempOrBuilder() {
         if (multiTempBuilder_ != null) {
@@ -18892,7 +18892,7 @@ public final class MsgNode1V1M5 {
         }
       }
       /**
-       * <code>optional .MultiSensorDataInt multiTemp = 36;</code>
+       * <code>optional .MultiSensorDataInt multiTemperature = 36;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
           MultiSensorDataInt, MultiSensorDataInt.Builder, MultiSensorDataIntOrBuilder>
@@ -19294,7 +19294,7 @@ public final class MsgNode1V1M5 {
       "a\022\031\n\004roll\030  \001(\0132\013.SensorData\022\030\n\003yaw\030! \001(",
       "\0132\013.SensorData\022\035\n\005flame\030\" \001(\0132\016.SensorDa" +
       "taInt\022\"\n\rartificialGas\030# \001(\0132\013.SensorDat" +
-      "a\022&\n\tmultiTemp\030$ \001(\0132\023.MultiSensorDataIn" +
+      "a\022&\n\tmultiTemperature\030$ \001(\0132\023.MultiSensorDataIn" +
       "t\022\"\n\rwaterPressure\030% \001(\0132\013.SensorData\022\031\n" +
       "\007ibeacon\030& \001(\0132\010.iBeacon*\035\n\tActivtion\022\007\n" +
       "\003ABP\020\000\022\007\n\003OTA\020\001*2\n\tClassType\022\013\n\007CLASS_A\020" +

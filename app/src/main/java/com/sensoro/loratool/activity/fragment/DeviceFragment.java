@@ -38,7 +38,7 @@ import com.sensoro.loratool.activity.SignalDetectionActivity;
 import com.sensoro.loratool.activity.UpgradeFirmwareListActivity;
 import com.sensoro.loratool.adapter.DeviceInfoAdapter;
 import com.sensoro.loratool.ble.SensoroDevice;
-import com.sensoro.loratool.ble.SensoroSensor;
+import com.sensoro.loratool.ble.SensoroSensorTest;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.store.DeviceDataDao;
 import com.sensoro.loratool.utils.Utils;
@@ -479,19 +479,19 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
         }
     }
 
-    public void refreshSensorGone(SensoroSensor sensoroSensor) {
+    public void refreshSensorGone(SensoroSensorTest sensoroSensor) {
         if (mDeviceInfoAdapter != null) {
             mDeviceInfoAdapter.refreshSensorGone(sensoroSensor);
         }
     }
 
-    public void refreshSensorNew(SensoroSensor sensoroSensor) {
+    public void refreshSensorNew(SensoroSensorTest sensoroSensor) {
         if (mDeviceInfoAdapter != null) {
             mDeviceInfoAdapter.refreshSensorNew(sensoroSensor);
         }
     }
 
-    public void refreshSensor(SensoroSensor sensoroSensor) {
+    public void refreshSensor(SensoroSensorTest sensoroSensor) {
         if (mDeviceInfoAdapter != null) {
             mDeviceInfoAdapter.refreshSensor(sensoroSensor);
         }
