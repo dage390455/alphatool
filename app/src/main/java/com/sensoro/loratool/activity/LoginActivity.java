@@ -329,12 +329,13 @@ public class LoginActivity extends BaseActivity implements Constants, Permission
                     showAuthDialog(response);
                 } else {
                     Utils.checkBleStatus(getApplicationContext());
+                    PreferencesHelper.getInstance().saveLoginData(app, response.getName(), username, pwd, response
+                            .getExpires(), response.getSessionId());
                     Intent intent = new Intent();
                     intent.setClass(LoginActivity.this, MainActivity.class);
                     intent.putExtra("name", response.getName());
                     startActivity(intent);
-                    PreferencesHelper.getInstance().saveLoginData(app, response.getName(), username, pwd, response
-                            .getExpires(), response.getSessionId());
+                    finish();
                 }
 
             }

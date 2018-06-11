@@ -70,7 +70,6 @@ public class MainActivity extends BaseActivity
     private TextView nameTextView = null;
     private TextView exitTextView = null;
     private TextView versionTextView = null;
-
     private long exitTime = 0;
 
     @Override
