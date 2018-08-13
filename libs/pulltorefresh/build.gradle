@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 27
     buildToolsVersion '25.0.0'
     lintOptions {
         abortOnError false//忽略lint警告,否则会打包失败

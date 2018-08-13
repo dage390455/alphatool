@@ -338,6 +338,8 @@
         <item>Sanjiang LPG</item>
         <item>Concox Tacker</item>
         <item>C Tacker</item>
+        <item>Sanjiang Smoke</item>
+        <item>Sanjiang Elec</item>
     </string-array>
     <string-array name="filter_device_band_array">
         <item>SE433</item>

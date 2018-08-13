@@ -14,8 +14,8 @@ import android.widget.Toast;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.sensoro.loratool.R;
-import com.sensoro.loratool.activity.fragment.SettingsInputDialogFragment;
-import com.sensoro.loratool.activity.fragment.SettingsSingleChoiceItemsFragment;
+import com.sensoro.loratool.fragment.SettingsInputDialogFragment;
+import com.sensoro.loratool.fragment.SettingsSingleChoiceItemsFragment;
 import com.sensoro.loratool.ble.BLEDevice;
 import com.sensoro.loratool.ble.SensoroConnectionCallback;
 import com.sensoro.loratool.ble.SensoroStation;

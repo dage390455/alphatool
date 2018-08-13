@@ -116,6 +116,9 @@ public class DeviceInfoAdapter extends BaseAdapter {
 
     public void refreshNew(SensoroDevice sensoroDevice, boolean isSearchStatus) {
         String sn = sensoroDevice.getSn();
+        if (sn.endsWith("A939")){
+            Log.e("",sn);
+        }
         if (!mNearByDeviceMap.containsKey(sn)) {
             mNearByDeviceMap.put(sn, sensoroDevice);
 //            notifyDataSetChanged();

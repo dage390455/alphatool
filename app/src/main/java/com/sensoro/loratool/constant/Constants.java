@@ -279,6 +279,14 @@ public interface Constants {
     String SETTINGS_DEVICE_TEMPERATURE_PRESSURE_LOWER = "settings_device_temperature_pressure_lower";
     String SETTINGS_DEVICE_TEMPERATURE_PRESSURE_STEP_UPPER = "settings_device_temperature_pressure_step_upper";
     String SETTINGS_DEVICE_TEMPERATURE_PRESSURE_STEP_LOWER = "settings_device_temperature_pressure_step_lower";
+    //电表
+    String SETTINGS_DEVICE_RL_FHSJ_ELEC_PWD = "settings_device_rl_fhsj_elec_pwd";
+    String SETTINGS_DEVICE_RL_FHSJ_ELEC_LEAK = "settings_device_rl_fhsj_elec_leak";
+    String SETTINGS_DEVICE_RL_FHSJ_ELEC_TEMP = "settings_device_rl_fhsj_elec_temp";
+    String SETTINGS_DEVICE_RL_FHSJ_ELEC_OVERLOAD = "settings_device_rl_fhsj_elec_overload";
+    String SETTINGS_DEVICE_RL_FHSJ_ELEC_OVERPRESSURE = "settings_device_rl_fhsj_elec_overpressure";
+    String SETTINGS_DEVICE_RL_FHSJ_ELEC_UNDERVOLTAGE = "settings_device_rl_fhsj_elec_undervoltage";
+    String SETTINGS_DEVICE_RL_FHSJ_ELEC_CURRENT = "settings_device_rl_fhsj_elec_current";
 
 }
 

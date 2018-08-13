@@ -750,6 +750,8 @@ public class DeviceInfo implements Parcelable, Comparable {
                 case "winsen_lpg":
                 case "winsen_gas":
                 case "bhenergy_water":
+                case "fhsj_smoke":
+                case "tester":
                     isCan = true;
                     break;
                 case "chip":

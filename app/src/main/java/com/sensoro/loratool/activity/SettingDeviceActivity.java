@@ -26,10 +26,10 @@ import com.sensoro.lora.setting.server.bean.EidInfoListRsp;
 import com.sensoro.lora.setting.server.bean.ResponseBase;
 import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
-import com.sensoro.loratool.activity.fragment.SettingsInputDialogFragment;
-import com.sensoro.loratool.activity.fragment.SettingsMajorMinorDialogFragment;
-import com.sensoro.loratool.activity.fragment.SettingsSingleChoiceItemsFragment;
-import com.sensoro.loratool.activity.fragment.SettingsUUIDDialogFragment;
+import com.sensoro.loratool.fragment.SettingsInputDialogFragment;
+import com.sensoro.loratool.fragment.SettingsMajorMinorDialogFragment;
+import com.sensoro.loratool.fragment.SettingsSingleChoiceItemsFragment;
+import com.sensoro.loratool.fragment.SettingsUUIDDialogFragment;
 import com.sensoro.loratool.ble.BLEDevice;
 import com.sensoro.loratool.ble.CmdType;
 import com.sensoro.loratool.ble.SensoroConnectionCallback;
@@ -65,6 +65,12 @@ import butterknife.ButterKnife;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.sensoro.loratool.ble.CmdType.CMD_ELEC_AIR_SWITCH;
+import static com.sensoro.loratool.ble.CmdType.CMD_ELEC_RESET;
+import static com.sensoro.loratool.ble.CmdType.CMD_ELEC_RESTORE;
+import static com.sensoro.loratool.ble.CmdType.CMD_ELEC_SELF_TEST;
+import static com.sensoro.loratool.ble.CmdType.CMD_ELEC_SILENCE;
+import static com.sensoro.loratool.ble.CmdType.CMD_ELEC_ZERO_POWER;
 
 public class SettingDeviceActivity extends BaseActivity implements Constants, CompoundButton.OnCheckedChangeListener,
         View.OnClickListener, OnPositiveButtonClickListener, SensoroWriteCallback, SensoroConnectionCallback {
@@ -375,6 +381,70 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     @BindView(R.id.settings_device_tv_temperature_pressure_lower_step_limit)
     TextView settingsDeviceTvTemperaturePressureLowerStepLimit;
 
+    /**
+     * 泛海三江电表
+     */
+    @BindView(R.id.settings_device_ll_fhsj_elec)
+    LinearLayout settingsDeviceLlFhsjElec;
+    //密码
+    @BindView(R.id.settings_device_rl_fhsj_elec_pwd)
+    RelativeLayout settingsDeviceRlFhsjElecPwd;
+    @BindView(R.id.settings_device_tv_fhsj_elec_pwd)
+    TextView settingsDeviceTvFhsjElecPwd;
+    //漏电阈值
+    @BindView(R.id.settings_device_rl_fhsj_elec_leak)
+    RelativeLayout settingsDeviceRlFhsjElecLeak;
+    @BindView(R.id.settings_device_tv_fhsj_elec_leak)
+    TextView settingsDeviceTvFhsjElecLeak;
+    //温度阈值
+    @BindView(R.id.settings_device_rl_fhsj_elec_temp)
+    RelativeLayout settingsDeviceRlFhsjElecTemp;
+    @BindView(R.id.settings_device_tv_fhsj_elec_temp)
+    TextView settingsDeviceTvFhsjElecTemp;
+    //电流阈值
+    @BindView(R.id.settings_device_rl_fhsj_elec_current)
+    RelativeLayout settingsDeviceRlFhsjElecCurrent;
+    @BindView(R.id.settings_device_tv_fhsj_elec_current)
+    TextView settingsDeviceTvFhsjElecCurrent;
+    //过载阈值
+    @BindView(R.id.settings_device_rl_fhsj_elec_overload)
+    RelativeLayout settingsDeviceRlFhsjElecOverload;
+    @BindView(R.id.settings_device_tv_fhsj_elec_overload)
+    TextView settingsDeviceTvFhsjElecOverload;
+    //过压阈值
+    @BindView(R.id.settings_device_rl_fhsj_elec_overpressure)
+    RelativeLayout settingsDeviceRlFhsjElecOverpressure;
+    @BindView(R.id.settings_device_tv_fhsj_elec_overpressure)
+    TextView settingsDeviceTvFhsjElecOverpressure;
+    //欠压阈值
+    @BindView(R.id.settings_device_rl_fhsj_elec_undervoltage)
+    RelativeLayout settingsDeviceRlFhsjElecUndervoltage;
+    @BindView(R.id.settings_device_tv_fhsj_elec_undervoltage)
+    TextView settingsDeviceTvFhsjElecUndervoltage;
+
+    /**
+     * 电表控制
+     */
+    @BindView(R.id.settings_device_ll_fhsj_elec_control)
+    LinearLayout settingsDeviceLlFhsjElecControl;
+    //系统复位
+    @BindView(R.id.settings_device_rl_fhsj_elec_control_reset)
+    RelativeLayout settingsDeviceRlFhsjElecControlReset;
+    //回复出厂
+    @BindView(R.id.settings_device_rl_fhsj_elec_control_restore)
+    RelativeLayout settingsDeviceRlFhsjElecControlRestore;
+    //断开空气开关
+    @BindView(R.id.settings_device_rl_fhsj_elec_control_air_switch)
+    RelativeLayout settingsDeviceRlFhsjElecControlAirSwitch;
+    //自检
+    @BindView(R.id.settings_device_rl_fhsj_elec_control_self_test)
+    RelativeLayout settingsDeviceRlFhsjElecControlSelfTest;
+    //消音
+    @BindView(R.id.settings_device_rl_fhsj_elec_control_silence)
+    RelativeLayout settingsDeviceRlFhsjElecControlSilence;
+    //电量清零
+    @BindView(R.id.settings_device_rl_fhsj_elec_control_zero_power)
+    RelativeLayout settingsDeviceRlFhsjElecControlZeroPower;
 
     private String[] blePowerItems;
     private String[] bleTimeItems;
@@ -384,38 +454,6 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
 
     private boolean isIBeaconEnabled;
     private String uuid;
-//    private int major;
-//    private int minor;
-//
-//    private float bleInt;
-//    private int bleTxp;
-//    private int bleTurnOnTime;
-//    private int bleTurnOffTime;
-//
-//    private float loraInt;
-//    private int loraTxp;
-//
-//    private float coAlarmHigh;
-//    private float co2AlarmHigh;
-//    private float no2AlarmHigh;
-//    private float ch4AlarmHigh;
-//    private float lpgAlarmHigh;
-//    private float pm25AlarmHigh;
-//    private float pm10AlarmHigh;
-//    private float tempAlarmHigh;
-//    private float tempAlarmLow;
-//    private float humidityAlarmHigh;
-//    private float humidityAlarmLow;
-//    private float pitchAngleAlarmHigh;
-//    private float pitchAngleAlarmLow;
-//    private float rollAngleAlarmHigh;
-//    private float rollAngleAlarmLow;
-//    private float yawAngleAlarmHigh;
-//    private float yawAngleAlarmLow;
-//    private float waterPressureAlarmHigh;
-//    private float waterPressureAlarmLow;
-//    private int uploadInterval;
-//    private int appParamConfirm;
 
     private SensoroSlot sensoroSlotArray[];
     private String[] slotItems;
@@ -438,10 +476,6 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     private SensoroDeviceConfiguration deviceConfiguration;
     private ProgressDialog progressDialog;
     private SensoroSensorTest sensoroSensor;
-    //    private Integer alarmHigh;
-//    private Integer alarmLow;
-//    private Integer alarmStepHigh;
-//    private Integer alarmStepLow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -535,6 +569,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 break;
             case Constants.LORA_BAND_SE470:
                 txp_array = Constants.LORA_SE470_TXP;
+                loraEirpValues = Constants.LORA_EU868_MAX_EIRP_VALUE;
                 break;
             case Constants.LORA_BAND_SE780:
                 txp_array = Constants.LORA_SE780_TXP;
@@ -640,6 +675,21 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         settingsDeviceRlTemperaturePressureLower.setOnClickListener(this);
         settingsDeviceRlTemperaturePressureStepUpper.setOnClickListener(this);
         settingsDeviceRlTemperaturePressureStepLower.setOnClickListener(this);
+        //电表
+        settingsDeviceRlFhsjElecPwd.setOnClickListener(this);
+        settingsDeviceRlFhsjElecLeak.setOnClickListener(this);
+        settingsDeviceRlFhsjElecTemp.setOnClickListener(this);
+        settingsDeviceRlFhsjElecCurrent.setOnClickListener(this);
+        settingsDeviceRlFhsjElecOverload.setOnClickListener(this);
+        settingsDeviceRlFhsjElecOverpressure.setOnClickListener(this);
+        settingsDeviceRlFhsjElecUndervoltage.setOnClickListener(this);
+        //电表控制
+        settingsDeviceRlFhsjElecControlReset.setOnClickListener(this);
+        settingsDeviceRlFhsjElecControlRestore.setOnClickListener(this);
+        settingsDeviceRlFhsjElecControlAirSwitch.setOnClickListener(this);
+        settingsDeviceRlFhsjElecControlSelfTest.setOnClickListener(this);
+        settingsDeviceRlFhsjElecControlSilence.setOnClickListener(this);
+        settingsDeviceRlFhsjElecControlZeroPower.setOnClickListener(this);
     }
 
     private void refresh() {
@@ -671,54 +721,67 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 }
 
                 if (sensoroDevice.hasBleParam()) {
-                    float bleInt = sensoroDevice.getBleInt();
-                    int bleTxp = sensoroDevice.getBleTxp();
-                    int bleTurnOffTime = sensoroDevice.getBleOffTime();
-                    int bleTurnOnTime = sensoroDevice.getBleOnTime();
                     Calendar cal = Calendar.getInstance(Locale.getDefault());
                     int zoneOffset = cal.get(Calendar.ZONE_OFFSET);
                     int offset = zoneOffset / 60 / 60 / 1000;
-                    bleTurnOnTime += offset;
-                    bleTurnOffTime += offset;
-                    int showTurnOnTime = bleTurnOnTime;
-                    int showTurnOffTime = bleTurnOffTime;
-                    if (bleTurnOnTime >= 24) {
-                        showTurnOnTime -= 24;
+                    if (sensoroDevice.hasBleOffTime()) {
+                        int bleTurnOffTime = sensoroDevice.getBleOffTime();
+                        bleTurnOffTime += offset;
+                        int showTurnOffTime = bleTurnOffTime;
+                        if (bleTurnOffTime >= 24) {
+                            showTurnOffTime -= 24;
+                        }
+                        turnOffTextView.setText(showTurnOffTime + ":00");
+                    } else {
+                        bleTurnOffTimeLinearLayout.setVisibility(GONE);
                     }
-                    if (bleTurnOffTime >= 24) {
-                        showTurnOffTime -= 24;
+                    if (sensoroDevice.hasBleOnTime()) {
+                        int bleTurnOnTime = sensoroDevice.getBleOnTime();
+                        bleTurnOnTime += offset;
+                        int showTurnOnTime = bleTurnOnTime;
+                        if (bleTurnOnTime >= 24) {
+                            showTurnOnTime -= 24;
+                        }
+                        turnOnTexView.setText(showTurnOnTime + ":00");
+                    } else {
+                        bleTurnOnTimeLinearLayout.setVisibility(GONE);
                     }
-                    turnOnTexView.setText(String.valueOf(showTurnOnTime) + ":00");
-                    turnOffTextView.setText(String.valueOf(showTurnOffTime) + ":00");
-                    powerTextView.setText(String.valueOf(sensoroDevice.getBleTxp()) + " dBm");
-                    // advertise interval
-                    advIntervalTextView.setText(String.valueOf(sensoroDevice.getBleInt()) + " ms");
+                    if (sensoroDevice.hasBleInterval()) {
+                        float bleInt = sensoroDevice.getBleInt();
+                        advIntervalTextView.setText(bleInt + " ms");
+                    } else {
+                        advIntervalRelativeLayout.setVisibility(GONE);
+                    }
+                    if (sensoroDevice.hasBleTxp()) {
+                        int bleTxp = sensoroDevice.getBleTxp();
+                        powerTextView.setText(bleTxp + " dBm");
+                    } else {
+                        powerRelativeLayout.setVisibility(GONE);
+                    }
                     bleLayout.setVisibility(VISIBLE);
                 } else {
                     bleLayout.setVisibility(GONE);
                 }
-
                 if (sensoroDevice.hasLoraParam()) {
-                    float loraInt = sensoroDevice.getLoraInt();
-                    int loraTxp = sensoroDevice.getLoraTxp();
                     if (sensoroDevice.hasMaxEirp()) {
                         loraEirpRelativeLayout.setVisibility(VISIBLE);
                         loraTxpRelativeLayout.setVisibility(GONE);
+                        int loraTxp = sensoroDevice.getLoraTxp();
+                        String loraEirpValue = loraEirpValues[loraTxp];
+                        loraEirpTextView.setText("" + loraEirpValue);
                     } else {
                         loraEirpRelativeLayout.setVisibility(GONE);
                         loraTxpRelativeLayout.setVisibility(VISIBLE);
-                    }
-                    if (sensoroDevice.hasLoraTxp()) {
-                        loraEirpTextView.setText("" + loraEirpValues[loraTxp]);
-                        loraTxpTextView.setText(String.valueOf(sensoroDevice.getLoraTxp()) + " dBm");
+                        int loraTxp = sensoroDevice.getLoraTxp();
+                        loraTxpTextView.setText(loraTxp + " dBm");
                     }
                     if (sensoroDevice.hasLoraInterval()) {
-                        loraAdIntervalTextView.setText(String.valueOf(sensoroDevice.getLoraInt()) + "s");
+                        float loraInt = sensoroDevice.getLoraInt();
+                        loraAdIntervalTextView.setText(loraInt + "s");
                         loraAdIntervalRelativeLayout.setVisibility(VISIBLE);
                     } else {
                         loraAdIntervalRelativeLayout.setVisibility(GONE);
                     }
-
                     loraLayout.setVisibility(VISIBLE);
                 } else {
                     loraLayout.setVisibility(GONE);
@@ -864,11 +927,6 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             humidityLowerTextView.setText(humidityAlarmLow + "");
                         }
                         humidityLinearLayout.setVisibility(has_alarmHigh || has_alarmLow ? VISIBLE : GONE);
-//                        humidityAlarmHigh = sensoroSensor.getHumidityAlarmHigh();
-//                        humidityAlarmLow = sensoroSensor.getHumidityAlarmLow();
-//                        humidityUpperTextView.setText(sensoroSensor.getHumidityAlarmHigh() + "");
-//                        humidityLowerTextView.setText(sensoroSensor.getHumidityAlarmLow() + "");
-//                        humidityLinearLayout.setVisibility(VISIBLE);
                     } else {
                         humidityLinearLayout.setVisibility(GONE);
                     }
@@ -898,11 +956,6 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         }
                         pitchAngleLinearLayout.setVisibility(has_alarmHigh || has_alarmLow ? VISIBLE : GONE);
 
-//                        pitchAngleLinearLayout.setVisibility(VISIBLE);
-//                        pitchAngleAlarmHigh = sensoroSensor.getPitchAngleAlarmHigh();
-//                        pitchAngleAlarmLow = sensoroSensor.getPitchAngleAlarmLow();
-//                        pitchAngleUpperTextView.setText(sensoroSensor.getPitchAngleAlarmHigh() + "");
-//                        pitchAngleLowerTextView.setText(sensoroSensor.getPitchAngleAlarmLow() + "");
                     } else {
                         pitchAngleLinearLayout.setVisibility(GONE);
                     }
@@ -919,11 +972,6 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         }
                         rollAngleLinearLayout.setVisibility(has_alarmHigh || has_alarmLow ? VISIBLE : GONE);
 
-//                        rollAngleLinearLayout.setVisibility(VISIBLE);
-//                        rollAngleAlarmHigh = sensoroSensor.getRollAngleAlarmHigh();
-//                        rollAngleAlarmLow = sensoroSensor.getRollAngleAlarmLow();
-//                        rollAngleUpperTextView.setText(sensoroSensor.getRollAngleAlarmHigh() + "");
-//                        rollAngleLowerTextView.setText(sensoroSensor.getRollAngleAlarmLow() + "");
                     } else {
                         rollAngleLinearLayout.setVisibility(GONE);
                     }
@@ -940,11 +988,6 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         }
                         yawAngleLinearLayout.setVisibility(has_alarmHigh || has_alarmLow ? VISIBLE : GONE);
 
-//                        yawAngleLinearLayout.setVisibility(VISIBLE);
-//                        yawAngleAlarmHigh = sensoroSensor.getYawAngleAlarmHigh();
-//                        yawAngleAlarmLow = sensoroSensor.getYawAngleAlarmLow();
-//                        yawAngleUpperTextView.setText(sensoroSensor.getYawAngleAlarmHigh() + "");
-//                        yawAngleLowerTextView.setText(sensoroSensor.getYawAngleAlarmLow() + "");
                     } else {
                         yawAngleLinearLayout.setVisibility(GONE);
                     }
@@ -962,13 +1005,6 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         }
                         waterPressureLinearLayout.setVisibility(has_alarmHigh || has_alarmLow ? VISIBLE : GONE);
 
-//                        waterPressureLinearLayout.setVisibility(VISIBLE);
-//                        waterPressureAlarmHigh = sensoroSensor.getWaterPressureAlarmHigh();
-//                        waterPressureAlarmLow = sensoroSensor.getWaterPressureAlarmLow();
-//                        waterPressureUpperTextView.setText(sensoroSensor.getWaterPressureAlarmHigh
-//                                () + "");
-//                        waterPressureLowerTextView.setText(sensoroSensor.getWaterPressureAlarmLow
-//                                () + "");
                     } else {
                         waterPressureLinearLayout.setVisibility(GONE);
                     }
@@ -1006,6 +1042,47 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         } else {
                             settingsDeviceRlTemperaturePressureStepLower.setVisibility(GONE);
                         }
+                    }
+                    boolean hasFireData = sensoroSensor.hasFireData;
+                    settingsDeviceLlFhsjElec.setVisibility(hasFireData ? VISIBLE : GONE);
+                    settingsDeviceLlFhsjElecControl.setVisibility(hasFireData ? VISIBLE : GONE);
+                    if (hasFireData) {
+                        if (sensoroSensor.elecFireData.hasSensorPwd) {
+                            settingsDeviceTvFhsjElecPwd.setText(sensoroSensor.elecFireData.sensorPwd + "");
+                        } else {
+                            settingsDeviceRlFhsjElecPwd.setVisibility(GONE);
+                        }
+                        if (sensoroSensor.elecFireData.hasLeakageTh) {
+                            settingsDeviceTvFhsjElecLeak.setText(sensoroSensor.elecFireData.leakageTh + "");
+                        } else {
+                            settingsDeviceRlFhsjElecLeak.setVisibility(GONE);
+                        }
+                        if (sensoroSensor.elecFireData.hasTempTh) {
+                            settingsDeviceTvFhsjElecTemp.setText(sensoroSensor.elecFireData.tempTh + "");
+                        } else {
+                            settingsDeviceRlFhsjElecTemp.setVisibility(GONE);
+                        }
+                        if (sensoroSensor.elecFireData.hasCurrentTh) {
+                            settingsDeviceTvFhsjElecCurrent.setText(sensoroSensor.elecFireData.currentTh + "");
+                        } else {
+                            settingsDeviceRlFhsjElecCurrent.setVisibility(GONE);
+                        }
+                        if (sensoroSensor.elecFireData.hasLoadTh) {
+                            settingsDeviceTvFhsjElecOverload.setText(sensoroSensor.elecFireData.loadTh + "");
+                        } else {
+                            settingsDeviceRlFhsjElecOverload.setVisibility(GONE);
+                        }
+                        if (sensoroSensor.elecFireData.hasVolHighTh) {
+                            settingsDeviceTvFhsjElecOverpressure.setText(sensoroSensor.elecFireData.volHighTh + "");
+                        } else {
+                            settingsDeviceRlFhsjElecOverpressure.setVisibility(GONE);
+                        }
+                        if (sensoroSensor.elecFireData.hasVolLowTh) {
+                            settingsDeviceTvFhsjElecUndervoltage.setText(sensoroSensor.elecFireData.volLowTh + "");
+                        } else {
+                            settingsDeviceRlFhsjElecUndervoltage.setVisibility(GONE);
+                        }
+
                     }
                     if (sensoroSensor.hasPitch || sensoroSensor
                             .hasRoll || sensoroSensor.hasYaw) {
@@ -1863,6 +1940,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             public void run() {
                 switch (cmd) {
                     case CmdType.CMD_SET_SMOKE:
+                    case CmdType.CMD_SET_ELEC_CMD:
                         break;
                     case CmdType.CMD_SET_ZERO:
                         Toast.makeText(SettingDeviceActivity.this, R.string.zero_calibrate_success, Toast
@@ -1899,6 +1977,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             public void run() {
                 switch (cmd) {
                     case CmdType.CMD_SET_SMOKE:
+                    case CmdType.CMD_SET_ELEC_CMD:
                         break;
                     case CmdType.CMD_SET_ZERO:
                         Toast.makeText(SettingDeviceActivity.this, R.string.zero_calibrate_failed, Toast
@@ -2301,6 +2380,31 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     builder.setAlarmStepLow(sensoroSensor.multiTemperature.alarmStepLow_int);
                 }
                 msgCfgBuilder.setMultiTemp(builder);
+            }
+            if (sensoroSensor.hasFireData) {
+                MsgNode1V1M5.ElecFireData.Builder builder = MsgNode1V1M5.ElecFireData.newBuilder();
+                if (sensoroSensor.elecFireData.hasSensorPwd) {
+                    builder.setSensorPwd(sensoroSensor.elecFireData.sensorPwd);
+                }
+                if (sensoroSensor.elecFireData.hasLeakageTh) {
+                    builder.setLeakageTh(sensoroSensor.elecFireData.leakageTh);
+                }
+                if (sensoroSensor.elecFireData.hasTempTh) {
+                    builder.setTempTh(sensoroSensor.elecFireData.tempTh);
+                }
+                if (sensoroSensor.elecFireData.hasCurrentTh) {
+                    builder.setCurrentTh(sensoroSensor.elecFireData.currentTh);
+                }
+                if (sensoroSensor.elecFireData.hasLoadTh) {
+                    builder.setLoadTh(sensoroSensor.elecFireData.loadTh);
+                }
+                if (sensoroSensor.elecFireData.hasVolHighTh) {
+                    builder.setVolHighTh(sensoroSensor.elecFireData.volHighTh);
+                }
+                if (sensoroSensor.elecFireData.hasVolLowTh) {
+                    builder.setVolLowTh(sensoroSensor.elecFireData.volLowTh);
+                }
+                msgCfgBuilder.setFireData(builder);
             }
         }
         MsgNode1V1M5.MsgNode msgCfg = msgCfgBuilder.build();
@@ -2713,9 +2817,94 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         .multiTemperature.alarmStepLow_int / 100f));
                 dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_TEMPERATURE_PRESSURE_STEP_LOWER);
                 break;
+            //TODO 电表
+            case R.id.settings_device_rl_fhsj_elec_pwd:
+                int sensorPwd = sensoroSensor.elecFireData.sensorPwd;
+                dialogFragment = SettingsInputDialogFragment.newInstance(sensorPwd + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_FHSJ_ELEC_PWD);
+                break;
+            case R.id.settings_device_rl_fhsj_elec_leak:
+                int leakageTh = sensoroSensor.elecFireData.leakageTh;
+                dialogFragment = SettingsInputDialogFragment.newInstance(leakageTh + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_FHSJ_ELEC_LEAK);
+                break;
+            case R.id.settings_device_rl_fhsj_elec_temp:
+                int tempTh = sensoroSensor.elecFireData.tempTh;
+                dialogFragment = SettingsInputDialogFragment.newInstance(tempTh + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_FHSJ_ELEC_TEMP);
+                break;
+            case R.id.settings_device_rl_fhsj_elec_current:
+                int currentTh = sensoroSensor.elecFireData.currentTh;
+                dialogFragment = SettingsInputDialogFragment.newInstance(currentTh + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_FHSJ_ELEC_CURRENT);
+                break;
+            case R.id.settings_device_rl_fhsj_elec_overload:
+                int loadTh = sensoroSensor.elecFireData.loadTh;
+                dialogFragment = SettingsInputDialogFragment.newInstance(loadTh + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_FHSJ_ELEC_OVERLOAD);
+                break;
+            case R.id.settings_device_rl_fhsj_elec_overpressure:
+                int volHighTh = sensoroSensor.elecFireData.volHighTh;
+                dialogFragment = SettingsInputDialogFragment.newInstance(volHighTh + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_FHSJ_ELEC_OVERPRESSURE);
+                break;
+            case R.id.settings_device_rl_fhsj_elec_undervoltage:
+                int volLowTh = sensoroSensor.elecFireData.volLowTh;
+                dialogFragment = SettingsInputDialogFragment.newInstance(volLowTh + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_FHSJ_ELEC_UNDERVOLTAGE);
+                break;
+            case R.id.settings_device_rl_fhsj_elec_control_reset:
+                doElecControl(CMD_ELEC_RESET);
+                break;
+            case R.id.settings_device_rl_fhsj_elec_control_restore:
+                doElecControl(CMD_ELEC_RESTORE);
+                break;
+            case R.id.settings_device_rl_fhsj_elec_control_air_switch:
+                doElecControl(CMD_ELEC_AIR_SWITCH);
+                break;
+            case R.id.settings_device_rl_fhsj_elec_control_self_test:
+                doElecControl(CMD_ELEC_SELF_TEST);
+                break;
+            case R.id.settings_device_rl_fhsj_elec_control_silence:
+                doElecControl(CMD_ELEC_SILENCE);
+                break;
+            case R.id.settings_device_rl_fhsj_elec_control_zero_power:
+                doElecControl(CMD_ELEC_ZERO_POWER);
+                break;
+
+
             default:
                 break;
         }
+    }
+
+    /**
+     * 电表系统复位
+     */
+    protected void doElecControl(int cmd) {
+        switch (cmd) {
+            case CMD_ELEC_RESET:
+                Toast.makeText(application, "系统复位", Toast.LENGTH_SHORT).show();
+                break;
+            case CMD_ELEC_RESTORE:
+                Toast.makeText(application, "回复出厂", Toast.LENGTH_SHORT).show();
+                break;
+            case CMD_ELEC_AIR_SWITCH:
+                Toast.makeText(application, "断开空气开关", Toast.LENGTH_SHORT).show();
+                break;
+            case CMD_ELEC_SELF_TEST:
+                Toast.makeText(application, "自检", Toast.LENGTH_SHORT).show();
+                break;
+            case CMD_ELEC_SILENCE:
+                Toast.makeText(application, "消音", Toast.LENGTH_SHORT).show();
+                break;
+            case CMD_ELEC_ZERO_POWER:
+                Toast.makeText(application, "电量清零", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        MsgNode1V1M5.ElecFireData.Builder builder = MsgNode1V1M5.ElecFireData.newBuilder();
+        builder.setCmd(cmd);
+        sensoroDeviceConnection.writeElecCmd(builder, this);
     }
 
     @Override
@@ -3291,6 +3480,111 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 float f = Float.parseFloat(temp);
                 sensoroSensor.multiTemperature.alarmStepLow_int = (int) (f * 100);
                 settingsDeviceTvTemperaturePressureLowerStepLimit.setText(f + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+
+        } else if (SETTINGS_DEVICE_RL_FHSJ_ELEC_PWD.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i > 9999 || i < 0) {
+                    Toast.makeText(this, "密码设定为0-9999", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.elecFireData.sensorPwd = i;
+                settingsDeviceTvFhsjElecPwd.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+
+        } else if (SETTINGS_DEVICE_RL_FHSJ_ELEC_LEAK.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i <= 0 || i > 1000) {
+                    Toast.makeText(this, "漏电阈值范围1-1000", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.elecFireData.leakageTh = i;
+                settingsDeviceTvFhsjElecLeak.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+
+        } else if (SETTINGS_DEVICE_RL_FHSJ_ELEC_TEMP.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i < 45 || i > 145) {
+                    Toast.makeText(this, "温度阈值分为45-145", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.elecFireData.tempTh = i;
+                settingsDeviceTvFhsjElecTemp.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+
+        } else if (SETTINGS_DEVICE_RL_FHSJ_ELEC_CURRENT.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i <= 0 || i > 50) {
+                    Toast.makeText(this, "电流阈值分为1-50", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.elecFireData.currentTh = i;
+                settingsDeviceTvFhsjElecCurrent.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+
+        } else if (SETTINGS_DEVICE_RL_FHSJ_ELEC_OVERLOAD.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i <= 0 || i > 11) {
+                    Toast.makeText(this, "过载阈值分为1-11", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.elecFireData.loadTh = i;
+                settingsDeviceTvFhsjElecOverload.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+
+        } else if (SETTINGS_DEVICE_RL_FHSJ_ELEC_OVERPRESSURE.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i < 220 || i > 264) {
+                    Toast.makeText(this, "过压阈值分为220-264", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.elecFireData.volHighTh = i;
+                settingsDeviceTvFhsjElecOverpressure.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+
+        } else if (SETTINGS_DEVICE_RL_FHSJ_ELEC_UNDERVOLTAGE.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i < 176 || i > 219) {
+                    Toast.makeText(this, "欠压阈值分为176-219", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.elecFireData.volLowTh = i;
+                settingsDeviceTvFhsjElecUndervoltage.setText(i + "");
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();

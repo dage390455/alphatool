@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sensoro.loratool.R;
-import com.sensoro.loratool.activity.fragment.SettingsSingleChoiceItemsFragment;
+import com.sensoro.loratool.fragment.SettingsSingleChoiceItemsFragment;
 import com.sensoro.loratool.adapter.SignalAdapter;
 import com.sensoro.loratool.adapter.SignalArrayAdapter;
 import com.sensoro.loratool.ble.BLEDevice;
@@ -76,6 +76,10 @@ public class SignalDetectionActivity extends BaseActivity implements OnPositiveB
         band = this.getIntent().getStringExtra(Constants.EXTRA_NAME_BAND);
         init();
         MobclickAgent.onPageStart("设备信号检测");
+    }
+
+    private void setFreqTextViewVisible(boolean isVisible) {
+        freqTextView.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 
     @OnClick(R.id.settings_v4_signal_back)
@@ -153,7 +157,7 @@ public class SignalDetectionActivity extends BaseActivity implements OnPositiveB
             @Override
             public void onCancel(DialogInterface dialogInterface) {
 //                    SignalDetectionActivity.this.finish();
-                if (sensoroDeviceConnection!=null){
+                if (sensoroDeviceConnection != null) {
                     sensoroDeviceConnection.disconnect();
                 }
             }
@@ -229,6 +233,7 @@ public class SignalDetectionActivity extends BaseActivity implements OnPositiveB
             buttonStatus = STOP;
             signalPlayButton.setImageResource(R.mipmap.ic_play);
             sensoroDeviceConnection.disconnect();
+            setFreqTextViewVisible(true);
         }
 
     }
@@ -252,6 +257,7 @@ public class SignalDetectionActivity extends BaseActivity implements OnPositiveB
                 sendCount = 0;
                 receiveCount = 0;
                 buttonStatus = STOP;
+                setFreqTextViewVisible(false);
                 sendDetectionCmd();
                 Toast.makeText(SignalDetectionActivity.this, R.string.connect_success, Toast.LENGTH_SHORT).show();
             }
@@ -268,9 +274,10 @@ public class SignalDetectionActivity extends BaseActivity implements OnPositiveB
                 sendCount = 0;
                 receiveCount = 0;
                 buttonStatus = STOP;
-                if (sensoroDeviceConnection!=null){
+                if (sensoroDeviceConnection != null) {
                     sensoroDeviceConnection.disconnect();
                 }
+                setFreqTextViewVisible(true);
                 Toast.makeText(SignalDetectionActivity.this, R.string.connect_failed, Toast.LENGTH_SHORT).show();
             }
         });
@@ -278,7 +285,7 @@ public class SignalDetectionActivity extends BaseActivity implements OnPositiveB
 
     @Override
     public void onDisconnected() {
-
+        setFreqTextViewVisible(true);
     }
 
     @Override
@@ -309,6 +316,7 @@ public class SignalDetectionActivity extends BaseActivity implements OnPositiveB
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        setFreqTextViewVisible(true);
         if (sensoroDeviceConnection != null) {
             sensoroDeviceConnection.disconnect();
         }

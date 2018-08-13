@@ -19,7 +19,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.sensoro.lora.setting.server.bean.ResponseBase;
 import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
-import com.sensoro.loratool.activity.fragment.SettingsSingleChoiceItemsFragment;
+import com.sensoro.loratool.fragment.SettingsSingleChoiceItemsFragment;
 import com.sensoro.loratool.ble.BLEDevice;
 import com.sensoro.loratool.ble.SensoroConnectionCallback;
 import com.sensoro.loratool.ble.SensoroDeviceConnection;

@@ -25,8 +25,8 @@ import android.widget.Toast;
 
 import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
-import com.sensoro.loratool.activity.fragment.DeviceFragment;
-import com.sensoro.loratool.activity.fragment.StationFragment;
+import com.sensoro.loratool.fragment.DeviceFragment;
+import com.sensoro.loratool.fragment.StationFragment;
 import com.sensoro.loratool.adapter.MenuInfoAdapter;
 import com.sensoro.loratool.ble.BLEDevice;
 import com.sensoro.loratool.ble.SensoroDevice;
@@ -88,7 +88,11 @@ public class MainActivity extends BaseActivity
         initWidget();
         initSensoroSDK();
         Intent intent = new Intent(this, PollingService.class);
+//        if (Build.VERSION.SDK_INT >= 26) {
+//            startForegroundService(intent);
+//        } else {
         startService(intent);
+//        }
     }
 
 
@@ -234,6 +238,7 @@ public class MainActivity extends BaseActivity
     private void initSensoroSDK() {
         try {
             loRaSettingApplication.registersSensoroDeviceListener(this);
+            BLEDeviceManager.getInstance(this).startService();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -290,7 +295,7 @@ public class MainActivity extends BaseActivity
                     Toast.LENGTH_SHORT).show();
             exitTime = System.currentTimeMillis();
         } else {
-            System.exit(0);
+//            System.exit(0);
             finish();
         }
     }

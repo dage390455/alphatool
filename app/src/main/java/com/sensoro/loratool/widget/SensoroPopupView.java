@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.sensoro.loratool.R;
-import com.sensoro.loratool.activity.fragment.DeviceFragment;
+import com.sensoro.loratool.fragment.DeviceFragment;
 
 /**
  * Created by sensoro on 17/6/5.

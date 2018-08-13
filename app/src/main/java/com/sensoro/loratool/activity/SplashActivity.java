@@ -26,13 +26,13 @@ public class SplashActivity extends BaseActivity implements Constants {
         SharedPreferences sp = getSharedPreferences(PREFERENCE_LOGIN, Context.MODE_PRIVATE);
         String expires = sp.getString(PREFERENCE_KEY_EXPIRES, null);
         String sessionId = sp.getString(PREFERENCE_KEY_SESSION_ID, null);
-        String servername = sp.getString(PREFERENCE_KEY_SERVER_NAME, null);
+        String serverName = sp.getString(PREFERENCE_KEY_SERVER_NAME, null);
         if (expires != null && sessionId != null) {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
             try {
                 long expiresTime = formatter.parse(expires).getTime();
                 long currentTime = System.currentTimeMillis() - 24 * 60 * 60 * 1000;
-                if (currentTime  > expiresTime) {
+                if (currentTime > expiresTime) {
                     Intent intent = new Intent(this, LoginActivity.class);
                     startActivity(intent);
                 } else {
@@ -40,7 +40,7 @@ public class SplashActivity extends BaseActivity implements Constants {
                     LoRaSettingApplication application = (LoRaSettingApplication) getApplication();
                     application.loRaSettingServer.setSessionId(sessionId);
                     Intent intent = new Intent(this, MainActivity.class);
-                    intent.putExtra("name", servername);
+                    intent.putExtra("name", serverName);
                     startActivity(intent);
                 }
             } catch (ParseException e) {

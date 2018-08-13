@@ -95,7 +95,11 @@ public class BLEDeviceManager {
             throw new Exception(BLUETOOTH_IS_NOT_ENABLED);// 抛出蓝牙关闭异常
         }
         if (mContext != null) {
-            mContext.startService(intent);
+//            if (Build.VERSION.SDK_INT >= 26) {
+//                mContext.startForegroundService(intent);
+//            } else {
+                mContext.startService(intent);
+//            }
         }
     }
 

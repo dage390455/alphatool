@@ -43,4 +43,12 @@ public class CmdType {
     public static final int CMD_ARTIFICIAL = 0x17;
     public static final int CMD_SMOKE = 0x18;
     public static final int CMD_PRESSURE = 0x19;
+    public static final int CMD_SET_ELEC_CMD = 0x20;
+    //电表命令
+    public static final int CMD_ELEC_RESET = 1;
+    public static final int CMD_ELEC_RESTORE = 2;
+    public static final int CMD_ELEC_AIR_SWITCH = 4;
+    public static final int CMD_ELEC_SELF_TEST = 8;
+    public static final int CMD_ELEC_SILENCE = 16;
+    public static final int CMD_ELEC_ZERO_POWER = 64;
 }

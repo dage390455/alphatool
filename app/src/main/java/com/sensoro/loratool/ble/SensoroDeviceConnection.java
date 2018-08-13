@@ -362,6 +362,9 @@ public class SensoroDeviceConnection {
         }
         int cmdType = bluetoothLEHelper4.getSendCmdType();
         switch (cmdType) {
+            case CmdType.CMD_SET_ELEC_CMD:
+                parseElecData(characteristic);
+                break;
             case CmdType.CMD_SET_SMOKE:
                 parseSmokeData(characteristic);
                 break;
@@ -411,6 +414,21 @@ public class SensoroDeviceConnection {
                 break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * 解析电表命令返回
+     *
+     * @param characteristic
+     */
+    private void parseElecData(BluetoothGattCharacteristic characteristic) {
+        byte[] data = characteristic.getValue();
+        byte retCode = data[3];
+        if (retCode == ResultCode.CODE_DEVICE_SUCCESS) {
+            writeCallbackHashMap.get(CmdType.CMD_SET_ELEC_CMD).onWriteSuccess(null, CmdType.CMD_SET_ELEC_CMD);
+        } else {
+            writeCallbackHashMap.get(CmdType.CMD_SET_ELEC_CMD).onWriteFailure(retCode, CmdType.CMD_SET_ELEC_CMD);
         }
     }
 
@@ -1154,12 +1172,11 @@ public class SensoroDeviceConnection {
                 sensoroSensorTest.smoke.has_status = true;
                 sensoroSensorTest.smoke.status = smoke.getError().getNumber();
             }
-
             boolean hasMultiTemp = msgNode.hasMultiTemp();
             sensoroSensorTest.hasMultiTemp = hasMultiTemp;
             if (hasMultiTemp) {
                 MsgNode1V1M5.MultiSensorDataInt multiTemp = msgNode.getMultiTemp();
-                sensoroSensorTest.multiTemperature=new SensoroData();
+                sensoroSensorTest.multiTemperature = new SensoroData();
                 boolean hasAlarmHigh = multiTemp.hasAlarmHigh();
                 sensoroSensorTest.multiTemperature.has_alarmHigh = hasAlarmHigh;
                 if (hasAlarmHigh) {
@@ -1179,6 +1196,47 @@ public class SensoroDeviceConnection {
                 sensoroSensorTest.multiTemperature.has_alarmStepLow = hasAlarmStepLow;
                 if (hasAlarmStepLow) {
                     sensoroSensorTest.multiTemperature.alarmStepLow_int = multiTemp.getAlarmStepLow();
+                }
+            }
+            boolean hasFireData = msgNode.hasFireData();
+            sensoroSensorTest.hasFireData = hasFireData;
+            if (hasFireData) {
+                MsgNode1V1M5.ElecFireData fireData = msgNode.getFireData();
+                sensoroSensorTest.elecFireData = new SensoroFireData();
+                boolean hasSensorPwd = fireData.hasSensorPwd();
+                sensoroSensorTest.elecFireData.hasSensorPwd = hasSensorPwd;
+                if (hasSensorPwd) {
+                    sensoroSensorTest.elecFireData.sensorPwd = fireData.getSensorPwd();
+                }
+                boolean hasLeakageTh = fireData.hasLeakageTh();
+                sensoroSensorTest.elecFireData.hasLeakageTh = hasLeakageTh;
+                if (hasLeakageTh) {
+                    sensoroSensorTest.elecFireData.leakageTh = fireData.getLeakageTh();
+                }
+                boolean hasTempTh = fireData.hasTempTh();
+                sensoroSensorTest.elecFireData.hasTempTh = hasTempTh;
+                if (hasTempTh) {
+                    sensoroSensorTest.elecFireData.tempTh = fireData.getTempTh();
+                }
+                boolean hasCurrentTh = fireData.hasCurrentTh();
+                sensoroSensorTest.elecFireData.hasCurrentTh = hasCurrentTh;
+                if (hasCurrentTh) {
+                    sensoroSensorTest.elecFireData.currentTh = fireData.getCurrentTh();
+                }
+                boolean hasLoadTh = fireData.hasLoadTh();
+                sensoroSensorTest.elecFireData.hasLoadTh = hasLoadTh;
+                if (hasLoadTh) {
+                    sensoroSensorTest.elecFireData.loadTh = fireData.getLoadTh();
+                }
+                boolean hasVolHighTh = fireData.hasVolHighTh();
+                sensoroSensorTest.elecFireData.hasVolHighTh = hasVolHighTh;
+                if (hasVolHighTh) {
+                    sensoroSensorTest.elecFireData.volHighTh = fireData.getVolHighTh();
+                }
+                boolean hasVolLowTh = fireData.hasVolLowTh();
+                sensoroSensorTest.elecFireData.hasVolLowTh = hasVolLowTh;
+                if (hasVolLowTh) {
+                    sensoroSensorTest.elecFireData.volLowTh = fireData.getVolLowTh();
                 }
             }
             sensoroDevice.setSensoroSensorTest(sensoroSensorTest);
@@ -1809,6 +1867,7 @@ public class SensoroDeviceConnection {
             }
             msgNodeBuilder.setWaterPressure(waterPressureBuilder);
         }
+        //添加单通道温度传感器支持
         if (sensoroSensorTest.hasMultiTemp) {
             MsgNode1V1M5.MultiSensorDataInt.Builder builder = MsgNode1V1M5.MultiSensorDataInt.newBuilder();
             if (sensoroSensorTest.multiTemperature.has_alarmHigh) {
@@ -1825,6 +1884,32 @@ public class SensoroDeviceConnection {
             }
             msgNodeBuilder.setMultiTemp(builder);
         }
+        //电表支持
+        if (sensoroSensorTest.hasFireData) {
+            MsgNode1V1M5.ElecFireData.Builder builder = MsgNode1V1M5.ElecFireData.newBuilder();
+            if (sensoroSensorTest.elecFireData.hasSensorPwd) {
+                builder.setSensorPwd(sensoroSensorTest.elecFireData.sensorPwd);
+            }
+            if (sensoroSensorTest.elecFireData.hasLeakageTh) {
+                builder.setLeakageTh(sensoroSensorTest.elecFireData.leakageTh);
+            }
+            if (sensoroSensorTest.elecFireData.hasTempTh) {
+                builder.setTempTh(sensoroSensorTest.elecFireData.tempTh);
+            }
+            if (sensoroSensorTest.elecFireData.hasCurrentTh) {
+                builder.setCurrentTh(sensoroSensorTest.elecFireData.currentTh);
+            }
+            if (sensoroSensorTest.elecFireData.hasLoadTh) {
+                builder.setLoadTh(sensoroSensorTest.elecFireData.loadTh);
+            }
+            if (sensoroSensorTest.elecFireData.hasVolHighTh) {
+                builder.setVolHighTh(sensoroSensorTest.elecFireData.volHighTh);
+            }
+            if (sensoroSensorTest.elecFireData.hasVolLowTh) {
+                builder.setVolLowTh(sensoroSensorTest.elecFireData.volLowTh);
+            }
+            msgNodeBuilder.setFireData(builder);
+        }
         if (sensoroDevice.hasAppParam()) {
             MsgNode1V1M5.AppParam.Builder appBuilder = MsgNode1V1M5.AppParam.newBuilder();
             if (sensoroDevice.hasUploadInterval()) {
@@ -1836,7 +1921,7 @@ public class SensoroDeviceConnection {
             }
             msgNodeBuilder.setAppParam(appBuilder);
         }
-        //添加单通道温度传感器支持
+
 
         MsgNode1V1M5.LoraParam.Builder loraBuilder = MsgNode1V1M5.LoraParam.newBuilder();
         loraBuilder.setTxPower(sensoroDevice.getLoraTxp());
@@ -1877,6 +1962,20 @@ public class SensoroDeviceConnection {
         msgNodeBuilder.setAppParam(builder);
         byte[] data = msgNodeBuilder.build().toByteArray();
         writeData05Cmd(data, CmdType.CMD_SET_SMOKE, writeCallback);
+    }
+
+    /**
+     * 写入电表命令
+     *
+     * @param builder
+     * @param writeCallback
+     */
+    public void writeElecCmd(MsgNode1V1M5.ElecFireData.Builder builder, SensoroWriteCallback writeCallback) {
+        writeCallbackHashMap.put(CmdType.CMD_SET_ELEC_CMD, writeCallback);
+        MsgNode1V1M5.MsgNode.Builder msgNodeBuilder = MsgNode1V1M5.MsgNode.newBuilder();
+        msgNodeBuilder.setFireData(builder);
+        byte[] data = msgNodeBuilder.build().toByteArray();
+        writeData05Cmd(data, CmdType.CMD_SET_ELEC_CMD, writeCallback);
     }
 
     public void writeZeroCmd(SensoroWriteCallback writeCallback) {

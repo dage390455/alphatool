@@ -98,7 +98,12 @@ public class BLEDeviceService extends Service implements BLEScanCallback {
             Intent intent = new Intent();
             intent.setClass(BLEDeviceService.this, IntentProcessorService.class);
             intent.putExtra(BLEDeviceManager.MONITORED_DEVICE, new MonitoredBLEDevice(newDevice, true));
+//            if (Build.VERSION.SDK_INT >= 26) {
+//                startForegroundService(intent);
+//                startForeground(1,new Notification());
+//            } else {
             startService(intent);
+//            }
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
@@ -123,7 +128,12 @@ public class BLEDeviceService extends Service implements BLEScanCallback {
             Intent intent = new Intent();
             intent.setClass(BLEDeviceService.this, IntentProcessorService.class);
             intent.putParcelableArrayListExtra(BLEDeviceManager.UPDATE_DEVICES, updateDevicesClone);
-            startService(intent);
+//            if (Build.VERSION.SDK_INT >= 26) {
+//                startForegroundService(intent);
+//                startForeground(1, new Notification());
+//            } else {
+                startService(intent);
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -143,7 +153,12 @@ public class BLEDeviceService extends Service implements BLEScanCallback {
                     Intent intent = new Intent();
                     intent.setClass(BLEDeviceService.this, IntentProcessorService.class);
                     intent.putExtra(BLEDeviceManager.MONITORED_DEVICE, new MonitoredBLEDevice(goneDevice, false));
-                    startService(intent);
+//                    if (Build.VERSION.SDK_INT >= 26) {
+//                        startForegroundService(intent);
+//                        startForeground(1, new Notification());
+//                    } else {
+                        startService(intent);
+//                    }
 
                     scanDeviceHashMap.remove(monitoredDevice.getMacAddress());
                 } else {

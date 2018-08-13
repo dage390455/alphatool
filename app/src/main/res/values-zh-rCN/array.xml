@@ -336,6 +336,8 @@
         <item>泛海三江液化气</item>
         <item>康凯斯定位器</item>
         <item>C端追踪器</item>
+        <item>泛海三江烟雾传感器</item>
+        <item>泛海三江电表</item>
     </string-array>
     <string-array name="filter_device_band_array">
         <item>SE433</item>

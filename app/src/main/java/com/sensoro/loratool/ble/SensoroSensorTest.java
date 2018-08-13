@@ -3,6 +3,8 @@ package com.sensoro.loratool.ble;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+
 /**
  * Created by sensoro on 17/1/19.
  */
@@ -42,6 +44,7 @@ public class SensoroSensorTest extends BLEDevice implements Parcelable, Cloneabl
     public SensoroData flame;
     public SensoroData waterPressure;
     public SensoroData multiTemperature;
+    public SensoroFireData elecFireData;
     //
     public boolean hasAccelerometerCount;
     public boolean hasAngle;
@@ -75,6 +78,7 @@ public class SensoroSensorTest extends BLEDevice implements Parcelable, Cloneabl
     public boolean hasWaterPressure;
     public boolean hasMultiTemp;
     public boolean hasMethane;
+    public boolean hasFireData;
 
     public SensoroSensorTest() {
     }
@@ -110,6 +114,10 @@ public class SensoroSensorTest extends BLEDevice implements Parcelable, Cloneabl
         gas = (SensoroData) in.readSerializable();
         multiTemperature = (SensoroData) in.readSerializable();
         waterPressure = (SensoroData) in.readSerializable();
+        Serializable serializable = in.readSerializable();
+        if (serializable instanceof SensoroFireData ){
+            elecFireData = (SensoroFireData) serializable;
+        }
         customize = in.createByteArray();
         hasAccelerometerCount = in.readByte() != 0;
         hasAngle = in.readByte() != 0;
@@ -143,6 +151,7 @@ public class SensoroSensorTest extends BLEDevice implements Parcelable, Cloneabl
         hasWaterPressure = in.readByte() != 0;
         hasMultiTemp = in.readByte() != 0;
         hasMethane = in.readByte() != 0;
+        hasFireData = in.readByte() != 0;
     }
 
     @Override
@@ -181,6 +190,7 @@ public class SensoroSensorTest extends BLEDevice implements Parcelable, Cloneabl
         parcel.writeSerializable(yaw);
         parcel.writeSerializable(gas);
         parcel.writeSerializable(waterPressure);
+        parcel.writeSerializable(elecFireData);
         parcel.writeSerializable(multiTemperature);
         parcel.writeByteArray(customize);
         parcel.writeByte((byte) (hasAccelerometerCount ? 1 : 0));
@@ -215,6 +225,7 @@ public class SensoroSensorTest extends BLEDevice implements Parcelable, Cloneabl
         parcel.writeByte((byte) (hasWaterPressure ? 1 : 0));
         parcel.writeByte((byte) (hasMultiTemp ? 1 : 0));
         parcel.writeByte((byte) (hasMethane ? 1 : 0));
+        parcel.writeByte((byte) (hasFireData ? 1 : 0));
     }
 
     public static final Creator<SensoroSensorTest> CREATOR = new Creator<SensoroSensorTest>() {
