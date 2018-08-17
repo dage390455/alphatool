@@ -3,6 +3,9 @@
     <array name="drawer_title_array">
         <item>Config Sensor</item>
         <item>Config Station</item>
+        <item>Device Scan</item>
+        <!--TODO 也该这里 设备扫描-->
+
     </array>
     <string-array name="station_moreinfo_array">
         <item>基站热点名称</item>
@@ -340,6 +343,10 @@
         <item>C Tacker</item>
         <item>Sanjiang Smoke</item>
         <item>Sanjiang Elec</item>
+        <item>Siter Gas CH4</item>
+        <item>Siter Gas LPG</item>
+        <item>JF Connection</item>
+
     </string-array>
     <string-array name="filter_device_band_array">
         <item>SE433</item>

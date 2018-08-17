@@ -3,7 +3,7 @@ package com.sensoro.loratool.fragment;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
+import android.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.activity.SettingDeviceActivity;
 import com.sensoro.loratool.model.ChannelData;
+import com.sensoro.loratool.utils.DialogFragmentUtils;
 
 import java.util.ArrayList;
 
@@ -143,6 +144,11 @@ public class SettingsMultiChoiceItemsFragment extends SettingsBaseDialogFragment
         tipsDetailTextView = (TextView) dialogView.findViewById(R.id.settings_tips_v4_tv_tips_detail);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        DialogFragmentUtils.fitListView(getDialog(),getActivity());
+    }
 
     public int getTitleId() {
         String tag = getTag();

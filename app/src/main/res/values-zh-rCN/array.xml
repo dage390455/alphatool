@@ -3,6 +3,8 @@
     <array name="drawer_title_array">
         <item>传感器配置</item>
         <item>基站配置</item>
+        <!--todo 扫描改这里-->
+        <!--<item>设备扫描测试</item>-->
     </array>
     <string-array name="station_moreinfo_array">
         <item>基站热点名称</item>
@@ -338,6 +340,10 @@
         <item>C端追踪器</item>
         <item>泛海三江烟雾传感器</item>
         <item>泛海三江电表</item>
+        <item>赛特威尔可燃气传感器（CH4）</item>
+        <item>赛特威尔可燃气传感器（LPG）</item>
+        <item>金风通断监测传感器</item>
+
     </string-array>
     <string-array name="filter_device_band_array">
         <item>SE433</item>

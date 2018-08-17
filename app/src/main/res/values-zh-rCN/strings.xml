@@ -299,6 +299,7 @@
     <string name="data_invalid">数据不合法</string>
     <string name="title_sensor">传感器</string>
     <string name="title_station">基站</string>
+    <string name="title_scan">设备扫描测试</string>
     <string name="setting_text_speed">Accelerometer Sensitivity</string>
     <string name="setting_passwd">密码</string>
     <string name="setting_other">其他</string>

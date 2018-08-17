@@ -62,6 +62,7 @@ public class LoginActivity extends BaseActivity implements Constants, Permission
             add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             add(Manifest.permission.ACCESS_FINE_LOCATION);
             add(Manifest.permission.ACCESS_COARSE_LOCATION);
+            add(Manifest.permission.CAMERA);
         }
     };
     private PermissionUtils mPermissionUtils;

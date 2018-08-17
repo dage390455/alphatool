@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.fragment.DeviceFragment;
+import com.sensoro.loratool.fragment.PointDeployFragment;
 import com.sensoro.loratool.fragment.StationFragment;
 import com.sensoro.loratool.adapter.MenuInfoAdapter;
 import com.sensoro.loratool.ble.BLEDevice;
@@ -71,6 +72,8 @@ public class MainActivity extends BaseActivity
     private TextView exitTextView = null;
     private TextView versionTextView = null;
     private long exitTime = 0;
+    private PointDeployFragment pointDeployFragment;
+    private ImageView filterIv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +83,6 @@ public class MainActivity extends BaseActivity
     }
 
     private void init() {
-
 
         loRaSettingApplication = (LoRaSettingApplication) getApplication();
         verifyStoragePermissions(this);
@@ -165,6 +167,13 @@ public class MainActivity extends BaseActivity
                         deviceFragment.isCurrent = false;
                         titleTextView.setText(R.string.title_station);
                         break;
+                    case 2:
+                        multiIv.setVisibility(View.GONE);
+                        filterIv.setVisibility(View.GONE);
+                        mainPager.setCurrentItem(2);
+                        deviceFragment.isCurrent = false;
+                        titleTextView.setText(R.string.title_scan);
+                        break;
                 }
                 mMenuInfoAdapter.setSelectedIndex(position);
                 mMenuInfoAdapter.notifyDataSetChanged();
@@ -185,14 +194,16 @@ public class MainActivity extends BaseActivity
         List<Fragment> fragmentList = new ArrayList<>();
         deviceFragment = DeviceFragment.newInstance("");
         stationFragment = StationFragment.newInstance("");
+        pointDeployFragment = PointDeployFragment.newInstance("");
         fragmentList.add(deviceFragment);
         fragmentList.add(stationFragment);
+        fragmentList.add(pointDeployFragment);
         mainPager.setAdapter(new PagerAdapter(getSupportFragmentManager(), fragmentList));
         exitLinearLayout = (LinearLayout) findViewById(R.id.main_ll_exit);
         exitLinearLayout.setOnClickListener(this);
         mainExitLinearLayout = (LinearLayout) findViewById(R.id.main_left_exit);
         versionTextView = (TextView) findViewById(R.id.app_version);
-        ImageView filterIv = (ImageView) findViewById(R.id.content_filter);
+        filterIv = (ImageView) findViewById(R.id.content_filter);
         filterIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -28,13 +28,13 @@ android {
             storePassword 'sensoro'
         }
     }
-    compileSdkVersion 27
+    compileSdkVersion 26
     buildToolsVersion '25.0.0'
 //    useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.sensoro.loratool"
-        minSdkVersion 18
-        targetSdkVersion 25
+        minSdkVersion 19
+        targetSdkVersion 27
         versionCode verCode
         versionName verName + connector + buildCode
         // Enabling multidex support.
@@ -156,4 +156,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
     apt 'com.github.hotchemi:permissionsdispatcher-processor:2.1.2'
+    compile 'cn.bingoogolapple:bga-qrcode-zxing:1.2.4'
 }
