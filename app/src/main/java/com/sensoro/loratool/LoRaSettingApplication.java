@@ -8,10 +8,10 @@ import android.widget.Toast;
 
 import com.sensoro.lora.setting.server.LoRaSettingServerImpl;
 import com.sensoro.lora.setting.server.bean.DeviceInfo;
-import com.sensoro.loratool.ble.BLEDevice;
-import com.sensoro.loratool.ble.SensoroDevice;
-import com.sensoro.loratool.ble.scanner.BLEDeviceListener;
-import com.sensoro.loratool.ble.scanner.BLEDeviceManager;
+import com.sensoro.libbleserver.ble.BLEDevice;
+import com.sensoro.libbleserver.ble.SensoroDevice;
+import com.sensoro.libbleserver.ble.scanner.BLEDeviceListener;
+import com.sensoro.libbleserver.ble.scanner.BLEDeviceManager;
 import com.sensoro.loratool.store.LoraDbHelper;
 import com.sensoro.loratool.utils.IPUtil;
 import com.sensoro.station.communication.IStation;

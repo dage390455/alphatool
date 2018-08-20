@@ -27,23 +27,23 @@ import com.sensoro.loratool.fragment.SettingsInputDialogFragment;
 import com.sensoro.loratool.fragment.SettingsMajorMinorDialogFragment;
 import com.sensoro.loratool.fragment.SettingsSingleChoiceItemsFragment;
 import com.sensoro.loratool.fragment.SettingsUUIDDialogFragment;
-import com.sensoro.loratool.ble.BLEDevice;
-import com.sensoro.loratool.ble.CmdType;
-import com.sensoro.loratool.ble.SensoroConnectionCallback;
-import com.sensoro.loratool.ble.SensoroDevice;
-import com.sensoro.loratool.ble.SensoroDeviceConfiguration;
-import com.sensoro.loratool.ble.SensoroDeviceConnection;
-import com.sensoro.loratool.ble.SensoroSensorConfiguration;
-import com.sensoro.loratool.ble.SensoroSensorTest;
-import com.sensoro.loratool.ble.SensoroSlot;
-import com.sensoro.loratool.ble.SensoroUtils;
-import com.sensoro.loratool.ble.SensoroWriteCallback;
-import com.sensoro.loratool.ble.scanner.SensoroUUID;
+import com.sensoro.libbleserver.ble.BLEDevice;
+import com.sensoro.libbleserver.ble.CmdType;
+import com.sensoro.libbleserver.ble.SensoroConnectionCallback;
+import com.sensoro.libbleserver.ble.SensoroDevice;
+import com.sensoro.libbleserver.ble.SensoroDeviceConfiguration;
+import com.sensoro.libbleserver.ble.SensoroDeviceConnection;
+import com.sensoro.libbleserver.ble.SensoroSensorConfiguration;
+import com.sensoro.libbleserver.ble.SensoroSensorTest;
+import com.sensoro.libbleserver.ble.SensoroSlot;
+import com.sensoro.libbleserver.ble.SensoroUtils;
+import com.sensoro.libbleserver.ble.SensoroWriteCallback;
+import com.sensoro.libbleserver.ble.scanner.SensoroUUID;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.event.OnPositiveButtonClickListener;
-import com.sensoro.loratool.proto.MsgNode1V1M5;
-import com.sensoro.loratool.proto.ProtoMsgCfgV1U1;
-import com.sensoro.loratool.proto.ProtoStd1U1;
+import com.sensoro.libbleserver.ble.proto.MsgNode1V1M5;
+import com.sensoro.libbleserver.ble.proto.ProtoMsgCfgV1U1;
+import com.sensoro.libbleserver.ble.proto.ProtoStd1U1;
 import com.sensoro.loratool.store.DeviceDataDao;
 import com.sensoro.loratool.utils.ParamUtil;
 import com.umeng.analytics.MobclickAgent;
@@ -795,8 +795,8 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
 
         if (targetDevice.hasEddyStone()) {
             sensoroSlotArray = targetDevice.getSlotArray();
-            float firmware_version = Float.valueOf(targetDevice.getFirmwareVersion());
-            if (firmware_version > SensoroDevice.FV_1_2) { // 1.3以后没有custom package 3
+            String firmwareVersion = targetDevice.getFirmwareVersion();
+            if (firmwareVersion.compareTo(SensoroDevice.FV_1_2) > 0) { // 1.3以后没有custom package 3
                 findViewById(R.id.settings_multi_ll_custome_package3).setVisibility(GONE);
             } else {
                 findViewById(R.id.settings_multi_ll_sensor_enable).setVisibility(GONE);
@@ -1213,8 +1213,8 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                 sensoroSlotArray[6].setType(ProtoMsgCfgV1U1.SlotType.SLOT_CUSTOME_VALUE);
             }
             sensoroSlotArray[6].setActived(isCustomPackage2Enabled ? 1 : 0);
-            float firmware_version = Float.valueOf(targetDevice.getFirmwareVersion());
-            if (firmware_version > SensoroDevice.FV_1_2) {
+            String firmwareVersion = targetDevice.getFirmwareVersion();
+            if (firmwareVersion.compareTo(SensoroDevice.FV_1_2) > 0) {
                 sensoroSlotArray[7].setType(ProtoMsgCfgV1U1.SlotType.SLOT_SENSOR_VALUE);
                 sensoroSlotArray[7].setActived(isSensorBroadcastEnabled ? 1 : 0);
             } else {
@@ -1838,7 +1838,7 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
         }
         String dataString = null;
         String version = null;
-        float firmware_version = Float.valueOf(targetDevice.getFirmwareVersion());
+        String firmware_version = targetDevice.getFirmwareVersion();
         ProtoMsgCfgV1U1.MsgCfgV1u1.Builder msgCfgBuilder = ProtoMsgCfgV1U1.MsgCfgV1u1.newBuilder();
 
         msgCfgBuilder.setLoraInt(deviceConfiguration.getLoraInt().intValue());
@@ -1893,7 +1893,7 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
         }
 
 
-        if (firmware_version <= SensoroDevice.FV_1_2) {//03
+        if (firmware_version.compareTo(SensoroDevice.FV_1_2) <= 00) {//03
             ProtoMsgCfgV1U1.MsgCfgV1u1 msgCfg = msgCfgBuilder.build();
             byte[] data = msgCfg.toByteArray();
             dataString = new String(Base64.encode(data, Base64.DEFAULT));

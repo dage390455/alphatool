@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sensoro.loratool.R;
-import com.sensoro.loratool.ble.SensoroStation;
+import com.sensoro.libbleserver.ble.SensoroStation;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.model.StationInfoComparator;
 import com.sensoro.loratool.utils.DateUtil;

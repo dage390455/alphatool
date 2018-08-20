@@ -112,8 +112,8 @@
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"
             />
-        <service android:name=".ble.scanner.BLEDeviceService" />
-        <service android:name=".ble.scanner.IntentProcessorService" />
+        <service android:name="com.sensoro.libbleserver.ble.scanner.BLEDeviceService" />
+        <service android:name="com.sensoro.libbleserver.ble.scanner.IntentProcessorService" />
         <service android:name=".service.PollingService" />
         <service
             android:name=".service.DfuService"

@@ -20,7 +20,7 @@ import com.sensoro.lora.setting.server.bean.UpgradeListRsp;
 import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.adapter.UpgradeInfoAdapter;
-import com.sensoro.loratool.ble.SensoroDevice;
+import com.sensoro.libbleserver.ble.SensoroDevice;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.widget.RecycleViewDivider;
 import com.sensoro.loratool.widget.RecycleViewItemClickListener;

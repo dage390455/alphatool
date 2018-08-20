@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sensoro.loratool.R;
-import com.sensoro.loratool.ble.SensoroDevice;
+import com.sensoro.libbleserver.ble.SensoroDevice;
 import com.sensoro.loratool.widget.RecycleViewItemClickListener;
 
 import java.util.ArrayList;

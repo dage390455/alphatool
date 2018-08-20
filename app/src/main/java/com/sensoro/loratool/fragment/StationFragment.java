@@ -30,7 +30,7 @@ import com.sensoro.loratool.activity.AdvanceSettingStationActivity;
 import com.sensoro.loratool.activity.SearchStationActivity;
 import com.sensoro.loratool.activity.SettingStationActivity;
 import com.sensoro.loratool.adapter.StationInfoAdapter;
-import com.sensoro.loratool.ble.SensoroStation;
+import com.sensoro.libbleserver.ble.SensoroStation;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.widget.SensoroEditText;
 import com.sensoro.station.communication.bean.StationInfo;

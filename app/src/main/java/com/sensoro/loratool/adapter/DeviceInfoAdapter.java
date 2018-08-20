@@ -18,8 +18,8 @@ import android.widget.TextView;
 
 import com.sensoro.lora.setting.server.bean.DeviceInfo;
 import com.sensoro.loratool.R;
-import com.sensoro.loratool.ble.SensoroDevice;
-import com.sensoro.loratool.ble.SensoroSensorTest;
+import com.sensoro.libbleserver.ble.SensoroDevice;
+import com.sensoro.libbleserver.ble.SensoroSensorTest;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.utils.DateUtil;
 import com.sensoro.loratool.widget.BatteryView;
