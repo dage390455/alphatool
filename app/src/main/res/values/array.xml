@@ -3,9 +3,6 @@
     <array name="drawer_title_array">
         <item>Config Sensor</item>
         <item>Config Station</item>
-        <item>Device Scan</item>
-        <!--TODO 也该这里 设备扫描-->
-
     </array>
     <string-array name="station_moreinfo_array">
         <item>基站热点名称</item>

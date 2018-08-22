@@ -582,22 +582,16 @@ public class BLEDeviceFactory {
                 }
             }
         }
-        if(device_data!=null){
-            Log.e("hcs","deviceData");
-        }
-        if(station_data!=null){
-            Log.e("hcs","station_data");
-        }
-
-        if(sensor_data!=null){
-            Log.e("hcs","sensor_data");
-        }
-
         if (device_data != null) {
             SensoroDevice bleDevice = new SensoroDevice();
             byte[] sn = new byte[8];
-            //todo 索引越界
-            System.arraycopy(device_data, 0, sn, 0, sn.length);
+            try {
+                System.arraycopy(device_data, 0, sn, 0, sn.length);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+
             bleDevice.setSn(SensoroUUID.parseSN(sn));
 
             byte[] hardware = new byte[2];

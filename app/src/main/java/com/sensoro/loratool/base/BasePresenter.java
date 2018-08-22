@@ -2,6 +2,7 @@ package com.sensoro.loratool.base;
 
 import android.content.Context;
 
+import com.sensoro.lora.setting.server.bean.DeviceInfo;
 import com.sensoro.loratool.iwidget.IOnDestroy;
 
 import java.lang.ref.WeakReference;
@@ -53,5 +54,6 @@ public abstract class BasePresenter<V> implements IOnDestroy {
     }
 
     public abstract void initData(Context context);
+
 
 }

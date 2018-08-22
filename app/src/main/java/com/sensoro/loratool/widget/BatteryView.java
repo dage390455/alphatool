@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.sensoro.loratool.R;
@@ -35,8 +36,8 @@ public class BatteryView extends View {
      */
     private float mBatteryHeight = 30.0f;// 电池高度
     private float mBatteryWidth = 80.0f;// 电池的宽度
-    private float mCapHeight = 15.0f;
-    private float mCapWidth = 5.0f;
+    private float mCapHeight = (float) (mBatteryHeight*0.5);
+    private float mCapWidth = (float) (mBatteryWidth*0.1);
     private int mBattery = 0;
 
     /**
@@ -57,6 +58,7 @@ public class BatteryView extends View {
     private RectF mBatteryRectF;
     private RectF mCapRectF;
     private RectF mPowerRectF;
+    private boolean isMeasure=false;
 
     public BatteryView(Context context) {
         super(context);
@@ -73,13 +75,44 @@ public class BatteryView extends View {
         initView();
     }
 
-    public void setBattery(int length) {
-        this.mBattery = length;
-        this.mPowerWidth = length / 1.45f;
-        this.mPowerRectF.set(mBatteryWidth + mCapWidth - mPowerPadding
-                - mPowerWidth, mPowerPadding, mBatteryWidth + mCapWidth
-                - mPowerPadding, mBatteryHeight - mPowerPadding);
-        this.postInvalidate();
+    public void setBattery(final float length) {
+//        this.mBattery = length;
+//        measure(MeasureSpec.EXACTLY,MeasureSpec.EXACTLY);
+        Log.e("hcs",":setbattery::");
+        if(!isMeasure){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (!isMeasure){
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        Log.e("hcs","循环了:::");
+                    }
+                    float rate = length / 100f;
+                    mPowerWidth = rate*(mBatteryWidth-8);
+                    mPowerRectF.set(4, 4, mPowerWidth, mBatteryHeight-4);
+                    mCapHeight = (float) (mBatteryHeight*0.5);
+                    mBatteryRectF.set(0,0,mBatteryWidth,mBatteryHeight);
+                    Log.e("hcs",":batt::"+mBatteryWidth+"measurew"+measureWidth);
+                    mCapRectF.set(mBatteryWidth,mBatteryHeight/2-mCapHeight/2,measureWidth,mBatteryHeight/2+mCapHeight/2);
+                    postInvalidate();
+
+                }
+            }).start();
+        }else{
+            float rate = length / 100f;
+            this.mPowerWidth = rate*(mBatteryWidth-8);
+            this.mPowerRectF.set(4, 4, mPowerWidth, mBatteryHeight-4);
+            mCapHeight = (float) (mBatteryHeight*0.5);
+            mBatteryRectF.set(0,0,mBatteryWidth,mBatteryHeight);
+            Log.e("hcs",":batt::"+mBatteryWidth+"measurew"+measureWidth);
+            mCapRectF.set(mBatteryWidth,mBatteryHeight/2-mCapHeight/2,measureWidth,mBatteryHeight/2+mCapHeight/2);
+            this.postInvalidate();
+        }
+
     }
 
 
@@ -103,31 +136,33 @@ public class BatteryView extends View {
         /**
          * 设置电池矩形
          */
-        mBatteryRectF = new RectF(mCapWidth, 0, mCapWidth + mBatteryWidth,
+        mBatteryRectF = new RectF(0, 0, mBatteryWidth,
                 mBatteryHeight);
 
         /**
          * 设置电池盖矩形
          */
 
-        mCapRectF = new RectF(0, mBatteryHeight / 2 - mCapHeight / 2,
-                mCapWidth, mBatteryHeight / 2 + mCapHeight / 2);
+        mCapRectF = new RectF(mBatteryWidth, mBatteryHeight/2-mCapHeight/2,
+                mBatteryWidth+mCapWidth, mBatteryHeight / 2 + mCapHeight / 2);
 
         /**
          * 设置电量的矩形
          */
 
-        mPowerRectF = new RectF(mBatteryWidth + mCapWidth - mPowerPadding
-                - mPowerWidth, mPowerPadding, mBatteryWidth + mCapWidth
-                - mPowerPadding, mBatteryHeight - mPowerPadding);
+        mPowerRectF = new RectF(0, 0, mBatteryWidth
+                - mPowerPadding, mBatteryHeight);
 
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        Log.e("hcs","onmeauser:::");
         measureHeight = MeasureSpec.getSize(heightMeasureSpec);
         measureWidth = MeasureSpec.getSize(widthMeasureSpec);
-
+        mBatteryWidth = (float) (measureWidth-measureWidth*0.1);
+        mBatteryHeight = measureHeight;
+        isMeasure = true;
         setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
     }
 
@@ -135,12 +170,14 @@ public class BatteryView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.save();
-        canvas.translate(measureWidth /2 + 150 , measureHeight/2  );
-        canvas.rotate(180);
-        canvas.scale(0.6f, 0.8f, measureWidth /2 + 150,  measureHeight/2);
+//        canvas.translate(measureWidth /2 + 150 , measureHeight/2  );
+//        canvas.rotate(270);
+//        canvas.scale(0.6f, 0.8f, measureWidth /2 + 150,  measureHeight/2);
         canvas.drawRoundRect(mBatteryRectF, 2.0f, 2.0f, mBatteryPaint);
         canvas.drawRoundRect(mCapRectF, 2.0f, 2.0f, mBatteryPaint);
+
         canvas.drawRect(mPowerRectF, mPowerPaint);
+        Log.e("hcs",":draw::"+mPowerRectF.right+"  "+mPowerRectF.bottom);
 
         canvas.restore();
 

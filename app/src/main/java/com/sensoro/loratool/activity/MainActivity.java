@@ -74,6 +74,7 @@ public class MainActivity extends BaseActivity
     private long exitTime = 0;
     private PointDeployFragment pointDeployFragment;
     private ImageView filterIv;
+    private ImageView mScan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,13 +168,6 @@ public class MainActivity extends BaseActivity
                         deviceFragment.isCurrent = false;
                         titleTextView.setText(R.string.title_station);
                         break;
-                    case 2:
-                        multiIv.setVisibility(View.GONE);
-                        filterIv.setVisibility(View.GONE);
-                        mainPager.setCurrentItem(2);
-                        deviceFragment.isCurrent = false;
-                        titleTextView.setText(R.string.title_scan);
-                        break;
                 }
                 mMenuInfoAdapter.setSelectedIndex(position);
                 mMenuInfoAdapter.notifyDataSetChanged();
@@ -221,6 +215,15 @@ public class MainActivity extends BaseActivity
             @Override
             public void onClick(View v) {
                 deviceFragment.doModelChoose();
+            }
+        });
+        mScan = (ImageView) findViewById(R.id.content_scan);
+        mScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,ScanDeviceActivity.class);
+                startActivity(intent);
+
             }
         });
         getAPPVersionCode();

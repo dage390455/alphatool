@@ -1079,4 +1079,5 @@
 <dimen name="x1078">319.4dp</dimen>
 <dimen name="x1079">319.7dp</dimen>
 <dimen name="x1080">320dp</dimen>
+<dimen name="margin_4">4dp</dimen>
 </resources>

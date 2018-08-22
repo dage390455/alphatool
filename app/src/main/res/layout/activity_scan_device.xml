@@ -1,43 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <cn.bingoogolapple.qrcode.zxing.ZXingView
-        android:id="@+id/scan_view"
+        android:id="@+id/ac_scan_scan_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:qrcv_animTime="1000"
-        app:qrcv_barCodeTipText="将条码放入框内，即可自动扫描"
+        app:qrcv_barCodeTipText="对准设备上的二维码，即可自动扫描"
         app:qrcv_barcodeRectHeight="120dp"
-        app:qrcv_borderColor="#00E4C2"
+        app:qrcv_borderColor="@color/white"
         app:qrcv_borderSize="1dp"
-        app:qrcv_cornerColor="#00E4C2"
+        app:qrcv_cornerColor="#2E95EC"
         app:qrcv_cornerLength="20dp"
         app:qrcv_cornerSize="5dp"
-        app:qrcv_customGridScanLineDrawable="@drawable/scan_line"
         app:qrcv_isBarcode="false"
+        app:qrcv_customGridScanLineDrawable="@drawable/ic_scan_line"
         app:qrcv_isShowDefaultGridScanLineDrawable="true"
         app:qrcv_isShowDefaultScanLineDrawable="true"
         app:qrcv_isShowTipBackground="true"
         app:qrcv_isShowTipTextAsSingleLine="true"
         app:qrcv_isTipTextBelowRect="false"
         app:qrcv_maskColor="#7e000000"
-        app:qrcv_qrCodeTipText="对准传感器上的二维码，即可自动扫描"
+        app:qrcv_qrCodeTipText="对准设备上的二维码，即可自动扫描"
         app:qrcv_rectWidth="200dp"
         app:qrcv_scanLineColor="@color/colorPrimaryDark"
         app:qrcv_toolbarHeight="56dp"
         app:qrcv_topOffset="@dimen/y500"
         app:qrcv_verticalBias="-1"/>
 
+
     <RelativeLayout
         android:id="@+id/sensor_history_title_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y200"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:visibility="gone"
-        android:background="@android:color/transparent">
+        android:visibility="visible"
+        android:background="@color/actionbar_bg">
 
         <ImageView
             android:id="@+id/deploy_iv_menu_list"
@@ -47,6 +48,7 @@
             android:adjustViewBounds="true"
             android:cropToPadding="true"
             android:padding="18dp"
+            android:visibility="gone"
             android:src="@mipmap/ic_menu_list"/>
 
         <TextView
@@ -54,16 +56,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text=""
+            android:text="@string/ac_scan_device_title"
+            android:padding="6dp"
             android:textColor="@color/white"
-            android:textSize="@dimen/x60"/>
+            android:textSize="18sp"/>
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/y30"
+        android:layout_marginBottom="16dp"
         android:orientation="horizontal"
         android:weightSum="2">
 
@@ -75,7 +78,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/zxing_capture_iv_manual"
+                android:id="@+id/ac_scan_capture_iv_manual"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@mipmap/ic_manual_input"/>
@@ -98,7 +101,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/zxing_capture_iv_flash"
+                android:id="@+id/ac_scan_capture_iv_flash"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@mipmap/ic_flashlight"

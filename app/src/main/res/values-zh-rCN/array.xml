@@ -3,8 +3,6 @@
     <array name="drawer_title_array">
         <item>传感器配置</item>
         <item>基站配置</item>
-        <!--todo 扫描改这里-->
-        <!--<item>设备扫描测试</item>-->
     </array>
     <string-array name="station_moreinfo_array">
         <item>基站热点名称</item>

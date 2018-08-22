@@ -45,15 +45,18 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.SplashActivity"
-            android:theme="@style/SplashTheme"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.LoginActivity" android:theme="@style/TranslucentTheme" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/TranslucentTheme" />
         <activity
             android:name=".activity.MainActivity"
             android:launchMode="singleInstance"
@@ -97,21 +100,22 @@
         <activity
             android:name=".activity.FilterStationActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.AuthActivity"
+        <activity
+            android:name=".activity.AuthActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SearchDeviceActivity"
             android:screenOrientation="portrait"
-            />
-        <activity android:name=".activity.SearchDeviceActivity"
-            android:windowSoftInputMode="adjustResize"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activity.SearchStationActivity"
             android:screenOrientation="portrait"
-            />
-        <activity android:name=".activity.SearchStationActivity"
-            android:windowSoftInputMode="adjustResize"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activity.UpgradeDeviceListActivity"
             android:screenOrientation="portrait"
-            />
-        <activity android:name=".activity.UpgradeDeviceListActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait"
-            />
+            android:windowSoftInputMode="adjustResize" />
+
         <service android:name="com.sensoro.libbleserver.ble.scanner.BLEDeviceService" />
         <service android:name="com.sensoro.libbleserver.ble.scanner.IntentProcessorService" />
         <service android:name=".service.PollingService" />
@@ -127,7 +131,6 @@
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="${AVOS_CHANNEL_VALUE}" />
-
         <meta-data
             android:name="TA_APPKEY"
             android:value="AQYC1518XAQF" />
@@ -136,6 +139,8 @@
             android:name="InstallChannel"
             android:value="${AVOS_CHANNEL_VALUE}" />
 
+        <activity android:name=".activity.ScanDeviceActivity" />
+        <activity android:name=".activity.DeviceDetailActivity"></activity>
     </application>
 
 </manifest>

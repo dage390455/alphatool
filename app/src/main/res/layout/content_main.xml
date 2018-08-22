@@ -35,28 +35,23 @@
             android:textSize="15sp" />
 
         <ImageView
-            android:id="@+id/content_multi"
-            android:layout_width="@dimen/x160"
-            android:layout_height="@dimen/y160"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/x250"
-            android:adjustViewBounds="true"
-            android:cropToPadding="true"
-            android:padding="10dp"
-            android:src="@mipmap/ic_multi_sel" />
-
+            android:id="@+id/content_scan"
+            style="@style/main_bar_icon_style"
+            android:layout_alignParentEnd="true"
+            android:src="@mipmap/ic_swip" />
         <ImageView
             android:id="@+id/content_filter"
-            android:layout_width="@dimen/x160"
-            android:layout_height="@dimen/y160"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/x100"
-            android:adjustViewBounds="true"
-            android:cropToPadding="true"
-            android:padding="10dp"
+            style="@style/main_bar_icon_style"
+            android:layout_toStartOf="@id/content_scan"
             android:src="@mipmap/ic_filter" />
+
+        <ImageView
+            android:id="@+id/content_multi"
+            style="@style/main_bar_icon_style"
+            android:layout_toStartOf="@id/content_filter"
+            android:src="@mipmap/ic_multi_sel"
+            />
+
     </RelativeLayout>
 
     <LinearLayout

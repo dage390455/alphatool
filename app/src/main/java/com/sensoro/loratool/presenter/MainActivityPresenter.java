@@ -6,6 +6,7 @@ import com.sensoro.loratool.base.BasePresenter;
 import com.sensoro.loratool.imainview.IMainActivityView;
 
 public class MainActivityPresenter extends BasePresenter<IMainActivityView> {
+
     @Override
     public void initData(Context context) {
 
@@ -15,4 +16,6 @@ public class MainActivityPresenter extends BasePresenter<IMainActivityView> {
     public void onDestroy() {
 
     }
+
+
 }

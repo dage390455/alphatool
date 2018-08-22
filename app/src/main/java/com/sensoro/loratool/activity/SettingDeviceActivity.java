@@ -802,7 +802,6 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 if (sensoroDevice.hasEddyStone()) {
                     sensoroSlotArray = sensoroDevice.getSlotArray();
                     try {
-                        //todo 还有这里啦
                         String firmwareVersion = sensoroDevice.getFirmwareVersion();
                         if (firmwareVersion.compareTo(SensoroDevice.FV_1_2) >0 ) { // 1.3以后没有custom package 3
                             findViewById(R.id.settings_device_ll_custome_package3).setVisibility(GONE);

@@ -13,7 +13,7 @@ public class MVPSimpleActivity extends BaseActivity<IMainActivityView, MainActiv
     protected void onCreateInit(Bundle savedInstanceState) {
         //TODO 初始化UI等
         //
-        mPrestener.initData(mActivity);
+        mPresenter.initData(mActivity);
     }
 
     @Override

@@ -166,7 +166,7 @@
 
     <style name="MyTheme" parent="AppTheme">
         <item name="android:windowDisablePreview">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--<item name="android:windowBackground">@android:color/transparent</item>-->
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">false</item>
     </style>
@@ -183,6 +183,15 @@
         <item name="android:dividerHeight">0dp</item>
         <item name="android:cacheColorHint">@android:color/transparent</item>
         <item name="android:listSelector">@android:color/transparent</item>
+    </style>
+    <style name="main_bar_icon_style">
+        <item name="android:layout_width">32dp</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:cropToPadding">true</item>
+        <item name="android:padding">6dp</item>®
+        <item name="android:visibility">visible</item>
     </style>
 
     <dimen name="toolbar_padding_top">25dp</dimen>

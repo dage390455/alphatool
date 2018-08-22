@@ -3,6 +3,7 @@ package com.sensoro.lora.setting.server.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -95,7 +96,10 @@ public class DeviceInfo implements Parcelable, Comparable {
         sn = in.readString();
 //        if (getTags() != null) {
 //            in.readStringList(tags);
-//        }
+//            this.tags = new ArrayList<>();
+//            in.readStringList(this.tags);
+//
+////        }
         ownerId = in.readString();
         owner = in.readString();
         normalStatus = in.readInt();
@@ -152,6 +156,7 @@ public class DeviceInfo implements Parcelable, Comparable {
         isConnectable = in.readByte() == 1 ? true : false;
         band = in.readString();
         isSelected = in.readByte() == 1 ? true : false;
+        rssi = in.readInt();
     }
 
     @Override
@@ -159,7 +164,8 @@ public class DeviceInfo implements Parcelable, Comparable {
         dest.writeString(_id);
         dest.writeString(sn);
 //        if (tags != null) {
-//            dest.writeStringList(tags);
+////            dest.writeStringList(tags);
+//            dest.writeList(tags);
 //        }
 
         dest.writeString(ownerId);
@@ -217,6 +223,7 @@ public class DeviceInfo implements Parcelable, Comparable {
         dest.writeByte((byte) (isConnectable ? 1 : 0));
         dest.writeString(band);
         dest.writeByte((byte) (isSelected ? 1 : 0));
+        dest.writeInt(rssi);
     }
 
     public static final Creator<DeviceInfo> CREATOR = new Creator<DeviceInfo>() {

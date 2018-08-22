@@ -536,5 +536,6 @@
     <string name="menu_upgrade">Upgrade</string>
     <string name="menu_signal">Signal Detection</string>
     <string name="menu_clear">Clear</string>
-    <string name="point_deploy">设备扫描测试</string>
+    <string name="ac_scan_device_title">Scanning Device</string>
+    <string name="ac_scan_obtain_fail">Device details failed to get</string>
 </resources>

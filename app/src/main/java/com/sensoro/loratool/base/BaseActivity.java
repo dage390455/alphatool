@@ -11,6 +11,7 @@ import android.view.WindowManager;
 
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.utils.LogUtils;
+import com.sensoro.loratool.widget.StatusBarCompat;
 import com.umeng.analytics.MobclickAgent;
 
 /**
@@ -24,7 +25,7 @@ public abstract class BaseActivity<V, P extends BasePresenter<V>> extends AppCom
     /**
      * 代理者
      */
-    protected P mPrestener;
+    protected P mPresenter;
     /**
      * 主AC
      */
@@ -34,10 +35,12 @@ public abstract class BaseActivity<V, P extends BasePresenter<V>> extends AppCom
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setTheme(R.style.MyTheme);
+        StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.actionbar_bg));
         super.onCreate(savedInstanceState);
-        mPrestener = createPresenter();
-        mPrestener.attachView((V) this);
-        V view = mPrestener.getView();
+
+        mPresenter = createPresenter();
+        mPresenter.attachView((V) this);
+        V view = mPresenter.getView();
         if (view instanceof BaseActivity) {
             mActivity = (BaseActivity) view;
         } else {
@@ -75,8 +78,8 @@ public abstract class BaseActivity<V, P extends BasePresenter<V>> extends AppCom
 
     @Override
     protected void onDestroy() {
-        mPrestener.onDestroy();
-        mPrestener.detachView();
+        mPresenter.onDestroy();
+        mPresenter.detachView();
         super.onDestroy();
     }
 

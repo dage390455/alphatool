@@ -178,7 +178,7 @@
     <string name="common_uuid">Common</string>
     <string name="uncompress_finish">Uncompress finish,start upgrade</string>
     <string name="start_download">开始下载</string>
-    <string name="loading">Loading&#8230;</string>
+    <string name="loading">加载中&#8230;</string>
     <string name="pullup_loading">上拉加载...</string>
     <string name="pulldown_loading">下拉刷新...</string>
     <string name="downloading">正在下载文件...</string>
@@ -299,7 +299,7 @@
     <string name="data_invalid">数据不合法</string>
     <string name="title_sensor">传感器</string>
     <string name="title_station">基站</string>
-    <string name="title_scan">设备扫描测试</string>
+
     <string name="setting_text_speed">Accelerometer Sensitivity</string>
     <string name="setting_passwd">密码</string>
     <string name="setting_other">其他</string>
@@ -533,4 +533,7 @@
     <string name="menu_upgrade">升级</string>
     <string name="menu_signal">信号检测</string>
     <string name="menu_clear">清除</string>
+
+    <string name="ac_scan_device_title">扫描设备</string>
+    <string name="ac_scan_obtain_fail">设备详情获取失败</string>
 </resources>
