@@ -341,6 +341,7 @@
         <item>赛特威尔可燃气传感器（CH4）</item>
         <item>赛特威尔可燃气传感器（LPG）</item>
         <item>金风通断监测传感器</item>
+        <item>曼顿电气火灾传感器</item>
 
     </string-array>
     <string-array name="filter_device_band_array">

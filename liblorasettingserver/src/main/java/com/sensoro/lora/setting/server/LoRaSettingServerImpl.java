@@ -25,7 +25,8 @@ import java.util.Map;
  * LoRa Setting server interface implement.
  */
 public class LoRaSettingServerImpl implements ILoRaSettingServer {
-    public static final String SCOPE_MOCHA = "http://mocha-iot-api.sensoro.com";
+    public static final String SCOPE_MOCHA = "http://iot-mocha-api.sensoro.com";
+    public static final String SCOPE_TEST = "http://iot-test-api.sensoro.com";
     public static final String SCOPE_IOT = "https://iot-api.sensoro.com";
     public static String SCOPE = SCOPE_MOCHA;//http://mocha-iot-api.sensoro.com-----http://iot-api.sensoro.com
     public static final String LOGIN = "/signin";

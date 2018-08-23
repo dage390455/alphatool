@@ -102,7 +102,8 @@ public class DeviceDetailActivity extends BaseActivity<IDeviceDetailAcView,Devic
         signalLayout = (LinearLayout) mBottomPopupView.findViewById(R.id.menu_ll_signal);
         cloudLayout = (LinearLayout) mBottomPopupView.findViewById(R.id.menu_ll_cloud);
         ImageView closeIV = (ImageView) mBottomPopupView.findViewById(R.id.menu_iv_close);
-        closeIV.setVisibility(View.GONE);
+        closeIV.setVisibility(View.VISIBLE);
+        closeIV.setImageResource(R.drawable.menu_btn_down);
         clearLayout.setVisibility(View.GONE);
         configImageView.setOnClickListener(this);
         cloudImageView.setOnClickListener(this);
@@ -253,7 +254,7 @@ public class DeviceDetailActivity extends BaseActivity<IDeviceDetailAcView,Devic
                     mBottomPopupWindow.dismiss();
                 }else{
                     mImvConfig.setImageResource(R.drawable.menu_btn_down);
-                    mBottomPopupWindow.showAtLocation(mImvConfig, Gravity.TOP,0,0);
+                    mBottomPopupWindow.showAtLocation(mImvConfig, Gravity.BOTTOM,0,0);
                 }
                 break;
             case R.id.menu_iv_config:

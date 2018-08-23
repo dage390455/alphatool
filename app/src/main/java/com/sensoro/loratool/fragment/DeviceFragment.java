@@ -472,7 +472,6 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
             mDeviceInfoAdapter.refreshNew(sensoroDevice, false);
         }
     }
-
     public void refreshGone(SensoroDevice sensoroDevice) {
         if (mDeviceInfoAdapter != null) {
             mDeviceInfoAdapter.refreshGone(sensoroDevice, false);

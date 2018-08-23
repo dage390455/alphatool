@@ -190,7 +190,7 @@ public class LoginActivity extends BaseActivity implements Constants, Permission
     private int scope_selectedIndex = 0;
 
     private void switchApi() {
-        final String[] urlArr = new String[]{"IOT", "MOCHA"};
+        final String[] urlArr = new String[]{"正式环境", "MOCHA环境","测试环境"};
 
         SharedPreferences sp = getSharedPreferences(PREFERENCE_SCOPE, Context.MODE_PRIVATE);
         String url = sp.getString(PREFERENCE_KEY_URL, null);
@@ -198,6 +198,8 @@ public class LoginActivity extends BaseActivity implements Constants, Permission
             LoRaSettingServerImpl.SCOPE = url;
             if (url.equals(LoRaSettingServerImpl.SCOPE_MOCHA)) {
                 scope_selectedIndex = 1;
+            }else if(url.equals(LoRaSettingServerImpl.SCOPE_TEST)){
+                scope_selectedIndex = 2;
             }
         }
         Dialog alertDialog = new AlertDialog.Builder(this).
@@ -212,12 +214,19 @@ public class LoginActivity extends BaseActivity implements Constants, Permission
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (scope_selectedIndex == 0) {
-                            login_btn.setBackground(getResources().getDrawable(R.drawable.shape_button));
-                            LoRaSettingServerImpl.SCOPE = LoRaSettingServerImpl.SCOPE_IOT;
-                        } else {
-                            login_btn.setBackground(getResources().getDrawable(R.drawable.shape_button_mocha));
-                            LoRaSettingServerImpl.SCOPE = LoRaSettingServerImpl.SCOPE_MOCHA;
+                        switch (scope_selectedIndex){
+                            case 0:
+                                login_btn.setBackground(getResources().getDrawable(R.drawable.shape_button));
+                                LoRaSettingServerImpl.SCOPE = LoRaSettingServerImpl.SCOPE_IOT;
+                                break;
+                            case 1:
+                                login_btn.setBackground(getResources().getDrawable(R.drawable.shape_button_mocha));
+                                LoRaSettingServerImpl.SCOPE = LoRaSettingServerImpl.SCOPE_MOCHA;
+                                break;
+                            case 2:
+                                login_btn.setBackground(getResources().getDrawable(R.drawable.shape_button_test));
+                                LoRaSettingServerImpl.SCOPE = LoRaSettingServerImpl.SCOPE_TEST;
+                                break;
                         }
                         PreferencesHelper.getInstance().saveScopeData(app, LoRaSettingServerImpl.SCOPE);
                         Toast.makeText(LoginActivity.this, urlArr[scope_selectedIndex], Toast.LENGTH_SHORT).show();
@@ -253,8 +262,10 @@ public class LoginActivity extends BaseActivity implements Constants, Permission
         if (url != null) {
             if (url.equals(LoRaSettingServerImpl.SCOPE_MOCHA)) {
                 login_btn.setBackground(getResources().getDrawable(R.drawable.shape_button_mocha));
-            } else {
+            } else if(url.equals(LoRaSettingServerImpl.SCOPE_IOT)){
                 login_btn.setBackground(getResources().getDrawable(R.drawable.shape_button));
+            }else{
+                login_btn.setBackground(getResources().getDrawable(R.drawable.shape_button_test));
             }
         }
 

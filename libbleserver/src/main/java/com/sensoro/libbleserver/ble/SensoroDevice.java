@@ -19,6 +19,7 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
     // Firmware version
 //    public static final float FV_1_2 = 1.2f;
     public static final String FV_1_2 = "1.2";
+
     int major; // major
     int minor; // minor
     String proximityUUID; // proximityUuid
@@ -59,6 +60,9 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
     transient int sglStatus;
     transient int sglFrequency;
     transient int sglDatarate;
+    transient int lbtStatus;
+    transient int lbtThreshold;
+
     byte dataVersion;
     boolean isIBeaconEnabled; // is beacon function enable.
     boolean isDfu;
@@ -91,6 +95,23 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
     boolean hasSensorParam;
     boolean hasCustomPackage;
     boolean hasDelay;
+
+    boolean hasLbtStatus;
+    boolean hasLbtThreshold;
+
+    public boolean hasLbtStatus() {
+        return hasLbtStatus;
+    }
+    public void setHasLbtStatus(boolean hasLbtStatus) {
+        this.hasLbtStatus = hasLbtStatus;
+    }
+
+    public boolean hasLbtThreshold() {
+        return hasLbtThreshold;
+    }
+    public void setHasLbtThreshold(boolean hasLbtThreshold) {
+        this.hasLbtThreshold = hasLbtThreshold;
+    }
 
     public boolean hasSglFrequency() {
         return hasSglFrequency;
@@ -261,6 +282,8 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         hasMaxEirp = false;
         hasSglFrequency=false;
         hasSglDatarate=false;
+        hasLbtStatus = false;
+        hasLbtThreshold = false;
     }
 
     protected SensoroDevice(Parcel in) {
@@ -340,6 +363,8 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         alarmStepLow = (Integer) in.readSerializable();
         alarmHigh = (Integer) in.readSerializable();
         alarmLow = (Integer) in.readSerializable();
+        hasLbtStatus = in.readByte()!=0;
+        hasLbtThreshold = in.readByte()!=0;
     }
 
     @Override
@@ -425,6 +450,8 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
         out.writeSerializable(alarmStepLow);
         out.writeSerializable(alarmHigh);
         out.writeSerializable(alarmLow);
+        out.writeByte((byte)(hasLbtStatus?1:0));
+        out.writeByte((byte)(hasLbtThreshold?1:0));
     }
 
     public static final Creator<SensoroDevice> CREATOR = new Creator<SensoroDevice>() {
@@ -1083,6 +1110,21 @@ public class SensoroDevice extends BLEDevice implements Parcelable, Cloneable {
     public SensoroDevice setSglFrequency(int sglFrequency) {
         this.sglFrequency = sglFrequency;
         return this;
+    }
+    public int getLbtStatus() {
+        return lbtStatus;
+    }
+
+    public void setLbtStatus(int lbtStatus) {
+        this.lbtStatus = lbtStatus;
+    }
+
+    public int getLbtThreshold() {
+        return lbtThreshold;
+    }
+
+    public void setLbtThreshold(int lbtThreshold) {
+        this.lbtThreshold = lbtThreshold;
     }
 
     public int getSglDatarate() {

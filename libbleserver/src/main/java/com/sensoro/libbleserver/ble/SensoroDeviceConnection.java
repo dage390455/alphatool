@@ -13,8 +13,8 @@ import android.util.Log;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.sensoro.libbleserver.ble.scanner.SensoroUUID;
 import com.sensoro.libbleserver.ble.proto.MsgNode1V1M5;
+import com.sensoro.libbleserver.ble.scanner.SensoroUUID;
 import com.sensoro.libbleserver.ble.proto.ProtoMsgCfgV1U1;
 import com.sensoro.libbleserver.ble.proto.ProtoMsgTest1U1;
 import com.sensoro.libbleserver.ble.proto.ProtoStd1U1;
@@ -1239,6 +1239,114 @@ public class SensoroDeviceConnection {
                     sensoroSensorTest.elecFireData.volLowTh = fireData.getVolLowTh();
                 }
             }
+
+            boolean hasMtunData = msgNode.hasMtunData();
+            if(hasMtunData){
+                MsgNode1V1M5.MantunData mtunData = msgNode.getMtunData();
+                sensoroSensorTest.mantunData = new SensoroMantunData();
+                boolean hasVolVal = mtunData.hasVolVal();
+                sensoroSensorTest.mantunData.hasVolVal = hasVolVal;
+                if(hasVolVal){
+                    sensoroSensorTest.mantunData.volVal = mtunData.getVolVal();
+                }
+                boolean hasCurrVal = mtunData.hasCurrVal();
+                sensoroSensorTest.mantunData.hasCurrVal = hasCurrVal;
+                if(hasCurrVal){
+                    sensoroSensorTest.mantunData.currVal = mtunData.getCurrVal();
+                }
+                boolean hasLeakageVal = mtunData.hasLeakageVal();
+                sensoroSensorTest.mantunData.hasLeakageVal = hasLeakageVal;
+                if (hasLeakageVal) {
+                    sensoroSensorTest.mantunData.leakageVal = mtunData.getLeakageVal();
+                }
+                boolean hasPowerVal = mtunData.hasPowerVal();
+                sensoroSensorTest.mantunData.hasPowerVal = hasPowerVal;
+                if (hasPowerVal) {
+                    sensoroSensorTest.mantunData.powerVal = mtunData.getPowerVal();
+                }
+                boolean hasKwhVal = mtunData.hasKwhVal();
+                sensoroSensorTest.mantunData.hasKwhVal = hasKwhVal;
+                if (hasKwhVal) {
+                    sensoroSensorTest.mantunData.kwhVal = mtunData.getKwhVal();
+                }
+
+                boolean hasTempVal = mtunData.hasTempVal();
+                sensoroSensorTest.mantunData.hasTempVal = hasTempVal;
+                if (hasTempVal) {
+                    sensoroSensorTest.mantunData.tempVal = mtunData.getTempVal();
+                }
+                boolean hasStatus = mtunData.hasStatus();
+                sensoroSensorTest.mantunData.hasStatus = hasStatus;
+                if (hasStatus) {
+                    sensoroSensorTest.mantunData.status = mtunData.getStatus();
+                }
+                boolean hasSwOnOff = mtunData.hasSwOnOff();
+                sensoroSensorTest.mantunData.hasSwOnOff = hasSwOnOff;
+                if (hasSwOnOff) {
+                    sensoroSensorTest.mantunData.swOnOff = mtunData.getSwOnOff();
+                }
+                boolean hasTemp1Outside = mtunData.hasTemp1Outside();
+                sensoroSensorTest.mantunData.hasTemp1Outside = hasTemp1Outside;
+                if (hasTemp1Outside) {
+                    sensoroSensorTest.mantunData.temp1Outside = mtunData.getTemp1Outside();
+                }
+                boolean hasTemp2Contact = mtunData.hasTemp2Contact();
+                sensoroSensorTest.mantunData.hasTemp2Contact = hasTemp2Contact;
+                if (hasTemp2Contact) {
+                    sensoroSensorTest.mantunData.temp2Contact = mtunData.getTemp2Contact();
+                }
+                boolean hasVolHighTh = mtunData.hasVolHighTh();
+                sensoroSensorTest.mantunData.hasVolHighTh = hasVolHighTh;
+                if (hasVolHighTh) {
+                    sensoroSensorTest.mantunData.volHighTh = mtunData.getVolHighTh();
+                }
+                boolean hasVolLowTh = mtunData.hasVolLowTh();
+                sensoroSensorTest.mantunData.hasVolLowTh = hasVolLowTh;
+                if (hasVolLowTh) {
+                    sensoroSensorTest.mantunData.volLowTh = mtunData.getVolLowTh();
+                }
+                boolean hasLeakageTh = mtunData.hasLeakageTh();
+                sensoroSensorTest.mantunData.hasLeakageTh = hasLeakageTh;
+                if (hasLeakageTh) {
+                    sensoroSensorTest.mantunData.leakageTh = mtunData.getLeakageTh();
+                }
+                boolean hasTempTh = mtunData.hasTempTh();
+                sensoroSensorTest.mantunData.hasTempTh = hasTempTh;
+                if (hasTempTh) {
+                    sensoroSensorTest.mantunData.tempTh = mtunData.getTempTh();
+                }
+                boolean hasCurrentTh = mtunData.hasCurrentTh();
+                sensoroSensorTest.mantunData.hasCurrentTh = hasCurrentTh;
+                if (hasCurrentTh) {
+                    sensoroSensorTest.mantunData.currentTh = mtunData.getCurrentTh();
+                }
+                boolean hasPowerTh = mtunData.hasPowerTh();
+                sensoroSensorTest.mantunData.hasPowerTh = hasPowerTh;
+                if (hasPowerTh) {
+                    sensoroSensorTest.mantunData.powerTh = mtunData.getPowerTh();
+                }
+                boolean hasTemp1OutsideTh = mtunData.hasTemp1OutsideTh();
+                sensoroSensorTest.mantunData.hasTemp1OutsideTh = hasTemp1OutsideTh;
+                if (hasTemp1OutsideTh) {
+                    sensoroSensorTest.mantunData.temp1OutsideTh = mtunData.getTemp1OutsideTh();
+                }
+                boolean hasTemp2ContactTh = mtunData.hasTemp2ContactTh();
+                sensoroSensorTest.mantunData.hasTemp2ContactTh = hasTemp2ContactTh;
+                if (hasTemp2ContactTh) {
+                    sensoroSensorTest.mantunData.temp2ContactTh = mtunData.getTemp2ContactTh();
+                }
+                boolean hasAttribute = mtunData.hasAttribute();
+                sensoroSensorTest.mantunData.hasAttribute = hasAttribute;
+                if (hasAttribute) {
+                    sensoroSensorTest.mantunData.attribute = mtunData.getAttribute();
+                }
+                boolean hasCmd = mtunData.hasCmd();
+                sensoroSensorTest.mantunData.hasCmd = hasCmd;
+                if (hasCmd) {
+                    sensoroSensorTest.mantunData.cmd = mtunData.getCmd();
+                }
+
+            }
             sensoroDevice.setSensoroSensorTest(sensoroSensorTest);
             sensoroDevice.setDataVersion(DATA_VERSION_05);
             sensoroDevice.setHasSensorParam(true);
@@ -1909,7 +2017,73 @@ public class SensoroDeviceConnection {
                 builder.setVolLowTh(sensoroSensorTest.elecFireData.volLowTh);
             }
             msgNodeBuilder.setFireData(builder);
+            //曼顿电气火灾传感器支持
         }
+        if (sensoroSensorTest.hasMantunData) {
+            MsgNode1V1M5.MantunData.Builder builder = MsgNode1V1M5.MantunData.newBuilder();
+            if (sensoroSensorTest.mantunData.hasVolVal) {
+                builder.setVolVal(sensoroSensorTest.mantunData.volVal);
+            }
+            if (sensoroSensorTest.mantunData.hasCurrVal) {
+                builder.setCurrVal(sensoroSensorTest.mantunData.currVal);
+            }
+            if (sensoroSensorTest.mantunData.hasLeakageVal) {
+                builder.setLeakageVal(sensoroSensorTest.mantunData.leakageVal);
+            }
+            if (sensoroSensorTest.mantunData.hasPowerVal) {
+                builder.setPowerVal(sensoroSensorTest.mantunData.powerVal);
+            }
+            if (sensoroSensorTest.mantunData.hasKwhVal) {
+                builder.setKwhVal(sensoroSensorTest.mantunData.kwhVal);
+            }
+            if (sensoroSensorTest.mantunData.hasTempVal) {
+                builder.setTempVal(sensoroSensorTest.mantunData.tempVal);
+            }
+            if (sensoroSensorTest.mantunData.hasStatus) {
+                builder.setStatus(sensoroSensorTest.mantunData.status);
+            }
+            if (sensoroSensorTest.mantunData.hasSwOnOff) {
+                builder.setSwOnOff(sensoroSensorTest.mantunData.swOnOff);
+            }
+            if (sensoroSensorTest.mantunData.hasTemp1Outside) {
+                builder.setTemp1Outside(sensoroSensorTest.mantunData.temp1Outside);
+            }
+            if (sensoroSensorTest.mantunData.hasTemp2Contact) {
+                builder.setTemp2Contact(sensoroSensorTest.mantunData.temp2Contact);
+            }
+            if (sensoroSensorTest.mantunData.hasVolHighTh) {
+                builder.setVolHighTh(sensoroSensorTest.mantunData.volHighTh);
+            }
+            if (sensoroSensorTest.mantunData.hasVolLowTh) {
+                builder.setVolLowTh(sensoroSensorTest.mantunData.volLowTh);
+            }
+            if (sensoroSensorTest.mantunData.hasLeakageTh) {
+                builder.setLeakageTh(sensoroSensorTest.mantunData.leakageTh);
+            }
+            if (sensoroSensorTest.mantunData.hasTempTh) {
+                builder.setTempTh(sensoroSensorTest.mantunData.tempTh);
+            }
+            if (sensoroSensorTest.mantunData.hasCurrentTh) {
+                builder.setCurrentTh(sensoroSensorTest.mantunData.currentTh);
+            }
+            if (sensoroSensorTest.mantunData.hasPowerTh) {
+                builder.setPowerTh(sensoroSensorTest.mantunData.powerTh);
+            }
+            if (sensoroSensorTest.mantunData.hasTemp1OutsideTh) {
+                builder.setTemp1OutsideTh(sensoroSensorTest.mantunData.temp1OutsideTh);
+            }
+            if (sensoroSensorTest.mantunData.hasTemp2ContactTh) {
+                builder.setTemp2ContactTh(sensoroSensorTest.mantunData.temp2ContactTh);
+            }
+            if (sensoroSensorTest.mantunData.hasAttribute) {
+                builder.setAttribute(sensoroSensorTest.mantunData.attribute);
+            }
+            if (sensoroSensorTest.mantunData.hasCmd) {
+                builder.setCmd(sensoroSensorTest.mantunData.cmd);
+            }
+
+        }
+
         if (sensoroDevice.hasAppParam()) {
             MsgNode1V1M5.AppParam.Builder appBuilder = MsgNode1V1M5.AppParam.newBuilder();
             if (sensoroDevice.hasUploadInterval()) {
@@ -1921,6 +2095,7 @@ public class SensoroDeviceConnection {
             }
             msgNodeBuilder.setAppParam(appBuilder);
         }
+
 
 
         MsgNode1V1M5.LoraParam.Builder loraBuilder = MsgNode1V1M5.LoraParam.newBuilder();

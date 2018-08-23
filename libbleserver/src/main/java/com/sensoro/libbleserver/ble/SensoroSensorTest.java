@@ -45,6 +45,7 @@ public class SensoroSensorTest extends BLEDevice implements Parcelable, Cloneabl
     public SensoroData waterPressure;
     public SensoroData multiTemperature;
     public SensoroFireData elecFireData;
+    public SensoroMantunData mantunData;
     //
     public boolean hasAccelerometerCount;
     public boolean hasAngle;
@@ -79,6 +80,7 @@ public class SensoroSensorTest extends BLEDevice implements Parcelable, Cloneabl
     public boolean hasMultiTemp;
     public boolean hasMethane;
     public boolean hasFireData;
+    public boolean hasMantunData;
 
     public SensoroSensorTest() {
     }
@@ -152,6 +154,7 @@ public class SensoroSensorTest extends BLEDevice implements Parcelable, Cloneabl
         hasMultiTemp = in.readByte() != 0;
         hasMethane = in.readByte() != 0;
         hasFireData = in.readByte() != 0;
+        hasMantunData = in.readByte() != 0;
     }
 
     @Override
@@ -226,6 +229,7 @@ public class SensoroSensorTest extends BLEDevice implements Parcelable, Cloneabl
         parcel.writeByte((byte) (hasMultiTemp ? 1 : 0));
         parcel.writeByte((byte) (hasMethane ? 1 : 0));
         parcel.writeByte((byte) (hasFireData ? 1 : 0));
+        parcel.writeByte((byte)(hasMantunData?1:0));
     }
 
     public static final Creator<SensoroSensorTest> CREATOR = new Creator<SensoroSensorTest>() {

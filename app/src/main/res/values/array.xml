@@ -343,6 +343,7 @@
         <item>Siter Gas CH4</item>
         <item>Siter Gas LPG</item>
         <item>JF Connection</item>
+        <item>Mantun Fires</item>
 
     </string-array>
     <string-array name="filter_device_band_array">

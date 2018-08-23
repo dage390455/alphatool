@@ -29,7 +29,7 @@ public class FilterDeviceActivity extends BaseActivity {
             "tvoc", "o3", "pm", "leak", "temp_humi", "ch4", "lpg", "cover", "smoke", "angle", "gps", "op_node",
             "flame", "op_chip", "winsen_ch4", "winsen_lpg", "winsen_gas", "bhenergy_water", "chip_s", "chip_e",
             "tester", "temp_humi_one", "fhsj_ch4", "fhsj_lpg", "concox_tracker", "tk","fhsj_smoke","fhsj_elec_fires",
-    "siter_ch4","siter_lpg","jf_connection"};
+    "siter_ch4","siter_lpg","jf_connection","mantun_fires"};
     private ExpandableListView mMenuListView;
     private TextView saveTextView;
     private FilterDeviceInfoAdapter filterDeviceInfoAdapter;
