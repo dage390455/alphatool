@@ -12,6 +12,8 @@ import com.sensoro.libbleserver.ble.BLEDevice;
 import com.sensoro.libbleserver.ble.SensoroDevice;
 import com.sensoro.libbleserver.ble.scanner.BLEDeviceListener;
 import com.sensoro.libbleserver.ble.scanner.BLEDeviceManager;
+import com.sensoro.loratool.activity.UpgradeDeviceListActivity;
+import com.sensoro.loratool.imainview.IScanDeviceAcView;
 import com.sensoro.loratool.store.LoraDbHelper;
 import com.sensoro.loratool.utils.IPUtil;
 import com.sensoro.station.communication.IStation;
@@ -20,6 +22,7 @@ import com.sensoro.station.communication.bean.StationInfo;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -34,6 +37,9 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class LoRaSettingApplication extends Application implements BLEDeviceListener<BLEDevice> {
 
+
+
+    public ConcurrentHashMap<String, SensoroDevice> mNearDeviceMap;
     public IStation station;
     public LoRaSettingServerImpl loRaSettingServer;
     private List<StationInfo> stationInfoList = new ArrayList<>();
@@ -42,6 +48,8 @@ public class LoRaSettingApplication extends Application implements BLEDeviceList
     private BLEDeviceManager bleDeviceManager;
     private ArrayList<SensoroDeviceListener> sensoroDeviceListeners = new ArrayList<>();
     private RefWatcher refWatcher;
+    private ArrayList<INearDeviceListener> nearDeviceListenerList = new ArrayList<INearDeviceListener>();
+    public IScanDeviceAcView scanDeviceView = null;
 
     @Override
     public void onCreate() {
@@ -183,10 +191,38 @@ public class LoRaSettingApplication extends Application implements BLEDeviceList
         }
     }
 
+    public void updateNearDeviceMap() {
+        for (INearDeviceListener iNearDeviceListener : nearDeviceListenerList) {
+            iNearDeviceListener.updateListener();
+        }
+    }
+    public void registerNearDeviceListener(INearDeviceListener listener){
+        if (!nearDeviceListenerList.contains(listener)) {
+            nearDeviceListenerList.add(listener);
+        }
+
+
+    }
+
+    public void unregisterNearDeviceListener(INearDeviceListener listener){
+        nearDeviceListenerList.remove(listener);
+    }
+
     public interface SensoroDeviceListener {
         void onNewDevice(BLEDevice bleDevice);
         void onGoneDevice(BLEDevice bleDevice);
         void onUpdateDevices(ArrayList<BLEDevice> deviceList);
     }
 
+    public ConcurrentHashMap<String, SensoroDevice> getmNearDeviceMap() {
+        return mNearDeviceMap;
+    }
+
+    public void setmNearDeviceMap(ConcurrentHashMap<String, SensoroDevice> mNearDeviceMap) {
+        this.mNearDeviceMap = mNearDeviceMap;
+    }
+
+    public interface INearDeviceListener {
+        void updateListener();
+    }
 }

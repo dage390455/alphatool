@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -759,20 +760,22 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
                 builder.setHasDelay(false);
             }
             List<Integer> list = sensoroDevice.getChannelMaskList();
-            int array[] = new int[list.size()];
-            for (int i = 0; i < list.size() * 16; i++) {
-                ChannelData channelData = channelOpenList.get(i);
-                if (channelData.isOpen()) {
-                    array[i/16] |= 1 << i%16;
-                } else {
-                    array[i/16] |= 0 << i%16;
+            if (list!=null) {
+                int array[] = new int[list.size()];
+                for (int i = 0; i < list.size() * 16; i++) {
+                    ChannelData channelData = channelOpenList.get(i);
+                    if (channelData.isOpen()) {
+                        array[i/16] |= 1 << i%16;
+                    } else {
+                        array[i/16] |= 0 << i%16;
+                    }
                 }
+                ArrayList<Integer> tempList = new ArrayList();
+                for (int i = 0 ; i < array.length; i ++) {
+                    tempList.add(array[i]);
+                }
+                builder.setChannelList(tempList);
             }
-            ArrayList<Integer> tempList = new ArrayList();
-            for (int i = 0 ; i < array.length; i ++) {
-                tempList.add(array[i]);
-            }
-            builder.setChannelList(tempList);
             builder.setLoraDr(loraDr);
             if (sensoroDevice.getDataVersion() == SensoroDeviceConnection.DATA_VERSION_04) {
                 builder.setClassBEnabled(classBEnableSwitchCompat.isChecked() ? 1 : 0)

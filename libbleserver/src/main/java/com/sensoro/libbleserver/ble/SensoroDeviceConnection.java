@@ -1241,6 +1241,7 @@ public class SensoroDeviceConnection {
             }
 
             boolean hasMtunData = msgNode.hasMtunData();
+            sensoroSensorTest.hasMantunData = hasMtunData;
             if(hasMtunData){
                 MsgNode1V1M5.MantunData mtunData = msgNode.getMtunData();
                 sensoroSensorTest.mantunData = new SensoroMantunData();
@@ -2017,8 +2018,8 @@ public class SensoroDeviceConnection {
                 builder.setVolLowTh(sensoroSensorTest.elecFireData.volLowTh);
             }
             msgNodeBuilder.setFireData(builder);
-            //曼顿电气火灾传感器支持
         }
+        //曼顿电气火灾传感器支持
         if (sensoroSensorTest.hasMantunData) {
             MsgNode1V1M5.MantunData.Builder builder = MsgNode1V1M5.MantunData.newBuilder();
             if (sensoroSensorTest.mantunData.hasVolVal) {
@@ -2055,6 +2056,7 @@ public class SensoroDeviceConnection {
                 builder.setVolHighTh(sensoroSensorTest.mantunData.volHighTh);
             }
             if (sensoroSensorTest.mantunData.hasVolLowTh) {
+                Log.e("hcs",":触点::"+sensoroSensorTest.mantunData.volLowTh);
                 builder.setVolLowTh(sensoroSensorTest.mantunData.volLowTh);
             }
             if (sensoroSensorTest.mantunData.hasLeakageTh) {
@@ -2081,6 +2083,7 @@ public class SensoroDeviceConnection {
             if (sensoroSensorTest.mantunData.hasCmd) {
                 builder.setCmd(sensoroSensorTest.mantunData.cmd);
             }
+            msgNodeBuilder.setMtunData(builder);
 
         }
 
@@ -2658,6 +2661,14 @@ public class SensoroDeviceConnection {
             sensoroConnectionCallback.onDisconnected();
         }
 
+    }
+
+    public void writeMantunCmd(MsgNode1V1M5.MantunData.Builder builder, SensoroWriteCallback writeCallback) {
+        writeCallbackHashMap.put(CmdType.CMD_SET_MANTUN_CMD, writeCallback);
+        MsgNode1V1M5.MsgNode.Builder msgNodeBuilder = MsgNode1V1M5.MsgNode.newBuilder();
+        msgNodeBuilder.setMtunData(builder);
+        byte[] data = msgNodeBuilder.build().toByteArray();
+        writeData05Cmd(data, CmdType.CMD_SET_MANTUN_CMD, writeCallback);
     }
 
     enum ListenType implements Serializable {

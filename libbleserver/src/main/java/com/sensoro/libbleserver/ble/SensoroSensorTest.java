@@ -120,6 +120,10 @@ public class SensoroSensorTest extends BLEDevice implements Parcelable, Cloneabl
         if (serializable instanceof SensoroFireData ){
             elecFireData = (SensoroFireData) serializable;
         }
+        Serializable mantun = in.readSerializable();
+        if(mantun instanceof SensoroMantunData){
+            mantunData = (SensoroMantunData) mantun;
+        }
         customize = in.createByteArray();
         hasAccelerometerCount = in.readByte() != 0;
         hasAngle = in.readByte() != 0;
@@ -194,6 +198,7 @@ public class SensoroSensorTest extends BLEDevice implements Parcelable, Cloneabl
         parcel.writeSerializable(gas);
         parcel.writeSerializable(waterPressure);
         parcel.writeSerializable(elecFireData);
+        parcel.writeSerializable(mantunData);
         parcel.writeSerializable(multiTemperature);
         parcel.writeByteArray(customize);
         parcel.writeByte((byte) (hasAccelerometerCount ? 1 : 0));

@@ -532,8 +532,9 @@
     <string name="menu_cloud_setting">私有云配置</string>
     <string name="menu_upgrade">升级</string>
     <string name="menu_signal">信号检测</string>
-    <string name="menu_clear">清除</string>
 
+    <string name="tips_input_machine_sn">请输入机身对应的SN号码</string>
+    <string name="input_correct_sn">请输入正确的SN,SN为16个字符</string>
     <string name="ac_scan_device_title">扫描设备</string>
     <string name="ac_scan_obtain_fail">设备详情获取失败</string>
 </resources>

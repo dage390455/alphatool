@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import com.sensoro.loratool.R;
@@ -78,7 +77,6 @@ public class BatteryView extends View {
     public void setBattery(final float length) {
 //        this.mBattery = length;
 //        measure(MeasureSpec.EXACTLY,MeasureSpec.EXACTLY);
-        Log.e("hcs",":setbattery::");
         if(!isMeasure){
             new Thread(new Runnable() {
                 @Override
@@ -89,14 +87,12 @@ public class BatteryView extends View {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        Log.e("hcs","循环了:::");
                     }
                     float rate = length / 100f;
                     mPowerWidth = rate*(mBatteryWidth-8);
                     mPowerRectF.set(4, 4, mPowerWidth, mBatteryHeight-4);
                     mCapHeight = (float) (mBatteryHeight*0.5);
                     mBatteryRectF.set(0,0,mBatteryWidth,mBatteryHeight);
-                    Log.e("hcs",":batt::"+mBatteryWidth+"measurew"+measureWidth);
                     mCapRectF.set(mBatteryWidth,mBatteryHeight/2-mCapHeight/2,measureWidth,mBatteryHeight/2+mCapHeight/2);
                     postInvalidate();
 
@@ -108,7 +104,6 @@ public class BatteryView extends View {
             this.mPowerRectF.set(4, 4, mPowerWidth, mBatteryHeight-4);
             mCapHeight = (float) (mBatteryHeight*0.5);
             mBatteryRectF.set(0,0,mBatteryWidth,mBatteryHeight);
-            Log.e("hcs",":batt::"+mBatteryWidth+"measurew"+measureWidth);
             mCapRectF.set(mBatteryWidth,mBatteryHeight/2-mCapHeight/2,measureWidth,mBatteryHeight/2+mCapHeight/2);
             this.postInvalidate();
         }
@@ -150,14 +145,12 @@ public class BatteryView extends View {
          * 设置电量的矩形
          */
 
-        mPowerRectF = new RectF(0, 0, mBatteryWidth
-                - mPowerPadding, mBatteryHeight);
+        mPowerRectF = new RectF(0, 0, 0, mBatteryHeight);
 
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        Log.e("hcs","onmeauser:::");
         measureHeight = MeasureSpec.getSize(heightMeasureSpec);
         measureWidth = MeasureSpec.getSize(widthMeasureSpec);
         mBatteryWidth = (float) (measureWidth-measureWidth*0.1);
@@ -177,7 +170,6 @@ public class BatteryView extends View {
         canvas.drawRoundRect(mCapRectF, 2.0f, 2.0f, mBatteryPaint);
 
         canvas.drawRect(mPowerRectF, mPowerPaint);
-        Log.e("hcs",":draw::"+mPowerRectF.right+"  "+mPowerRectF.bottom);
 
         canvas.restore();
 

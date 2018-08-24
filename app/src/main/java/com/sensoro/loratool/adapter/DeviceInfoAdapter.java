@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sensoro.lora.setting.server.bean.DeviceInfo;
+import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
 import com.sensoro.libbleserver.ble.SensoroDevice;
 import com.sensoro.libbleserver.ble.SensoroSensorTest;
@@ -51,6 +52,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
     public DeviceInfoAdapter(Context context) {
         this.mContext = context;
         this.mInflater = LayoutInflater.from(mContext);
+        ((LoRaSettingApplication) context.getApplicationContext()).setmNearDeviceMap(mNearByDeviceMap);
     }
 
     public ConcurrentHashMap<String, SensoroDevice> getNearByDeviceMap() {
@@ -121,6 +123,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
         }
         if (!mNearByDeviceMap.containsKey(sn)) {
             mNearByDeviceMap.put(sn, sensoroDevice);
+            ((LoRaSettingApplication) mContext.getApplicationContext()).updateNearDeviceMap();
 //            notifyDataSetChanged();
         }
         final DeviceInfo cacheDeviceInfo = mCacheDeviceInfoMap.get(sn);
@@ -147,6 +150,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
         //TODO 修改删除方式
         if (mNearByDeviceMap.containsKey(sn)) {
             mNearByDeviceMap.remove(sn, sensoroDevice);
+            ((LoRaSettingApplication) mContext.getApplicationContext()).updateNearDeviceMap();
             for (int j = 0; j < mDeviceInfoList.size(); j++) {
                 final DeviceInfo deviceInfo = mDeviceInfoList.get(j);
                 if (sn.equalsIgnoreCase(deviceInfo.getSn())) {
@@ -300,6 +304,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
             mDeviceInfoList.clear();
             mDeviceInfoList.addAll(mCacheDeviceInfoMap.values());
         }
+
 //        DeviceInfoComparator comparator = new DeviceInfoComparator();
 //        Collections.sort(mDeviceInfoList, comparator);
         notifyDataSetChanged();
@@ -555,9 +560,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
 //                    deviceInfo.setConnectable(false);
 //                }
 //            }
-            if (sn.endsWith("DDFA")) {
-                Log.e("", "refreshNew: " + sn);
-            }
+
             boolean isNearby = mNearByDeviceMap.containsKey(sn);
             if (isNearby) {
                 itemViewHolder.nearByTextView.setText(mContext.getString(R.string.nearby));

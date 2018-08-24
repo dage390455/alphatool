@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/sensor_deploy_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y200"
+        >
+
+        <ImageView
+            android:id="@+id/ac_input_sn_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x50"
+            android:adjustViewBounds="true"
+            android:cropToPadding="true"
+            android:padding="12dp"
+            android:src="@mipmap/ic_close"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y150"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tips_input_machine_sn"
+            android:textColor="@color/c_1b1b1b"
+            android:textSize="@dimen/x60"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y200"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/ac_input_sn_et"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y200"
+                android:layout_marginLeft="@dimen/x75"
+                android:layout_marginRight="@dimen/x75"
+                android:background="@null"
+                android:gravity="center"/>
+
+            <ImageView
+                android:id="@+id/ac_input_sn_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@id/ac_input_sn_et"
+                android:layout_centerVertical="true"
+                android:padding="8dp"
+                android:src="@mipmap/ic_et_delete"
+                android:visibility="gone"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y3"
+            android:layout_marginLeft="@dimen/x75"
+            android:layout_marginRight="@dimen/x75"
+            android:background="@color/c_e7e7e7"/>
+
+        <Button
+            android:id="@+id/ac_input_sn_btn"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/y150"
+            android:layout_marginLeft="@dimen/x75"
+            android:layout_marginRight="@dimen/x75"
+            android:layout_marginTop="@dimen/y80"
+            android:background="@drawable/shape_button_normal"
+            android:text="@string/next"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
+    </LinearLayout>
+</LinearLayout>

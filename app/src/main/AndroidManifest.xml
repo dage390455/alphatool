@@ -141,6 +141,7 @@
 
         <activity android:name=".activity.ScanDeviceActivity" />
         <activity android:name=".activity.DeviceDetailActivity"></activity>
+        <activity android:name=".activity.InputSNActivity" />
     </application>
 
 </manifest>

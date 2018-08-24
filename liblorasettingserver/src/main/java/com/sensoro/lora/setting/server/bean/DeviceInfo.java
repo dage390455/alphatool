@@ -813,4 +813,13 @@ public class DeviceInfo implements Parcelable, Comparable {
             return 1;
         }
     }
+
+    @Override
+    public String toString() {
+        String s ="appsky " +getAppSKey()+"getAppEui" +getAppEui()
+                +"getLoraTxp" +getLoraTxp()+"getNormalStatus" +getNormalStatus()+"getAppKey" +getAppKey()+
+                "getBand" +getBand()+"getDeviceType" +getDeviceType()+"getHumidity" +getHumidity()
+                ;
+        return s;
+    }
 }

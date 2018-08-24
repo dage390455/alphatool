@@ -27,8 +27,7 @@ import java.util.List;
 import static android.content.Context.VIBRATOR_SERVICE;
 
 
-public class ScanDeviceAcPresenter extends BasePresenter<IScanDeviceAcView> implements MediaPlayer.OnErrorListener
-{
+public class ScanDeviceAcPresenter extends BasePresenter<IScanDeviceAcView> implements MediaPlayer.OnErrorListener {
     private Context mContext;
     private MediaPlayer mediaPlayer;
 
@@ -113,68 +112,77 @@ public class ScanDeviceAcPresenter extends BasePresenter<IScanDeviceAcView> impl
         }
         return serialNumber;
     }
+
     private void scanFinish(final String scanSerialNumber) {
         getView().showProgressDialog();
-        final Intent intent = new Intent(mContext,DeviceDetailActivity.class);
+        final Intent intent = new Intent(mContext, DeviceDetailActivity.class);
         LoRaSettingApplication application = (LoRaSettingApplication) mContext.getApplicationContext();
-        final boolean[] isCache = {false};
+        boolean isCache = false;
         final List<DeviceInfo> deviceInfoList = application.getDeviceInfoList();
-        if(deviceInfoList.size()>0){
+        if (deviceInfoList.size() > 0) {
             for (DeviceInfo deviceInfo : deviceInfoList) {
-                if(deviceInfo.getSn().equals(scanSerialNumber)){
-                    intent.putExtra("deviceInfo",deviceInfo);
+                if (deviceInfo.getSn().equals(scanSerialNumber)) {
+                    intent.putExtra("deviceInfo", deviceInfo);
                     addTags(intent, deviceInfo);
-                    isCache[0] = true;
+                    isCache = true;
                     break;
                 }
             }
         }
 
-        if(!isCache[0]){
+        if (isCache) {
+            getView().dismissProgressDialog();
+            getView().startAC(intent);
+            getView().finishAc();
+        } else {
+            //
             application.loRaSettingServer.deviceAll(scanSerialNumber, new Response.Listener<DeviceInfoListRsp>() {
                 @Override
                 public void onResponse(DeviceInfoListRsp response) {
                     ArrayList<DeviceInfo> infoArrayList = (ArrayList) response.getData().getItems();
                     if (infoArrayList.size() != 0) {
-                        for (DeviceInfo  deviceInfo: infoArrayList) {
-                            if(deviceInfo.getSn().equals(scanSerialNumber)){
-                                intent.putExtra("deviceInfo",deviceInfo);
-                                addTags(intent,deviceInfo);
-                                isCache[0] = true;
-                                break;
+                        for (DeviceInfo deviceInfo : infoArrayList) {
+                            if (deviceInfo.getSn().equals(scanSerialNumber)) {
+                                intent.putExtra("deviceInfo", deviceInfo);
+                                addTags(intent, deviceInfo);
+                                getView().dismissProgressDialog();
+                                getView().startAC(intent);
+                                getView().finishAc();
+                                return;
                             }
+
                         }
+                        getView().dismissProgressDialog();
+                        getView().shortToast(R.string.ac_scan_obtain_fail);
+                        getView().startScan();
+                    } else {
+                        getView().dismissProgressDialog();
+                        getView().shortToast(R.string.ac_scan_obtain_fail);
+                        getView().startScan();
                     }
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-
+                    getView().dismissProgressDialog();
+                    getView().shortToast(R.string.ac_scan_obtain_fail);
+                    getView().startScan();
                 }
             });
         }
 
-        if(!isCache[0]){
-            getView().shortToast(R.string.ac_scan_obtain_fail);
-            getView().startScan();
-            getView().dismissProgressDialog();
-
-        }else{
-            getView().dismissProgressDialog();
-            getView().startAC(intent);
-        }
     }
 
     private void addTags(Intent intent, DeviceInfo deviceInfo) {
         List<String> tags = deviceInfo.getTags();
         StringBuilder sb = new StringBuilder();
-        if (tags!= null) {
+        if (tags != null) {
             for (String tag : tags) {
                 sb.append(tag);
             }
         }
-        if(sb.length()>0){
-            intent.putExtra("tags",sb.toString());
+        if (sb.length() > 0) {
+            intent.putExtra("tags", sb.toString());
         }
     }
 

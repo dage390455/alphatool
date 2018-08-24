@@ -37,4 +37,7 @@
     <color name="base_red">#fffb6655</color>
     <color name="default_line_color">#e6e6e6</color>
     <color name="device_detail_text_color">#4A4A4A</color>
+    <color name="c_1b1b1b">#1b1b1b</color>
+    <color name="c_e7e7e7">#e7e7e7</color>
+    <color name="c_dadada">#dadada</color>
 </resources>

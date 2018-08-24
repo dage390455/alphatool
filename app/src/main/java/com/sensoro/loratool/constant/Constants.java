@@ -51,6 +51,11 @@ public interface Constants {
     String LORA_BAND_SE915 = "SE915";
     String LORA_BAND_SE780 = "SE780";
     String LORA_BAND_CN470 = "CN470";
+    String DEVICE_HARDWARE_TYPE[] = {"chip", "module", "node", "co2", "co", "no2", "so2", "nh3",
+            "tvoc", "o3", "pm", "leak", "temp_humi", "ch4", "lpg", "cover", "smoke", "angle", "gps", "op_node",
+            "flame", "op_chip", "winsen_ch4", "winsen_lpg", "winsen_gas", "bhenergy_water", "chip_s", "chip_e",
+            "tester", "temp_humi_one", "fhsj_ch4", "fhsj_lpg", "concox_tracker", "tk","fhsj_smoke","fhsj_elec_fires",
+            "siter_ch4","siter_lpg","jf_connection","mantun_fires"};
 
     boolean permission[] = {
             false,//sCfgByBle
@@ -287,6 +292,20 @@ public interface Constants {
     String SETTINGS_DEVICE_RL_FHSJ_ELEC_OVERPRESSURE = "settings_device_rl_fhsj_elec_overpressure";
     String SETTINGS_DEVICE_RL_FHSJ_ELEC_UNDERVOLTAGE = "settings_device_rl_fhsj_elec_undervoltage";
     String SETTINGS_DEVICE_RL_FHSJ_ELEC_CURRENT = "settings_device_rl_fhsj_elec_current";
+
+    //曼顿火灾传感器
+    String SETTINGS_DEVICE_RL_MANTUN_LEAKAGE = "settings_device_rl_mantun_leakage";
+    String SETTINGS_DEVICE_RL_MANTUN_TEMP = "settings_device_rl_mantun_temp";
+    String SETTINGS_DEVICE_RL_MANTUN_CURRENT = "settings_device_rl_mantun_current";
+    String SETTINGS_DEVICE_RL_MANTUN_VOL_HIGH = "settings_device_rl_mantun_vol_high";
+    String SETTINGS_DEVICE_RL_MANTUN_VOL_LOW = "settings_device_rl_mantun_vol_low";
+    String SETTINGS_DEVICE_RL_MANTUN_POWER = "settings_device_rl_mantun_vol_power";
+    String SETTINGS_DEVICE_RL_MANTUN_TEMP_OUTSIDE = "settings_device_rl_mantun_temp_outside";
+    String SETTINGS_DEVICE_RL_MANTUN_TEMP_CONTACT = "settings_device_rl_mantun_temp_contact";
+
+
+
+
 
 }
 

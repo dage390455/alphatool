@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.base.BaseActivity;
 import com.sensoro.loratool.imainview.IScanDeviceAcView;
@@ -61,6 +62,7 @@ public class ScanDeviceActivity extends BaseActivity<IScanDeviceAcView,ScanDevic
     protected void onDestroy() {
        mQRCodeView.onDestroy();
        mProgressUtils.destroyProgress();
+       ((LoRaSettingApplication)getApplication()).scanDeviceView = null;
        super.onDestroy();
     }
 
@@ -89,7 +91,8 @@ public class ScanDeviceActivity extends BaseActivity<IScanDeviceAcView,ScanDevic
                 isFlashOn = !isFlashOn;
                 break;
             case R.id.ac_scan_capture_iv_manual:
-
+                Intent intent = new Intent(this, InputSNActivity.class);
+                startAC(intent);
                 break;
         }
 
@@ -115,6 +118,8 @@ public class ScanDeviceActivity extends BaseActivity<IScanDeviceAcView,ScanDevic
         mQRCodeView.setDelegate(this);
         mQRCodeView.getScanBoxView().setOnlyDecodeScanBoxArea(true);
         mQRCodeView.getCameraPreview().setAutoFocusFailureDelay(0);
+
+        ((LoRaSettingApplication)getApplication()).scanDeviceView = this;
     }
 
 
@@ -132,6 +137,11 @@ public class ScanDeviceActivity extends BaseActivity<IScanDeviceAcView,ScanDevic
     public void startAC(Intent intent) {
         startActivity(intent);
 
+    }
+
+    @Override
+    public void finishAc() {
+        finish();
     }
 
     @Override
