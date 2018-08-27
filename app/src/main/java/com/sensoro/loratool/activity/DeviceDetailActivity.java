@@ -5,11 +5,9 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +30,6 @@ import com.sensoro.loratool.utils.DateUtil;
 import com.sensoro.loratool.widget.BatteryView;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -69,6 +66,7 @@ public class DeviceDetailActivity extends BaseActivity<IDeviceDetailAcView,Devic
     private PopupWindow mBottomPopupWindow;
     private TextView mTvStateTime;
     private int battery;
+    //
     private DeviceInfo deviceInfo;
 
     @Override

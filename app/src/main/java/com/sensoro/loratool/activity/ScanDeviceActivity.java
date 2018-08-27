@@ -1,7 +1,6 @@
 package com.sensoro.loratool.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -136,7 +135,6 @@ public class ScanDeviceActivity extends BaseActivity<IScanDeviceAcView,ScanDevic
     @Override
     public void startAC(Intent intent) {
         startActivity(intent);
-
     }
 
     @Override
