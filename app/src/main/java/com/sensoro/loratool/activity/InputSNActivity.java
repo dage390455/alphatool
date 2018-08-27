@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,7 +14,6 @@ import android.widget.Toast;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.base.BaseActivity;
 import com.sensoro.loratool.imainview.IInputSNActivityView;
-import com.sensoro.loratool.iwidget.IProgressDialog;
 import com.sensoro.loratool.presenter.InputSNActivityPresenter;
 import com.sensoro.loratool.utils.ProgressUtils;
 
@@ -24,7 +22,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class InputSNActivity extends BaseActivity<IInputSNActivityView, InputSNActivityPresenter>
-        implements IInputSNActivityView,TextWatcher {
+        implements IInputSNActivityView, TextWatcher {
     @BindView(R.id.ac_input_sn_close)
     ImageView acInputSnClose;
     @BindView(R.id.sensor_deploy_title_layout)
@@ -41,12 +39,13 @@ public class InputSNActivity extends BaseActivity<IInputSNActivityView, InputSNA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     protected void onCreateInit(Bundle savedInstanceState) {
         setContentView(R.layout.activity_input_sn);
-        ButterKnife.bind(this);
-        mPresenter.initData(this);
-        mProgressUtils = new ProgressUtils(new ProgressUtils.Builder(this).build());
+        ButterKnife.bind(mActivity);
+        mPresenter.initData(mActivity);
+        mProgressUtils = new ProgressUtils(new ProgressUtils.Builder(mActivity).build());
         acInputSnEt.addTextChangedListener(this);
     }
 
@@ -74,7 +73,6 @@ public class InputSNActivity extends BaseActivity<IInputSNActivityView, InputSNA
 
     @Override
     public void startAc(Intent intent) {
-        finish();
         startActivity(intent);
     }
 
@@ -101,19 +99,14 @@ public class InputSNActivity extends BaseActivity<IInputSNActivityView, InputSNA
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         mProgressUtils.destroyProgress();
+        super.onDestroy();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
 
     @Override
     public void toastShort(String msg) {
-        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
+        Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override

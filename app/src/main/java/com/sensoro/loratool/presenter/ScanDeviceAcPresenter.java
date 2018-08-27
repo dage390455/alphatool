@@ -7,7 +7,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Vibrator;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -16,12 +15,12 @@ import com.sensoro.lora.setting.server.bean.DeviceInfoListRsp;
 import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.activity.DeviceDetailActivity;
+import com.sensoro.loratool.activity.InputSNActivity;
 import com.sensoro.loratool.base.BasePresenter;
 import com.sensoro.loratool.imainview.IScanDeviceAcView;
 import com.sensoro.loratool.utils.LogUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.Context.VIBRATOR_SERVICE;
@@ -62,7 +61,7 @@ public class ScanDeviceAcPresenter extends BasePresenter<IScanDeviceAcView> impl
             getView().startScan();
         } else {
             if (scanSerialNumber.length() == 16) {
-                scanFinish(scanSerialNumber);
+                scanFinish(scanSerialNumber.toUpperCase());
             } else {
                 getView().startScan();
             }
@@ -117,74 +116,66 @@ public class ScanDeviceAcPresenter extends BasePresenter<IScanDeviceAcView> impl
         getView().showProgressDialog();
         final Intent intent = new Intent(mContext, DeviceDetailActivity.class);
         LoRaSettingApplication application = (LoRaSettingApplication) mContext.getApplicationContext();
-        boolean isCache = false;
         final List<DeviceInfo> deviceInfoList = application.getDeviceInfoList();
-        if (deviceInfoList.size() > 0) {
-            for (DeviceInfo deviceInfo : deviceInfoList) {
-                if (deviceInfo.getSn().equals(scanSerialNumber)) {
-                    intent.putExtra("deviceInfo", deviceInfo);
-                    addTags(intent, deviceInfo);
-                    isCache = true;
-                    break;
-                }
+        for (DeviceInfo deviceInfo : deviceInfoList) {
+            if (deviceInfo.getSn().equals(scanSerialNumber)) {
+                intent.putExtra("deviceInfo", deviceInfo);
+                addTags(intent, deviceInfo);
+                getView().dismissProgressDialog();
+                getView().startAC(intent);
+                return;
             }
         }
-
-        if (isCache) {
-            getView().dismissProgressDialog();
-            getView().startAC(intent);
-            getView().finishAc();
-        } else {
-            //
-            application.loRaSettingServer.deviceAll(scanSerialNumber, new Response.Listener<DeviceInfoListRsp>() {
-                @Override
-                public void onResponse(DeviceInfoListRsp response) {
-                    ArrayList<DeviceInfo> infoArrayList = (ArrayList) response.getData().getItems();
-                    if (infoArrayList.size() != 0) {
-                        for (DeviceInfo deviceInfo : infoArrayList) {
-                            if (deviceInfo.getSn().equals(scanSerialNumber)) {
-                                intent.putExtra("deviceInfo", deviceInfo);
-                                addTags(intent, deviceInfo);
-                                getView().dismissProgressDialog();
-                                getView().startAC(intent);
-                                getView().finishAc();
-                                return;
-                            }
-
+        //
+        application.loRaSettingServer.deviceAll(scanSerialNumber, new Response
+                .Listener<DeviceInfoListRsp>() {
+            @Override
+            public void onResponse(DeviceInfoListRsp response) {
+                List<DeviceInfo> infoArrayList = response.getData().getItems();
+                if (infoArrayList != null) {
+                    for (DeviceInfo deviceInfo : infoArrayList) {
+                        if (deviceInfo.getSn().equals(scanSerialNumber)) {
+                            intent.putExtra("deviceInfo", deviceInfo);
+                            addTags(intent, deviceInfo);
+                            getView().dismissProgressDialog();
+                            getView().startAC(intent);
+                            return;
                         }
-                        getView().dismissProgressDialog();
-                        getView().shortToast(R.string.ac_scan_obtain_fail);
-                        getView().startScan();
-                    } else {
-                        getView().dismissProgressDialog();
-                        getView().shortToast(R.string.ac_scan_obtain_fail);
-                        getView().startScan();
                     }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
                     getView().dismissProgressDialog();
-                    getView().shortToast(R.string.ac_scan_obtain_fail);
+                    getView().shortToast("设备未在账户下");
+                    getView().startScan();
+                } else {
+                    getView().dismissProgressDialog();
+                    getView().shortToast(mContext.getResources().getString(R.string.ac_scan_obtain_fail));
                     getView().startScan();
                 }
-            });
-        }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                getView().dismissProgressDialog();
+                getView().shortToast(mContext.getResources().getString(R.string.ac_scan_obtain_fail));
+                getView().startScan();
+            }
+        });
 
     }
 
     private void addTags(Intent intent, DeviceInfo deviceInfo) {
         List<String> tags = deviceInfo.getTags();
-        StringBuilder sb = new StringBuilder();
-        if (tags != null) {
+        if (tags != null && tags.size() > 0) {
+            StringBuilder sb = new StringBuilder();
             for (String tag : tags) {
                 sb.append(tag);
             }
-        }
-        if (sb.length() > 0) {
             intent.putExtra("tags", sb.toString());
         }
     }
 
 
+    public void startToManual() {
+        Intent intent = new Intent(mContext, InputSNActivity.class);
+        getView().startAC(intent);
+    }
 }

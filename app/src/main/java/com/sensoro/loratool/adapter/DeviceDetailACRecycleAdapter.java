@@ -11,12 +11,12 @@ import com.sensoro.loratool.R;
 
 import java.util.ArrayList;
 
-public class DeviceDetailACRecylerAdaper extends RecyclerView.Adapter<DeviceDetailACRecylerAdaper.MyViewHolder>{
+public class DeviceDetailACRecycleAdapter extends RecyclerView.Adapter<DeviceDetailACRecycleAdapter.MyViewHolder> {
     private final Context mContext;
     private ArrayList<String> keyList;
     private ArrayList<String> valueList;
 
-    public DeviceDetailACRecylerAdaper(Context context) {
+    public DeviceDetailACRecycleAdapter(Context context) {
         mContext = context;
     }
 
@@ -33,25 +33,25 @@ public class DeviceDetailACRecylerAdaper extends RecyclerView.Adapter<DeviceDeta
         holder.mTvValue.setText(valueList.get(position));
     }
 
-    public void setKeyList(ArrayList<String> keyList){
+    public void setKeyList(ArrayList<String> keyList) {
         this.keyList = keyList;
     }
 
-    public void setValueList (ArrayList<String> valueList){
+    public void setValueList(ArrayList<String> valueList) {
         this.valueList = valueList;
     }
 
     @Override
     public int getItemCount() {
-        return keyList.size();
+        return keyList == null ? 0 : keyList.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder{
+    class MyViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView mTvKey;
         private final TextView mTvValue;
 
-        public MyViewHolder(View itemView) {
+        MyViewHolder(View itemView) {
             super(itemView);
             mTvKey = itemView.findViewById(R.id.item_device_detail_key);
             mTvValue = itemView.findViewById(R.id.item_device_detail_value);

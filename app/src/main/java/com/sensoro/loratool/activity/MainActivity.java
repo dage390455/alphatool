@@ -80,7 +80,6 @@ public class MainActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init();
-
     }
 
     private void init() {
@@ -155,6 +154,7 @@ public class MainActivity extends BaseActivity
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 switch (position) {
                     case 0:
+                        mScan.setVisibility(View.VISIBLE);
                         multiIv.setVisibility(View.VISIBLE);
                         mainPager.setCurrentItem(0);
                         deviceFragment.request();
@@ -162,6 +162,7 @@ public class MainActivity extends BaseActivity
                         titleTextView.setText(R.string.title_sensor);
                         break;
                     case 1:
+                        mScan.setVisibility(View.INVISIBLE);
                         multiIv.setVisibility(View.GONE);
                         mainPager.setCurrentItem(1);
                         stationFragment.request();
@@ -221,7 +222,7 @@ public class MainActivity extends BaseActivity
         mScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,ScanDeviceActivity.class);
+                Intent intent = new Intent(MainActivity.this, ScanDeviceActivity.class);
                 startActivity(intent);
 
             }

@@ -8,7 +8,7 @@ public interface IScanDeviceAcView extends IProgressDialog {
     void startScan();
     void stopScan();
     void setFlashLightState(boolean isOn);
-    void shortToast(int message);
+    void shortToast(String message);
     void startAC(Intent intent);
     void finishAc();
 }

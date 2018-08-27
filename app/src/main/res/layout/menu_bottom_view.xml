@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/menu_view"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:orientation="vertical">
+              android:id="@+id/menu_view"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,8 +20,8 @@
             android:id="@+id/menu_ll_config"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical">
 
             <ImageView
@@ -29,7 +29,7 @@
                 android:layout_width="@dimen/x200"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:src="@mipmap/ic_menu_config" />
+                android:src="@mipmap/ic_menu_config"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -39,7 +39,7 @@
                 android:gravity="center_horizontal"
                 android:text="@string/menu_setting"
                 android:textColor="@color/cell_font"
-                android:textSize="10sp" />
+                android:textSize="10sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -47,8 +47,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x20"
-            android:gravity="center"
             android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical">
 
             <ImageView
@@ -56,7 +56,7 @@
                 android:layout_width="@dimen/x200"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:src="@mipmap/ic_menu_private" />
+                android:src="@mipmap/ic_menu_private"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
                 android:gravity="center_horizontal"
                 android:text="@string/menu_cloud_setting"
                 android:textColor="@color/cell_font"
-                android:textSize="10sp" />
+                android:textSize="10sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -73,8 +73,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x20"
-            android:gravity="center"
             android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical">
 
             <ImageView
@@ -82,7 +82,7 @@
                 android:layout_width="@dimen/x200"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:src="@mipmap/ic_menu_upgrade" />
+                android:src="@mipmap/ic_menu_upgrade"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -91,7 +91,7 @@
                 android:gravity="center_horizontal"
                 android:text="@string/menu_upgrade"
                 android:textColor="@color/cell_font"
-                android:textSize="10sp" />
+                android:textSize="10sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -99,8 +99,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x20"
-            android:gravity="center"
             android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical">
 
             <ImageView
@@ -108,7 +108,7 @@
                 android:layout_width="@dimen/x200"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:src="@mipmap/ic_menu_signal" />
+                android:src="@mipmap/ic_menu_signal"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -118,7 +118,7 @@
                 android:gravity="center_horizontal"
                 android:text="@string/menu_signal"
                 android:textColor="@color/cell_font"
-                android:textSize="10sp" />
+                android:textSize="10sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -126,8 +126,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x20"
-            android:gravity="center"
             android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical">
 
             <ImageView
@@ -135,7 +135,7 @@
                 android:layout_width="@dimen/x200"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:src="@mipmap/ic_menu_clear" />
+                android:src="@mipmap/ic_menu_clear"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -145,7 +145,7 @@
                 android:gravity="center_horizontal"
                 android:text="@string/menu_clear"
                 android:textColor="@color/cell_font"
-                android:textSize="10sp" />
+                android:textSize="10sp"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -153,7 +153,7 @@
         android:id="@+id/menu_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/item_sensor_line" />
+        android:background="@color/item_sensor_line"/>
 
     <ImageView
         android:id="@+id/menu_iv_close"
@@ -162,5 +162,5 @@
         android:layout_gravity="center"
         android:layout_marginBottom="@dimen/y50"
         android:layout_marginTop="@dimen/y50"
-        android:src="@mipmap/ic_close" />
+        android:src="@mipmap/ic_close"/>
 </LinearLayout>

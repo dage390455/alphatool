@@ -39,7 +39,7 @@ public class DeviceInfoListRsp extends ResponseBase {
         protected List<DeviceInfo> items;
 
         public PageInfo getPage_info() {
-          return page_info;
+            return page_info;
         }
 
         public void setPage_info(PageInfo page_info) {

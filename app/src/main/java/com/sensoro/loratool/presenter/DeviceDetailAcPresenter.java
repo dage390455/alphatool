@@ -1,5 +1,6 @@
 package com.sensoro.loratool.presenter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -27,19 +28,18 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 import static com.sensoro.loratool.constant.Constants.DEVICE_HARDWARE_TYPE;
 import static com.sensoro.loratool.constant.Constants.EXTRA_NAME_DEVICE_INFO;
 
-public class DeviceDetailAcPresenter extends BasePresenter<IDeviceDetailAcView> implements LoRaSettingApplication.INearDeviceListener{
-    private Context mContext;
+public class DeviceDetailAcPresenter extends BasePresenter<IDeviceDetailAcView> implements LoRaSettingApplication
+        .INearDeviceListener {
+    private Activity mContext;
     private DeviceInfo mDeviceInfo;
 
     @Override
     public void initData(Context context) {
+        mContext = (Activity) context;
         ((LoRaSettingApplication) mContext.getApplicationContext()).registerNearDeviceListener(this);
-        mContext = context;
         mDeviceInfo = ((DeviceDetailActivity) context).getIntent().getParcelableExtra("deviceInfo");
         initWidget();
     }
@@ -51,7 +51,7 @@ public class DeviceDetailAcPresenter extends BasePresenter<IDeviceDetailAcView> 
 
     private void initWidget() {
         for (int i = 0; i < DEVICE_HARDWARE_TYPE.length; i++) {
-            if(mDeviceInfo.getDeviceType().contains(DEVICE_HARDWARE_TYPE[i])){
+            if (mDeviceInfo.getDeviceType().contains(DEVICE_HARDWARE_TYPE[i])) {
                 String s = mContext.getResources().getStringArray(R.array.filter_device_hardware_array)[i];
                 getView().setTvNameVisible(true);
                 getView().setTvNameContent(s);
@@ -59,20 +59,17 @@ public class DeviceDetailAcPresenter extends BasePresenter<IDeviceDetailAcView> 
             }
         }
 
-        ConcurrentHashMap<String, SensoroDevice> nearDeviceMap = ((LoRaSettingApplication) mContext.getApplicationContext()).getmNearDeviceMap();
-        if (nearDeviceMap.containsKey(mDeviceInfo.getSn())) {
-            getView().setTvNearVisible(true);
-        }else{
-            getView().setTvNearVisible(false);
-        }
+        ConcurrentHashMap<String, SensoroDevice> nearDeviceMap = ((LoRaSettingApplication) mContext
+                .getApplicationContext()).getmNearDeviceMap();
+        getView().setTvNearVisible(nearDeviceMap.containsKey(mDeviceInfo.getSn()));
 
-        getView().setTvVersionContent(String.format(Locale.CHINA,"V %s",mDeviceInfo.getFirmwareVersion()));;
+        getView().setTvVersionContent(String.format(Locale.CHINA, "V %s", mDeviceInfo.getFirmwareVersion()));
 
         getView().setTvLocationContent(mDeviceInfo.getName());
 
-        getView().setTvElectricQuantityContent(String.format(Locale.CHINA,"%d%%", mDeviceInfo.getBattery()));
+        getView().setTvElectricQuantityContent(String.format(Locale.CHINA, "%d%%", mDeviceInfo.getBattery()));
 
-        getView().setTvReportTimeContent(String.format(Locale.CHINA,"数据上报时间：%s",formatResportTime(mDeviceInfo)));
+        getView().setTvReportTimeContent(String.format(Locale.CHINA, "数据上报时间：%s", formatResportTime(mDeviceInfo)));
 
         initTvState();
         initTvTest();
@@ -98,12 +95,12 @@ public class DeviceDetailAcPresenter extends BasePresenter<IDeviceDetailAcView> 
         keyList.add("温度");
         keyList.add("湿度");
         getView().setRcKeyList(keyList);
-        getView().setRcValueList(valueList);
+        getView().updateRcValueList(valueList);
         getView().setRcAdapter();
     }
 
     private void initTvTest() {
-        String tags = ((DeviceDetailActivity) mContext).getIntent().getStringExtra("tags");
+        String tags = mContext.getIntent().getStringExtra("tags");
         if (tags != null && tags.length() > 0) {
             getView().setTvTestContent(tags);
         } else {
@@ -111,6 +108,7 @@ public class DeviceDetailAcPresenter extends BasePresenter<IDeviceDetailAcView> 
         }
 
     }
+
     private void initTvState() {
         String defStr = mContext.getString(R.string.unknow);
         Drawable drawable;
@@ -157,7 +155,7 @@ public class DeviceDetailAcPresenter extends BasePresenter<IDeviceDetailAcView> 
                 defStr = mContext.getString(R.string.status_inactive);
                 break;
             case 4:
-                drawable =mContext.getResources().getDrawable(R.drawable.shape_status_offline);
+                drawable = mContext.getResources().getDrawable(R.drawable.shape_status_offline);
                 drawable.setBounds(0, 0, drawable != null ? drawable.getMinimumWidth() : 0,
                         drawable.getMinimumHeight());
                 drawable.setColorFilter(mContext.getResources().getColor(R.color.status_offline), PorterDuff
@@ -203,22 +201,24 @@ public class DeviceDetailAcPresenter extends BasePresenter<IDeviceDetailAcView> 
         return list;
     }
 
-    public void config(DeviceInfo deviceInfo, ConcurrentHashMap<String, SensoroDevice> nearDeviceMap) {
-        SensoroDevice sensoroDevice = nearDeviceMap.get(deviceInfo.getSn());
+    public void config() {
+        ConcurrentHashMap<String, SensoroDevice> nearDeviceMap = ((LoRaSettingApplication) mContext.getApplication())
+                .getmNearDeviceMap();
+        SensoroDevice sensoroDevice = nearDeviceMap.get(mDeviceInfo.getSn());
         if (sensoroDevice != null) {
-            sensoroDevice.setPassword(deviceInfo.getPassword());
-            sensoroDevice.setFirmwareVersion(deviceInfo.getFirmwareVersion());
-            sensoroDevice.setBand(deviceInfo.getBand());
-            sensoroDevice.setHardwareVersion(deviceInfo.getDeviceType());
+            sensoroDevice.setPassword(mDeviceInfo.getPassword());
+            sensoroDevice.setFirmwareVersion(mDeviceInfo.getFirmwareVersion());
+            sensoroDevice.setBand(mDeviceInfo.getBand());
+            sensoroDevice.setHardwareVersion(mDeviceInfo.getDeviceType());
             Intent intent = new Intent();
-            if (deviceInfo.toSensoroDeviceType() == DeviceInfo.TYPE_MODULE) {
+            if (mDeviceInfo.toSensoroDeviceType() == DeviceInfo.TYPE_MODULE) {
                 intent.setClass(mContext, SettingModuleActivity.class);
             } else {
                 intent.setClass(mContext, SettingDeviceActivity.class);
             }
 
-            intent.putExtra(Constants.EXTRA_NAME_DEVICE_TYPE, deviceInfo.getDeviceType());
-            intent.putExtra(Constants.EXTRA_NAME_BAND, deviceInfo.getBand());
+            intent.putExtra(Constants.EXTRA_NAME_DEVICE_TYPE, mDeviceInfo.getDeviceType());
+            intent.putExtra(Constants.EXTRA_NAME_BAND, mDeviceInfo.getBand());
             intent.putExtra(Constants.EXTRA_NAME_DEVICE, sensoroDevice);
             getView().startAc(intent);
         } else {
@@ -227,65 +227,71 @@ public class DeviceDetailAcPresenter extends BasePresenter<IDeviceDetailAcView> 
 
     }
 
-    public void cloud(DeviceInfo deviceInfo, ConcurrentHashMap<String, SensoroDevice> nearDeviceMap) {
-        SensoroDevice sensoroDevice = nearDeviceMap.get(deviceInfo.getSn());
+    public void cloud() {
+        ConcurrentHashMap<String, SensoroDevice> nearDeviceMap = ((LoRaSettingApplication) mContext.getApplication())
+                .getmNearDeviceMap();
+        SensoroDevice sensoroDevice = nearDeviceMap.get(mDeviceInfo.getSn());
         if (sensoroDevice != null) {
-            sensoroDevice.setPassword(deviceInfo.getPassword());
-            sensoroDevice.setFirmwareVersion(deviceInfo.getFirmwareVersion());
-            sensoroDevice.setBand(deviceInfo.getBand());
-            sensoroDevice.setHardwareVersion(deviceInfo.getDeviceType());
+            sensoroDevice.setPassword(mDeviceInfo.getPassword());
+            sensoroDevice.setFirmwareVersion(mDeviceInfo.getFirmwareVersion());
+            sensoroDevice.setBand(mDeviceInfo.getBand());
+            sensoroDevice.setHardwareVersion(mDeviceInfo.getDeviceType());
             Intent intent = new Intent();
             intent.putExtra(Constants.EXTRA_NAME_DEVICE, sensoroDevice);
-            intent.putExtra(Constants.EXTRA_NAME_DEVICE_TYPE, deviceInfo.getDeviceType());
-            intent.putExtra(Constants.EXTRA_NAME_BAND, deviceInfo.getBand());
-            intent.putExtra(EXTRA_NAME_DEVICE_INFO, deviceInfo);
+            intent.putExtra(Constants.EXTRA_NAME_DEVICE_TYPE, mDeviceInfo.getDeviceType());
+            intent.putExtra(Constants.EXTRA_NAME_BAND, mDeviceInfo.getBand());
+            intent.putExtra(EXTRA_NAME_DEVICE_INFO, mDeviceInfo);
             intent.setClass(mContext, AdvanceSettingDeviceActivity.class);
             getView().startAc(intent);
-        }else{
+        } else {
             getView().showShortToast(mContext.getResources().getString(R.string.tips_closeto_device));
         }
     }
 
-    public void upgrade(DeviceInfo deviceInfo,ConcurrentHashMap<String, SensoroDevice> nearDeviceMap) {
-        SensoroDevice sensoroDevice = nearDeviceMap.get(deviceInfo.getSn());
-        if(sensoroDevice!=null){
-            sensoroDevice.setPassword(deviceInfo.getPassword());
-            sensoroDevice.setFirmwareVersion(deviceInfo.getFirmwareVersion());
-            sensoroDevice.setBand(deviceInfo.getBand());
-            sensoroDevice.setHardwareVersion(deviceInfo.getDeviceType());
+    public void upgrade() {
+        ConcurrentHashMap<String, SensoroDevice> nearDeviceMap = ((LoRaSettingApplication) mContext.getApplication())
+                .getmNearDeviceMap();
+        SensoroDevice sensoroDevice = nearDeviceMap.get(mDeviceInfo.getSn());
+        if (sensoroDevice != null) {
+            sensoroDevice.setPassword(mDeviceInfo.getPassword());
+            sensoroDevice.setFirmwareVersion(mDeviceInfo.getFirmwareVersion());
+            sensoroDevice.setBand(mDeviceInfo.getBand());
+            sensoroDevice.setHardwareVersion(mDeviceInfo.getDeviceType());
             Intent intent = new Intent(mContext, UpgradeFirmwareListActivity.class);
-            intent.putExtra(Constants.EXTRA_NAME_DEVICE_TYPE, deviceInfo.getDeviceType());
-            intent.putExtra(Constants.EXTRA_NAME_BAND, deviceInfo.getBand());
-            intent.putExtra(Constants.EXTRA_NAME_DEVICE_HARDWARE_VERSION, deviceInfo.getDeviceType());
+            intent.putExtra(Constants.EXTRA_NAME_DEVICE_TYPE, mDeviceInfo.getDeviceType());
+            intent.putExtra(Constants.EXTRA_NAME_BAND, mDeviceInfo.getBand());
+            intent.putExtra(Constants.EXTRA_NAME_DEVICE_HARDWARE_VERSION, mDeviceInfo.getDeviceType());
             intent.putExtra(Constants.EXTRA_NAME_DEVICE_FIRMWARE_VERSION, sensoroDevice.getFirmwareVersion());
             ArrayList<SensoroDevice> tempArrayList = new ArrayList<>();
             tempArrayList.add(sensoroDevice);
             intent.putParcelableArrayListExtra(Constants.EXTRA_NAME_DEVICE_LIST, tempArrayList);
             getView().startAc(intent);
-        }else{
+        } else {
             getView().showShortToast(mContext.getResources().getString(R.string.tips_closeto_device));
         }
 
     }
 
-    public void singal(DeviceInfo deviceInfo, ConcurrentHashMap<String, SensoroDevice> nearDeviceMap) {
-        SensoroDevice sensoroDevice = nearDeviceMap.get(deviceInfo.getSn());
-        if (sensoroDevice!=null) {
-            sensoroDevice.setPassword(deviceInfo.getPassword());
-            sensoroDevice.setFirmwareVersion(deviceInfo.getFirmwareVersion());
-            sensoroDevice.setBand(deviceInfo.getBand());
-            sensoroDevice.setHardwareVersion(deviceInfo.getDeviceType());
+    public void signal() {
+        ConcurrentHashMap<String, SensoroDevice> nearDeviceMap = ((LoRaSettingApplication) mContext.getApplication())
+                .getmNearDeviceMap();
+        SensoroDevice sensoroDevice = nearDeviceMap.get(mDeviceInfo.getSn());
+        if (sensoroDevice != null) {
+            sensoroDevice.setPassword(mDeviceInfo.getPassword());
+            sensoroDevice.setFirmwareVersion(mDeviceInfo.getFirmwareVersion());
+            sensoroDevice.setBand(mDeviceInfo.getBand());
+            sensoroDevice.setHardwareVersion(mDeviceInfo.getDeviceType());
             Intent intent = new Intent(mContext, SignalDetectionActivity.class);
             intent.putExtra(Constants.EXTRA_NAME_DEVICE, sensoroDevice);
-            intent.putExtra(Constants.EXTRA_NAME_BAND, deviceInfo.getBand());
+            intent.putExtra(Constants.EXTRA_NAME_BAND, mDeviceInfo.getBand());
             getView().startAc(intent);
-        }else{
+        } else {
             getView().showShortToast(mContext.getResources().getString(R.string.tips_closeto_device));
         }
 
     }
 
-    public String formatResportTime(DeviceInfo deviceInfo) {
+    private String formatResportTime(DeviceInfo deviceInfo) {
         long lastUpTime = deviceInfo.getLastUpTime();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date date = new Date();
@@ -297,10 +303,29 @@ public class DeviceDetailAcPresenter extends BasePresenter<IDeviceDetailAcView> 
     public void updateListener() {
         ConcurrentHashMap<String, SensoroDevice> nearDeviceMap =
                 ((LoRaSettingApplication) mContext.getApplicationContext()).getmNearDeviceMap();
-        if (nearDeviceMap.containsKey(mDeviceInfo.getSn())) {
-            getView().setTvNearVisible(true);
-        } else {
-            getView().setTvNearVisible(false);
+        getView().setTvNearVisible(nearDeviceMap.containsKey(mDeviceInfo.getSn()));
+    }
+
+    public void showPopupWindow() {
+        //order
+//        configLayout.setVisibility(VISIBLE);
+//        cloudLayout.setVisibility(VISIBLE);
+//        upgradeLayout.setVisibility(VISIBLE);
+//        signalLayout.setVisibility(VISIBLE);
+        boolean[] booleans = new boolean[4];
+        booleans[0] = Constants.permission[4];
+        booleans[1] = Constants.permission[5];
+        booleans[2] = Constants.permission[6];
+        booleans[3] = mDeviceInfo.isCanSignal();
+        boolean support = mDeviceInfo.getDeviceType().equals("op_chip");
+        if (support) {
+            booleans[0] = false;
+            booleans[1] = false;
         }
+        getView().setPopSettingItemVisible(booleans);
+    }
+
+    public void setBatteryLevel() {
+        getView().setBatteryLevel(mDeviceInfo.getBattery());
     }
 }

@@ -3,12 +3,11 @@ package com.sensoro.loratool.imainview;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 
-import com.sensoro.lora.setting.server.bean.DeviceInfo;
-
 import java.util.ArrayList;
 
 public interface IDeviceDetailAcView {
     void startAc(Intent intent);
+
     void showShortToast(String msg);
 
     void setTvNameVisible(boolean isVisible);
@@ -35,9 +34,13 @@ public interface IDeviceDetailAcView {
 
     void setRcKeyList(ArrayList<String> keyList);
 
-    void setRcValueList(ArrayList<String> valueList);
+    void updateRcValueList(ArrayList<String> valueList);
 
     void setRcAdapter();
 
     void setTvReportTimeContent(String reportTimeContent);
+
+    void setPopSettingItemVisible(boolean[] itemVisible);
+
+    void setBatteryLevel(int level);
 }

@@ -6,18 +6,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.base.BaseActivity;
 import com.sensoro.loratool.imainview.IScanDeviceAcView;
 import com.sensoro.loratool.presenter.ScanDeviceAcPresenter;
 import com.sensoro.loratool.utils.ProgressUtils;
-import com.sensoro.loratool.widget.StatusBarCompat;
 
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 
-public class ScanDeviceActivity extends BaseActivity<IScanDeviceAcView,ScanDeviceAcPresenter> implements IScanDeviceAcView,View.OnClickListener
-,QRCodeView.Delegate  {
+public class ScanDeviceActivity extends BaseActivity<IScanDeviceAcView, ScanDeviceAcPresenter> implements
+        IScanDeviceAcView, View.OnClickListener
+        , QRCodeView.Delegate {
 
     private ImageView mFlashImageView;
     private ImageView mManualImageView;
@@ -26,16 +25,10 @@ public class ScanDeviceActivity extends BaseActivity<IScanDeviceAcView,ScanDevic
     private boolean isFlashOn = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        StatusBarCompat.setStatusBarColor(this,getResources().getColor(R.color.actionbar_bg));
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     protected void onCreateInit(Bundle savedInstanceState) {
         setContentView(R.layout.activity_scan_device);
         initView();
-        mPresenter.initData(this);
+        mPresenter.initData(mActivity);
     }
 
 
@@ -59,10 +52,9 @@ public class ScanDeviceActivity extends BaseActivity<IScanDeviceAcView,ScanDevic
 
     @Override
     protected void onDestroy() {
-       mQRCodeView.onDestroy();
-       mProgressUtils.destroyProgress();
-       ((LoRaSettingApplication)getApplication()).scanDeviceView = null;
-       super.onDestroy();
+        mQRCodeView.onDestroy();
+        mProgressUtils.destroyProgress();
+        super.onDestroy();
     }
 
 
@@ -79,7 +71,7 @@ public class ScanDeviceActivity extends BaseActivity<IScanDeviceAcView,ScanDevic
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.ac_scan_capture_iv_flash:
                 mQRCodeView.getCameraPreview().surfaceCreated(null);
                 if (isFlashOn) {
@@ -90,8 +82,7 @@ public class ScanDeviceActivity extends BaseActivity<IScanDeviceAcView,ScanDevic
                 isFlashOn = !isFlashOn;
                 break;
             case R.id.ac_scan_capture_iv_manual:
-                Intent intent = new Intent(this, InputSNActivity.class);
-                startAC(intent);
+                mPresenter.startToManual();
                 break;
         }
 
@@ -108,7 +99,7 @@ public class ScanDeviceActivity extends BaseActivity<IScanDeviceAcView,ScanDevic
     }
 
     private void initView() {
-        mProgressUtils = new ProgressUtils(new ProgressUtils.Builder(this).build());
+        mProgressUtils = new ProgressUtils(new ProgressUtils.Builder(mActivity).build());
         mFlashImageView = (ImageView) findViewById(R.id.ac_scan_capture_iv_flash);
         mManualImageView = (ImageView) findViewById(R.id.ac_scan_capture_iv_manual);
         mFlashImageView.setOnClickListener(this);
@@ -117,8 +108,6 @@ public class ScanDeviceActivity extends BaseActivity<IScanDeviceAcView,ScanDevic
         mQRCodeView.setDelegate(this);
         mQRCodeView.getScanBoxView().setOnlyDecodeScanBoxArea(true);
         mQRCodeView.getCameraPreview().setAutoFocusFailureDelay(0);
-
-        ((LoRaSettingApplication)getApplication()).scanDeviceView = this;
     }
 
 
@@ -128,13 +117,13 @@ public class ScanDeviceActivity extends BaseActivity<IScanDeviceAcView,ScanDevic
     }
 
     @Override
-    public void shortToast(int message) {
-        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+    public void shortToast(String message) {
+        Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void startAC(Intent intent) {
-        startActivity(intent);
+        mActivity.startActivity(intent);
     }
 
     @Override
