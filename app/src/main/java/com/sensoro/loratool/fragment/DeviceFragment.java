@@ -41,6 +41,7 @@ import com.sensoro.libbleserver.ble.SensoroDevice;
 import com.sensoro.libbleserver.ble.SensoroSensorTest;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.store.DeviceDataDao;
+import com.sensoro.loratool.utils.LogUtils;
 import com.sensoro.loratool.utils.Utils;
 import com.sensoro.loratool.widget.SensoroEditText;
 import com.sensoro.loratool.widget.SensoroPopupView;
@@ -828,6 +829,7 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
                 mTargetDevice.setBand(selectedDeviceInfo.getBand());
                 mTargetDevice.setFirmwareVersion(selectedDeviceInfo.getFirmwareVersion());
                 mTargetDevice.setHardwareVersion(selectedDeviceInfo.getDeviceType());
+
                 showBottomPopupWindow();
             } else {
                 Toast.makeText(mContext, R.string.tips_closeto_device, Toast.LENGTH_SHORT).show();

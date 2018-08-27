@@ -41,8 +41,8 @@ import static android.view.View.VISIBLE;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.sensoro.loratool.constant.Constants.DEVICE_HARDWARE_TYPE;
 
-public class DeviceDetailActivity extends BaseActivity<IDeviceDetailAcView,DeviceDetailAcPresenter> 
-        implements IDeviceDetailAcView ,View.OnClickListener,LoRaSettingApplication.INearDeviceListener{
+public class DeviceDetailActivity extends BaseActivity<IDeviceDetailAcView, DeviceDetailAcPresenter>
+        implements IDeviceDetailAcView, View.OnClickListener {
 
     private RecyclerView mRcContent;
     private TextView mTvReportTime;
@@ -70,18 +70,18 @@ public class DeviceDetailActivity extends BaseActivity<IDeviceDetailAcView,Devic
     private TextView mTvStateTime;
     private int battery;
     private DeviceInfo deviceInfo;
+    private DeviceDetailACRecylerAdaper mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       
+
     }
 
     @Override
     protected void onCreateInit(Bundle savedInstanceState) {
         setContentView(R.layout.activity_device_detail);
         initView();
-        ((LoRaSettingApplication)getApplication()).registerNearDeviceListener(this);
         mPresenter.initData(this);
     }
 
@@ -95,8 +95,8 @@ public class DeviceDetailActivity extends BaseActivity<IDeviceDetailAcView,Devic
         mTvState = (TextView) findViewById(R.id.ac_device_detail_tv_state);
         mTvTest = (TextView) findViewById(R.id.ac_device_detail_tv_test);
         mTvVersion = (TextView) findViewById(R.id.ac_device_detail_tv_version);
-        mBatteryView = (BatteryView)findViewById(R.id.ac_device_detail_battery_view);
-        mImvConfig = (ImageView)findViewById(R.id.ac_device_detail_imv_config);
+        mBatteryView = (BatteryView) findViewById(R.id.ac_device_detail_battery_view);
+        mImvConfig = (ImageView) findViewById(R.id.ac_device_detail_imv_config);
         mTvStateTime = (TextView) findViewById(R.id.ac_device_detail_tv_state_time);
 
         mImvConfig.setOnClickListener(this);
@@ -136,6 +136,8 @@ public class DeviceDetailActivity extends BaseActivity<IDeviceDetailAcView,Devic
             }
         });
 
+        mAdapter = new DeviceDetailACRecylerAdaper(mActivity);
+
     }
 
     @Override
@@ -151,37 +153,7 @@ public class DeviceDetailActivity extends BaseActivity<IDeviceDetailAcView,Devic
     }
 
 
-    @Override
-    public void initWidget(DeviceInfo deviceInfo) {
-        for (int i = 0; i < DEVICE_HARDWARE_TYPE.length; i++) {
-            if(deviceInfo.getDeviceType().contains(DEVICE_HARDWARE_TYPE[i])){
-                String s = getResources().getStringArray(R.array.filter_device_hardware_array)[i];
-                mTvName.setVisibility(VISIBLE);
-                mTvName.setText(s);
-                break;
-            }
-        }
-        this.deviceInfo = deviceInfo;
-        initTvNear(deviceInfo);
-        mTvVersion.setText(String.format(Locale.CHINA,"V %s",deviceInfo.getFirmwareVersion()));
-        mTvLocation.setText(deviceInfo.getName());
-        initTvState(deviceInfo.getNormalStatus(),deviceInfo.getLastUpTime());
-        battery = deviceInfo.getBattery();
-        mTvElectricQuantity.setText(String.format(Locale.CHINA,"%d%%", battery));
-        initTvTest(deviceInfo);
-        initRcContent(deviceInfo);
-        mTvReportTime.setText(String.format(Locale.CHINA,"数据上报时间：%s",mPresenter.formatResportTime(deviceInfo)));
 
-    }
-
-    public void initTvNear(DeviceInfo deviceInfo) {
-        ConcurrentHashMap<String, SensoroDevice> nearDeviceMap = ((LoRaSettingApplication) getApplication()).getmNearDeviceMap();
-        if(nearDeviceMap.containsKey(deviceInfo.getSn())){
-            mTvNear.setVisibility(VISIBLE);
-        }else{
-            mTvNear.setVisibility(GONE);
-        }
-    }
 
     @Override
     public void startAc(Intent intent) {
@@ -191,7 +163,7 @@ public class DeviceDetailActivity extends BaseActivity<IDeviceDetailAcView,Devic
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ((LoRaSettingApplication)getApplication()).unregisterNearDeviceListener(this);
+
     }
 
     @Override
@@ -200,127 +172,111 @@ public class DeviceDetailActivity extends BaseActivity<IDeviceDetailAcView,Devic
     }
 
     @Override
-    public void updateListener() {
-        initTvNear(deviceInfo);
-
+    public void setTvNameVisible(boolean isVisible) {
+        mTvName.setVisibility(isVisible ? VISIBLE : GONE);
     }
 
-    private void initTvTest(DeviceInfo deviceInfo) {
-        String tags = getIntent().getStringExtra("tags");
-        if (tags!=null&&tags.length()>0) {
-            mTvTest.setText(tags);
-        }else{
-            mTvTest.setVisibility(View.GONE);
-        }
-
+    @Override
+    public void setTvNameContent(String nameContent) {
+        mTvName.setText(nameContent);
     }
 
-    private void initRcContent(DeviceInfo deviceInfo) {
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2){
+    @Override
+    public void setTvNearVisible(boolean isVisible) {
+        mTvNear.setVisibility(isVisible ? VISIBLE : GONE);
+    }
+
+    @Override
+    public void setTvVersionContent(String versionContent) {
+        mTvVersion.setText(versionContent);
+    }
+
+    @Override
+    public void setTvLocationContent(String locationContent) {
+        mTvLocation.setText(locationContent);
+    }
+
+    @Override
+    public void setTvStateCompoundDrawables(Drawable drawable) {
+        mTvState.setCompoundDrawables(drawable,null,null,null);
+    }
+
+    @Override
+    public void setTvStateContent(String stateContent) {
+        mTvState.setText(stateContent);
+    }
+
+    @Override
+    public void setTvStateTime(String stateTime) {
+        mTvStateTime.setText(stateTime);
+    }
+
+    @Override
+    public void setTvElectricQuantityContent(String electricQuantityContent) {
+        mTvElectricQuantity.setText(electricQuantityContent);
+    }
+
+    @Override
+    public void setTvTestContent(String testContent) {
+        mTvTest.setText(testContent);
+    }
+
+    @Override
+    public void setTvTestVisible(boolean isVisible) {
+        mTvTest.setVisibility(isVisible ? VISIBLE : GONE);
+    }
+
+    @Override
+    public void setRcKeyList(ArrayList<String> keyList) {
+        mAdapter.setKeyList(keyList);
+    }
+
+    @Override
+    public void setRcValueList(ArrayList<String> valueList) {
+        mAdapter.setValueList(valueList);
+    }
+
+    @Override
+    public void setRcAdapter() {
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(mActivity, 2) {
             @Override
             public boolean canScrollVertically() {
                 return false;
             }
         };
-        ArrayList<String> valueList = mPresenter.initRCValueList(deviceInfo);
-        ArrayList<String> keyList = mPresenter.initRCKeyList();
-        DeviceDetailACRecylerAdaper mAdapter = new DeviceDetailACRecylerAdaper(this);
-        mAdapter.setKeyList(keyList);
-        mAdapter.setValueList(valueList);
         mRcContent.setLayoutManager(gridLayoutManager);
-        mRcContent.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.HORIZONTAL));
-        mRcContent.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        mRcContent.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL));
+        mRcContent.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         mRcContent.setAdapter(mAdapter);
     }
 
-
-    private void initTvState(int normalStatus,long lastUpTime) {
-        String defStr = getString(R.string.unknow);
-        Drawable drawable ;
-        switch (normalStatus) {
-            case 0:
-                drawable = getResources().getDrawable(R.drawable.shape_oval);
-                drawable.setBounds(0, 0, drawable != null ? drawable.getMinimumWidth() : 0,
-                        drawable.getMinimumHeight());
-                drawable.setColorFilter(getResources().getColor(R.color.status_normal), PorterDuff.Mode
-                        .MULTIPLY);
-
-                defStr = getString(R.string.status_normal);
-                break;
-            case 1:
-                drawable = getResources().getDrawable(R.drawable.shape_status_fault);
-                drawable.setBounds(0, 0, drawable != null ? drawable.getMinimumWidth() : 0,
-                        drawable.getMinimumHeight());
-                drawable.setColorFilter(getResources().getColor(R.color.status_fault), PorterDuff.Mode
-                        .MULTIPLY);
-                defStr = getString(R.string.status_fault);
-                break;
-            case 2:
-                drawable = getResources().getDrawable(R.drawable.shape_status_fault);
-                drawable.setBounds(0, 0, drawable != null ? drawable.getMinimumWidth() : 0,
-                        drawable.getMinimumHeight());
-                drawable.setColorFilter(getResources().getColor(R.color.status_serious), PorterDuff
-                        .Mode.MULTIPLY);
-                defStr = getString(R.string.status_serious);
-                break;
-            case 3:
-                drawable = getResources().getDrawable(R.drawable.shape_status_timeout);
-                drawable.setBounds(0, 0, drawable != null ? drawable.getMinimumWidth() : 0,
-                        drawable.getMinimumHeight());
-                drawable.setColorFilter(getResources().getColor(R.color.status_timeout), PorterDuff
-                        .Mode.MULTIPLY);
-                defStr = getString(R.string.status_timeout);
-                break;
-            case -1:
-                drawable = getResources().getDrawable(R.drawable.shape_status_inactive);
-                drawable.setBounds(0, 0, drawable != null ? drawable.getMinimumWidth() : 0,
-                        drawable.getMinimumHeight());
-                drawable.setColorFilter(getResources().getColor(R.color.status_inactive), PorterDuff
-                        .Mode.MULTIPLY);
-                defStr = getString(R.string.status_inactive);
-                break;
-            case 4:
-                drawable = getResources().getDrawable(R.drawable.shape_status_offline);
-                drawable.setBounds(0, 0, drawable != null ? drawable.getMinimumWidth() : 0,
-                        drawable.getMinimumHeight());
-                drawable.setColorFilter(getResources().getColor(R.color.status_offline), PorterDuff
-                        .Mode.MULTIPLY);
-                defStr = getString(R.string.status_offline);
-            default:
-                drawable = getResources().getDrawable(R.drawable.shape_status_inactive);
-                drawable.setBounds(0, 0, drawable != null ? drawable.getMinimumWidth() : 0,
-                        drawable.getMinimumHeight());
-                drawable.setColorFilter(getResources().getColor(R.color.status_inactive), PorterDuff
-                        .Mode.MULTIPLY);
-                break;
-        }
-
-        mTvState.setCompoundDrawables(drawable, null, null, null);
-        mTvState.setText(defStr);
-        mTvStateTime.setText(DateUtil.getDateDiffWithFormat(this,lastUpTime,"MM-DD"));
+    @Override
+    public void setTvReportTimeContent(String reportTimeContent) {
+        mTvReportTime.setText(reportTimeContent);
     }
+
 
     @Override
     public void onClick(View v) {
         ConcurrentHashMap<String, SensoroDevice> nearDeviceMap = ((LoRaSettingApplication) getApplication()).getmNearDeviceMap();
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.ac_device_detail_imv_config:
                 mImvConfig.setVisibility(View.INVISIBLE);
                 showPopupWindow();
                 break;
             case R.id.menu_iv_config:
-                mPresenter.config(deviceInfo,nearDeviceMap);
+                mPresenter.config(deviceInfo, nearDeviceMap);
                 mBottomPopupWindow.dismiss();
                 break;
             case R.id.menu_iv_cloud:
-                mPresenter.cloud(deviceInfo,nearDeviceMap);
+                mPresenter.cloud(deviceInfo, nearDeviceMap);
                 mBottomPopupWindow.dismiss();
                 break;
             case R.id.menu_iv_upgrade:
-                mPresenter.upgrade(deviceInfo,nearDeviceMap);
+                mPresenter.upgrade(deviceInfo, nearDeviceMap);
                 break;
             case R.id.menu_iv_signal:
-                mPresenter.singal(deviceInfo,nearDeviceMap);
+                mPresenter.singal(deviceInfo, nearDeviceMap);
                 break;
             case R.id.menu_iv_clear:
                 break;
@@ -355,7 +311,7 @@ public class DeviceDetailActivity extends BaseActivity<IDeviceDetailAcView,Devic
             configLayout.setVisibility(View.GONE);
             cloudLayout.setVisibility(View.GONE);
         }
-        mBottomPopupWindow.showAtLocation(mImvConfig, Gravity.BOTTOM,0,0);
+        mBottomPopupWindow.showAtLocation(mImvConfig, Gravity.BOTTOM, 0, 0);
     }
 
 
