@@ -558,6 +558,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     private SensoroDeviceConfiguration deviceConfiguration;
     private ProgressDialog progressDialog;
     private SensoroSensorTest sensoroSensor;
+    private int[] txp_array;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -641,7 +642,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     }
 
     private void initLoraParam() {
-        int txp_array[] = Constants.LORA_SE433_TXP;
+        txp_array = Constants.LORA_SE433_TXP;
         switch (band) {
             case Constants.LORA_BAND_US915:
                 txp_array = Constants.LORA_US915_TXP;
@@ -664,22 +665,22 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 break;
             case Constants.LORA_BAND_AS923:
                 txp_array = Constants.LORA_AS923_TXP;
-                loraEirpItems = Constants.LORA_AS923_MAX_EIRP;
+                loraEirpItems = obtainEirpItems();
                 loraEirpValues = Constants.LORA_AS923_MAX_EIRP_VALUE;
                 break;
             case Constants.LORA_BAND_EU433:
                 txp_array = Constants.LORA_EU433_TXP;
-                loraEirpItems = Constants.LORA_EU433_MAX_EIRP;
+                loraEirpItems = obtainEirpItems();
                 loraEirpValues = Constants.LORA_EU433_MAX_EIRP_VALUE;
                 break;
             case Constants.LORA_BAND_EU868:
                 txp_array = Constants.LORA_EU868_TXP;
-                loraEirpItems = Constants.LORA_EU868_MAX_EIRP;
+                loraEirpItems = obtainEirpItems();
                 loraEirpValues = Constants.LORA_EU868_MAX_EIRP_VALUE;
                 break;
             case Constants.LORA_BAND_CN470:
                 txp_array = Constants.LORA_CN470_TXP;
-                loraEirpItems = Constants.LORA_CN470_MAX_EIRP;
+                loraEirpItems = obtainEirpItems();
                 loraEirpValues = Constants.LORA_CN470_MAX_EIRP_VALUE;
         }
         loraTxpItems = new String[txp_array.length];
@@ -687,6 +688,22 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             int txp = txp_array[i];
             loraTxpItems[i] = txp + " dBm";
         }
+    }
+
+    private String[] obtainEirpItems() {
+        String[] loraEirpItems = new String[txp_array.length];
+        if (!sensoroDevice.hasMaxEirp()) {
+            return loraEirpItems;
+        }
+        int maxEirp = sensoroDevice.getMaxEirp();
+
+        for (int i = 0; i < txp_array.length; i++) {
+            String format = String.format(Locale.CHINA,"MaxEIRP - %d \n%d dBm",i ,
+                    maxEirp - txp_array[txp_array.length-1-i] * 2);
+            loraEirpItems[i] = format;
+        }
+        return loraEirpItems;
+
     }
 
     @Override
@@ -1989,6 +2006,11 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         sensoroSensor = sensoroDevice.getSensoroSensorTest();
         sensoroDevice.setFirmwareVersion(firmwareVersion);
         sensoroDevice.setSn(sn);
+        sensoroDevice.setHasMaxEirp(((SensoroDevice) bleDevice).hasMaxEirp());
+        if (((SensoroDevice) bleDevice).hasMaxEirp()) {
+            sensoroDevice.setMaxEirp(((SensoroDevice) bleDevice).getMaxEirp());
+            loraEirpItems = obtainEirpItems();
+        }
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

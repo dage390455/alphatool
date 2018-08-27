@@ -2,15 +2,14 @@ package com.sensoro.loratool.presenter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
-import android.widget.Toast;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 
 import com.sensoro.libbleserver.ble.SensoroDevice;
 import com.sensoro.lora.setting.server.bean.DeviceInfo;
 import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.activity.AdvanceSettingDeviceActivity;
-import com.sensoro.loratool.activity.AdvanceSettingMultiDeviceActivity;
 import com.sensoro.loratool.activity.DeviceDetailActivity;
 import com.sensoro.loratool.activity.SettingDeviceActivity;
 import com.sensoro.loratool.activity.SettingModuleActivity;
@@ -19,34 +18,166 @@ import com.sensoro.loratool.activity.UpgradeFirmwareListActivity;
 import com.sensoro.loratool.base.BasePresenter;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.imainview.IDeviceDetailAcView;
+import com.sensoro.loratool.utils.DateUtil;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static com.sensoro.loratool.constant.Constants.DEVICE_HARDWARE_TYPE;
 import static com.sensoro.loratool.constant.Constants.EXTRA_NAME_DEVICE_INFO;
 
-public class DeviceDetailAcPresenter extends BasePresenter<IDeviceDetailAcView> {
+public class DeviceDetailAcPresenter extends BasePresenter<IDeviceDetailAcView> implements LoRaSettingApplication.INearDeviceListener{
     private Context mContext;
+    private DeviceInfo mDeviceInfo;
 
     @Override
     public void initData(Context context) {
+        ((LoRaSettingApplication) mContext.getApplicationContext()).registerNearDeviceListener(this);
         mContext = context;
-
-        DeviceInfo deviceInfo = ((DeviceDetailActivity) context).getIntent().getParcelableExtra("deviceInfo");
-        getView().initWidget(deviceInfo);
+        mDeviceInfo = ((DeviceDetailActivity) context).getIntent().getParcelableExtra("deviceInfo");
+        initWidget();
     }
 
     @Override
     public void onDestroy() {
+        ((LoRaSettingApplication) mContext.getApplicationContext()).unregisterNearDeviceListener(this);
+    }
+
+    private void initWidget() {
+        for (int i = 0; i < DEVICE_HARDWARE_TYPE.length; i++) {
+            if(mDeviceInfo.getDeviceType().contains(DEVICE_HARDWARE_TYPE[i])){
+                String s = mContext.getResources().getStringArray(R.array.filter_device_hardware_array)[i];
+                getView().setTvNameVisible(true);
+                getView().setTvNameContent(s);
+                break;
+            }
+        }
+
+        ConcurrentHashMap<String, SensoroDevice> nearDeviceMap = ((LoRaSettingApplication) mContext.getApplicationContext()).getmNearDeviceMap();
+        if (nearDeviceMap.containsKey(mDeviceInfo.getSn())) {
+            getView().setTvNearVisible(true);
+        }else{
+            getView().setTvNearVisible(false);
+        }
+
+        getView().setTvVersionContent(String.format(Locale.CHINA,"V %s",mDeviceInfo.getFirmwareVersion()));;
+
+        getView().setTvLocationContent(mDeviceInfo.getName());
+
+        getView().setTvElectricQuantityContent(String.format(Locale.CHINA,"%d%%", mDeviceInfo.getBattery()));
+
+        getView().setTvReportTimeContent(String.format(Locale.CHINA,"数据上报时间：%s",formatResportTime(mDeviceInfo)));
+
+        initTvState();
+        initTvTest();
+        initRcContent();
 
     }
+
+    private void initRcContent() {
+        ArrayList<String> valueList = new ArrayList<>();
+        valueList.add(String.format(Locale.CHINA, "%ddBm", mDeviceInfo.getLoraTxp()));
+        valueList.add(String.format(Locale.CHINA, "%ds", mDeviceInfo.getInterval()));
+        valueList.add(String.format(Locale.CHINA, "%sMHz", mDeviceInfo.getBand()));
+        valueList.add(String.format(Locale.CHINA, "%d", (int) mDeviceInfo.getSf()));
+        DecimalFormat decimalFormat = new DecimalFormat("##0.0");
+        valueList.add(String.format(Locale.CHINA, "%s℃", decimalFormat.format(mDeviceInfo.getTemperature())));
+        valueList.add(String.format(Locale.CHINA, "%s%%", decimalFormat.format(mDeviceInfo.getHumidity())));
+
+        ArrayList<String> keyList = new ArrayList<>();
+        keyList.add("功率");
+        keyList.add("周期");
+        keyList.add("频段");
+        keyList.add("扩频方式");
+        keyList.add("温度");
+        keyList.add("湿度");
+        getView().setRcKeyList(keyList);
+        getView().setRcValueList(valueList);
+        getView().setRcAdapter();
+    }
+
+    private void initTvTest() {
+        String tags = ((DeviceDetailActivity) mContext).getIntent().getStringExtra("tags");
+        if (tags != null && tags.length() > 0) {
+            getView().setTvTestContent(tags);
+        } else {
+            getView().setTvTestVisible(false);
+        }
+
+    }
+    private void initTvState() {
+        String defStr = mContext.getString(R.string.unknow);
+        Drawable drawable;
+        switch (mDeviceInfo.getNormalStatus()) {
+            case 0:
+                drawable = mContext.getResources().getDrawable(R.drawable.shape_oval);
+                drawable.setBounds(0, 0, drawable != null ? drawable.getMinimumWidth() : 0,
+                        drawable.getMinimumHeight());
+                drawable.setColorFilter(mContext.getResources().getColor(R.color.status_normal), PorterDuff.Mode
+                        .MULTIPLY);
+
+                defStr = mContext.getString(R.string.status_normal);
+                break;
+            case 1:
+                drawable = mContext.getResources().getDrawable(R.drawable.shape_status_fault);
+                drawable.setBounds(0, 0, drawable != null ? drawable.getMinimumWidth() : 0,
+                        drawable.getMinimumHeight());
+                drawable.setColorFilter(mContext.getResources().getColor(R.color.status_fault), PorterDuff.Mode
+                        .MULTIPLY);
+                defStr = mContext.getString(R.string.status_fault);
+                break;
+            case 2:
+                drawable = mContext.getResources().getDrawable(R.drawable.shape_status_fault);
+                drawable.setBounds(0, 0, drawable != null ? drawable.getMinimumWidth() : 0,
+                        drawable.getMinimumHeight());
+                drawable.setColorFilter(mContext.getResources().getColor(R.color.status_serious), PorterDuff
+                        .Mode.MULTIPLY);
+                defStr = mContext.getString(R.string.status_serious);
+                break;
+            case 3:
+                drawable = mContext.getResources().getDrawable(R.drawable.shape_status_timeout);
+                drawable.setBounds(0, 0, drawable != null ? drawable.getMinimumWidth() : 0,
+                        drawable.getMinimumHeight());
+                drawable.setColorFilter(mContext.getResources().getColor(R.color.status_timeout), PorterDuff
+                        .Mode.MULTIPLY);
+                defStr = mContext.getString(R.string.status_timeout);
+                break;
+            case -1:
+                drawable = mContext.getResources().getDrawable(R.drawable.shape_status_inactive);
+                drawable.setBounds(0, 0, drawable != null ? drawable.getMinimumWidth() : 0,
+                        drawable.getMinimumHeight());
+                drawable.setColorFilter(mContext.getResources().getColor(R.color.status_inactive), PorterDuff
+                        .Mode.MULTIPLY);
+                defStr = mContext.getString(R.string.status_inactive);
+                break;
+            case 4:
+                drawable =mContext.getResources().getDrawable(R.drawable.shape_status_offline);
+                drawable.setBounds(0, 0, drawable != null ? drawable.getMinimumWidth() : 0,
+                        drawable.getMinimumHeight());
+                drawable.setColorFilter(mContext.getResources().getColor(R.color.status_offline), PorterDuff
+                        .Mode.MULTIPLY);
+                defStr = mContext.getString(R.string.status_offline);
+            default:
+                drawable = mContext.getResources().getDrawable(R.drawable.shape_status_inactive);
+                drawable.setBounds(0, 0, drawable != null ? drawable.getMinimumWidth() : 0,
+                        drawable.getMinimumHeight());
+                drawable.setColorFilter(mContext.getResources().getColor(R.color.status_inactive), PorterDuff
+                        .Mode.MULTIPLY);
+                break;
+        }
+
+        getView().setTvStateCompoundDrawables(drawable);
+        getView().setTvStateContent(defStr);
+        getView().setTvStateTime(DateUtil.getDateDiffWithFormat(mContext, mDeviceInfo.getLastUpTime(), "MM-DD"));
+
+    }
+
 
     public ArrayList<String> initRCValueList(DeviceInfo deviceInfo) {
         ArrayList<String> list = new ArrayList<>();
@@ -160,5 +291,16 @@ public class DeviceDetailAcPresenter extends BasePresenter<IDeviceDetailAcView> 
         Date date = new Date();
         date.setTime(lastUpTime);
         return simpleDateFormat.format(date);
+    }
+
+    @Override
+    public void updateListener() {
+        ConcurrentHashMap<String, SensoroDevice> nearDeviceMap =
+                ((LoRaSettingApplication) mContext.getApplicationContext()).getmNearDeviceMap();
+        if (nearDeviceMap.containsKey(mDeviceInfo.getSn())) {
+            getView().setTvNearVisible(true);
+        } else {
+            getView().setTvNearVisible(false);
+        }
     }
 }
