@@ -47,7 +47,6 @@ public class LoRaSettingApplication extends Application implements BLEDeviceList
     private ArrayList<SensoroDeviceListener> sensoroDeviceListeners = new ArrayList<>();
     private RefWatcher refWatcher;
     private ArrayList<INearDeviceListener> nearDeviceListenerList = new ArrayList<INearDeviceListener>();
-    public IScanDeviceAcView scanDeviceView = null;
 
     @Override
     public void onCreate() {

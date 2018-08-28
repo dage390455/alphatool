@@ -638,7 +638,7 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
         Intent intent = new Intent(mContext, UpgradeFirmwareListActivity.class);
         intent.putExtra(Constants.EXTRA_NAME_DEVICE_TYPE, selectedDeviceInfo.getDeviceType());
         intent.putExtra(Constants.EXTRA_NAME_BAND, selectedDeviceInfo.getBand());
-        intent.putExtra(Constants.EXTRA_NAME_DEVICE_HARDWARE_VERSION, selectedDeviceInfo.getDeviceType());
+        intent.putExtra(Constants.EXTRA_NAME_DEVICE_HARDWARE_VERSION, selectedDeviceInfo.getHardwareVersion());
         intent.putExtra(Constants.EXTRA_NAME_DEVICE_FIRMWARE_VERSION, mTargetDevice.getFirmwareVersion());
         ArrayList<SensoroDevice> tempArrayList = new ArrayList<>();
         tempArrayList.add(mTargetDevice);

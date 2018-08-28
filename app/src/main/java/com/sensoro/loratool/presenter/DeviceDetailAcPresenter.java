@@ -260,7 +260,7 @@ public class DeviceDetailAcPresenter extends BasePresenter<IDeviceDetailAcView> 
             Intent intent = new Intent(mContext, UpgradeFirmwareListActivity.class);
             intent.putExtra(Constants.EXTRA_NAME_DEVICE_TYPE, mDeviceInfo.getDeviceType());
             intent.putExtra(Constants.EXTRA_NAME_BAND, mDeviceInfo.getBand());
-            intent.putExtra(Constants.EXTRA_NAME_DEVICE_HARDWARE_VERSION, mDeviceInfo.getDeviceType());
+            intent.putExtra(Constants.EXTRA_NAME_DEVICE_HARDWARE_VERSION, mDeviceInfo.getHardwareVersion());
             intent.putExtra(Constants.EXTRA_NAME_DEVICE_FIRMWARE_VERSION, sensoroDevice.getFirmwareVersion());
             ArrayList<SensoroDevice> tempArrayList = new ArrayList<>();
             tempArrayList.add(sensoroDevice);
@@ -322,7 +322,7 @@ public class DeviceDetailAcPresenter extends BasePresenter<IDeviceDetailAcView> 
             booleans[0] = false;
             booleans[1] = false;
         }
-        getView().setPopSettingItemVisible(booleans);
+        getView().showPopSettingItem(booleans);
     }
 
     public void setBatteryLevel() {

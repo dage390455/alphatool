@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.google.zxing.lib.CaptureActivity;
 import com.sensoro.lora.setting.server.bean.DeviceInfo;
 import com.sensoro.lora.setting.server.bean.ResponseBase;
 import com.sensoro.loratool.LoRaSettingApplication;
@@ -53,9 +52,7 @@ import no.nordicsemi.android.dfu.DfuProgressListener;
 import no.nordicsemi.android.dfu.DfuServiceInitiator;
 import no.nordicsemi.android.dfu.DfuServiceListenerHelper;
 
-import static com.google.zxing.lib.CaptureActivity.ZXING_REQUEST_CODE;
-import static com.google.zxing.lib.CaptureActivity.ZXING_REQUEST_CODE_RESULT;
-import static com.google.zxing.lib.CaptureActivity.ZXING_REQUEST_CODE_SCAN_BEACON;
+
 
 /**
  * Created by sensoro on 18/1/8.

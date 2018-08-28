@@ -133,7 +133,7 @@ public class ScanDeviceActivity extends BaseActivity<IScanDeviceAcView, ScanDevi
 
     @Override
     public void startScan() {
-        mQRCodeView.startSpotDelay(1000);
+//        mQRCodeView.startSpotDelay(1000);
         mQRCodeView.startSpotAndShowRect();
     }
 

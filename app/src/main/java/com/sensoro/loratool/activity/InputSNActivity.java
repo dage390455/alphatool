@@ -36,11 +36,6 @@ public class InputSNActivity extends BaseActivity<IInputSNActivityView, InputSNA
     private ProgressUtils mProgressUtils;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     protected void onCreateInit(Bundle savedInstanceState) {
         setContentView(R.layout.activity_input_sn);
         ButterKnife.bind(mActivity);

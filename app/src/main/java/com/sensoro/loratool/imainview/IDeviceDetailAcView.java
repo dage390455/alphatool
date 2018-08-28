@@ -40,7 +40,7 @@ public interface IDeviceDetailAcView {
 
     void setTvReportTimeContent(String reportTimeContent);
 
-    void setPopSettingItemVisible(boolean[] itemVisible);
+    void showPopSettingItem(boolean[] itemVisible);
 
     void setBatteryLevel(int level);
 }

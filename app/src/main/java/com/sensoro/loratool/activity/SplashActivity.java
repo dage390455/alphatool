@@ -43,6 +43,7 @@ public class SplashActivity extends BaseActivity implements Constants {
                     intent.putExtra("name", serverName);
                     startActivity(intent);
                 }
+//                startActivity(new Intent(this,CaptureActivity.class));
             } catch (ParseException e) {
                 e.printStackTrace();
             }

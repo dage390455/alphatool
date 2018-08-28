@@ -238,7 +238,7 @@ public class DeviceDetailActivity extends BaseActivity<IDeviceDetailAcView, Devi
     }
 
     @Override
-    public void setPopSettingItemVisible(boolean[] itemVisible) {
+    public void showPopSettingItem(boolean[] itemVisible) {
         configLayout.setVisibility(itemVisible[0] ? VISIBLE : GONE);
         cloudLayout.setVisibility(itemVisible[0] ? VISIBLE : GONE);
         upgradeLayout.setVisibility(itemVisible[0] ? VISIBLE : GONE);

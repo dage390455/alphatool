@@ -22,6 +22,12 @@ public interface Constants {
     String TYPE_BUS = "B0";
     String DEFAULT_PASSWORD = "0000000000000000";
     String ENCODE = "HmacSHA512";
+
+    // REQUEST CODE
+    int ZXING_REQUEST_CODE_RESULT = 102;
+    int ZXING_REQUEST_CODE_SCAN_BEACON = 100;
+     String ZXING_REQUEST_CODE = "ZXING_REQUEST_CODE";
+
     String PREFERENCE_FILTER = "alpha_filter_data";
     String PREFERENCE_LOGIN = "alpha_tool_login";
     String PREFERENCE_SCOPE = "alpha_tool_scope";
