@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +15,7 @@ import com.sensoro.loratool.R;
 import com.sensoro.loratool.base.BaseActivity;
 import com.sensoro.loratool.imainview.ICaptureActivityView;
 import com.sensoro.loratool.presenter.CaptureActivityPresenter;
+import com.sensoro.loratool.widget.AlphaToast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,35 +25,18 @@ import cn.bingoogolapple.qrcode.zxing.ZXingView;
 
 
 public class CaptureActivity extends BaseActivity<ICaptureActivityView, CaptureActivityPresenter> implements
-        QRCodeView.Delegate, ICaptureActivityView, CompoundButton.OnCheckedChangeListener ,TextView.OnEditorActionListener{
+        QRCodeView.Delegate, ICaptureActivityView, CompoundButton.OnCheckedChangeListener, TextView.OnEditorActionListener {
+
+    @BindView(R.id.ac_capture_imv_close)
+    ImageView acCaptureImvClose;
     @BindView(R.id.ac_capture_scan_view)
     ZXingView acCaptureScanView;
-    @BindView(R.id.status_view)
-    TextView statusView;
-    @BindView(R.id.zxing_capture_iv_flash)
-    ImageView zxingCaptureIvFlash;
-    @BindView(R.id.bottom_mask)
-    RelativeLayout bottomMask;
-    @BindView(R.id.left_mask)
-    ImageView leftMask;
-    @BindView(R.id.right_mask)
-    ImageView rightMask;
-    @BindView(R.id.settings_upgrade_device_back)
-    ImageView settingsUpgradeDeviceBack;
-    @BindView(R.id.capture_close)
-    ImageView captureClose;
-    @BindView(R.id.upgrade_device_title)
-    RelativeLayout upgradeDeviceTitle;
-    @BindView(R.id.capture_bottom_manual)
-    TextView captureBottomManual;
-    @BindView(R.id.capture_bottom_edit)
-    EditText captureBottomEdit;
-    @BindView(R.id.capture_bottom_sc_title)
-    TextView captureBottomScTitle;
-    @BindView(R.id.capture_bottom_manual_sc)
-    SwitchCompat captureBottomManualSc;
-    @BindView(R.id.capture_bottom_content)
-    RelativeLayout captureBottomContent;
+    @BindView(R.id.ac_capture_et_input_sn)
+    EditText acCaptureEtInputSn;
+    @BindView(R.id.ac_capture_switch_is_multi)
+    SwitchCompat acCaptureSwitchIsMulti;
+    @BindView(R.id.ac_capture_imv_flash)
+    ImageView acCaptureImvFlash;
     private boolean isFlashOn;
 
     @Override
@@ -73,8 +56,11 @@ public class CaptureActivity extends BaseActivity<ICaptureActivityView, CaptureA
 
     @Override
     protected void onStop() {
-        super.onStop();
         stopScan();
+//        AlphaToast.INSTANCE.cancelToast();
+        super.onStop();
+
+
     }
 
     @Override
@@ -102,21 +88,21 @@ public class CaptureActivity extends BaseActivity<ICaptureActivityView, CaptureA
         acCaptureScanView.stopCamera();
     }
 
-    @OnClick({R.id.zxing_capture_iv_flash,R.id.capture_close})
+    @OnClick({R.id.ac_capture_imv_flash, R.id.ac_capture_imv_close})
     public void onViewClicked(View view) {
-        switch (view.getId()){
-            case R.id.zxing_capture_iv_flash:
+        switch (view.getId()) {
+            case R.id.ac_capture_imv_flash:
                 acCaptureScanView.getCameraPreview().surfaceCreated(null);
                 if (isFlashOn) {
                     acCaptureScanView.closeFlashlight();
-                    zxingCaptureIvFlash.setBackgroundResource(R.drawable.zxing_flash_off);
+                    acCaptureImvFlash.setImageResource(R.drawable.zxing_flash_off);
                 } else {
                     acCaptureScanView.openFlashlight();
-                    zxingCaptureIvFlash.setBackgroundResource(R.drawable.zxing_flash_on);
+                    acCaptureImvFlash.setImageResource(R.drawable.zxing_flash_on);
                 }
                 isFlashOn = !isFlashOn;
                 break;
-            case R.id.capture_close:
+            case R.id.ac_capture_imv_close:
                 mPresenter.imvClose();
                 break;
         }
@@ -128,19 +114,22 @@ public class CaptureActivity extends BaseActivity<ICaptureActivityView, CaptureA
         acCaptureScanView.getScanBoxView().setOnlyDecodeScanBoxArea(true);
         acCaptureScanView.getCameraPreview().setAutoFocusFailureDelay(0);
         isFlashOn = false;
-        captureBottomManualSc.setOnCheckedChangeListener(this);
-        captureBottomEdit.setOnEditorActionListener(this);
+        acCaptureSwitchIsMulti.setOnCheckedChangeListener(this);
+        acCaptureEtInputSn.setOnEditorActionListener(this);
     }
 
 
     @Override
     public void toastShort(String msg) {
-        Toast.makeText(mActivity.getApplicationContext(),msg,Toast.LENGTH_SHORT).show();
+//        Toast.makeText(mActivity.getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+        AlphaToast.INSTANCE.makeText(mActivity,msg,Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void toastLong(String msg) {
-        Toast.makeText(mActivity.getApplicationContext(),msg,Toast.LENGTH_LONG).show();
+//        Toast.makeText(mActivity.getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+        AlphaToast.INSTANCE.makeText(mActivity.getApplicationContext(),msg,Toast.LENGTH_LONG).show();
+
     }
 
     @Override
@@ -179,4 +168,5 @@ public class CaptureActivity extends BaseActivity<ICaptureActivityView, CaptureA
         mPresenter.processEditResult(v);
         return false;
     }
+
 }

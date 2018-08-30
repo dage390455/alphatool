@@ -1,16 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<RelativeLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    <RelativeLayout
+        android:id="@+id/ac_capture_rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/actionbar_bg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher"
+            android:layout_centerInParent="true"
+            android:padding="4dp"
+            android:contentDescription="@null"/>
+        <ImageView
+            android:id="@+id/ac_capture_imv_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_upgrade_close"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@null" />
+    </RelativeLayout>
     <cn.bingoogolapple.qrcode.zxing.ZXingView
         android:id="@+id/ac_capture_scan_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ac_capture_rl_title"
         app:qrcv_animTime="1000"
         app:qrcv_barCodeTipText="对准设备上的二维码，即可自动扫描"
         app:qrcv_barcodeRectHeight="120dp"
@@ -27,127 +52,56 @@
         app:qrcv_isShowTipTextAsSingleLine="true"
         app:qrcv_isTipTextBelowRect="false"
         app:qrcv_maskColor="#7e000000"
-        app:qrcv_qrCodeTipText=""
         app:qrcv_rectWidth="200dp"
         app:qrcv_scanLineColor="@color/colorPrimaryDark"
         app:qrcv_toolbarHeight="56dp"
-        app:qrcv_topOffset="30dp"
-        app:qrcv_verticalBias="-1"/>
-
-
-    <RelativeLayout
-        android:id="@+id/bottom_mask"
-        android:layout_above="@+id/capture_bottom_content"
-        android:gravity="center"
-        android:layout_centerHorizontal="true"
+        app:qrcv_topOffset="20dp"
+        app:qrcv_verticalBias="-1"
+        />
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y350">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/app_name" />
-        <TextView
-            android:id="@+id/status_view"
-            android:layout_marginTop="@dimen/y30"
-            android:text="扫描设备二维码"
-            android:textColor="@color/white"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <ImageView
-            android:id="@+id/zxing_capture_iv_flash"
-            android:layout_below="@id/status_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/y30"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/zxing_flash_off" />
-    </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/left_mask"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottom_mask"
-        android:layout_alignParentLeft="true"
-        android:contentDescription="@string/app_name" />
-
-    <ImageView
-        android:id="@+id/right_mask"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottom_mask"
-        android:layout_alignParentRight="true"
-        android:contentDescription="@string/app_name" />
-    <RelativeLayout
-        android:id="@+id/upgrade_device_title"
-        android:layout_width="match_parent"
-        android:layout_height="43dp"
-        android:background="@color/actionbar_bg">
-        <ImageView
-            android:id="@+id/settings_upgrade_device_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/bg_button_selector"
-            android:contentDescription="@null"
-            android:src="@mipmap/ic_launcher" />
-        <ImageView
-            android:id="@+id/capture_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/x20"
-            android:src="@mipmap/ic_upgrade_close" />
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/capture_bottom_content"
-        android:gravity="center_horizontal"
-        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
+        android:orientation="vertical"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent">
         <TextView
-            android:id="@+id/capture_bottom_manual"
-            android:text="手动输入："
-            android:textSize="16sp"
-            android:layout_marginTop="@dimen/y150"
-            android:textColor="@color/item_text_color"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="@string/ac_capture_scan_qr_code"
+            android:textSize="14sp"
+            android:textColor="@color/cell_font"
+            android:layout_gravity="center_horizontal"
+        />
         <EditText
-            android:hint="SN"
+            android:id="@+id/ac_capture_et_input_sn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/ac_capture_input_sn"
+            android:textSize="14sp"
             android:background="@null"
-            android:textSize="16sp"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:imeOptions="actionDone"
-            android:layout_alignTop="@+id/capture_bottom_manual"
-            android:layout_toRightOf="@id/capture_bottom_manual"
-            android:id="@+id/capture_bottom_edit"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/cell_font"
+            android:inputType="none" />
+        <ImageView
+            android:id="@+id/ac_capture_imv_flash"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/capture_bottom_sc_title"
-            android:text="连续添加："
-            android:textSize="16sp"
-            android:layout_below="@+id/capture_bottom_manual"
-            android:textColor="@color/item_text_color"
-            android:layout_marginTop="@dimen/y150"
-            android:layout_marginBottom="@dimen/y150"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:src="@drawable/zxing_flash_off"
+            android:contentDescription="@null"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center_horizontal"/>
         <android.support.v7.widget.SwitchCompat
-            android:id="@+id/capture_bottom_manual_sc"
-            android:layout_alignTop="@id/capture_bottom_sc_title"
-            android:layout_toRightOf="@+id/capture_bottom_sc_title"
-            android:layout_below="@id/capture_bottom_edit"
+            android:id="@+id/ac_capture_switch_is_multi"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center_horizontal"/>
+
+    </LinearLayout>
 
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

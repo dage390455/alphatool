@@ -537,4 +537,6 @@
     <string name="input_correct_sn">请输入正确的SN,SN为16个字符</string>
     <string name="ac_scan_device_title">扫描设备</string>
     <string name="ac_scan_obtain_fail">设备详情获取失败</string>
+    <string name="ac_capture_scan_qr_code">扫描设备二维码,或：</string>
+    <string name="ac_capture_input_sn">输入SN</string>
 </resources>

@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -293,6 +294,9 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
                         mDeviceInfoAdapter.clearCache();
                         ArrayList tempList = (ArrayList) response.getData().getItems();
                         loRaSettingApplication.getDeviceInfoList().clear();
+                        for (Object o : tempList) {
+                            Log.e("hcs","templist::down:"+((DeviceInfo)o).getSn());
+                        }
                         loRaSettingApplication.getDeviceInfoList().addAll(tempList);
                         if (tempList.size() == 0) {
                             Toast.makeText(mContext, R.string.tips_no_device, Toast.LENGTH_SHORT).show();
@@ -324,6 +328,9 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
                             cur_page--;
                         } else {
                             mDeviceInfoAdapter.appendData(tempList);
+                            for (Object o : tempList) {
+                                Log.e("hcs","templist::up:"+((DeviceInfo)o).getSn());
+                            }
                             loRaSettingApplication.getDeviceInfoList().addAll(tempList);
                         }
 

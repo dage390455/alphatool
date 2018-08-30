@@ -38,6 +38,8 @@ public class LoRaSettingApplication extends Application implements BLEDeviceList
 
 
     public ConcurrentHashMap<String, SensoroDevice> mNearDeviceMap;
+
+    public ConcurrentHashMap<String, DeviceInfo> mCacheDeviceMap;
     public IStation station;
     public LoRaSettingServerImpl loRaSettingServer;
     private List<StationInfo> stationInfoList = new ArrayList<>();
@@ -217,6 +219,14 @@ public class LoRaSettingApplication extends Application implements BLEDeviceList
 
     public void setmNearDeviceMap(ConcurrentHashMap<String, SensoroDevice> mNearDeviceMap) {
         this.mNearDeviceMap = mNearDeviceMap;
+    }
+
+    public ConcurrentHashMap<String, DeviceInfo> getmCacheDeviceMap() {
+        return mCacheDeviceMap;
+    }
+
+    public void setmCacheDeviceMap(ConcurrentHashMap<String, DeviceInfo> mCacheDeviceMap) {
+        this.mCacheDeviceMap = mCacheDeviceMap;
     }
 
     public interface INearDeviceListener {

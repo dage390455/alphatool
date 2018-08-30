@@ -2116,6 +2116,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
             android:paddingBottom="10dp"
+            android:visibility="gone"
             android:paddingTop="10dp">
 
             <TextView

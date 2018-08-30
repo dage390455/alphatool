@@ -1,7 +1,9 @@
 package com.sensoro.loratool.activity;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -32,6 +35,7 @@ import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.service.DfuService;
 import com.sensoro.loratool.store.DeviceDataDao;
 import com.sensoro.loratool.utils.DownloadUtil;
+import com.sensoro.loratool.widget.AlphaToast;
 import com.sensoro.loratool.widget.RecycleViewDivider;
 import com.sensoro.loratool.widget.RecycleViewItemClickListener;
 import com.umeng.analytics.MobclickAgent;
@@ -58,7 +62,9 @@ import no.nordicsemi.android.dfu.DfuServiceListenerHelper;
  * Created by sensoro on 18/1/8.
  */
 
-public class UpgradeDeviceListActivity extends BaseActivity implements Constants, DfuProgressListener,RecycleViewItemClickListener,LoRaSettingApplication.SensoroDeviceListener, SensoroConnectionCallback, SensoroWriteCallback {
+public class UpgradeDeviceListActivity extends BaseActivity implements Constants,
+        DfuProgressListener,RecycleViewItemClickListener,LoRaSettingApplication.SensoroDeviceListener,
+        SensoroConnectionCallback, SensoroWriteCallback ,UpgradeDeviceAdapter.RecycleViewItemLongClickListener{
 
     public static final String EXTERN_DIRECTORY_NAME = "sensoro_dfu";
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 101;
@@ -100,7 +106,7 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
         }
         firmwareVersionString = getIntent().getStringExtra(EXTRA_NAME_DEVICE_FIRMWARE_VERSION);
         progressDialog = new ProgressDialog(this);
-        mUpgradeDeviceAdapter = new UpgradeDeviceAdapter(this, this);
+        mUpgradeDeviceAdapter = new UpgradeDeviceAdapter(this, this,this);
         mUpgradeDeviceAdapter.setData(targetDeviceList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -147,9 +153,9 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
     private boolean isFit(SensoroDevice newDevice) {
         boolean isFit = false;
         if (!isExistDevice(newDevice)) {
-            List<DeviceInfo> deviceInfoList = ((LoRaSettingApplication) getApplication()).getDeviceInfoList();
-            for (int j = 0; j < deviceInfoList.size(); j ++ ) {
-                DeviceInfo deviceInfo = deviceInfoList.get(j);
+            ConcurrentHashMap<String, DeviceInfo> deviceInfoList = ((LoRaSettingApplication) getApplication()).getmCacheDeviceMap();
+            for (String s : deviceInfoList.keySet()) {
+                DeviceInfo deviceInfo = deviceInfoList.get(s);
                 if (deviceInfo.getSn().equalsIgnoreCase(newDevice.getSn())) {
                     newDevice.setHardwareVersion(deviceInfo.getDeviceType());
                     newDevice.setBand(deviceInfo.getBand());
@@ -157,6 +163,7 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
                     break;
                 }
             }
+
             SensoroDevice device = mUpgradeDeviceAdapter.getData().get(0);
             if (newDevice.getHardwareVersion().equalsIgnoreCase(device.getHardwareVersion())) {
                 if (newDevice.getFirmwareVersion().equalsIgnoreCase(device.getFirmwareVersion())) {
@@ -183,7 +190,7 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
 
     @OnClick(R.id.upgrade_device_add_nearby)
     public void addNearBy() {
-        ConcurrentHashMap<String, SensoroDevice> deviceMap = ((LoRaSettingApplication) getApplication()).getSensoroDeviceMap();
+        ConcurrentHashMap<String, SensoroDevice> deviceMap = ((LoRaSettingApplication) getApplication()).getmNearDeviceMap();
         int count = 0;
         for (String key : deviceMap.keySet()) {
             SensoroDevice sensoroDevice = deviceMap.get(key);
@@ -193,7 +200,8 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
             }
         }
         mUpgradeDeviceAdapter.notifyDataSetChanged();
-        Toast.makeText(this, "找到" + count + "个匹配设备", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "找到" + count + "个匹配设备", Toast.LENGTH_SHORT).show();
+        AlphaToast.INSTANCE.makeText(this,"找到" + count + "个匹配设备",Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.upgrade_device_start)
@@ -572,5 +580,34 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
         super.onDestroy();
         LoRaSettingApplication loRaSettingApplication = (LoRaSettingApplication) getApplication();
         loRaSettingApplication.unRegistersSensoroDeviceListener(this);
+    }
+
+    @Override
+    public void onLongClick(View v, int adapterPosition) {
+        if(mUpgradeDeviceAdapter.getData().size()>1){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("设备将移出升级队列");
+
+            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    mUpgradeDeviceAdapter.getData().remove(adapterPosition);
+                    mUpgradeDeviceAdapter.notifyDataSetChanged();
+                    dialog.dismiss();
+                }
+            });
+
+            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.create().show();
+        }else{
+            Toast.makeText(getApplicationContext(),"升级队列不能为空",Toast.LENGTH_SHORT).show();
+        }
+
+
     }
 }

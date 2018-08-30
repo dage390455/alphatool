@@ -20,39 +20,42 @@ import butterknife.ButterKnife;
  * Created by fangping on 2016/7/7.
  */
 
-public class UpgradeDeviceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class UpgradeDeviceAdapter extends RecyclerView.Adapter<UpgradeDeviceAdapter.UpgradeInfoViewHolder> {
 
     private RecycleViewItemClickListener itemClickListener;
+    RecycleViewItemLongClickListener recycleViewItemLongClickListener;
     private Context mContext;
     private ArrayList<SensoroDevice> mList = new ArrayList<>();
 
-    public UpgradeDeviceAdapter(Context context, RecycleViewItemClickListener itemClickListener) {
+    public UpgradeDeviceAdapter(Context context, RecycleViewItemClickListener itemClickListener,
+                                RecycleViewItemLongClickListener recycleViewItemLongClickListener) {
         this.mContext = context;
         this.itemClickListener = itemClickListener;
+        this.recycleViewItemLongClickListener = recycleViewItemLongClickListener;
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public UpgradeInfoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.item_upgrade, null);
-        return new UpgradeInfoViewHolder(view, itemClickListener);
+        return new UpgradeInfoViewHolder(view, itemClickListener,recycleViewItemLongClickListener);
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final UpgradeInfoViewHolder holder, int position) {
         if (mList == null) {
             return;
         }
         SensoroDevice device = mList.get(position);
-        ((UpgradeInfoViewHolder) holder).item_more_name.setText(device.getSn());
-        ((UpgradeInfoViewHolder) holder).item_more_value.setHint(R.string.dfu_waiting);
+        holder.item_more_name.setText(device.getSn());
+        holder.item_more_value.setHint(R.string.dfu_waiting);
         if (device.getDfuProgress() <= 0) {
-            ((UpgradeInfoViewHolder) holder).item_more_value.setText(device.getDfuInfo());
+            holder.item_more_value.setText(device.getDfuInfo());
         } else {
             if (device.getDfuProgress() == 100) {
-                ((UpgradeInfoViewHolder) holder).item_more_value.setText(R.string.upgrade_finish);
+                holder.item_more_value.setText(R.string.upgrade_finish);
             } else {
-                ((UpgradeInfoViewHolder) holder).item_more_value.setText(device.getDfuProgress() + "%");
+                holder.item_more_value.setText(device.getDfuProgress() + "%");
             }
 
         }
@@ -85,13 +88,24 @@ public class UpgradeDeviceAdapter extends RecyclerView.Adapter<RecyclerView.View
         TextView item_more_value;
 
         RecycleViewItemClickListener itemClickListener;
+        RecycleViewItemLongClickListener itemLongClickListener;
 
-        public UpgradeInfoViewHolder(View itemView, RecycleViewItemClickListener itemClickListener) {
+         UpgradeInfoViewHolder(View itemView, RecycleViewItemClickListener itemClickListener,
+                               RecycleViewItemLongClickListener recycleViewItemLongClickListener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             this.itemClickListener = itemClickListener;
+            this.itemLongClickListener = recycleViewItemLongClickListener;
             itemView.setOnClickListener(onItemClickListener);
+            itemView.setOnLongClickListener(v -> {
+                if (itemLongClickListener!=null) {
+                    itemLongClickListener.onLongClick(v,getAdapterPosition());
+                }
+                return true;
+            });
         }
+
+
 
         View.OnClickListener onItemClickListener = new View.OnClickListener() {
             @Override
@@ -101,5 +115,12 @@ public class UpgradeDeviceAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }
             }
         };
+
     }
+
+    public interface RecycleViewItemLongClickListener {
+        void onLongClick(View v, int adapterPosition);
+    }
+
+
 }

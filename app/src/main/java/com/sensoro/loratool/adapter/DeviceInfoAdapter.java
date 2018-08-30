@@ -53,6 +53,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
         this.mContext = context;
         this.mInflater = LayoutInflater.from(mContext);
         ((LoRaSettingApplication) context.getApplicationContext()).setmNearDeviceMap(mNearByDeviceMap);
+        ((LoRaSettingApplication) context.getApplicationContext()).setmCacheDeviceMap(mCacheDeviceInfoMap);
     }
 
     public ConcurrentHashMap<String, SensoroDevice> getNearByDeviceMap() {

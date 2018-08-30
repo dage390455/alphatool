@@ -540,4 +540,6 @@
     <string name="ac_scan_obtain_fail">Device details failed to get</string>
     <string name="tips_input_machine_sn">Please Enter the corresponding SN number of the fuselage</string>
     <string name="input_correct_sn" >Please enter the correct SN, which is 16 characters</string>
+    <string name="ac_capture_scan_qr_code">扫描设备二维码,或：</string>
+    <string name="ac_capture_input_sn">输入SN</string>
 </resources>

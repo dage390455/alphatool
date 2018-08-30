@@ -113,7 +113,7 @@ public class ScanDeviceActivity extends BaseActivity<IScanDeviceAcView, ScanDevi
 
     @Override
     public void setFlashLightState(boolean isOn) {
-        mFlashImageView.setBackgroundResource(isOn ? R.drawable.zxing_flash_on : R.drawable.zxing_flash_off);
+
     }
 
     @Override
@@ -133,7 +133,6 @@ public class ScanDeviceActivity extends BaseActivity<IScanDeviceAcView, ScanDevi
 
     @Override
     public void startScan() {
-//        mQRCodeView.startSpotDelay(1000);
         mQRCodeView.startSpotAndShowRect();
     }
 
