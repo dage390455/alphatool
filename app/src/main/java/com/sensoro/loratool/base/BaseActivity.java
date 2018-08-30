@@ -11,6 +11,7 @@ import android.view.WindowManager;
 
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.utils.LogUtils;
+import com.sensoro.loratool.widget.AlphaToast;
 import com.sensoro.loratool.widget.StatusBarCompat;
 import com.umeng.analytics.MobclickAgent;
 
@@ -80,6 +81,7 @@ public abstract class BaseActivity<V, P extends BasePresenter<V>> extends AppCom
     protected void onDestroy() {
         mPresenter.onDestroy();
         mPresenter.detachView();
+        AlphaToast.INSTANCE.cancelToast();
         super.onDestroy();
     }
 

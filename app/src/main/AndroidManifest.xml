@@ -62,9 +62,6 @@
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.google.zxing.lib.CaptureActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activity.AdvanceSettingStationActivity"
             android:screenOrientation="portrait" />
         <activity

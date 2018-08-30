@@ -13,8 +13,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -35,6 +36,7 @@ import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.service.DfuService;
 import com.sensoro.loratool.store.DeviceDataDao;
 import com.sensoro.loratool.utils.DownloadUtil;
+import com.sensoro.loratool.utils.RcItemTouchHelperCallback;
 import com.sensoro.loratool.widget.AlphaToast;
 import com.sensoro.loratool.widget.RecycleViewDivider;
 import com.sensoro.loratool.widget.RecycleViewItemClickListener;
@@ -64,7 +66,7 @@ import no.nordicsemi.android.dfu.DfuServiceListenerHelper;
 
 public class UpgradeDeviceListActivity extends BaseActivity implements Constants,
         DfuProgressListener,RecycleViewItemClickListener,LoRaSettingApplication.SensoroDeviceListener,
-        SensoroConnectionCallback, SensoroWriteCallback ,UpgradeDeviceAdapter.RecycleViewItemLongClickListener{
+        SensoroConnectionCallback, SensoroWriteCallback {
 
     public static final String EXTERN_DIRECTORY_NAME = "sensoro_dfu";
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 101;
@@ -86,6 +88,9 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
     private int deviceIndex = 0;
     private boolean isStartUpgrade = false;
     private ProgressDialog progressDialog;
+    private String mDefBand;
+    private String mDefHardwareVersion;
+    private String mDefFirmwareVersion;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,6 +103,11 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
 
     private void init() {
         ArrayList<SensoroDevice>  targetDeviceList = getIntent().getParcelableArrayListExtra(EXTRA_NAME_DEVICE_LIST);
+        SensoroDevice sensoroDevice = targetDeviceList.get(0);
+        mDefBand = sensoroDevice.getBand();
+        mDefHardwareVersion = sensoroDevice.getHardwareVersion();
+        mDefFirmwareVersion = sensoroDevice.getFirmwareVersion();
+
         int upgrade_index = getIntent().getIntExtra(EXTRA_UPGRADE_INDEX, 0);
         if (upgrade_index == 0) {
             addIv.setVisibility(View.GONE);
@@ -106,7 +116,10 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
         }
         firmwareVersionString = getIntent().getStringExtra(EXTRA_NAME_DEVICE_FIRMWARE_VERSION);
         progressDialog = new ProgressDialog(this);
-        mUpgradeDeviceAdapter = new UpgradeDeviceAdapter(this, this,this);
+        mUpgradeDeviceAdapter = new UpgradeDeviceAdapter(this, this);
+        RcItemTouchHelperCallback rcItemTouchHelperCallback = new RcItemTouchHelperCallback(mUpgradeDeviceAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(rcItemTouchHelperCallback);
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
         mUpgradeDeviceAdapter.setData(targetDeviceList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -163,16 +176,14 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
                     break;
                 }
             }
-
-            SensoroDevice device = mUpgradeDeviceAdapter.getData().get(0);
-            if (newDevice.getHardwareVersion().equalsIgnoreCase(device.getHardwareVersion())) {
-                if (newDevice.getFirmwareVersion().equalsIgnoreCase(device.getFirmwareVersion())) {
-                    if (newDevice.getBand().equalsIgnoreCase(device.getBand())) {
-                        isFit = true;
+                if (newDevice.getHardwareVersion().equalsIgnoreCase(mDefHardwareVersion)){
+                    if (newDevice.getFirmwareVersion().equalsIgnoreCase(mDefFirmwareVersion)) {
+                        if (newDevice.getBand().equalsIgnoreCase(mDefBand)) {
+                            isFit = true;
+                        }
                     }
                 }
             }
-        }
         return isFit;
     }
 
@@ -200,13 +211,13 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
             }
         }
         mUpgradeDeviceAdapter.notifyDataSetChanged();
-//        Toast.makeText(this, "找到" + count + "个匹配设备", Toast.LENGTH_SHORT).show();
         AlphaToast.INSTANCE.makeText(this,"找到" + count + "个匹配设备",Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.upgrade_device_start)
     public void start() {
         if (!isStartUpgrade) {
+            Log.e("hcs",":走进俩::");
             progressDialog.setMessage(getString(R.string.loading));
             progressDialog.show();
             isStartUpgrade = true;
@@ -279,24 +290,27 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
     private void listenDfu(String title) {
         System.out.println("targetDeviceList.size===>" + mUpgradeDeviceAdapter.getData().size());
         System.out.println("deviceIndex===>" + deviceIndex);
-        if (deviceIndex == (mUpgradeDeviceAdapter.getData().size() - 1)) {
-            mUpgradeDeviceAdapter.getData(deviceIndex).setDfuProgress(0);
-            mUpgradeDeviceAdapter.getData(deviceIndex).setDfuInfo(title);
-            requestUpdateDeviceUpgradeInfo();
-            isStartUpgrade = false;
-            System.out.println("设备已全部升级完毕===>");
-            deviceIndex = 0;
-            mStartButton.setBackground(getResources().getDrawable(R.drawable.shape_upgrade_enable));
-        } else {
-            mUpgradeDeviceAdapter.getData(deviceIndex).setDfuProgress(0);
-            mUpgradeDeviceAdapter.getData(deviceIndex).setDfuInfo(title);
-            deviceIndex ++;
-            targetDevice = mUpgradeDeviceAdapter.getData().get(deviceIndex);
-            System.out.println("升级设备===>" + targetDevice.getSn());
-            connectDevice();
+        if(mUpgradeDeviceAdapter.getData().size()>0){
+            if (deviceIndex == (mUpgradeDeviceAdapter.getData().size() - 1)) {
+                mUpgradeDeviceAdapter.getData(deviceIndex).setDfuProgress(0);
+                mUpgradeDeviceAdapter.getData(deviceIndex).setDfuInfo(title);
+                requestUpdateDeviceUpgradeInfo();
+                isStartUpgrade = false;
+                System.out.println("设备已全部升级完毕===>");
+                deviceIndex = 0;
+                mStartButton.setBackground(getResources().getDrawable(R.drawable.shape_upgrade_enable));
+            } else {
+                mUpgradeDeviceAdapter.getData(deviceIndex).setDfuProgress(0);
+                mUpgradeDeviceAdapter.getData(deviceIndex).setDfuInfo(title);
+                deviceIndex ++;
+                targetDevice = mUpgradeDeviceAdapter.getData().get(deviceIndex);
+                System.out.println("升级设备===>" + targetDevice.getSn());
+                connectDevice();
 
+            }
+            mUpgradeDeviceAdapter.notifyDataSetChanged();
         }
-        mUpgradeDeviceAdapter.notifyDataSetChanged();
+
     }
 
 
@@ -486,12 +500,19 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
     public void startUpgrade() {
         isStartUpgrade = true;
         deviceIndex = 0;
-        targetDevice = mUpgradeDeviceAdapter.getData(deviceIndex);
-        targetDevice.setDfuInfo(getString(R.string.dfu_connecting));
-        mUpgradeDeviceAdapter.notifyDataSetChanged();
-        mStartButton.setBackground(getResources().getDrawable(R.drawable.shape_upgrade_disable));
-        System.out.println("升级设备===>" + targetDevice.getSn());
-        connectDevice();
+        Log.e("hcs","这里呀" +
+                "::");
+        if(mUpgradeDeviceAdapter.getData().size()>0){
+            targetDevice = mUpgradeDeviceAdapter.getData(deviceIndex);
+            targetDevice.setDfuInfo(getString(R.string.dfu_connecting));
+            mUpgradeDeviceAdapter.notifyDataSetChanged();
+            mStartButton.setBackground(getResources().getDrawable(R.drawable.shape_upgrade_disable));
+            System.out.println("升级设备===>" + targetDevice.getSn());
+            connectDevice();
+        }else{
+            AlphaToast.INSTANCE.makeText(this,"未添加升级设备",Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private void requestDownLoadZip() {
@@ -582,32 +603,4 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
         loRaSettingApplication.unRegistersSensoroDeviceListener(this);
     }
 
-    @Override
-    public void onLongClick(View v, int adapterPosition) {
-        if(mUpgradeDeviceAdapter.getData().size()>1){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("设备将移出升级队列");
-
-            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    mUpgradeDeviceAdapter.getData().remove(adapterPosition);
-                    mUpgradeDeviceAdapter.notifyDataSetChanged();
-                    dialog.dismiss();
-                }
-            });
-
-            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            builder.create().show();
-        }else{
-            Toast.makeText(getApplicationContext(),"升级队列不能为空",Toast.LENGTH_SHORT).show();
-        }
-
-
-    }
 }

@@ -5,10 +5,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sensoro.loratool.R;
 import com.sensoro.libbleserver.ble.SensoroDevice;
+import com.sensoro.loratool.utils.RcItemTouchHelperCallback;
+import com.sensoro.loratool.widget.AlphaToast;
 import com.sensoro.loratool.widget.RecycleViewItemClickListener;
 
 import java.util.ArrayList;
@@ -20,25 +24,22 @@ import butterknife.ButterKnife;
  * Created by fangping on 2016/7/7.
  */
 
-public class UpgradeDeviceAdapter extends RecyclerView.Adapter<UpgradeDeviceAdapter.UpgradeInfoViewHolder> {
+public class UpgradeDeviceAdapter extends RecyclerView.Adapter<UpgradeDeviceAdapter.UpgradeInfoViewHolder>implements RcItemTouchHelperCallback.SwipedListener {
 
     private RecycleViewItemClickListener itemClickListener;
-    RecycleViewItemLongClickListener recycleViewItemLongClickListener;
     private Context mContext;
     private ArrayList<SensoroDevice> mList = new ArrayList<>();
 
-    public UpgradeDeviceAdapter(Context context, RecycleViewItemClickListener itemClickListener,
-                                RecycleViewItemLongClickListener recycleViewItemLongClickListener) {
+    public UpgradeDeviceAdapter(Context context, RecycleViewItemClickListener itemClickListener) {
         this.mContext = context;
         this.itemClickListener = itemClickListener;
-        this.recycleViewItemLongClickListener = recycleViewItemLongClickListener;
     }
 
     @Override
     public UpgradeInfoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.item_upgrade, null);
-        return new UpgradeInfoViewHolder(view, itemClickListener,recycleViewItemLongClickListener);
+        return new UpgradeInfoViewHolder(view, itemClickListener);
     }
 
     @Override
@@ -79,6 +80,13 @@ public class UpgradeDeviceAdapter extends RecyclerView.Adapter<UpgradeDeviceAdap
         return mList.get(position);
     }
 
+    @Override
+    public void onSwipedStart(int position) {
+        mList.remove(position);
+        notifyItemRemoved(position);
+        AlphaToast.INSTANCE.makeText(mContext,"移出升级设备列表",Toast.LENGTH_SHORT).show();
+    }
+
 
     class UpgradeInfoViewHolder extends RecyclerView.ViewHolder {
 
@@ -88,21 +96,13 @@ public class UpgradeDeviceAdapter extends RecyclerView.Adapter<UpgradeDeviceAdap
         TextView item_more_value;
 
         RecycleViewItemClickListener itemClickListener;
-        RecycleViewItemLongClickListener itemLongClickListener;
 
-         UpgradeInfoViewHolder(View itemView, RecycleViewItemClickListener itemClickListener,
-                               RecycleViewItemLongClickListener recycleViewItemLongClickListener) {
+         UpgradeInfoViewHolder(View itemView, RecycleViewItemClickListener itemClickListener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             this.itemClickListener = itemClickListener;
-            this.itemLongClickListener = recycleViewItemLongClickListener;
             itemView.setOnClickListener(onItemClickListener);
-            itemView.setOnLongClickListener(v -> {
-                if (itemLongClickListener!=null) {
-                    itemLongClickListener.onLongClick(v,getAdapterPosition());
-                }
-                return true;
-            });
+
         }
 
 
@@ -118,9 +118,6 @@ public class UpgradeDeviceAdapter extends RecyclerView.Adapter<UpgradeDeviceAdap
 
     }
 
-    public interface RecycleViewItemLongClickListener {
-        void onLongClick(View v, int adapterPosition);
-    }
 
 
 }

@@ -73,12 +73,12 @@ android {
     // 多渠道打包
     productFlavors {
 //        FIR {}
-        Googleplay {}
+//        Googleplay {}
 //        Mocha {}
 //        Dev360 {}
-//        QQ {}
+        QQ {}
 //        XiaoMi {}
-
+//
         productFlavors.all { flavor ->
             flavor.manifestPlaceholders = [AVOS_CHANNEL_VALUE: name]
         }
