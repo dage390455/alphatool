@@ -15,10 +15,12 @@ import com.sensoro.lora.setting.server.bean.DeviceInfo;
 import com.sensoro.loratool.imainview.IScanDeviceAcView;
 import com.sensoro.loratool.store.LoraDbHelper;
 import com.sensoro.loratool.utils.IPUtil;
+import com.sensoro.station.communication.BuildConfig;
 import com.sensoro.station.communication.IStation;
 import com.sensoro.station.communication.StationImpl;
 import com.sensoro.station.communication.bean.StationInfo;
 import com.squareup.leakcanary.RefWatcher;
+import com.tencent.bugly.Bugly;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +71,7 @@ public class LoRaSettingApplication extends Application implements BLEDeviceList
         initStationHandler();
         LoraDbHelper.init(this);
         initSensoroSDK();
+        Bugly.init(getApplicationContext(),"326264e984",BuildConfig.DEBUG);
     }
 
     private void initSensoroSDK() {

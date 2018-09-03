@@ -240,9 +240,10 @@ public class DeviceInfoAdapter extends BaseAdapter {
             for (String hardware : hardwareSet) {
                 for (int i = 0; i < tempFirmwareList.size(); i++) {
                     String deviceType = tempFirmwareList.get(i).getDeviceType();
-                    if (hardware == null || deviceType == null) {
-                    } else {
-                        if (deviceType.contains(hardware)) {
+                    if (hardware != null && deviceType != null) {
+                        if("##".equals(hardware) && !isDeviceHardwareContains(deviceType)){
+                            tempHardwareList.add(tempFirmwareList.get(i));
+                        }else if (deviceType.equals(hardware)) {
                             tempHardwareList.add(tempFirmwareList.get(i));
                         }
                     }
@@ -274,6 +275,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
                 }
             }
             tempBandList.clear();
+
             final List<DeviceInfo> deviceInfoList = new ArrayList<>();
             for (String near : nearSet) {
                 if (near.equals("1")) {//near
@@ -296,6 +298,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
                     }
                 }
             }
+
             tempSignalList.clear();
             mDeviceInfoList.clear();
             mDeviceInfoList.addAll(deviceInfoList);
@@ -309,6 +312,16 @@ public class DeviceInfoAdapter extends BaseAdapter {
 //        DeviceInfoComparator comparator = new DeviceInfoComparator();
 //        Collections.sort(mDeviceInfoList, comparator);
         notifyDataSetChanged();
+    }
+
+    private boolean isDeviceHardwareContains(String deviceType) {
+        String[] deviceHardwareType = Constants.DEVICE_HARDWARE_TYPE;
+        for (int i = 0; i < deviceHardwareType.length; i++) {
+            if (deviceHardwareType[i].equals(deviceType)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean isFilterNearby() {

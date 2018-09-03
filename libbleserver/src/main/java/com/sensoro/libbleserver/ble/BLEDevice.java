@@ -143,8 +143,8 @@ public class BLEDevice implements Parcelable, Cloneable {
         this.type = type;
     }
 
-    @Override
-    public int hashCode() {
-        return sn.hashCode() ^ this.macAddress.hashCode();
-    }
+//    @Override
+//    public int hashCode() {
+//        return sn.hashCode() ^ this.macAddress.hashCode();
+//    }
 }

@@ -3,6 +3,7 @@ package com.sensoro.loratool.activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -72,8 +73,10 @@ public class FilterDeviceActivity extends BaseActivity {
         HashSet<String> signalSet = (HashSet) sharedPreferences.getStringSet("device_signal", null);
         HashSet<String> nearSet = (HashSet) sharedPreferences.getStringSet("device_near", null);
         String[] firmwareArray = getResources().getStringArray(R.array.filter_device_firmware_array);
+        //添加支持的类型
         String[] hardwareArray = getResources().getStringArray(R.array.filter_device_hardware_array);
         String[] bandArray = getResources().getStringArray(R.array.filter_device_band_array);
+        //添加支持的硬件类型
         String[] hardwareValueArray = DEVICE_HARDWARE_TYPE;
         String[] nearArray = getResources().getStringArray(R.array.filter_near_array);
         String[] enableArray = getResources().getStringArray(R.array.filter_enable);

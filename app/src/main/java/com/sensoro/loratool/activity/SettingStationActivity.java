@@ -13,18 +13,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.sensoro.loratool.R;
-import com.sensoro.loratool.fragment.SettingsInputDialogFragment;
-import com.sensoro.loratool.fragment.SettingsSingleChoiceItemsFragment;
 import com.sensoro.libbleserver.ble.BLEDevice;
 import com.sensoro.libbleserver.ble.SensoroConnectionCallback;
 import com.sensoro.libbleserver.ble.SensoroStation;
 import com.sensoro.libbleserver.ble.SensoroStationConfiguration;
 import com.sensoro.libbleserver.ble.SensoroStationConnection;
 import com.sensoro.libbleserver.ble.SensoroWriteCallback;
+import com.sensoro.libbleserver.ble.proto.ProtoStationMsgV2;
+import com.sensoro.loratool.R;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.event.OnPositiveButtonClickListener;
-import com.sensoro.libbleserver.ble.proto.ProtoStationMsgV2;
+import com.sensoro.loratool.fragment.SettingsInputDialogFragment;
+import com.sensoro.loratool.fragment.SettingsSingleChoiceItemsFragment;
 import com.umeng.analytics.MobclickAgent;
 
 import butterknife.BindView;

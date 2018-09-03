@@ -301,6 +301,7 @@
         <item>1.7</item>
     </string-array>
     <string-array name="filter_device_hardware_array">
+        <item>通用设备</item>
         <item>α 芯片</item>
         <item>α 模块</item>
         <item>α 传感器</item>
@@ -370,7 +371,7 @@
         <item>-70</item>
         <item>-75</item>
         <item>-80</item>
-        <item>-80</item>
+        <item>-90</item>
         <item>-100</item>
         <item>-120</item>
     </string-array>

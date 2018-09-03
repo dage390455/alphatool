@@ -30,6 +30,7 @@ import com.sensoro.loratool.utils.AESUtil;
 import com.sensoro.loratool.utils.PermissionUtils;
 import com.sensoro.loratool.utils.PermissionsResultObserve;
 import com.sensoro.loratool.utils.Utils;
+import com.sensoro.loratool.widget.AlphaToast;
 import com.sensoro.loratool.widget.StatusBarCompat;
 import com.umeng.analytics.MobclickAgent;
 
@@ -371,6 +372,7 @@ public class LoginActivity extends BaseActivity implements Constants, Permission
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        AlphaToast.INSTANCE.makeText(getApplicationContext(),"登录失败",Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(LoginActivity.this, R.string.tips_network_error, Toast.LENGTH_LONG).show();

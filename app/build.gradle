@@ -73,10 +73,10 @@ android {
     // 多渠道打包
     productFlavors {
 //        FIR {}
-//        Googleplay {}
+        Googleplay {}
 //        Mocha {}
 //        Dev360 {}
-        QQ {}
+//        QQ {}
 //        XiaoMi {}
 //
         productFlavors.all { flavor ->
@@ -127,6 +127,11 @@ android {
                 enabled true
             }
 
+            ndk {
+                // 设置支持的SO库架构
+                abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+            }
+
         }
     }
 }
@@ -160,5 +165,9 @@ dependencies {
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.1.2'
     compile 'cn.bingoogolapple:bga-qrcode-zxing:1.2.4'
     compile project(':libbleserver')
+
+    //bugly
+    compile 'com.tencent.bugly:crashreport_upgrade:latest.release' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
+    compile 'com.tencent.bugly:nativecrashreport:latest.release'
 
 }

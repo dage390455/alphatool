@@ -1,9 +1,14 @@
 package com.sensoro.lora.setting.server;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.sensoro.lora.setting.server.bean.DeviceInfoListRsp;
 import com.sensoro.lora.setting.server.bean.EidInfoListRsp;
@@ -25,8 +30,8 @@ import java.util.Map;
  * LoRa Setting server interface implement.
  */
 public class LoRaSettingServerImpl implements ILoRaSettingServer {
-    public static final String SCOPE_MOCHA = "http://iot-mocha-api.sensoro.com";
-    public static final String SCOPE_TEST = "http://iot-test-api.sensoro.com";
+    public static final String SCOPE_MOCHA = "https://iot-mocha-api.sensoro.com";
+    public static final String SCOPE_TEST = "https://iot-test-api.sensoro.com";
     public static final String SCOPE_IOT = "https://iot-api.sensoro.com";
     public static String SCOPE = SCOPE_MOCHA;//http://mocha-iot-api.sensoro.com-----http://iot-api.sensoro.com
     public static final String LOGIN = "/signin";
