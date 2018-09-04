@@ -83,7 +83,6 @@ public class LoRaSettingApplication extends Application implements BLEDeviceList
         Beta.smallIconId = R.mipmap.ic_launcher;
         Beta.upgradeCheckPeriod = 60000;
         Beta.upgradeDialogLayoutId = R.layout.layout_upgrade_dialog;
-        Beta.autoDownloadOnWifi = true;
         Beta.enableHotfix = false;
         Bugly.init(getApplicationContext(),"326264e984",BuildConfig.DEBUG);
 
