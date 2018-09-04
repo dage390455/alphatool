@@ -22,9 +22,12 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile "junit:junit:$junitVersion"
-    compile "com.android.support:appcompat-v7:$supportV7Version"
-    compile 'org.mockito:mockito-core:2.0.52-beta'
-    compile project(':volleymanager')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    testImplementation "junit:junit:$junitVersion"
+    implementation "com.android.support:appcompat-v7:$supportV7Version"
+    implementation 'org.mockito:mockito-core:2.0.52-beta'
+    implementation project(':volleymanager')
+    implementation "com.google.code.gson:gson:$gsonVersion"
+    implementation "com.mcxiaoke.volley:library:$volleyVersion"
+
 }

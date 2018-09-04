@@ -22,10 +22,10 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile "junit:junit:$junitVersion"
-    compile "com.android.support:appcompat-v7:$supportV7Version"
-    compile 'com.mcxiaoke.volley:library:1.0.19'
-    compile 'com.squareup.okhttp3:okhttp:3.6.0'
-    compile 'com.google.code.gson:gson:2.6.2'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation "junit:junit:$junitVersion"
+    implementation "com.android.support:appcompat-v7:$supportV7Version"
+    implementation "com.mcxiaoke.volley:library:$volleyVersion"
+    implementation 'com.squareup.okhttp3:okhttp:3.6.0'
+    implementation "com.google.code.gson:gson:$gsonVersion"
 }

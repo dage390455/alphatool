@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,6 +24,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.menudrawer.MenuDrawer;
+import com.example.menudrawer.Position;
 import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.fragment.DeviceFragment;
@@ -38,8 +41,6 @@ import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.service.PollingService;
 import com.sensoro.loratool.widget.MainPager;
 
-import net.simonvt.menudrawer.MenuDrawer;
-import net.simonvt.menudrawer.Position;
 
 import java.util.ArrayList;
 import java.util.List;

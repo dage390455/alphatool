@@ -114,6 +114,14 @@
             android:name=".activity.UpgradeDeviceListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".activity.ScanDeviceActivity" />
+        <activity android:name=".activity.DeviceDetailActivity"/>
+        <activity android:name=".activity.InputSNActivity" />
+        <activity android:name=".activity.CaptureActivity" />
+        <activity
+            android:name="com.tencent.bugly.beta.ui.BetaActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|locale"
+            android:theme="@android:style/Theme.Translucent" />
 
         <service android:name="com.sensoro.libbleserver.ble.scanner.BLEDeviceService" />
         <service android:name="com.sensoro.libbleserver.ble.scanner.IntentProcessorService" />
@@ -121,27 +129,33 @@
         <service
             android:name=".service.DfuService"
             android:exported="true" />
-
         <receiver android:name=".receiver.AlarmReceiver" />
 
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="57fdf2c7e0f55a64de002878" />
-        <meta-data
-            android:name="UMENG_CHANNEL"
-            android:value="${AVOS_CHANNEL_VALUE}" />
+        <!--<meta-data-->
+            <!--android:name="UMENG_CHANNEL"-->
+            <!--android:value="${AVOS_CHANNEL_VALUE}" />-->
         <meta-data
             android:name="TA_APPKEY"
             android:value="AQYC1518XAQF" />
         <!-- 请将value改为app发布对应的渠道，不同的发布渠道使用不同的名字 < -->
-        <meta-data
-            android:name="InstallChannel"
-            android:value="${AVOS_CHANNEL_VALUE}" />
+        <!--<meta-data-->
+            <!--android:name="InstallChannel"-->
+            <!--android:value="${AVOS_CHANNEL_VALUE}" />-->
 
-        <activity android:name=".activity.ScanDeviceActivity" />
-        <activity android:name=".activity.DeviceDetailActivity"></activity>
-        <activity android:name=".activity.InputSNActivity" />
-        <activity android:name=".activity.CaptureActivity" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+
     </application>
 
 </manifest>

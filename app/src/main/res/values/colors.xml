@@ -40,4 +40,8 @@
     <color name="c_1b1b1b">#1b1b1b</color>
     <color name="c_e7e7e7">#e7e7e7</color>
     <color name="c_dadada">#dadada</color>
+    <color name="c_626262">#626262</color>
+    <color name="list_sep_color">#F5F6F7</color>
+    <color name="upload_btn_bg">#48b0f7</color>
+    <color name="sensoro_lost">#3b4752</color>
 </resources>

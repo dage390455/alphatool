@@ -82,24 +82,24 @@ public class SplashActivity extends BaseActivity implements Constants {
     }
 
     private void initSeverUrl() {
-        try {
-            ApplicationInfo appInfo = this.getPackageManager()
-                    .getApplicationInfo(getPackageName(),
-                            PackageManager.GET_META_DATA);
-            String msg = appInfo.metaData.getString("InstallChannel");
-            if (msg.equals("Mocha")) {
-                LoRaSettingServerImpl.SCOPE = LoRaSettingServerImpl.SCOPE_MOCHA;
-            } else {
-                LoRaSettingServerImpl.SCOPE = LoRaSettingServerImpl.SCOPE_IOT;
-            }
+//        try {
+//            ApplicationInfo appInfo = this.getPackageManager()
+//                    .getApplicationInfo(getPackageName(),
+//                            PackageManager.GET_META_DATA);
+//            String msg = appInfo.metaData.getString("InstallChannel");
+//            if (msg.equals("Mocha")) {
+//                LoRaSettingServerImpl.SCOPE = LoRaSettingServerImpl.SCOPE_MOCHA;
+//            } else {
+//                LoRaSettingServerImpl.SCOPE = LoRaSettingServerImpl.SCOPE_IOT;
+//            }
             SharedPreferences sp = getSharedPreferences(PREFERENCE_SCOPE, Context.MODE_PRIVATE);
-            String url = sp.getString(PREFERENCE_KEY_URL, null);
-            if (url != null) {
+            String url = sp.getString(PREFERENCE_KEY_URL, LoRaSettingServerImpl.SCOPE_IOT);
+//            if (url != null) {
                 LoRaSettingServerImpl.SCOPE = url;
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+//            }
+//        } catch (PackageManager.NameNotFoundException e) {
+//            e.printStackTrace();
+//        }
 
     }
 

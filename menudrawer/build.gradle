@@ -1,0 +1,40 @@
+apply plugin: 'com.android.library'
+apply plugin: 'checkstyle'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+    checkstyle {
+        configFile project.file('../checkstyle.xml')
+        showViolations true
+    }
+    android.libraryVariants.all { variant ->
+        def name = variant.buildType.name
+
+        def checkstyle = project.tasks.create "checkstyle${name.capitalize()}", Checkstyle
+        checkstyle.dependsOn variant.javaCompile
+        checkstyle.source variant.javaCompile.source
+        checkstyle.classpath = project.fileTree(variant.javaCompile.destinationDir)
+        checkstyle.exclude('**/BuildConfig.java')
+        checkstyle.exclude('**/R.java')
+        project.tasks.getByName("check").dependsOn checkstyle
+    }
+

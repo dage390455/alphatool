@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.view.View;
 import android.widget.Toast;
 
 import com.sensoro.libbleserver.ble.BLEDevice;
@@ -21,6 +22,9 @@ import com.sensoro.station.communication.StationImpl;
 import com.sensoro.station.communication.bean.StationInfo;
 import com.squareup.leakcanary.RefWatcher;
 import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
+import com.tencent.bugly.beta.UpgradeInfo;
+import com.tencent.bugly.beta.ui.UILifecycleListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +75,18 @@ public class LoRaSettingApplication extends Application implements BLEDeviceList
         initStationHandler();
         LoraDbHelper.init(this);
         initSensoroSDK();
+        initBuglySdk();
+    }
+
+    private void initBuglySdk() {
+        Beta.largeIconId = R.mipmap.ic_launcher;
+        Beta.smallIconId = R.mipmap.ic_launcher;
+        Beta.upgradeCheckPeriod = 60000;
+        Beta.upgradeDialogLayoutId = R.layout.layout_upgrade_dialog;
+        Beta.autoDownloadOnWifi = true;
+        Beta.enableHotfix = false;
         Bugly.init(getApplicationContext(),"326264e984",BuildConfig.DEBUG);
+
     }
 
     private void initSensoroSDK() {

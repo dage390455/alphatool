@@ -1,1 +1,1 @@
-include ':app',':libstationcommunication', ':volleymanager', ':liblorasettingserver',':libs:pulltorefresh', ':libbleserver'
+include ':app',':libstationcommunication', ':volleymanager', ':liblorasettingserver',':libs:pulltorefresh', ':libbleserver', ':menudrawer'

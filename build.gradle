@@ -3,7 +3,7 @@ ext{
     minSdkVersion = 19
     compileSdkVersion = 27
     targetSdkVersion = 25
-    buildToolsVersion = '25.0.0'
+    buildToolsVersion = '27.0.3'
 }
 
 ext.protobufVersion = '2.5.0'
@@ -11,6 +11,8 @@ ext.supportV7Version = '27.1.1'
 ext.designVersion = '27.1.1'
 ext.junitVersion = '4.12'
 ext.constraintLayoutVersion = '2.0.0-alpha2'
+ext.gsonVersion = '2.8.5'
+ext.volleyVersion = '1.0.19'
 buildscript {
     repositories {
         jcenter()
@@ -20,7 +22,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.2'
+        classpath 'com.android.tools.build:gradle:3.1.4'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

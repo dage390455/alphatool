@@ -21,9 +21,13 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile "junit:junit:$junitVersion"
-    compile "com.android.support:appcompat-v7:$supportV7Version"
-    compile project(':volleymanager')
-    compile project(':libstationcommunication')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    testImplementation "junit:junit:$junitVersion"
+    implementation "com.android.support:appcompat-v7:$supportV7Version"
+    implementation project(':volleymanager')
+    implementation project(':libstationcommunication')
+    implementation "com.mcxiaoke.volley:library:$volleyVersion"
+    implementation "com.google.code.gson:gson:$gsonVersion"
+
+
 }

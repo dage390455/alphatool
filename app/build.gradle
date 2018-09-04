@@ -38,6 +38,15 @@ android {
         versionName verName + connector + buildCode
         // Enabling multidex support.
         multiDexEnabled true
+
+//        jackOptions{
+//            enabled true
+//        }
+
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
     }
     buildTypes {
         debug {
@@ -71,18 +80,18 @@ android {
     }
 
     // 多渠道打包
-    productFlavors {
-//        FIR {}
-        Googleplay {}
-//        Mocha {}
-//        Dev360 {}
-//        QQ {}
-//        XiaoMi {}
-//
-        productFlavors.all { flavor ->
-            flavor.manifestPlaceholders = [AVOS_CHANNEL_VALUE: name]
-        }
-    }
+//    productFlavors {
+////        FIR {}
+//        Googleplay {}
+////        Mocha {}
+////        Dev360 {}
+////        QQ {}
+////        XiaoMi {}
+////
+//        productFlavors.all { flavor ->
+//            flavor.manifestPlaceholders = [AVOS_CHANNEL_VALUE: name]
+//        }
+//    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -112,8 +121,12 @@ android {
             buildCode++
 
             android.applicationVariants.all { variant ->
-                def file = variant.outputs[0].outputFile
-                variant.outputs[0].outputFile = new File(file.parent, file.name.replace(".apk", "-" + defaultConfig.versionName + ".apk"))
+//                def file = variant.outputs[0].outputFile
+//                variant.outputs[0].outputFile = new File(file.parent, file.name.replace(".apk", "-" + defaultConfig.versionName + ".apk"))
+
+                variant.outputs.all {
+                    outputFileName = "α-tool-${buildType.name}-${defaultConfig.versionName}.apk"
+                }
             }
         }
 
@@ -123,51 +136,46 @@ android {
         defaultConfig {
             versionCode = verCode
             versionName verName + connector + buildCode
-            jackOptions{
-                enabled true
-            }
-
-            ndk {
-                // 设置支持的SO库架构
-                abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
-            }
 
         }
     }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
-    compile project(':libs:pulltorefresh')
-    compile project(':libstationcommunication')
-    compile project(':liblorasettingserver')
-    compile "com.google.protobuf:protobuf-java:$protobufVersion"
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.3.1'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
+    implementation project(':libs:pulltorefresh')
+    implementation project(':libstationcommunication')
+    implementation project(':liblorasettingserver')
+    implementation project(':menudrawer')
+    implementation "com.google.protobuf:protobuf-java:$protobufVersion"
 
     //    compile 'com.facebook.stetho:stetho:1.3.1'//If you want to add a network helper
     //    compile 'com.facebook.stetho:stetho-okhttp3:1.3.1'
-    compile 'com.umeng.analytics:analytics:latest.integration'
-    compile 'no.nordicsemi.android:dfu:1.0.0'
-    compile "com.android.support:appcompat-v7:$supportV7Version"
-    compile "com.android.support:design:$designVersion"
-    compile 'net.simonvt.menudrawer:menudrawer:3.0.6'
-    compile 'com.jakewharton:butterknife:8.0.1'
-    compile 'com.squareup.okhttp3:okhttp:3.6.0'
-    compile 'com.github.hotchemi:permissionsdispatcher:2.1.2'
-    compile 'com.googlecode.protobuf-java-format:protobuf-java-format:1.4'
-    compile "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
-    testCompile "junit:junit:$junitVersion"
+    implementation 'com.umeng.analytics:analytics:latest.integration'
+    implementation 'no.nordicsemi.android:dfu:1.0.0'
+    implementation "com.android.support:appcompat-v7:$supportV7Version"
+    implementation "com.android.support:design:$designVersion"
+//    implementation 'net.simonvt.menudrawer:menudrawer:3.0.6'
+    implementation 'com.jakewharton:butterknife:8.0.1'
+    implementation 'com.squareup.okhttp3:okhttp:3.6.0'
+    implementation 'com.github.hotchemi:permissionsdispatcher:2.1.2'
+    implementation 'com.googlecode.protobuf-java-format:protobuf-java-format:1.4'
+    implementation "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
+    testImplementation "junit:junit:$junitVersion"
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.0.1'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.1.2'
-    compile 'cn.bingoogolapple:bga-qrcode-zxing:1.2.4'
-    compile project(':libbleserver')
+    implementation 'cn.bingoogolapple:bga-qrcode-zxing:1.2.4'
+    implementation project(':libbleserver')
+    implementation "com.mcxiaoke.volley:library:$volleyVersion"
+
 
     //bugly
-    compile 'com.tencent.bugly:crashreport_upgrade:latest.release' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
-    compile 'com.tencent.bugly:nativecrashreport:latest.release'
+    implementation 'com.tencent.bugly:crashreport_upgrade:latest.release' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
+    implementation 'com.tencent.bugly:nativecrashreport:latest.release'
 
 }
