@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.sensoro.libbleserver.ble.SensoroDirectWriteDfuCallBack;
 import com.sensoro.lora.setting.server.bean.DeviceInfo;
 import com.sensoro.lora.setting.server.bean.ResponseBase;
 import com.sensoro.loratool.LoRaSettingApplication;
@@ -33,9 +35,12 @@ import com.sensoro.libbleserver.ble.SensoroDevice;
 import com.sensoro.libbleserver.ble.SensoroDeviceConnection;
 import com.sensoro.libbleserver.ble.SensoroWriteCallback;
 import com.sensoro.loratool.constant.Constants;
+import com.sensoro.loratool.imainview.IUpgradeDeviceListActivityView;
+import com.sensoro.loratool.presenter.UpgradeDeviceListActivityPresenter;
 import com.sensoro.loratool.service.DfuService;
 import com.sensoro.loratool.store.DeviceDataDao;
 import com.sensoro.loratool.utils.DownloadUtil;
+import com.sensoro.loratool.utils.LogUtils;
 import com.sensoro.loratool.utils.RcItemTouchHelperCallback;
 import com.sensoro.loratool.widget.AlphaToast;
 import com.sensoro.loratool.widget.RecycleViewDivider;
@@ -50,6 +55,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import com.sensoro.loratool.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,9 +70,9 @@ import no.nordicsemi.android.dfu.DfuServiceListenerHelper;
  * Created by sensoro on 18/1/8.
  */
 
-public class UpgradeDeviceListActivity extends BaseActivity implements Constants,
+public class UpgradeDeviceListActivity extends BaseActivity<IUpgradeDeviceListActivityView,UpgradeDeviceListActivityPresenter> implements Constants,
         DfuProgressListener,RecycleViewItemClickListener,LoRaSettingApplication.SensoroDeviceListener,
-        SensoroConnectionCallback, SensoroWriteCallback {
+        SensoroConnectionCallback, SensoroWriteCallback ,SensoroDirectWriteDfuCallBack{
 
     public static final String EXTERN_DIRECTORY_NAME = "sensoro_dfu";
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 101;
@@ -91,14 +97,22 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
     private String mDefBand;
     private String mDefHardwareVersion;
     private String mDefFirmwareVersion;
+    private Handler mHandler;
+    private Runnable dfuUpgradeTimeout = new Runnable() {
+        @Override
+        public void run() {
+            listenDfu(getString(R.string.upgrade_failed));
+        }
+    };
+
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreateInit(Bundle savedInstanceState) {
         setContentView(R.layout.activity_upgrade_device);
         ButterKnife.bind(this);
         init();
         MobclickAgent.onPageStart("设备升级");
+        mPresenter.initData(mActivity);
     }
 
     private void init() {
@@ -107,6 +121,8 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
         mDefBand = sensoroDevice.getBand();
         mDefHardwareVersion = sensoroDevice.getHardwareVersion();
         mDefFirmwareVersion = sensoroDevice.getFirmwareVersion();
+
+        mHandler = new Handler();
 
         int upgrade_index = getIntent().getIntExtra(EXTRA_UPGRADE_INDEX, 0);
         if (upgrade_index == 0) {
@@ -129,6 +145,7 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
         mDivider = new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL, spacingInPixels, R.color.station_item_more_line, false);
         mRecyclerView.addItemDecoration(mDivider);
         initSensoroSDK();
+
     }
 
     private void initSensoroSDK() {
@@ -140,10 +157,6 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
         }
     }
 
-    @Override
-    protected int getLayoutResId() {
-        return R.layout.activity_upgrade_device;
-    }
 
     @OnClick(R.id.settings_upgrade_device_back)
     public void back() {
@@ -173,6 +186,7 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
                     newDevice.setHardwareVersion(deviceInfo.getDeviceType());
                     newDevice.setBand(deviceInfo.getBand());
                     newDevice.setFirmwareVersion(deviceInfo.getFirmwareVersion());
+                    newDevice.setPassword(deviceInfo.getPassword());
                     break;
                 }
             }
@@ -217,7 +231,6 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
     @OnClick(R.id.upgrade_device_start)
     public void start() {
         if (!isStartUpgrade) {
-            Log.e("hcs",":走进俩::");
             progressDialog.setMessage(getString(R.string.loading));
             progressDialog.show();
             isStartUpgrade = true;
@@ -280,10 +293,13 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
         try {
             System.out.println("targetDevice.getMacAddress()===>" + targetDevice.getMacAddress());
             System.out.println("targetDevice.getPassword()===>" + targetDevice.getPassword());
-            sensoroConnection = new SensoroDeviceConnection(this, targetDevice.getMacAddress());
+            sensoroConnection = new SensoroDeviceConnection(this, targetDevice.getMacAddress(),targetDevice.isDfu());
+            sensoroConnection.setOnSensoroDirectWriteDfuCallBack(this);
             sensoroConnection.connect(targetDevice.getPassword(), this);
         } catch (Exception e) {
             e.printStackTrace();
+            //就是给个提示，errcode 无意义
+            onConnectedFailure(1);
         }
     }
 
@@ -297,7 +313,7 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
                 requestUpdateDeviceUpgradeInfo();
                 isStartUpgrade = false;
                 System.out.println("设备已全部升级完毕===>");
-                deviceIndex = 0;
+//                deviceIndex = 0;
                 mStartButton.setBackground(getResources().getDrawable(R.drawable.shape_upgrade_enable));
             } else {
                 mUpgradeDeviceAdapter.getData(deviceIndex).setDfuProgress(0);
@@ -348,72 +364,105 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
 
     @Override
     public void onDeviceConnecting(String deviceAddress) {
-
+        LogUtils.loge("dfu连接中");
     }
 
     @Override
     public void onDeviceConnected(String deviceAddress) {
-
+        LogUtils.loge("dfu连接成功了");
     }
 
     @Override
     public void onDfuProcessStarting(String deviceAddress) {
+        LogUtils.loge("dfu开始升级");
         mUpgradeDeviceAdapter.getData(deviceIndex).setDfuInfo(getString(R.string.dfu_ready));
         mUpgradeDeviceAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onDfuProcessStarted(String deviceAddress) {
+        LogUtils.loge("等待传输控件");
         mUpgradeDeviceAdapter.getData(deviceIndex).setDfuInfo(getString(R.string.dfu_trans));
         mUpgradeDeviceAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onEnablingDfuMode(String deviceAddress) {
-
+        LogUtils.loge("不知道什么用的:onEnablingDfuMode::");
     }
 
     @Override
     public void onProgressChanged(String deviceAddress, int percent, float speed, float avgSpeed, int currentPart, int partsTotal) {
+        //升级进度
+        LogUtils.loge("升级进度:::"+percent);
         mUpgradeDeviceAdapter.getData(deviceIndex).setDfuProgress(percent);
         mUpgradeDeviceAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onFirmwareValidating(String deviceAddress) {
-
+        LogUtils.loge("dfu通过了验证");
     }
 
     @Override
     public void onDeviceDisconnecting(String deviceAddress) {
+        LogUtils.loge("dfu断开连接中");
+        mUpgradeDeviceAdapter.getData(deviceIndex).setDfuProgress(101);
+        mUpgradeDeviceAdapter.getData(deviceIndex).setDfuInfo("正在升级");
+        mUpgradeDeviceAdapter.notifyDataSetChanged();
+
+        mHandler.postDelayed(dfuUpgradeTimeout,60000);
+
 
     }
 
     @Override
     public void onDeviceDisconnected(String deviceAddress) {
-
+        LogUtils.loge("dfu断开连接了");
     }
 
     @Override
     public void onDfuCompleted(String deviceAddress) {
+        LogUtils.loge("dfuComplete完成了");
         snJSonArray.put(targetDevice.getSn());
         listenDfu(getString(R.string.upgrade_finish));
+        mHandler.removeCallbacks(dfuUpgradeTimeout);
     }
 
     @Override
     public void onDfuAborted(String deviceAddress) {
+        LogUtils.loge(":dfu::"+"中断了");
         listenDfu(getString(R.string.upgrade_failed));
+        mHandler.removeCallbacks(dfuUpgradeTimeout);
     }
 
 
     @Override
     public void onError(String deviceAddress, int error, int errorType, String message) {
+        LogUtils.loge("错误发生了");
         if (error == 4102 && dfu_count <= DFU_MAX_COUNT) {// dfu service not found
+            LogUtils.loge("重新开始了");
             dfuStart();
             dfu_count++;
         } else {
-            listenDfu(getString(R.string.upgrade_failed));
+            if(dfu_count>DFU_MAX_COUNT){
+                listenDfu(getString(R.string.upgrade_failed));
+                sensoroConnection.disconnect();
+                mHandler.removeCallbacksAndMessages(null);
+            }else {
+                LogUtils.loge("错误导致升级失败 失败码"+error+message);
+                sensoroConnection.freshCache();
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        LogUtils.loge("重新连接，重新开始");
+                        connectDevice();
+                    }
+                },500);
+            }
         }
+        mHandler.removeCallbacks(dfuUpgradeTimeout);
+
     }
 
 
@@ -441,7 +490,7 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                listenDfu(getString(R.string.upgrade_failed));
+                listenDfu(getString(R.string.connect_failed));
             }
         });
 
@@ -449,14 +498,22 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
 
     @Override
     public void onDisconnected() {
-
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                LogUtils.loge("更新界面 连接失败");
+                listenDfu(getString(R.string.connect_failed));
+            }
+        });
     }
 
     @Override
     public void onWriteSuccess(Object o, int cmd) {
+        LogUtils.loge("xiedfur");
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                LogUtils.loge("写入dfu命令成功");
                 sensoroConnection.disconnect();
                 targetDevice.setDfu(true);
                 dfuStart();
@@ -472,6 +529,7 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                LogUtils.loge("切换dfu失败，在UpgradeDeviceListActivity onWriteFailure");
                 listenDfu(getString(R.string.upgrade_failed));
             }
         });
@@ -493,17 +551,29 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
     }
 
     @Override
+    protected UpgradeDeviceListActivityPresenter createPresenter() {
+        return new UpgradeDeviceListActivityPresenter();
+    }
+
+    @Override
     public void onItemClick(View view, int position) {
 
     }
 
     public void startUpgrade() {
         isStartUpgrade = true;
-        deviceIndex = 0;
-        Log.e("hcs","这里呀" +
-                "::");
+//        deviceIndex = 0;
         if(mUpgradeDeviceAdapter.getData().size()>0){
             targetDevice = mUpgradeDeviceAdapter.getData(deviceIndex);
+            while (targetDevice.getDfuInfo() != null && targetDevice.getDfuInfo().equals(getString(R.string.upgrade_finish))){
+                if(deviceIndex<mUpgradeDeviceAdapter.getData().size()-1){
+                    deviceIndex++;
+                    targetDevice = mUpgradeDeviceAdapter.getData(deviceIndex);
+                }else{
+                    AlphaToast.INSTANCE.makeText(mActivity,"设备已全部升级完毕",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
             targetDevice.setDfuInfo(getString(R.string.dfu_connecting));
             mUpgradeDeviceAdapter.notifyDataSetChanged();
             mStartButton.setBackground(getResources().getDrawable(R.drawable.shape_upgrade_disable));
@@ -531,6 +601,7 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
             }
         }
         zipFileString = path + "/" + fileName;
+        LogUtils.loge("是否需要下载"+isContainFile);
         if (!isContainFile) {
             DownloadUtil.getInstance().download(zipUrl, EXTERN_DIRECTORY_NAME, new DownloadUtil.OnDownloadListener() {
                 @Override
@@ -577,8 +648,8 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mUpgradeDeviceAdapter.getData().add(newDevice);
-                        mUpgradeDeviceAdapter.notifyDataSetChanged();
+//                        mUpgradeDeviceAdapter.getData().add(newDevice);
+//                        mUpgradeDeviceAdapter.notifyDataSetChanged();
                     }
                 });
 
@@ -603,4 +674,17 @@ public class UpgradeDeviceListActivity extends BaseActivity implements Constants
         loRaSettingApplication.unRegistersSensoroDeviceListener(this);
     }
 
+    @Override
+    public void OnDirectWriteDfuCallBack() {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                sensoroConnection.disconnect();
+                targetDevice.setDfu(true);
+                dfuStart();
+                mUpgradeDeviceAdapter.getData(deviceIndex).setDfuInfo(getString(R.string.dfu_write_success));
+                mUpgradeDeviceAdapter.notifyDataSetChanged();
+            }
+        });
+    }
 }

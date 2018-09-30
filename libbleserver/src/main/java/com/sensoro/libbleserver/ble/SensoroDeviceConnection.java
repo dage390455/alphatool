@@ -1,5 +1,7 @@
 package com.sensoro.libbleserver.ble;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
@@ -9,6 +11,7 @@ import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v7.widget.DialogTitle;
 import android.util.Log;
 
 import com.google.protobuf.ByteString;
@@ -18,6 +21,7 @@ import com.sensoro.libbleserver.ble.scanner.SensoroUUID;
 import com.sensoro.libbleserver.ble.proto.ProtoMsgCfgV1U1;
 import com.sensoro.libbleserver.ble.proto.ProtoMsgTest1U1;
 import com.sensoro.libbleserver.ble.proto.ProtoStd1U1;
+import com.sensoro.libbleserver.ble.utils.LogUtils;
 
 import java.io.Serializable;
 import java.nio.ByteBuffer;
@@ -35,9 +39,10 @@ public class SensoroDeviceConnection {
     public static final byte DATA_VERSION_04 = 0x04;
     public static final byte DATA_VERSION_05 = 0x05;
     private static final String TAG = SensoroDeviceConnection.class.getSimpleName();
-    private static final long CONNECT_TIME_OUT = 60000; // 30s connect timeout
+    private static final long CONNECT_TIME_OUT = 10000; // 1 minute connect timeout
+    private boolean isDfu;
     private Context context;
-    private Handler handler;
+    private Handler handler = new Handler(Looper.getMainLooper());;
     private SensoroConnectionCallback sensoroConnectionCallback;
     private Map<Integer, SensoroWriteCallback> writeCallbackHashMap;
     private boolean isBodyData = false;
@@ -54,11 +59,13 @@ public class SensoroDeviceConnection {
     private byte dataVersion = DATA_VERSION_03;
     private boolean isContainSignal;
     private String macAddress;
+    public int count;
     private Runnable connectTimeoutRunnable = new Runnable() {
         @Override
         public void run() {
-            sensoroConnectionCallback.onConnectedFailure(ResultCode.TASK_TIME_OUT);
-            disconnect();
+            reConnectDevice(ResultCode.TASK_TIME_OUT,"连接超时");
+
+
         }
     };
     private final BluetoothGattCallback bluetoothGattCallback = new BluetoothGattCallback() {
@@ -67,25 +74,39 @@ public class SensoroDeviceConnection {
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             super.onConnectionStateChange(gatt, status, newState);
             bluetoothLEHelper4.bluetoothGatt = gatt;
+            LogUtils.loge("连接状态改变");
             if (newState == BluetoothProfile.STATE_CONNECTED) {//连接成功
                 if (status == BluetoothGatt.GATT_SUCCESS) {
+                    LogUtils.loge("连接成功了");
                     try {
-                        Thread.sleep(10);
+                        Thread.sleep(50);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-                    } finally {
-                        gatt.discoverServices();
                     }
+
+                    if(sensoroDirectWriteDfuCallBack != null && isDfu){
+                        LogUtils.loge("可以直接升级");
+                        sensoroDirectWriteDfuCallBack.OnDirectWriteDfuCallBack();
+                        return;
+                    }
+
+                    gatt.discoverServices();
+                    count = 0;
                 } else {
-                    sensoroConnectionCallback.onConnectedFailure(ResultCode.BLUETOOTH_ERROR);
-                    disconnect();
+                    reConnectDevice(ResultCode.BLUETOOTH_ERROR, "连接失败 bluetoothgatt");
+
                 }
+            }else if(newState == BluetoothProfile.STATE_DISCONNECTED){
+                reConnectDevice(ResultCode.BLUETOOTH_ERROR, "连接失败 disconnect");
+
             }
+
         }
 
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             super.onServicesDiscovered(gatt, status);
+            LogUtils.loge("发现服务了");
             bluetoothLEHelper4.bluetoothGatt = gatt;
             if (status == BluetoothGatt.GATT_SUCCESS) {//发现服务
                 List<BluetoothGattService> gattServiceList = gatt.getServices();
@@ -101,11 +122,13 @@ public class SensoroDeviceConnection {
                     }
                 } else {
                     sensoroConnectionCallback.onConnectedFailure(ResultCode.SYSTEM_ERROR);
-                    disconnect();
+                    LogUtils.loge("不能升级");
+                    freshCache();
                 }
             } else {
                 sensoroConnectionCallback.onConnectedFailure(ResultCode.SYSTEM_ERROR);
-                disconnect();
+                freshCache();
+                LogUtils.loge("服务校验失败");
             }
         }
 
@@ -124,15 +147,18 @@ public class SensoroDeviceConnection {
                             break;
                         case READ_CHAR:
                             UUID auth_uuid = BluetoothLEHelper4.GattInfo.SENSORO_DEVICE_AUTHORIZATION_CHAR_UUID;
+                            LogUtils.loge("密码是"+password);
                             int resultCode = bluetoothLEHelper4.requireWritePermission(password, auth_uuid);
                             if (resultCode != ResultCode.SUCCESS) {
                                 sensoroConnectionCallback.onConnectedFailure(resultCode);
-                                disconnect();
+                                LogUtils.loge("写密码失败");
+                                freshCache();
                             }
                             break;
                         default:
                             sensoroConnectionCallback.onConnectedFailure(ResultCode.SYSTEM_ERROR);
-                            disconnect();
+                            LogUtils.loge("写失败");
+                            freshCache();
                             break;
                     }
                 }
@@ -156,10 +182,12 @@ public class SensoroDeviceConnection {
                             .SENSORO_DEVICE_READ_CHAR_UUID);
                 } else if (status == BluetoothGatt.GATT_WRITE_NOT_PERMITTED) {
                     sensoroConnectionCallback.onConnectedFailure(ResultCode.PASSWORD_ERR);
-                    disconnect();
+                    LogUtils.loge("parseCharacteristicWrite，密码错误");
+                    freshCache();
                 } else {
                     sensoroConnectionCallback.onConnectedFailure(ResultCode.INVALID_PARAM);
-                    disconnect();
+                    LogUtils.loge("不可用参数");
+                    freshCache();
                 }
             }
 
@@ -175,7 +203,8 @@ public class SensoroDeviceConnection {
                     switch (cmdType) {
                         case CmdType.CMD_R_CFG:
                             sensoroConnectionCallback.onConnectedFailure(ResultCode.SYSTEM_ERROR);
-                            disconnect();
+                            LogUtils.loge("parseCharacteristicWrite cmd_cfg");
+                            freshCache();
                             break;
                         case CmdType.CMD_W_CFG:
                             writeCallbackHashMap.get(cmdType).onWriteFailure(ResultCode.SYSTEM_ERROR, CmdType.CMD_NULL);
@@ -197,7 +226,8 @@ public class SensoroDeviceConnection {
                     switch (cmdType) {
                         case CmdType.CMD_R_CFG:
                             sensoroConnectionCallback.onConnectedFailure(ResultCode.SYSTEM_ERROR);
-                            disconnect();
+                            LogUtils.loge("没有成功 99999");
+                            freshCache();
                             break;
                         case CmdType.CMD_W_CFG:
                             writeCallbackHashMap.get(cmdType).onWriteFailure(ResultCode.SYSTEM_ERROR, CmdType.CMD_NULL);
@@ -267,10 +297,29 @@ public class SensoroDeviceConnection {
             }
         }
     };
+    private SensoroDirectWriteDfuCallBack sensoroDirectWriteDfuCallBack;
+
+    private void reConnectDevice(int resultCode, String msg) {
+        if(count<6){
+            count++;
+            freshCache();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    connectDevice();
+                }
+            },500);
+
+        }else{
+            count = 0;
+            freshCache();
+            sensoroConnectionCallback.onConnectedFailure(resultCode);
+            LogUtils.loge(msg);
+        }
+    }
 
     private SensoroDeviceConnection(Context context, BLEDevice bleDevice) {
         this.context = context;
-        handler = new Handler();
         bluetoothLEHelper4 = new BluetoothLEHelper4(context);
         writeCallbackHashMap = new HashMap<>();
         this.isContainSignal = false;
@@ -278,17 +327,24 @@ public class SensoroDeviceConnection {
 
     public SensoroDeviceConnection(Context context, String macAddress) {
         this.context = context;
-        handler = new Handler();
         bluetoothLEHelper4 = new BluetoothLEHelper4(context);
         writeCallbackHashMap = new HashMap<>();
         this.isContainSignal = false;
         this.macAddress = macAddress;
     }
 
+    public SensoroDeviceConnection(Context context, String macAddress,boolean isDfu) {
+        this.context = context;
+        bluetoothLEHelper4 = new BluetoothLEHelper4(context);
+        writeCallbackHashMap = new HashMap<>();
+        this.isContainSignal = false;
+        this.macAddress = macAddress;
+        this.isDfu = isDfu;
+    }
+
 
     public SensoroDeviceConnection(Context context, BLEDevice bleDevice, boolean isContainSignal) {
         this.context = context;
-        handler = new Handler();
         bluetoothLEHelper4 = new BluetoothLEHelper4(context);
         writeCallbackHashMap = new HashMap<>();
         this.isContainSignal = isContainSignal;
@@ -314,7 +370,7 @@ public class SensoroDeviceConnection {
         if (sensoroConnectionCallback == null) {
             throw new Exception("SensoroConnectionCallback is null");
         }
-
+        LogUtils.loge("赋值密码"+password);
         if (password != null) {
             this.password = password;
         }
@@ -329,13 +385,22 @@ public class SensoroDeviceConnection {
 
         if (!bluetoothLEHelper4.initialize()) {
             sensoroConnectionCallback.onConnectedFailure(ResultCode.BLUETOOTH_ERROR);
-            disconnect();
+            LogUtils.loge("初始化失败");
+            freshCache();
+        }else{
+            connectDevice(sensoroConnectionCallback);
         }
 
+
+    }
+
+    private void connectDevice(final SensoroConnectionCallback sensoroConnectionCallback) {
+        handler.postDelayed(connectTimeoutRunnable, CONNECT_TIME_OUT);
         if (Looper.myLooper() == Looper.getMainLooper()) {
             if (!bluetoothLEHelper4.connect(macAddress, bluetoothGattCallback)) {
                 sensoroConnectionCallback.onConnectedFailure(ResultCode.INVALID_PARAM);
-                disconnect();
+                LogUtils.loge("连接失败");
+                freshCache();
             }
         } else {
             new Handler(Looper.getMainLooper()).post(new Runnable() {
@@ -343,7 +408,27 @@ public class SensoroDeviceConnection {
                 public void run() {
                     if (!bluetoothLEHelper4.connect(macAddress, bluetoothGattCallback)) {
                         sensoroConnectionCallback.onConnectedFailure(ResultCode.INVALID_PARAM);
-                        disconnect();
+                        LogUtils.loge("连接失败2");
+                        freshCache();
+                    }
+                }
+            });
+        }
+    }
+    private void connectDevice() {
+        handler.postDelayed(connectTimeoutRunnable, CONNECT_TIME_OUT);
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            if (!bluetoothLEHelper4.connect(macAddress, bluetoothGattCallback)) {
+                LogUtils.loge("连接失败 无参数");
+                freshCache();
+            }
+        } else {
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    if (!bluetoothLEHelper4.connect(macAddress, bluetoothGattCallback)) {
+                        LogUtils.loge("连接失败2 无参数");
+                        freshCache();
                     }
                 }
             });
@@ -407,7 +492,8 @@ public class SensoroDeviceConnection {
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        disconnect();
+                        LogUtils.loge("数据写入 catch");
+                        freshCache();
                         sensoroConnectionCallback.onConnectedFailure(ResultCode.PARSE_ERROR);
                     }
                 }
@@ -469,7 +555,8 @@ public class SensoroDeviceConnection {
                 } catch (InvalidProtocolBufferException e) {
                     e.printStackTrace();
                     writeCallbackHashMap.get(CmdType.CMD_SIGNAL).onWriteFailure(0, CmdType.CMD_SIGNAL);
-                    disconnect();
+                    LogUtils.loge("parseSignalData catch");
+                    freshCache();
                 } finally {
                     signalByteBuffer.clear();
                     isBodyData = false;
@@ -493,7 +580,8 @@ public class SensoroDeviceConnection {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    disconnect();
+                    LogUtils.loge("数据校验失败");
+                    freshCache();
                     writeCallbackHashMap.get(CmdType.CMD_SIGNAL).onWriteFailure(ResultCode.PARSE_ERROR, CmdType
                             .CMD_SIGNAL);
                 }
@@ -1478,6 +1566,8 @@ public class SensoroDeviceConnection {
             sensoroConnectionCallback.onConnectedFailure(ResultCode.PARSE_ERROR);
             return;
         }
+
+        LogUtils.loge("parseData05  onConnectedSuccess");
         sensoroConnectionCallback.onConnectedSuccess(sensoroDevice, CmdType.CMD_NULL);
     }
 
@@ -2056,7 +2146,6 @@ public class SensoroDeviceConnection {
                 builder.setVolHighTh(sensoroSensorTest.mantunData.volHighTh);
             }
             if (sensoroSensorTest.mantunData.hasVolLowTh) {
-                Log.e("hcs",":触点::"+sensoroSensorTest.mantunData.volLowTh);
                 builder.setVolLowTh(sensoroSensorTest.mantunData.volLowTh);
             }
             if (sensoroSensorTest.mantunData.hasLeakageTh) {
@@ -2652,14 +2741,26 @@ public class SensoroDeviceConnection {
      * Disconnect from beacon.
      */
     public void disconnect() {
-        handler.removeCallbacks(connectTimeoutRunnable);
+        handler.removeCallbacksAndMessages(null);
 
         if (bluetoothLEHelper4 != null) {
             bluetoothLEHelper4.close();
         }
         if (sensoroConnectionCallback != null) {
+            LogUtils.loge("sensoroDeviceConnectio 调用disconnect");
             sensoroConnectionCallback.onDisconnected();
         }
+
+    }
+    public void freshCache() {
+
+        if (bluetoothLEHelper4 != null) {
+            bluetoothLEHelper4.close();
+        }
+//        if (sensoroConnectionCallback != null) {
+//            LogUtils.loge("失败 调用disconnect");
+//            sensoroConnectionCallback.onDisconnected();
+//        }
 
     }
 
@@ -2669,6 +2770,10 @@ public class SensoroDeviceConnection {
         msgNodeBuilder.setMtunData(builder);
         byte[] data = msgNodeBuilder.build().toByteArray();
         writeData05Cmd(data, CmdType.CMD_SET_MANTUN_CMD, writeCallback);
+    }
+
+    public void setOnSensoroDirectWriteDfuCallBack(SensoroDirectWriteDfuCallBack sensoroDirectWriteDfuCallBack) {
+        this.sensoroDirectWriteDfuCallBack = sensoroDirectWriteDfuCallBack;
     }
 
     enum ListenType implements Serializable {

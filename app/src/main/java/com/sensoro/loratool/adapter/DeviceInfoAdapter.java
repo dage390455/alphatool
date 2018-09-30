@@ -212,6 +212,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
         final HashSet<String> nearSet = (HashSet) sharedPreferences.getStringSet("device_near", null);
         final HashSet<String> enableFilterSet = (HashSet) sharedPreferences.getStringSet("device_enable_filter", null);
         boolean isClose = false;
+
         if (enableFilterSet != null) {
             for (String switchString : enableFilterSet) {
                 if (switchString.equals("1")) {//close

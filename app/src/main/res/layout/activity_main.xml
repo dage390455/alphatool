@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/layout_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/content_main_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y180"
+        android:background="@color/actionbar_bg">
+
+        <ImageView
+            android:id="@+id/content_main_menu"
+            android:layout_width="@dimen/x160"
+            android:layout_height="@dimen/y160"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:adjustViewBounds="true"
+            android:cropToPadding="true"
+            android:padding="12dp"
+            android:src="@mipmap/ic_menu_list" />
+
+        <TextView
+            android:id="@+id/content_main_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_toRightOf="@id/content_main_menu"
+            android:text="@string/title_sensor"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/content_scan"
+            style="@style/main_bar_icon_style"
+            android:layout_alignParentEnd="true"
+            android:src="@mipmap/ic_swip" />
+        <ImageView
+            android:id="@+id/content_filter"
+            style="@style/main_bar_icon_style"
+            android:layout_toStartOf="@id/content_scan"
+            android:src="@mipmap/ic_filter" />
+
+        <ImageView
+            android:id="@+id/content_multi"
+            style="@style/main_bar_icon_style"
+            android:layout_toStartOf="@id/content_filter"
+            android:src="@mipmap/ic_multi_sel"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.sensoro.loratool.widget.MainPager
+            android:id="@+id/main_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+</LinearLayout>

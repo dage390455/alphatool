@@ -50,14 +50,10 @@ public class UpgradeDeviceAdapter extends RecyclerView.Adapter<UpgradeDeviceAdap
         SensoroDevice device = mList.get(position);
         holder.item_more_name.setText(device.getSn());
         holder.item_more_value.setHint(R.string.dfu_waiting);
-        if (device.getDfuProgress() <= 0) {
+        if (device.getDfuProgress() <= 0||device.getDfuProgress()>100) {
             holder.item_more_value.setText(device.getDfuInfo());
         } else {
-            if (device.getDfuProgress() == 100) {
-                holder.item_more_value.setText(R.string.upgrade_finish);
-            } else {
-                holder.item_more_value.setText(device.getDfuProgress() + "%");
-            }
+            holder.item_more_value.setText(device.getDfuProgress() + "%");
 
         }
 
@@ -86,6 +82,8 @@ public class UpgradeDeviceAdapter extends RecyclerView.Adapter<UpgradeDeviceAdap
         notifyItemRemoved(position);
         AlphaToast.INSTANCE.makeText(mContext,"移出升级设备列表",Toast.LENGTH_SHORT).show();
     }
+
+
 
 
     class UpgradeInfoViewHolder extends RecyclerView.ViewHolder {
