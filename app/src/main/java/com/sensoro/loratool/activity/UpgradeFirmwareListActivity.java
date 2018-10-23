@@ -143,7 +143,7 @@ public class UpgradeFirmwareListActivity extends BaseActivity implements Constan
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case 0:
-                        Intent intent = new Intent(UpgradeFirmwareListActivity.this, UpgradeDeviceListActivity.class);
+                        Intent intent = new Intent(UpgradeFirmwareListActivity.this, UpgradeDeviceListActivityTest.class);
                         intent.putExtra(EXTRA_NAME_DEVICE_LIST, targetDeviceList);
                         intent.putExtra(EXTRA_URL, url);
                         intent.putExtra(EXTRA_UPGRADE_INDEX, 0);
@@ -153,7 +153,7 @@ public class UpgradeFirmwareListActivity extends BaseActivity implements Constan
                         startActivity(intent);
                         break;
                     case 1:
-                        Intent advanceIntent = new Intent(UpgradeFirmwareListActivity.this, UpgradeDeviceListActivity.class);
+                        Intent advanceIntent = new Intent(UpgradeFirmwareListActivity.this, UpgradeDeviceListActivityTest.class);
                         advanceIntent.putExtra(EXTRA_NAME_DEVICE_LIST, targetDeviceList);
                         advanceIntent.putExtra(EXTRA_URL, url);
                         advanceIntent.putExtra(EXTRA_UPGRADE_INDEX, 1);
