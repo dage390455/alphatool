@@ -325,6 +325,7 @@
     </string-array>
     <string-array name="filter_device_hardware_array">
         <item>General Equipment</item>
+        <item>Sensoro Smoke</item>
         <item>α Chip</item>
         <item>α Module</item>
         <item>α Node</item>
@@ -347,25 +348,26 @@
         <item>Open Node</item>
         <item>α Flame</item>
         <item>Open Chip</item>
-        <item>WS Ch4</item>
-        <item>WS LPG</item>
-        <item>WS GAS</item>
-        <item>BH WaterPressure</item>
+        <item>Ch4(WS)</item>
+        <item>LPG(WS)</item>
+        <item>GAS(WS)</item>
+        <item>Water(BH)</item>
         //新添加字段
         <item>Chip standard</item>
         <item>Chip enhanced</item>
         <item>Tester</item>
         <item>Single Channel Temp Humi</item>
-        <item>Sanjiang CH4</item>
-        <item>Sanjiang LPG</item>
-        <item>Concox Tacker</item>
+        <item>CH4(FH)</item>
+        <item>LPG(FH)</item>
+        <item>Tacker(KK)</item>
         <item>C Tacker</item>
-        <item>Sanjiang Smoke</item>
-        <item>Sanjiang Elec</item>
-        <item>Siter Gas CH4</item>
-        <item>Siter Gas LPG</item>
-        <item>JF Connection</item>
-        <item>Mantun Fires</item>
+        <item>Smoke(FH)</item>
+        <item>Electric Meter(FH)</item>
+        <item>CH4(ST)</item>
+        <item>LPG(ST)</item>
+        <item>Connection checker(JF)</item>
+        <item>Electric fires(MT)</item>
+        <item>Electric fires(AC)</item>
 
     </string-array>
     <string-array name="filter_device_band_array">

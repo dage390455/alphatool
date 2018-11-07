@@ -323,6 +323,7 @@
     </string-array>
     <string-array name="filter_device_hardware_array">
         <item>通用设备</item>
+        <item>自研烟感</item>
         <item>α 芯片</item>
         <item>α 模块</item>
         <item>α 传感器</item>
@@ -345,25 +346,27 @@
         <item>Open Node</item>
         <item>α 火焰</item>
         <item>Open Chip</item>
-        <item>炜盛天然气</item>
-        <item>炜盛液化气</item>
-        <item>炜盛人工煤气</item>
-        <item>博海粤能水压传感器</item>
+        <item>天然气(WS型)</item>
+        <item>液化气(WS型)</item>
+        <item>人工煤气(WS型)</item>
+        <item>水压传感器(BH型)</item>
         //新添加字段
         <item>芯片标准版</item>
         <item>芯片增强版</item>
         <item>路测器</item>
         <item>单通道温度传感器</item>
-        <item>泛海三江天然气</item>
-        <item>泛海三江液化气</item>
-        <item>康凯斯定位器</item>
+        <item>天然气(FH型)</item>
+        <item>液化气(FH型)</item>
+        <item>定位器(KK型)</item>
         <item>C端追踪器</item>
-        <item>泛海三江烟雾传感器</item>
-        <item>泛海三江电表</item>
-        <item>赛特威尔可燃气传感器（CH4）</item>
-        <item>赛特威尔可燃气传感器（LPG）</item>
-        <item>金风通断监测传感器</item>
-        <item>曼顿电气火灾传感器</item>
+        <item>烟雾传感器(FH型)</item>
+        <item>电表(FH型)</item>
+        <item>可燃气传感器-CH4(ST型）</item>
+        <item>可燃气传感器-LPG(ST型）</item>
+        <item>通断监测传感器(JF型)</item>
+        <item>电气火灾传感器(MT型)</item>
+        <item>三相电(AC型)</item>
+
 
     </string-array>
     <string-array name="filter_device_band_array">
