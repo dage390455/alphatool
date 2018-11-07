@@ -45,17 +45,25 @@ public class CmdType {
     public static final int CMD_PRESSURE = 0x19;
     public static final int CMD_SET_ELEC_CMD = 0x20;
     public static final int CMD_SET_MANTUN_CMD = 0x21;
+    public static final int CMD_SET_ACREL_CMD = 0x22;
     //电表命令
-    public static final int CMD_ELEC_RESET = 1;
-    public static final int CMD_ELEC_RESTORE = 2;
-    public static final int CMD_ELEC_AIR_SWITCH = 4;
-    public static final int CMD_ELEC_SELF_TEST = 8;
-    public static final int CMD_ELEC_SILENCE = 16;
-    public static final int CMD_ELEC_ZERO_POWER = 64;
+    public static final int CMD_ELEC_RESET = 0x100;
+    public static final int CMD_ELEC_RESTORE = 0x101;
+    public static final int CMD_ELEC_AIR_SWITCH = 0x102;
+    public static final int CMD_ELEC_SELF_TEST = 0x103;
+    public static final int CMD_ELEC_SILENCE = 0x104;
+    public static final int CMD_ELEC_ZERO_POWER = 0x105;
     //曼顿电表
-    public static final int CMD_MANTUN_SWITCH_IN = 1;
-    public static final int CMD_MANTUN_SWITCH_ON = 2;
-    public static final int CMD_MANTUN_SELF_CHICK = 4;
-    public static final int CMD_MANTUN_ZERO_POWER = 8;
-    public static final int CMD_MANTUN_RESTORE = 16;
+    public static final int CMD_MANTUN_SWITCH_IN = 0x106;
+    public static final int CMD_MANTUN_SWITCH_ON = 0x107;
+    public static final int CMD_MANTUN_SELF_CHICK = 0x108;
+    public static final int CMD_MANTUN_ZERO_POWER = 0x109;
+    public static final int CMD_MANTUN_RESTORE = 0x110;
+    //安瑞科三相电
+    public static final int CMD_ACREL_RESET = 0x111;
+    public static final int CMD_ACREL_SELF_CHECK = 0x112;
+    //嘉德 自研烟感
+    public static final int CMD_CAYMAN_SELEF_CHECK = 0x113;
+    public static final int CMD_CAYMAN_RESET = 0x114;
+    public static final int CMD_CAYMAN_CLEAR_SOUND = 0x115;
 }

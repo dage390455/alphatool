@@ -75,6 +75,34 @@ public class SensoroDeviceConfiguration {
     boolean hasCustom;
     boolean hasFlame;
     boolean hasDelay;
+    boolean hasSglStauts;
+    boolean hasSglDataRate;
+
+    public boolean isHasSglStauts() {
+        return hasSglStauts;
+    }
+
+    public void setHasSglStauts(boolean hasSglStauts) {
+        this.hasSglStauts = hasSglStauts;
+    }
+
+    public boolean isHasSglDataRate() {
+        return hasSglDataRate;
+    }
+
+    public void setHasSglDataRate(boolean hasSglDataRate) {
+        this.hasSglDataRate = hasSglDataRate;
+    }
+
+    public boolean isHasSglFrequency() {
+        return hasSglFrequency;
+    }
+
+    public void setHasSglFrequency(boolean hasSglFrequency) {
+        this.hasSglFrequency = hasSglFrequency;
+    }
+
+    boolean hasSglFrequency;
     boolean hasAlarmHigh;
     boolean hasAlarmLow;
     boolean hasAlarmStepHigh;
@@ -160,6 +188,9 @@ public class SensoroDeviceConfiguration {
         hasCustom = builder.hasCustom;
         hasFlame = builder.hasFlame;
         hasDelay = builder.hasDelay;
+        hasSglStauts = builder.hasSglStatus;
+        hasSglDataRate = builder.hasSglDataRate;
+        hasSglFrequency = builder.hasSglFrequency;
         //
         alarmStepHigh = builder.alarmStepHigh;
         alarmStepLow = builder.alarmStepLow;
@@ -372,6 +403,16 @@ public class SensoroDeviceConfiguration {
 
     public boolean hasDevAddr() {
         return hasDevAddr;
+    }
+
+    public boolean hasSglStatus() {
+        return hasSglStauts;
+    }
+    public boolean hasSglDataRate() {
+        return hasSglDataRate;
+    }
+    public boolean hasSglFrequency() {
+        return hasSglFrequency;
     }
 
     public boolean hasIBeacon() {
@@ -618,6 +659,9 @@ public class SensoroDeviceConfiguration {
         private boolean hasSensorBroadcast;
         private boolean hasCustom;
         private boolean hasFlame;
+        private boolean hasSglStatus;
+        private boolean hasSglDataRate;
+        private boolean hasSglFrequency;
         private SensoroSensorConfiguration sensorConfiguration;
 
         public Builder() {
@@ -668,6 +712,9 @@ public class SensoroDeviceConfiguration {
             this.delay = null;
             this.channelList = null;
             this.hasDelay = false;
+            this.hasSglStatus = false;
+            this.hasSglDataRate = false;
+            this.hasSglFrequency = false;
             this.hasUploadInterval = false;
             this.hasConfirm = false;
             this.hasActivation = false;
@@ -953,6 +1000,21 @@ public class SensoroDeviceConfiguration {
 
         public Builder setHasDevAddr(boolean hasDevAddr) {
             this.hasDevAddr = hasDevAddr;
+            return this;
+        }
+
+        public Builder setHasSglStatus(boolean hasSglStatus) {
+            this.hasSglStatus = hasSglStatus;
+            return this;
+        }
+
+        public Builder setHasSglDataRate(boolean hasSglDataRate) {
+            this.hasSglDataRate = hasSglDataRate;
+            return this;
+        }
+
+        public Builder setHasSglFrequency(boolean hasSglFrequency) {
+            this.hasSglFrequency = hasSglFrequency;
             return this;
         }
 

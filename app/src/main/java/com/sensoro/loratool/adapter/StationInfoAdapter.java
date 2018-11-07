@@ -469,9 +469,6 @@ public class StationInfoAdapter extends BaseAdapter {
 
     public void refreshNew(SensoroStation sensoroStation, boolean isSearchStatus) {
         String sn = sensoroStation.getSn();
-        if (sn.endsWith("DBC9")) {
-            Log.e("", "refreshNew: ------");
-        }
         if (!mNearByStationMap.containsKey(sn)) {
             mNearByStationMap.put(sn, sensoroStation);
             notifyDataSetChanged();

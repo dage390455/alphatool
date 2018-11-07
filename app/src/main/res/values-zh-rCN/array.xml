@@ -220,6 +220,18 @@
         <item>924.6MHz</item>
 
     </string-array>
+    <string-array name="signal_cn470_band_array">
+        <item>随机</item>
+        <item>486.3MHz</item>
+        <item>486.5MHz</item>
+        <item>486.7MHz</item>
+        <item>486.9MHz</item>
+        <item>487.1MHz</item>
+        <item>487.3MHz</item>
+        <item>487.5MHz</item>
+        <item>487.7MHz</item>
+
+    </string-array>
     <string-array name="signal_eu433_band_array">
         <item>随机</item>
         <item>433.175MHz</item>
@@ -299,6 +311,15 @@
         <item>1.5</item>
         <item>1.6</item>
         <item>1.7</item>
+        <item>1.8</item>
+        <item>1.9</item>
+        <item>2.0</item>
+        <item>2.1</item>
+        <item>2.2</item>
+        <item>2.3</item>
+        <item>2.4</item>
+        <item>2.5</item>
+        <item>2.6</item>
     </string-array>
     <string-array name="filter_device_hardware_array">
         <item>通用设备</item>

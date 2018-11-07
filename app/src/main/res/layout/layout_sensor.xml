@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
+              android:layout_height="wrap_content"
               android:orientation="vertical">
 
     <!--CO-->
@@ -2655,5 +2655,12 @@
             android:contentDescription="@null"/>
     </LinearLayout>
 
+    <!--安瑞科三相电-->
+    <include layout="@layout/layout_acrel"/>
+
+    <!--嘉德 自研烟感-->
+    <include layout="@layout/layout_cay_man"/>
+
     <include layout="@layout/layout_smoke"/>
+
 </LinearLayout>

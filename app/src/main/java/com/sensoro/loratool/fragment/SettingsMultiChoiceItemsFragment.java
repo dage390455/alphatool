@@ -10,10 +10,13 @@ import android.widget.TextView;
 
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.activity.SettingDeviceActivity;
+import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.model.ChannelData;
 import com.sensoro.loratool.utils.DialogFragmentUtils;
 
 import java.util.ArrayList;
+
+import static com.sensoro.loratool.constant.Constants.SETTINGS_DEVICE_RL_ACREL_CURR_HIGH_TYPE;
 
 
 /**
@@ -55,7 +58,7 @@ public class SettingsMultiChoiceItemsFragment extends SettingsBaseDialogFragment
                     b_array[i] = false;
                 }
             }
-            if (title != R.string.prevent_squatters) {
+            if (title != R.string.prevent_squatters && title != R.string.tag_setting) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                         .setTitle(title)
                         .setView(dialogView)
@@ -152,28 +155,38 @@ public class SettingsMultiChoiceItemsFragment extends SettingsBaseDialogFragment
 
     public int getTitleId() {
         String tag = getTag();
-        if (tag.equals(SettingDeviceActivity.SETTINGS_BLE_POWER)) {
-            return R.string.setting_power;
-        } else if (tag.equals(SettingDeviceActivity.SETTINGS_ADV_INTERVAL)) {
-            return R.string.setting_rate;
-        } else if (tag.equals(SettingDeviceActivity.SETTINGS_BROADCAST_KEY)) {
-            return R.string.prevent_squatters;
-        } else if (tag.equals(SettingDeviceActivity.SETTINGS_TEMP_INTERVAL)) {
-            return R.string.setting_temp;
-        } else if (tag.equals(SettingDeviceActivity.SETTINGS_LIGHT_INTERVAL)) {
-            return R.string.setting_brightness;
-        } else if (tag.equals(SettingDeviceActivity.SETTINGS_ACCELER)) {
-            return R.string.setting_speed;
-        } else if (tag.equals(SettingDeviceActivity.SETTINGS_TLM_INTERVAL)) {
-            return R.string.settings_tlm_interval;
-        } else if (tag.equals(SettingDeviceActivity.SETTINGS_HUMIDITY_INTERVAL)) {
-            return R.string.setting_humidity;
-        } else if (tag.equals(SettingDeviceActivity.SETTINGS_BLE_TURNON_TIME)) {
-            return R.string.setting_ble_turnon_time;
-        } else if (tag.equals(SettingDeviceActivity.SETTINGS_BLE_TURNOFF_TIME)) {
-            return R.string.setting_ble_turnoff_time;
-        } else if (tag.equals(SettingDeviceActivity.SETTINGS_LORA_TXP)) {
-            return R.string.setting_lora_txp;
+        switch (tag){
+            case SettingDeviceActivity.SETTINGS_BLE_POWER:
+                return R.string.setting_power;
+            case SettingDeviceActivity.SETTINGS_ADV_INTERVAL:
+                return R.string.setting_rate;
+            case SettingDeviceActivity.SETTINGS_BROADCAST_KEY:
+                return R.string.prevent_squatters;
+            case SettingDeviceActivity.SETTINGS_TEMP_INTERVAL:
+                return R.string.setting_temp;
+            case SettingDeviceActivity.SETTINGS_LIGHT_INTERVAL:
+                return R.string.setting_brightness;
+            case SettingDeviceActivity.SETTINGS_ACCELER:
+                return R.string.setting_speed;
+            case SettingDeviceActivity.SETTINGS_TLM_INTERVAL:
+                return R.string.settings_tlm_interval;
+            case SettingDeviceActivity.SETTINGS_HUMIDITY_INTERVAL:
+                return R.string.setting_humidity;
+            case SettingDeviceActivity.SETTINGS_BLE_TURNON_TIME:
+                return R.string.setting_ble_turnon_time;
+            case SettingDeviceActivity.SETTINGS_BLE_TURNOFF_TIME:
+                return R.string.setting_ble_turnoff_time;
+            case SettingDeviceActivity.SETTINGS_LORA_TXP:
+                return R.string.setting_lora_txp;
+            case SettingDeviceActivity.SETTINGS_DEVICE_RL_ACREL_CONNECT_SW:
+            case SettingDeviceActivity.SETTINGS_DEVICE_RL_ACREL_CH_ENABLE:
+            case SettingDeviceActivity.SETTINGS_DEVICE_RL_ACREL_VAL_HIGH_TYPE:
+            case SettingDeviceActivity.SETTINGS_DEVICE_RL_ACREL_VAL_Low_TYPE:
+            case SettingDeviceActivity.SETTINGS_DEVICE_RL_ACREL_CURR_HIGH_TYPE:
+                return R.string.tag_setting;
+
+
+
         }
         return R.string.settings;
     }

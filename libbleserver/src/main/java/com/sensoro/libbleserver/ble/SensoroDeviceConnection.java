@@ -1,7 +1,5 @@
 package com.sensoro.libbleserver.ble;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
@@ -11,11 +9,12 @@ import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v7.widget.DialogTitle;
 import android.util.Log;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.sensoro.libbleserver.ble.bean.SensoroAcrelFires;
+import com.sensoro.libbleserver.ble.bean.SensoroCayManData;
 import com.sensoro.libbleserver.ble.proto.MsgNode1V1M5;
 import com.sensoro.libbleserver.ble.scanner.SensoroUUID;
 import com.sensoro.libbleserver.ble.proto.ProtoMsgCfgV1U1;
@@ -93,10 +92,12 @@ public class SensoroDeviceConnection {
                     gatt.discoverServices();
                     count = 0;
                 } else {
+                    LogUtils.loge("连接状态connected 没有成功");
                     reConnectDevice(ResultCode.BLUETOOTH_ERROR, "连接失败 bluetoothgatt");
 
                 }
             }else if(newState == BluetoothProfile.STATE_DISCONNECTED){
+                LogUtils.loge("连接失败 disconnect");
                 reConnectDevice(ResultCode.BLUETOOTH_ERROR, "连接失败 disconnect");
 
             }
@@ -303,6 +304,7 @@ public class SensoroDeviceConnection {
         if(count<6){
             count++;
             freshCache();
+            LogUtils.loge("count:::"+count);
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -814,95 +816,95 @@ public class SensoroDeviceConnection {
                     sensoroDevice.setHasBleOnOff(bleParam.hasBleOnOff());
                 }
             }
-            boolean hasLoraParam = msgNode.hasLoraParam();
-            sensoroDevice.setHasLoraParam(hasLoraParam);
-            if (hasLoraParam) {
-                MsgNode1V1M5.LoraParam loraParam = msgNode.getLoraParam();
-                boolean hasAdr = loraParam.hasAdr();
+            boolean hasLpwanParam = msgNode.hasLpwanParam();
+            sensoroDevice.setHasLoraParam(hasLpwanParam);
+            if (hasLpwanParam) {
+                MsgNode1V1M5.LpwanParam lpwanParam = msgNode.getLpwanParam();
+                boolean hasAdr = lpwanParam.hasAdr();
                 sensoroDevice.setHasAdr(hasAdr);
                 if (hasAdr) {
-                    sensoroDevice.setLoraAdr(loraParam.getAdr());
+                    sensoroDevice.setLoraAdr(lpwanParam.getAdr());
                 }
-                boolean hasAppKey = loraParam.hasAppKey();
+                boolean hasAppKey = lpwanParam.hasAppKey();
                 sensoroDevice.setHasAppKey(hasAppKey);
                 if (hasAppKey) {
-                    sensoroDevice.setAppKey(SensoroUtils.bytesToHexString(loraParam.getAppKey().toByteArray()));
+                    sensoroDevice.setAppKey(SensoroUtils.bytesToHexString(lpwanParam.getAppKey().toByteArray()));
                 }
-                boolean hasAppSkey = loraParam.hasAppSkey();
+                boolean hasAppSkey = lpwanParam.hasAppSkey();
                 sensoroDevice.setHasAppSkey(hasAppSkey);
                 if (hasAppSkey) {
-                    sensoroDevice.setAppSkey(SensoroUtils.bytesToHexString(loraParam.getAppSkey().toByteArray()));
+                    sensoroDevice.setAppSkey(SensoroUtils.bytesToHexString(lpwanParam.getAppSkey().toByteArray()));
                 }
-                boolean hasNwkSkey = loraParam.hasNwkSkey();
+                boolean hasNwkSkey = lpwanParam.hasNwkSkey();
                 sensoroDevice.setHasNwkSkey(hasNwkSkey);
                 if (hasNwkSkey) {
-                    sensoroDevice.setNwkSkey(SensoroUtils.bytesToHexString(loraParam.getNwkSkey().toByteArray()));
+                    sensoroDevice.setNwkSkey(SensoroUtils.bytesToHexString(lpwanParam.getNwkSkey().toByteArray()));
                 }
-                boolean hasDevAddr = loraParam.hasDevAddr();
+                boolean hasDevAddr = lpwanParam.hasDevAddr();
                 sensoroDevice.setHasDevAddr(hasDevAddr);
                 if (hasDevAddr) {
-                    sensoroDevice.setDevAdr(loraParam.getDevAddr());
+                    sensoroDevice.setDevAdr(lpwanParam.getDevAddr());
                 }
                 //TODO LoraDr?
-                sensoroDevice.setLoraDr(loraParam.getDatarate());
+                sensoroDevice.setLoraDr(lpwanParam.getDatarate());
 
-                boolean hasDevEui = loraParam.hasDevEui();
+                boolean hasDevEui = lpwanParam.hasDevEui();
                 sensoroDevice.setHasDevEui(hasDevEui);
                 if (hasDevEui) {
-                    sensoroDevice.setDevEui(SensoroUtils.bytesToHexString(loraParam.getDevEui().toByteArray()));
+                    sensoroDevice.setDevEui(SensoroUtils.bytesToHexString(lpwanParam.getDevEui().toByteArray()));
                 }
 
-                boolean hasAppEui = loraParam.hasAppEui();
+                boolean hasAppEui = lpwanParam.hasAppEui();
                 sensoroDevice.setHasAppEui(hasAppEui);
                 if (hasAppEui) {
-                    sensoroDevice.setAppEui(SensoroUtils.bytesToHexString(loraParam.getAppEui().toByteArray()));
+                    sensoroDevice.setAppEui(SensoroUtils.bytesToHexString(lpwanParam.getAppEui().toByteArray()));
                 }
 
-                boolean hasDataRate = loraParam.hasDatarate();
+                boolean hasDataRate = lpwanParam.hasDatarate();
                 sensoroDevice.setHasDataRate(hasDataRate);
                 //TODO classB?
                 if (hasDataRate) {
-                    sensoroDevice.setClassBDataRate(loraParam.getDatarate());
+                    sensoroDevice.setClassBDataRate(lpwanParam.getDatarate());
                 }
 
-                boolean hasTxPower = loraParam.hasTxPower();
+                boolean hasTxPower = lpwanParam.hasTxPower();
                 sensoroDevice.setHasLoraTxp(hasTxPower);
                 if (hasTxPower) {
-                    sensoroDevice.setLoraTxp(loraParam.getTxPower());
+                    sensoroDevice.setLoraTxp(lpwanParam.getTxPower());
                 }
 
-                boolean hasActivation = loraParam.hasActivition();
+                boolean hasActivation = lpwanParam.hasActivition();
                 sensoroDevice.setHasActivation(hasActivation);
                 if (hasActivation) {
-                    sensoroDevice.setActivation(loraParam.getActivition().getNumber());
+                    sensoroDevice.setActivation(lpwanParam.getActivition().getNumber());
                 }
 
-                boolean hasDelay = loraParam.hasDelay();
+                boolean hasDelay = lpwanParam.hasDelay();
                 sensoroDevice.setHasDelay(hasDelay);
                 if (hasDelay) {
-                    sensoroDevice.setDelay(loraParam.getDelay());
+                    sensoroDevice.setDelay(lpwanParam.getDelay());
                 }
                 //
-                sensoroDevice.setChannelMaskList(loraParam.getChannelMaskList());
-                boolean hasMaxEIRP = loraParam.hasMaxEIRP();
+                sensoroDevice.setChannelMaskList(lpwanParam.getChannelMaskList());
+                boolean hasMaxEIRP = lpwanParam.hasMaxEIRP();
                 sensoroDevice.setHasMaxEirp(hasMaxEIRP);
                 if (hasMaxEIRP) {
-                    sensoroDevice.setMaxEirp(loraParam.getMaxEIRP());
+                    sensoroDevice.setMaxEirp(lpwanParam.getMaxEIRP());
                 }
-                boolean hasSglStatus = loraParam.hasSglStatus();
+                boolean hasSglStatus = lpwanParam.hasSglStatus();
                 sensoroDevice.setHasSglStatus(hasSglStatus);
                 if (hasSglStatus) {
-                    sensoroDevice.setSglStatus(loraParam.getSglStatus());
+                    sensoroDevice.setSglStatus(lpwanParam.getSglStatus());
                 }
-                boolean hasSglDatarate = loraParam.hasSglDatarate();
+                boolean hasSglDatarate = lpwanParam.hasSglDatarate();
                 sensoroDevice.setHasSglDatarate(hasSglDatarate);
                 if (hasSglDatarate) {
-                    sensoroDevice.setSglDatarate(loraParam.getSglDatarate());
+                    sensoroDevice.setSglDatarate(lpwanParam.getSglDatarate());
                 }
-                boolean hasSglFrequency = loraParam.hasSglFrequency();
+                boolean hasSglFrequency = lpwanParam.hasSglFrequency();
                 sensoroDevice.setHasSglFrequency(hasSglFrequency);
                 if (hasSglFrequency) {
-                    sensoroDevice.setSglFrequency(loraParam.getSglFrequency());
+                    sensoroDevice.setSglFrequency(lpwanParam.getSglFrequency());
                 }
 
             }
@@ -1436,6 +1438,118 @@ public class SensoroDeviceConnection {
                 }
 
             }
+            //安科瑞三相电
+            boolean hasAcrelData = msgNode.hasAcrelData();
+            sensoroSensorTest.hasAcrelFires = hasAcrelData;
+            if(hasAcrelData){
+                MsgNode1V1M5.AcrelData acrelData = msgNode.getAcrelData();
+                sensoroSensorTest.acrelFires = new SensoroAcrelFires();
+                sensoroSensorTest.acrelFires.hasConnectSw = acrelData.hasConnectSw();
+                if(acrelData.hasConnectSw()){
+                    sensoroSensorTest.acrelFires.connectSw = acrelData.getConnectSw();
+                }
+                sensoroSensorTest.acrelFires.hasChEnable = acrelData.hasChEnable();
+                if(acrelData.hasChEnable()){
+                    sensoroSensorTest.acrelFires.chEnable = acrelData.getChEnable();
+                }
+                sensoroSensorTest.acrelFires.hasLeakageTh = acrelData.hasLeakageTh();
+                if(acrelData.hasLeakageTh()){
+                    sensoroSensorTest.acrelFires.leakageTh = acrelData.getLeakageTh();
+                }
+                sensoroSensorTest.acrelFires.hasT1Th = acrelData.hasT1Th();
+                if(acrelData.hasT1Th()){
+                    sensoroSensorTest.acrelFires.t1Th = acrelData.getT1Th();
+                }
+                sensoroSensorTest.acrelFires.hasT2Th = acrelData.hasT2Th();
+                if(acrelData.hasT2Th()){
+                    sensoroSensorTest.acrelFires.t2Th = acrelData.getT2Th();
+                }
+                sensoroSensorTest.acrelFires.hasT3Th = acrelData.hasT3Th();
+                if(acrelData.hasT3Th()){
+                    sensoroSensorTest.acrelFires.t3Th = acrelData.getT3Th();
+                }
+                sensoroSensorTest.acrelFires.hasT4Th = acrelData.hasT4Th();
+                if(acrelData.hasT4Th()){
+                    sensoroSensorTest.acrelFires.t4Th = acrelData.getT4Th();
+                }
+                sensoroSensorTest.acrelFires.hasPasswd = acrelData.hasPasswd();
+                if(acrelData.hasPasswd()){
+                    sensoroSensorTest.acrelFires.passwd = acrelData.getPasswd();
+                }
+                sensoroSensorTest.acrelFires.hasValHighSet = acrelData.hasValHighSet();
+                if(acrelData.hasValHighSet()){
+                    sensoroSensorTest.acrelFires.valHighSet = acrelData.getValHighSet();
+                }
+                sensoroSensorTest.acrelFires.hasValLowSet = acrelData.hasValLowSet();
+                if(acrelData.hasValLowSet()){
+                    sensoroSensorTest.acrelFires.valLowSet = acrelData.getValLowSet();
+                }
+                sensoroSensorTest.acrelFires.hasCurrHighSet = acrelData.hasCurrHighSet();
+                if(acrelData.hasCurrHighSet()){
+                    sensoroSensorTest.acrelFires.currHighSet = acrelData.getCurrHighSet();
+                }
+                sensoroSensorTest.acrelFires.hasValHighType = acrelData.hasValHighType();
+                if(acrelData.hasValHighType()){
+                    sensoroSensorTest.acrelFires.valHighType = acrelData.getValHighType();
+                }
+                sensoroSensorTest.acrelFires.hasValLowType = acrelData.hasValLowType();
+                if(acrelData.hasValLowType()){
+                    sensoroSensorTest.acrelFires.valLowType = acrelData.getValLowType();
+                }
+                sensoroSensorTest.acrelFires.hasCurrHighType = acrelData.hasCurrHighType();
+                if(acrelData.hasCurrHighType()){
+                    sensoroSensorTest.acrelFires.currHighType = acrelData.getCurrHighType();
+                }
+                sensoroSensorTest.acrelFires.hasCmd = acrelData.hasCmd();
+                if(acrelData.hasCmd()){
+                    sensoroSensorTest.acrelFires.cmd = acrelData.getCmd();
+                }
+
+                //嘉德 自研烟感
+                boolean hasCaymanData = msgNode.hasCaymanData();
+                sensoroSensorTest.hasCayMan = hasCaymanData;
+                if (hasCaymanData) {
+                    MsgNode1V1M5.Cayman caymanData = msgNode.getCaymanData();
+                    sensoroSensorTest.cayManData = new SensoroCayManData();
+                    sensoroSensorTest.cayManData.hasIsSmoke = caymanData.hasIsSmoke();
+                    if (caymanData.hasIsSmoke()) {
+                        sensoroSensorTest.cayManData.isSmoke = caymanData.getIsSmoke();
+                    }
+                    sensoroSensorTest.cayManData.hasIsMoved = caymanData.hasIsMoved();
+                    if (caymanData.hasIsMoved()) {
+                        sensoroSensorTest.cayManData.isMoved = caymanData.getIsMoved();
+                    }
+                    sensoroSensorTest.cayManData.hasValueOfTem = caymanData.hasValueOfTem();
+                    if (caymanData.hasValueOfTem()) {
+                        sensoroSensorTest.cayManData.valueOfTem = caymanData.getValueOfTem();
+                    }
+                    sensoroSensorTest.cayManData.hasValueOfHum = caymanData.hasValueOfHum();
+                    if (caymanData.hasValueOfHum()) {
+                        sensoroSensorTest.cayManData.valueOfHum = caymanData.getValueOfHum();
+                    }
+                    sensoroSensorTest.cayManData.hasAlarmOfHighTem = caymanData.hasAlarmOfHighTem();
+                    if (caymanData.hasAlarmOfHighTem()) {
+                        sensoroSensorTest.cayManData.alarmOfHighTem = caymanData.getAlarmOfHighTem();
+                    }
+                    sensoroSensorTest.cayManData.hasAlarmOfLowTem = caymanData.hasAlarmOfLowTem();
+                    if (caymanData.hasAlarmOfLowTem()) {
+                        sensoroSensorTest.cayManData.alarmOfLowTem = caymanData.getAlarmOfLowTem();
+                    }
+                    sensoroSensorTest.cayManData.hasAlarmOfHighHum = caymanData.hasAlarmOfHighHum();
+                    if (caymanData.hasAlarmOfHighHum()) {
+                        sensoroSensorTest.cayManData.alarmOfHighHum = caymanData.getAlarmOfHighHum();
+                    }
+                    sensoroSensorTest.cayManData.hasAlarmOfLowHum = caymanData.hasAlarmOfLowHum();
+                    if (caymanData.hasAlarmOfLowHum()) {
+                        sensoroSensorTest.cayManData.alarmOfLowHum = caymanData.getAlarmOfLowHum();
+                    }
+                    sensoroSensorTest.cayManData.hasCmd = caymanData.hasCmd();
+                    if (caymanData.hasCmd()) {
+                        sensoroSensorTest.cayManData.cmd = caymanData.getCmd();
+                    }
+
+                }
+            }
             sensoroDevice.setSensoroSensorTest(sensoroSensorTest);
             sensoroDevice.setDataVersion(DATA_VERSION_05);
             sensoroDevice.setHasSensorParam(true);
@@ -1672,7 +1786,7 @@ public class SensoroDeviceConnection {
             break;
             case DATA_VERSION_05: {
                 MsgNode1V1M5.MsgNode.Builder builder = MsgNode1V1M5.MsgNode.newBuilder();
-                MsgNode1V1M5.LoraParam.Builder loraParamBuilder = MsgNode1V1M5.LoraParam.newBuilder();
+                MsgNode1V1M5.LpwanParam.Builder loraParamBuilder = MsgNode1V1M5.LpwanParam.newBuilder();
                 if (deviceConfiguration.hasDevEui()) {
                     loraParamBuilder.setDevEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration
                             .devEui))));
@@ -1699,6 +1813,17 @@ public class SensoroDeviceConnection {
                 if (deviceConfiguration.hasDelay()) {
                     loraParamBuilder.setDelay(deviceConfiguration.delay);
                 }
+//                if (deviceConfiguration.hasSglStatus()) {
+//                    loraParamBuilder.setSglStatus(deviceConfiguration.sglStatus);
+//                }
+//
+//                if (deviceConfiguration.hasSglDataRate()) {
+//                    loraParamBuilder.setSglDatarate(deviceConfiguration.sglDatarate);
+//                }
+//
+//                if (deviceConfiguration.hasSglFrequency()) {
+//                    loraParamBuilder.setSglFrequency(deviceConfiguration.sglFrequency);
+//                }
                 List<Integer> channelList = deviceConfiguration.getChannelList();
                 loraParamBuilder.addAllChannelMask(channelList);
                 loraParamBuilder.setAdr(deviceConfiguration.getLoraAdr());
@@ -1706,7 +1831,7 @@ public class SensoroDeviceConnection {
                 if (deviceConfiguration.hasActivation()) {
                     loraParamBuilder.setActivition(MsgNode1V1M5.Activtion.valueOf(deviceConfiguration.activation));
                 }
-                builder.setLoraParam(loraParamBuilder);
+                builder.setLpwanParam(loraParamBuilder);
                 byte[] data = builder.build().toByteArray();
                 int data_length = data.length;
 
@@ -1877,7 +2002,7 @@ public class SensoroDeviceConnection {
             }
             msgNodeBuilder.setMultiTemp(builder);
         }
-        MsgNode1V1M5.LoraParam.Builder loraBuilder = MsgNode1V1M5.LoraParam.newBuilder();
+        MsgNode1V1M5.LpwanParam.Builder loraBuilder = MsgNode1V1M5.LpwanParam.newBuilder();
         loraBuilder.setTxPower(sensoroDeviceConfiguration.getLoraTxp());
 //        loraBuilder.setMaxEIRP(sensoroDeviceConfiguration.getLoraEirp());
 //        loraBuilder.setSglStatus(sensoroDeviceConfiguration.getSglStatus());
@@ -1890,7 +2015,7 @@ public class SensoroDeviceConnection {
         bleBuilder.setBleOnTime(sensoroDeviceConfiguration.getBleTurnOnTime());
         bleBuilder.setBleTxp(sensoroDeviceConfiguration.getBleTxp());
         msgNodeBuilder.setBleParam(bleBuilder);
-        msgNodeBuilder.setLoraParam(loraBuilder);
+        msgNodeBuilder.setLpwanParam(loraBuilder);
         byte[] data = msgNodeBuilder.build().toByteArray();
         int data_length = data.length;
 
@@ -2176,6 +2301,96 @@ public class SensoroDeviceConnection {
 
         }
 
+        //安科瑞三相电
+        if(sensoroSensorTest.hasAcrelFires){
+            MsgNode1V1M5.AcrelData.Builder builder = MsgNode1V1M5.AcrelData.newBuilder();
+            if (sensoroSensorTest.acrelFires.hasConnectSw) {
+                builder.setConnectSw(sensoroSensorTest.acrelFires.connectSw);
+            }
+            if (sensoroSensorTest.acrelFires.hasChEnable) {
+                builder.setChEnable(sensoroSensorTest.acrelFires.chEnable);
+            }
+            if (sensoroSensorTest.acrelFires.hasLeakageTh) {
+                builder.setLeakageTh(sensoroSensorTest.acrelFires.leakageTh);
+            }
+            if(sensoroSensorTest.acrelFires.hasPasswd){
+                builder.setPasswd(sensoroSensorTest.acrelFires.passwd);
+            }
+            if (sensoroSensorTest.acrelFires.hasT1Th) {
+                int t1Th = sensoroSensorTest.acrelFires.t1Th;
+                builder.setT1Th(sensoroSensorTest.acrelFires.t1Th);
+            }
+            if (sensoroSensorTest.acrelFires.hasT2Th) {
+                builder.setT2Th(sensoroSensorTest.acrelFires.t2Th);
+            }
+            if (sensoroSensorTest.acrelFires.hasT3Th) {
+                builder.setT3Th(sensoroSensorTest.acrelFires.t3Th);
+            }
+            if (sensoroSensorTest.acrelFires.hasT4Th) {
+                builder.setT4Th(sensoroSensorTest.acrelFires.t4Th);
+            }
+            if (sensoroSensorTest.acrelFires.hasPasswd) {
+                builder.setPasswd(sensoroSensorTest.acrelFires.passwd);
+            }
+            if (sensoroSensorTest.acrelFires.hasValHighSet) {
+                builder.setValHighSet(sensoroSensorTest.acrelFires.valHighSet);
+            }
+            if (sensoroSensorTest.acrelFires.hasValLowSet) {
+                builder.setValLowSet(sensoroSensorTest.acrelFires.valLowSet);
+            }
+            if (sensoroSensorTest.acrelFires.hasCurrHighSet) {
+                builder.setCurrHighSet(sensoroSensorTest.acrelFires.currHighSet);
+            }
+
+            if (sensoroSensorTest.acrelFires.hasValHighType) {
+                builder.setValHighType(sensoroSensorTest.acrelFires.valHighType);
+            }
+            if (sensoroSensorTest.acrelFires.hasValLowType) {
+                builder.setValLowType(sensoroSensorTest.acrelFires.valLowType);
+            }
+            if (sensoroSensorTest.acrelFires.hasCurrHighType) {
+                builder.setCurrHighType(sensoroSensorTest.acrelFires.currHighType);
+            }
+            if (sensoroSensorTest.acrelFires.hasCmd) {
+                builder.setCmd(sensoroSensorTest.acrelFires.cmd);
+            }
+            msgNodeBuilder.setAcrelData(builder);
+
+        }
+
+        //嘉德 自研烟感
+        if(sensoroSensorTest.hasCayMan){
+            MsgNode1V1M5.Cayman.Builder builder = MsgNode1V1M5.Cayman.newBuilder();
+            if (sensoroSensorTest.cayManData.hasIsSmoke) {
+                builder.setIsSmoke(sensoroSensorTest.cayManData.isSmoke);
+            }
+            if (sensoroSensorTest.cayManData.hasIsMoved) {
+                builder.setIsMoved(sensoroSensorTest.cayManData.isMoved);
+            }
+            if (sensoroSensorTest.cayManData.hasValueOfTem) {
+                builder.setValueOfTem(sensoroSensorTest.cayManData.valueOfTem);
+            }
+            if (sensoroSensorTest.cayManData.hasValueOfHum) {
+                builder.setValueOfHum(sensoroSensorTest.cayManData.valueOfHum);
+            }
+            if (sensoroSensorTest.cayManData.hasAlarmOfHighTem) {
+                builder.setAlarmOfHighTem(sensoroSensorTest.cayManData.alarmOfHighTem);
+            }
+            if (sensoroSensorTest.cayManData.hasAlarmOfLowTem) {
+                builder.setAlarmOfLowTem(sensoroSensorTest.cayManData.alarmOfLowTem);
+            }
+            if (sensoroSensorTest.cayManData.hasAlarmOfHighHum) {
+                builder.setAlarmOfHighHum(sensoroSensorTest.cayManData.alarmOfHighHum);
+            }
+            if (sensoroSensorTest.cayManData.hasAlarmOfLowHum) {
+                builder.setAlarmOfLowHum(sensoroSensorTest.cayManData.alarmOfLowHum);
+            }
+            if (sensoroSensorTest.cayManData.hasCmd) {
+                builder.setCmd(sensoroSensorTest.cayManData.cmd);
+            }
+            msgNodeBuilder.setCaymanData(builder);
+        }
+
         if (sensoroDevice.hasAppParam()) {
             MsgNode1V1M5.AppParam.Builder appBuilder = MsgNode1V1M5.AppParam.newBuilder();
             if (sensoroDevice.hasUploadInterval()) {
@@ -2190,7 +2405,7 @@ public class SensoroDeviceConnection {
 
 
 
-        MsgNode1V1M5.LoraParam.Builder loraBuilder = MsgNode1V1M5.LoraParam.newBuilder();
+        MsgNode1V1M5.LpwanParam.Builder loraBuilder = MsgNode1V1M5.LpwanParam.newBuilder();
         loraBuilder.setTxPower(sensoroDevice.getLoraTxp());
 //        loraBuilder.setMaxEIRP(sensoroDeviceConfiguration.getLoraEirp());
 //        loraBuilder.setSglStatus(sensoroDeviceConfiguration.getSglStatus());
@@ -2203,7 +2418,7 @@ public class SensoroDeviceConnection {
         bleBuilder.setBleOnTime(sensoroDevice.getBleOnTime());
         bleBuilder.setBleTxp(sensoroDevice.getBleTxp());
         msgNodeBuilder.setBleParam(bleBuilder);
-        msgNodeBuilder.setLoraParam(loraBuilder);
+        msgNodeBuilder.setLpwanParam(loraBuilder);
         byte[] data = msgNodeBuilder.build().toByteArray();
         int data_length = data.length;
 
@@ -2390,9 +2605,9 @@ public class SensoroDeviceConnection {
         writeCallbackHashMap.put(CmdType.CMD_W_CFG, writeCallback);
         MsgNode1V1M5.MsgNode.Builder msgNodeBuilder = MsgNode1V1M5.MsgNode.newBuilder();
         if (deviceConfiguration.hasLoraParam()) {
-            MsgNode1V1M5.LoraParam.Builder loraParamBuilder = MsgNode1V1M5.LoraParam.newBuilder();
+            MsgNode1V1M5.LpwanParam.Builder loraParamBuilder = MsgNode1V1M5.LpwanParam.newBuilder();
             loraParamBuilder.setTxPower(deviceConfiguration.loraTxp);
-            msgNodeBuilder.setLoraParam(loraParamBuilder);
+            msgNodeBuilder.setLpwanParam(loraParamBuilder);
         }
         if (deviceConfiguration.hasBleParam()) {
             MsgNode1V1M5.BleParam.Builder bleParamBuilder = MsgNode1V1M5.BleParam.newBuilder();
@@ -2770,6 +2985,14 @@ public class SensoroDeviceConnection {
         msgNodeBuilder.setMtunData(builder);
         byte[] data = msgNodeBuilder.build().toByteArray();
         writeData05Cmd(data, CmdType.CMD_SET_MANTUN_CMD, writeCallback);
+    }
+
+    public void writeAcrelCmd(MsgNode1V1M5.AcrelData.Builder builder, SensoroWriteCallback writeCallback) {
+        writeCallbackHashMap.put(CmdType.CMD_SET_ACREL_CMD, writeCallback);
+        MsgNode1V1M5.MsgNode.Builder msgNodeBuilder = MsgNode1V1M5.MsgNode.newBuilder();
+        msgNodeBuilder.setAcrelData(builder);
+        byte[] data = msgNodeBuilder.build().toByteArray();
+        writeData05Cmd(data, CmdType.CMD_SET_ACREL_CMD, writeCallback);
     }
 
     public void setOnSensoroDirectWriteDfuCallBack(SensoroDirectWriteDfuCallBack sensoroDirectWriteDfuCallBack) {

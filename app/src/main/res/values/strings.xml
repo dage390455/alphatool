@@ -440,7 +440,7 @@
     <string name="setting_text_nwk_address">DevAddr</string>
     <string name="setting_text_sf">SF</string>
     <string name="setting_text_activation">Activation</string>
-    <string name="setting_text_data_rate">Auto data rate</string>
+    <string name="setting_text_data_rate">Adaptive data rate</string>
     <string name="setting_text_classB">ClassB</string>
     <string name="setting_text_classB_enable">Enable ClassB</string>
     <string name="setting_text_classB_datarate">ClassB Data Rate</string>
@@ -542,4 +542,6 @@
     <string name="input_correct_sn" >Please enter the correct SN, which is 16 characters</string>
     <string name="ac_capture_scan_qr_code">扫描设备二维码,或：</string>
     <string name="ac_capture_input_sn">输入SN</string>
+    <string name="tag_setting">tag setting</string>
+    <string name="setting_text_sg_status">single channel</string>
 </resources>

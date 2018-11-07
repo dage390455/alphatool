@@ -144,7 +144,6 @@ public class ParamUtil {
                 return 0;
         }
     }
-
     public static int getLoraDr(String band, int index) {
 
         switch (band) {
@@ -331,6 +330,8 @@ public class ParamUtil {
             return context.getResources().getStringArray(R.array.signal_au915_band_array);
         } else if (band.equals(Constants.LORA_BAND_AS923)) {
             return context.getResources().getStringArray(R.array.signal_as923_band_array);
+        } else if (band.equals(Constants.LORA_BAND_CN470)) {
+            return context.getResources().getStringArray(R.array.signal_cn470_band_array);
         } else {
             return context.getResources().getStringArray(R.array.signal_se433_band_array);
         }

@@ -5,7 +5,8 @@ import android.util.Log;
 import com.sensoro.libbleserver.BuildConfig;
 
 public class LogUtils {
-    private static boolean isShowLog = BuildConfig.DEBUG;
+//    private static boolean isShowLog = BuildConfig.DEBUG;
+    private static boolean isShowLog = true;
     private static String TAG = "sensoro_log";
 
     public static void loge(String msg) {

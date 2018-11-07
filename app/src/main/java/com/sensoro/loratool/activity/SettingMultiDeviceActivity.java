@@ -1695,9 +1695,9 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
         String version = null;
         MsgNode1V1M5.MsgNode.Builder msgCfgBuilder = MsgNode1V1M5.MsgNode.newBuilder();
         if (targetDevice.hasLoraParam()) {
-            MsgNode1V1M5.LoraParam.Builder loraParamBuilder = MsgNode1V1M5.LoraParam.newBuilder();
+            MsgNode1V1M5.LpwanParam.Builder loraParamBuilder = MsgNode1V1M5.LpwanParam.newBuilder();
             loraParamBuilder.setTxPower(deviceConfiguration.getLoraTxp());
-            msgCfgBuilder.setLoraParam(loraParamBuilder);
+            msgCfgBuilder.setLpwanParam(loraParamBuilder);
         }
         if (targetDevice.hasBleParam()) {
             MsgNode1V1M5.BleParam.Builder bleParamBuilder = MsgNode1V1M5.BleParam.newBuilder();

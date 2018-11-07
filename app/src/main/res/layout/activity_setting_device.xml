@@ -1146,6 +1146,7 @@
                 android:orientation="vertical">
 
                 <include layout="@layout/layout_sensor" />
+
             </LinearLayout>
 
         </LinearLayout>

@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -248,7 +249,9 @@ public class StationFragment extends Fragment implements AdapterView.OnItemClick
 
 
     public void refreshNew( SensoroStation sensoroStation) {
+        Log.e("hcs","stationFragment:refreshNew::");
         if (mStationInfoAdapter != null) {
+            Log.e("hcs",":刷新::");
             mStationInfoAdapter.refreshNew( sensoroStation, false);
         }
     }

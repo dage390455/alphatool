@@ -164,6 +164,7 @@ public interface Constants {
     String[] CLASSB_PERIODICITY = {"1", "2", "4", "8", "16", "32", "64", "128"};
     int[] DELAY_VALUES = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
     String[] DELAY_ITEMS = {"1s", "2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "10s", "11s", "12s", "13s", "14s", "15s"};
+    String[] ON_OFF_ITEMS = {"开启","关闭"};
 
     int STATUS_SLOT_DISABLED = 0;
     int STATUS_SLOT_UID = 1;
@@ -284,6 +285,12 @@ public interface Constants {
     String SETTINGS_STATION_CLOUD_ADDRESS = "Settings_station_cloud_address";
     String SETTINGS_STATION_CLOUD_PORT = "Settings_station_cloud_port";
     String SETTINGS_STATION_KEY = "Settings_station_key";
+    String SETTINGS_DEVICE_SGL_STATUS = "settings_device_sgl_status";
+    String SETTINGS_DEVICE_SGL_DATA_RATE = "settings_device_sgl_data_rate";
+    String SETTINGS_DEVICE_SGL_FREQUENCY = "settings_device_sgl_frequency";
+
+
+
 
     //单通道传感器设置
     String SETTINGS_DEVICE_TEMPERATURE_PRESSURE_UPPER = "settings_device_temperature_pressure_upper";
@@ -308,6 +315,35 @@ public interface Constants {
     String SETTINGS_DEVICE_RL_MANTUN_POWER = "settings_device_rl_mantun_vol_power";
     String SETTINGS_DEVICE_RL_MANTUN_TEMP_OUTSIDE = "settings_device_rl_mantun_temp_outside";
     String SETTINGS_DEVICE_RL_MANTUN_TEMP_CONTACT = "settings_device_rl_mantun_temp_contact";
+
+    //安科瑞三相电
+    String SETTINGS_DEVICE_RL_ACREL_LEAKAGE = "settings_device_rl_acrel_leakage";
+    String SETTINGS_DEVICE_RL_ACREL_CONNECT_SW = "settings_device_rl_acrel_connect_sw";
+    String SETTINGS_DEVICE_RL_ACREL_CH_ENABLE = "settings_device_rl_acrel_ch_enable";
+    String SETTINGS_DEVICE_RL_ACREL_T1_TH = "settings_device_rl_acrel_t1_th";
+    String SETTINGS_DEVICE_RL_ACREL_T2_TH = "settings_device_rl_acrel_t2_th";
+    String SETTINGS_DEVICE_RL_ACREL_T3_TH = "settings_device_rl_acrel_t3_th";
+    String SETTINGS_DEVICE_RL_ACREL_T4_TH = "settings_device_rl_acrel_t4_th";
+    String SETTINGS_DEVICE_RL_ACREL_CURR_HIGH_SET = "settings_device_rl_acrel_curr_high_set";
+    String SETTINGS_DEVICE_RL_ACREL_VAL_HIGH_SET = "settings_device_rl_acrel_val_high_set";
+    String SETTINGS_DEVICE_RL_ACREL_VAL_LOW_SET = "settings_device_rl_acrel_val_low_set";
+    String SETTINGS_DEVICE_RL_ACREL_VAL_HIGH_TYPE = "settings_device_rl_acrel_val_high_type";
+    String SETTINGS_DEVICE_RL_ACREL_VAL_Low_TYPE = "settings_device_rl_acrel_val_low_type";
+    String SETTINGS_DEVICE_RL_ACREL_CURR_HIGH_TYPE = "settings_device_rl_acrel_curr_high_type";
+    String SETTINGS_DEVICE_RL_ACREL_PSD = "settings_device_rl_acrel_psd";
+
+    //嘉德 自研烟感
+    String SETTINGS_DEVICE_RL_CAYMAN_IS_SMOKE = "settings_device_rl_cayman_is_smoke";
+    String SETTINGS_DEVICE_RL_CAYMAN_IS_MOVED = "settings_device_rl_cayman_is_moved";
+    String SETTINGS_DEVICE_RL_CAYMAN_VALUE_OF_TEM = "settings_device_rl_cayman_value_of_tem";
+    String SETTINGS_DEVICE_RL_CAYMAN_VALUE_OF_HUM = "settings_device_rl_cayman_value_of_hum";
+    String SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_HIGH_TEM = "settings_device_rl_cayman_alarm_of_high_tem";
+    String SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_LOW_TEM = "settings_device_rl_cayman_alarm_of_low_tem";
+    String SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_HIGH_HUM = "settings_device_rl_cayman_alarm_of_high_hum";
+    String SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_LOW_HUM = "settings_device_rl_cayman_alarm_of_low_hum";
+
+
+
 
 
 

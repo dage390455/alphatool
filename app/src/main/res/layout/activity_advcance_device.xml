@@ -521,6 +521,125 @@
                     android:contentDescription="@null" />
             </RelativeLayout>
 
+            <!--sg status-->
+            <RelativeLayout
+                android:id="@+id/settings_device_rl_sgl_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_item_selector"
+                android:visibility="gone"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/settings_device_tv_sgl_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/setting_text_sg_status"
+                    android:textColor="#666666"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/settings_device_tv_sgl_status_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="15dp"
+                    android:layout_centerVertical="true"
+                    android:textColor="#a6a6a6a6"
+                    android:textSize="16sp" />
+
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_below="@id/settings_device_tv_sgl_status"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginTop="@dimen/y40"
+                    android:background="#c8c7cc"
+                    android:contentDescription="@null" />
+            </RelativeLayout>
+
+            <!--sg data rate-->
+            <RelativeLayout
+                android:id="@+id/settings_device_rl_sgl_data_rate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:background="@drawable/bg_item_selector"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/settings_device_tv_sgl_data_rate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/setting_text_classB_datarate"
+                    android:textColor="#666666"
+                    android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/settings_device_tv_sgl_data_rate_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="15dp"
+                    android:layout_centerVertical="true"
+                    android:textColor="#a6a6a6a6"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_below="@+id/settings_device_tv_sgl_data_rate"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginTop="@dimen/y40"
+                    android:background="#c8c7cc"
+                    android:contentDescription="@null" />
+            </RelativeLayout>
+
+            <!--sg frequency-->
+            <RelativeLayout
+                android:id="@+id/settings_device_rl_sgl_frequency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:background="@drawable/bg_item_selector"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/settings_device_tv_sgl_frequency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/sgl_freq"
+                    android:textColor="#666666"
+                    android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/settings_device_tv_sgl_frequency_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="15dp"
+                    android:layout_centerVertical="true"
+                    android:textColor="#a6a6a6a6"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_below="@+id/settings_device_tv_sgl_frequency"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginTop="@dimen/y40"
+                    android:background="#c8c7cc"
+                    android:contentDescription="@null" />
+            </RelativeLayout>
+
             <LinearLayout
                 android:id="@+id/settings_device_ll_delay"
                 android:layout_width="match_parent"

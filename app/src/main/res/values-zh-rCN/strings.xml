@@ -445,7 +445,7 @@
     <string name="setting_text_nwk_address">网络地址</string>
     <string name="setting_text_sf">扩频因子</string>
     <string name="setting_text_activation">激活方式</string>
-    <string name="setting_text_data_rate">Auto data rate</string>
+    <string name="setting_text_data_rate">Adaptive data rate</string>
     <string name="setting_text_classB">ClassB</string>
     <string name="setting_text_classB_enable">状态</string>
     <string name="setting_text_classB_datarate">扩频因子</string>
@@ -539,4 +539,8 @@
     <string name="ac_scan_obtain_fail">设备详情获取失败</string>
     <string name="ac_capture_scan_qr_code">扫描设备二维码,或：</string>
     <string name="ac_capture_input_sn">输入SN</string>
+    <string name="tag_setting">设 置</string>
+
+    <string name="setting_text_sg_status">单通道</string>
+
 </resources>

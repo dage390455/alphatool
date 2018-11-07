@@ -44,8 +44,10 @@ import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.event.OnPositiveButtonClickListener;
 import com.sensoro.loratool.fragment.SettingsInputDialogFragment;
 import com.sensoro.loratool.fragment.SettingsMajorMinorDialogFragment;
+import com.sensoro.loratool.fragment.SettingsMultiChoiceItemsDialogFragment;
 import com.sensoro.loratool.fragment.SettingsSingleChoiceItemsFragment;
 import com.sensoro.loratool.fragment.SettingsUUIDDialogFragment;
+import com.sensoro.loratool.model.ChannelData;
 import com.sensoro.loratool.store.DeviceDataDao;
 import com.sensoro.loratool.utils.ParamUtil;
 import com.umeng.analytics.MobclickAgent;
@@ -54,6 +56,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -527,6 +530,342 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     RelativeLayout settingsDeviceRlMauntonControlRestore;
     @BindView(R.id.settings_device_ll_maunton_control)
     LinearLayout settingsDeviceLlMauntonControl;
+    @BindView(R.id.settings_device_rl_ibeacon)
+    RelativeLayout settingsDeviceRlIbeacon;
+    @BindView(R.id.iv_uuid_value)
+    ImageView ivUuidValue;
+    @BindView(R.id.iv_major_value)
+    ImageView ivMajorValue;
+    @BindView(R.id.iv_minor_value)
+    ImageView ivMinorValue;
+    @BindView(R.id.layout_umm)
+    LinearLayout layoutUmm;
+    @BindView(R.id.settings_device_ll_umm)
+    LinearLayout settingsDeviceLlUmm;
+    @BindView(R.id.iv_power_value)
+    ImageView ivPowerValue;
+    @BindView(R.id.iv_rate_value)
+    ImageView ivRateValue;
+    @BindView(R.id.iv_turnon_time)
+    ImageView ivTurnonTime;
+    @BindView(R.id.iv_turnoff_time)
+    ImageView ivTurnoffTime;
+    @BindView(R.id.iv_transmit_power)
+    ImageView ivTransmitPower;
+    @BindView(R.id.iv_eirp)
+    ImageView ivEirp;
+    @BindView(R.id.iv_ad_interval_top)
+    ImageView ivAdIntervalTop;
+    @BindView(R.id.iv_ad_interval)
+    ImageView ivAdInterval;
+    @BindView(R.id.slot1_sep_iv1)
+    ImageView slot1SepIv1;
+    @BindView(R.id.slot1_item1_iv)
+    ImageView slot1Item1Iv;
+    @BindView(R.id.slot1_item2_iv)
+    ImageView slot1Item2Iv;
+    @BindView(R.id.slot1_sep_iv3)
+    ImageView slot1SepIv3;
+    @BindView(R.id.slot1_item3_tv)
+    TextView slot1Item3Tv;
+    @BindView(R.id.slot1_item3_iv)
+    ImageView slot1Item3Iv;
+    @BindView(R.id.slot1_item3_tv_v)
+    TextView slot1Item3TvV;
+    @BindView(R.id.settings_device_rl_slot1_item3)
+    RelativeLayout settingsDeviceRlSlot1Item3;
+    @BindView(R.id.slot1_sep_iv4)
+    ImageView slot1SepIv4;
+    @BindView(R.id.slot1_item4_tv)
+    TextView slot1Item4Tv;
+    @BindView(R.id.slot1_item4_iv)
+    ImageView slot1Item4Iv;
+    @BindView(R.id.slot1_item4_tv_v)
+    TextView slot1Item4TvV;
+    @BindView(R.id.settings_device_rl_slot1_item4)
+    RelativeLayout settingsDeviceRlSlot1Item4;
+    @BindView(R.id.slot2_sep_iv1)
+    ImageView slot2SepIv1;
+    @BindView(R.id.slot2_item1_iv)
+    ImageView slot2Item1Iv;
+    @BindView(R.id.slot2_item2_iv)
+    ImageView slot2Item2Iv;
+    @BindView(R.id.slot2_sep_iv3)
+    ImageView slot2SepIv3;
+    @BindView(R.id.slot2_item3_tv)
+    TextView slot2Item3Tv;
+    @BindView(R.id.slot2_item3_iv)
+    ImageView slot2Item3Iv;
+    @BindView(R.id.slot2_item3_tv_v)
+    TextView slot2Item3TvV;
+    @BindView(R.id.settings_device_rl_slot2_item3)
+    RelativeLayout settingsDeviceRlSlot2Item3;
+    @BindView(R.id.slot2_sep_iv4)
+    ImageView slot2SepIv4;
+    @BindView(R.id.slot2_item4_tv)
+    TextView slot2Item4Tv;
+    @BindView(R.id.slot2_item4_iv)
+    ImageView slot2Item4Iv;
+    @BindView(R.id.slot2_item4_tv_v)
+    TextView slot2Item4TvV;
+    @BindView(R.id.settings_device_rl_slot2_item4)
+    RelativeLayout settingsDeviceRlSlot2Item4;
+    @BindView(R.id.slot3_sep_iv1)
+    ImageView slot3SepIv1;
+    @BindView(R.id.slot3_item1_iv)
+    ImageView slot3Item1Iv;
+    @BindView(R.id.slot3_item2_iv)
+    ImageView slot3Item2Iv;
+    @BindView(R.id.slot3_sep_iv3)
+    ImageView slot3SepIv3;
+    @BindView(R.id.slot3_item3_tv)
+    TextView slot3Item3Tv;
+    @BindView(R.id.slot3_item3_iv)
+    ImageView slot3Item3Iv;
+    @BindView(R.id.slot3_item3_tv_v)
+    TextView slot3Item3TvV;
+    @BindView(R.id.settings_device_rl_slot3_item3)
+    RelativeLayout settingsDeviceRlSlot3Item3;
+    @BindView(R.id.slot3_sep_iv4)
+    ImageView slot3SepIv4;
+    @BindView(R.id.slot3_item4_tv)
+    TextView slot3Item4Tv;
+    @BindView(R.id.slot3_item4_iv)
+    ImageView slot3Item4Iv;
+    @BindView(R.id.slot3_item4_tv_v)
+    TextView slot3Item4TvV;
+    @BindView(R.id.settings_device_rl_slot3_item4)
+    RelativeLayout settingsDeviceRlSlot3Item4;
+    @BindView(R.id.slot4_sep_iv1)
+    ImageView slot4SepIv1;
+    @BindView(R.id.slot4_item1_iv)
+    ImageView slot4Item1Iv;
+    @BindView(R.id.slot4_item2_iv)
+    ImageView slot4Item2Iv;
+    @BindView(R.id.slot4_sep_iv3)
+    ImageView slot4SepIv3;
+    @BindView(R.id.slot4_item3_tv)
+    TextView slot4Item3Tv;
+    @BindView(R.id.slot4_item3_iv)
+    ImageView slot4Item3Iv;
+    @BindView(R.id.slot4_item3_tv_v)
+    TextView slot4Item3TvV;
+    @BindView(R.id.settings_device_rl_slot4_item3)
+    RelativeLayout settingsDeviceRlSlot4Item3;
+    @BindView(R.id.slot4_sep_iv4)
+    ImageView slot4SepIv4;
+    @BindView(R.id.slot4_item4_tv)
+    TextView slot4Item4Tv;
+    @BindView(R.id.slot4_item4_iv)
+    ImageView slot4Item4Iv;
+    @BindView(R.id.slot4_item4_tv_v)
+    TextView slot4Item4TvV;
+    @BindView(R.id.settings_device_rl_slot4_item4)
+    RelativeLayout settingsDeviceRlSlot4Item4;
+    @BindView(R.id.settings_device_rl_custom_package1_state)
+    RelativeLayout settingsDeviceRlCustomPackage1State;
+    @BindView(R.id.pack1_icon)
+    ImageView pack1Icon;
+    @BindView(R.id.settings_device_rl_custom_package2_state)
+    RelativeLayout settingsDeviceRlCustomPackage2State;
+    @BindView(R.id.pack2_icon)
+    ImageView pack2Icon;
+    @BindView(R.id.settings_device_rl_custom_package3_state)
+    RelativeLayout settingsDeviceRlCustomPackage3State;
+    @BindView(R.id.pack3_icon)
+    ImageView pack3Icon;
+    @BindView(R.id.settings_device_ll_custome_package3)
+    LinearLayout settingsDeviceLlCustomePackage3;
+    @BindView(R.id.iv_confirm_package)
+    ImageView ivConfirmPackage;
+    @BindView(R.id.iv_upload_upper_limit)
+    ImageView ivUploadUpperLimit;
+    @BindView(R.id.iv_co_upper_limit)
+    ImageView ivCoUpperLimit;
+    @BindView(R.id.iv_co2_upper_limit)
+    ImageView ivCo2UpperLimit;
+    @BindView(R.id.iv_no2_upper_limit)
+    ImageView ivNo2UpperLimit;
+    @BindView(R.id.iv_ch4_upper_limit)
+    ImageView ivCh4UpperLimit;
+    @BindView(R.id.iv_lpg_upper_limit)
+    ImageView ivLpgUpperLimit;
+    @BindView(R.id.iv_pm10_upper_limit)
+    ImageView ivPm10UpperLimit;
+    @BindView(R.id.iv_pm25_upper_limit)
+    ImageView ivPm25UpperLimit;
+    @BindView(R.id.iv_temp_upper_limit)
+    ImageView ivTempUpperLimit;
+    @BindView(R.id.iv_temp_lower_limit)
+    ImageView ivTempLowerLimit;
+    @BindView(R.id.iv_humidity_upper_limit)
+    ImageView ivHumidityUpperLimit;
+    @BindView(R.id.iv_humidity_lower_limit)
+    ImageView ivHumidityLowerLimit;
+    @BindView(R.id.iv_pitch_angle_upper_limit)
+    ImageView ivPitchAngleUpperLimit;
+    @BindView(R.id.iv_pitch_angle_lower_limit)
+    ImageView ivPitchAngleLowerLimit;
+    @BindView(R.id.iv_yaw_angle_upper_limit)
+    ImageView ivYawAngleUpperLimit;
+    @BindView(R.id.iv_yaw_angle_lower_limit)
+    ImageView ivYawAngleLowerLimit;
+    @BindView(R.id.iv_roll_angle_upper_limit)
+    ImageView ivRollAngleUpperLimit;
+    @BindView(R.id.iv_roll_angle_lower_limit)
+    ImageView ivRollAngleLowerLimit;
+    @BindView(R.id.settings_device_rl_angle_zero)
+    RelativeLayout settingsDeviceRlAngleZero;
+    @BindView(R.id.iv_water_pressure_upper_limit)
+    ImageView ivWaterPressureUpperLimit;
+    @BindView(R.id.iv_water_pressure_lower_limit)
+    ImageView ivWaterPressureLowerLimit;
+    @BindView(R.id.iv_temperature_pressure_upper_limit)
+    ImageView ivTemperaturePressureUpperLimit;
+    @BindView(R.id.iv_temperature_pressure_lower_limit)
+    ImageView ivTemperaturePressureLowerLimit;
+    @BindView(R.id.iv_temperature_pressure_upper_step_limit)
+    ImageView ivTemperaturePressureUpperStepLimit;
+    @BindView(R.id.iv_temperature_pressure_lower_step_limit)
+    ImageView ivTemperaturePressureLowerStepLimit;
+    @BindView(R.id.iv_fhsj_elec_pwd)
+    ImageView ivFhsjElecPwd;
+    @BindView(R.id.iv_fhsj_elec_leak)
+    ImageView ivFhsjElecLeak;
+    @BindView(R.id.iv_fhsj_elec_temp)
+    ImageView ivFhsjElecTemp;
+    @BindView(R.id.iv_fhsj_elec_current)
+    ImageView ivFhsjElecCurrent;
+    @BindView(R.id.iv_fhsj_elec_overload)
+    ImageView ivFhsjElecOverload;
+    @BindView(R.id.iv_fhsj_elec_overpressure)
+    ImageView ivFhsjElecOverpressure;
+    @BindView(R.id.iv_fhsj_elec_undervoltage)
+    ImageView ivFhsjElecUndervoltage;
+    @BindView(R.id.settings_device_tv_fhsj_elec_control_reset)
+    TextView settingsDeviceTvFhsjElecControlReset;
+    @BindView(R.id.settings_device_tv_fhsj_elec_control_restore)
+    TextView settingsDeviceTvFhsjElecControlRestore;
+    @BindView(R.id.settings_device_tv_fhsj_elec_control_air_switch)
+    TextView settingsDeviceTvFhsjElecControlAirSwitch;
+    @BindView(R.id.settings_device_tv_fhsj_elec_control_self_test)
+    TextView settingsDeviceTvFhsjElecControlSelfTest;
+    @BindView(R.id.settings_device_tv_fhsj_elec_control_silence)
+    TextView settingsDeviceTvFhsjElecControlSilence;
+    @BindView(R.id.settings_device_tv_fhsj_elec_control_zero_power)
+    TextView settingsDeviceTvFhsjElecControlZeroPower;
+    @BindView(R.id.settings_device_rl_smoke)
+    RelativeLayout settingsDeviceRlSmoke;
+    @BindView(R.id.settings_device_rl_smoke_start)
+    RelativeLayout settingsDeviceRlSmokeStart;
+    @BindView(R.id.settings_device_rl_smoke_stop)
+    RelativeLayout settingsDeviceRlSmokeStop;
+    @BindView(R.id.settings_device_rl_smoke_silence)
+    RelativeLayout settingsDeviceRlSmokeSilence;
+    @BindView(R.id.acrel_leakage_th_content)
+    TextView acrelLeakageThContent;
+    @BindView(R.id.acrel_leakage_th)
+    LinearLayout acrelLeakageTh;
+    @BindView(R.id.acrel_connect_sw_content)
+    TextView acrelConnectSwContent;
+    @BindView(R.id.acrel_connect_sw)
+    LinearLayout acrelConnectSw;
+    @BindView(R.id.acrel_ch_enable_content)
+    TextView acrelChEnableContent;
+    @BindView(R.id.acrel_ch_enable)
+    LinearLayout acrelChEnable;
+    @BindView(R.id.acrel_t1_th_content)
+    TextView acrelT1ThContent;
+    @BindView(R.id.acrel_t1_th)
+    LinearLayout acrelT1Th;
+    @BindView(R.id.acrel_t2_th_content)
+    TextView acrelT2ThContent;
+    @BindView(R.id.acrel_t2_th)
+    LinearLayout acrelT2Th;
+    @BindView(R.id.acrel_t3_th_content)
+    TextView acrelT3ThContent;
+    @BindView(R.id.acrel_t3_th)
+    LinearLayout acrelT3Th;
+    @BindView(R.id.acrel_t4_th_content)
+    TextView acrelT4ThContent;
+    @BindView(R.id.acrel_t4_th)
+    LinearLayout acrelT4Th;
+    @BindView(R.id.acrel_curr_high_set_content)
+    TextView acrelCurrHighSetContent;
+    @BindView(R.id.acrel_curr_high_set)
+    LinearLayout acrelCurrHighSet;
+    @BindView(R.id.acrel_val_high_set_content)
+    TextView acrelValHighSetContent;
+    @BindView(R.id.acrel_val_high_set)
+    LinearLayout acrelValHighSet;
+    @BindView(R.id.acrel_val_low_set_content)
+    TextView acrelValLowSetContent;
+    @BindView(R.id.acrel_val_low_set)
+    LinearLayout acrelValLowSet;
+    @BindView(R.id.acrel_val_high_type_content)
+    TextView acrelValHighTypeContent;
+    @BindView(R.id.acrel_val_high_type)
+    LinearLayout acrelValHighType;
+    @BindView(R.id.acrel_val_low_type_content)
+    TextView acrelValLowTypeContent;
+    @BindView(R.id.acrel_val_low_type)
+    LinearLayout acrelValLowType;
+    @BindView(R.id.acrel_curr_high_type_content)
+    TextView acrelCurrHighTypeContent;
+    @BindView(R.id.acrel_curr_high_type)
+    LinearLayout acrelCurrHighType;
+    @BindView(R.id.acrel_cmd_reset)
+    LinearLayout acrelCmdReset;
+    @BindView(R.id.acrel_cmd_self_check)
+    LinearLayout acrelCmdSelfCheck;
+    @BindView(R.id.acrel_root)
+    LinearLayout acrelRoot;
+    @BindView(R.id.layout_root)
+    LinearLayout layoutRoot;
+    @BindView(R.id.acrel_psd_content)
+    TextView acrelPsdContent;
+    @BindView(R.id.acrel_psd)
+    LinearLayout acrelPsd;
+    @BindView(R.id.cayman_is_smoke_content)
+    TextView caymanIsSmokeContent;
+    @BindView(R.id.cayman_is_smoke)
+    LinearLayout caymanIsSmoke;
+    @BindView(R.id.cayman_is_moved_content)
+    TextView caymanIsMovedContent;
+    @BindView(R.id.cayman_is_moved)
+    LinearLayout caymanIsMoved;
+    @BindView(R.id.cayman_value_of_tem_content)
+    TextView caymanValueOfTemContent;
+    @BindView(R.id.cayman_value_of_tem)
+    LinearLayout caymanValueOfTem;
+    @BindView(R.id.cayman_value_of_hum_content)
+    TextView caymanValueOfHumContent;
+    @BindView(R.id.cayman_value_of_hum)
+    LinearLayout caymanValueOfHum;
+    @BindView(R.id.cayman_alarm_of_high_tem_content)
+    TextView caymanAlarmOfHighTemContent;
+    @BindView(R.id.cayman_alarm_of_high_tem)
+    LinearLayout caymanAlarmOfHighTem;
+    @BindView(R.id.cayman_alarm_of_low_tem_content)
+    TextView caymanAlarmOfLowTemContent;
+    @BindView(R.id.cayman_alarm_of_low_tem)
+    LinearLayout caymanAlarmOfLowTem;
+    @BindView(R.id.cayman_alarm_of_high_hum_content)
+    TextView caymanAlarmOfHighHumContent;
+    @BindView(R.id.cayman_alarm_of_high_hum)
+    LinearLayout caymanAlarmOfHighHum;
+    @BindView(R.id.cayman_alarm_of_low_hum_content)
+    TextView caymanAlarmOfLowHumContent;
+    @BindView(R.id.cayman_alarm_of_low_hum)
+    LinearLayout caymanAlarmOfLowHum;
+    @BindView(R.id.cayman_cmd_self_check)
+    LinearLayout caymanCmdSelfCheck;
+    @BindView(R.id.cayman_cmd_reset)
+    LinearLayout caymanCmdReset;
+    @BindView(R.id.cayman_cmd_clear_sound)
+    LinearLayout caymanCmdClearSound;
+    @BindView(R.id.cayman_root)
+    LinearLayout caymanRoot;
 
     private String[] blePowerItems;
     private String[] bleTimeItems;
@@ -698,8 +1037,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         int maxEirp = sensoroDevice.getMaxEirp();
 
         for (int i = 0; i < txp_array.length; i++) {
-            String format = String.format(Locale.CHINA,"MaxEIRP - %d \n%d dBm",i ,
-                    maxEirp - txp_array[txp_array.length-1-i] * 2);
+            String format = String.format(Locale.CHINA, "MaxEIRP - %d \n%d dBm", i,
+                    maxEirp - txp_array[txp_array.length - 1 - i] * 2);
             loraEirpItems[i] = format;
         }
         return loraEirpItems;
@@ -1187,18 +1526,18 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     settingsDeviceLlMauntonControl.setVisibility(hasMantunData ? VISIBLE : GONE);
                     if (hasMantunData) {
                         if (sensoroSensor.mantunData.hasLeakageTh) {
-                            settingsDeviceMantunLeak.setText(sensoroSensor.mantunData.leakageTh/10 + "");
+                            settingsDeviceMantunLeak.setText(sensoroSensor.mantunData.leakageTh / 10 + "");
                         } else {
                             settingsDeviceRlMantunLeak.setVisibility(GONE);
                         }
                         if (sensoroSensor.mantunData.hasTempTh) {
-                            settingsDeviceTvMauntonTemp.setText(sensoroSensor.mantunData.tempTh/10 + "");
+                            settingsDeviceTvMauntonTemp.setText(sensoroSensor.mantunData.tempTh / 10 + "");
                         } else {
                             settingsDeviceRlMautonTemp.setVisibility(GONE);
                         }
 
                         if (sensoroSensor.mantunData.hasCurrentTh) {
-                            settingsDeviceTvMauntonCurrent.setText(sensoroSensor.mantunData.currentTh/100 + "");
+                            settingsDeviceTvMauntonCurrent.setText(sensoroSensor.mantunData.currentTh / 100 + "");
                         } else {
                             settingsDeviceRlMauntonCurrent.setVisibility(GONE);
                         }
@@ -1218,18 +1557,201 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             settingsDeviceRlMauntonOverload.setVisibility(GONE);
                         }
                         if (sensoroSensor.mantunData.hasTemp1OutsideTh) {
-                            settingsDeviceTvMantunOutSide.setText(sensoroSensor.mantunData.temp1OutsideTh/10 + "");
+                            settingsDeviceTvMantunOutSide.setText(sensoroSensor.mantunData.temp1OutsideTh / 10 + "");
                         } else {
                             settingsDeviceRlMantunOutSide.setVisibility(GONE);
                         }
                         if (sensoroSensor.mantunData.hasTemp2ContactTh) {
-                            settingsDeviceTvMantunContact.setText(sensoroSensor.mantunData.temp2ContactTh/10 + "");
+                            settingsDeviceTvMantunContact.setText(sensoroSensor.mantunData.temp2ContactTh / 10 + "");
                         } else {
                             settingsDeviceRlMantunContact.setVisibility(GONE);
                         }
 
                     }
 
+                    boolean hasAcrelFires = sensoroSensor.hasAcrelFires;
+                    acrelRoot.setVisibility(hasAcrelFires ? VISIBLE : GONE);
+                    if (hasAcrelFires) {
+                        if (sensoroSensor.acrelFires.hasPasswd) {
+                            acrelPsdContent.setText(sensoroSensor.acrelFires.passwd + "");
+                        } else {
+                            acrelPsd.setVisibility(GONE);
+                        }
+                        if (sensoroSensor.acrelFires.hasLeakageTh) {
+                            acrelLeakageThContent.setText(sensoroSensor.acrelFires.leakageTh + "");
+                        } else {
+                            acrelLeakageTh.setVisibility(GONE);
+                        }
+
+                        if (sensoroSensor.acrelFires.hasConnectSw) {
+                            int connectSw = sensoroSensor.acrelFires.connectSw;
+                            byte[] bytes = SensoroUUID.intToBits(connectSw, 5);
+                            StringBuilder content = new StringBuilder();
+                            for (int i = 0; i < bytes.length; i++) {
+                                if (bytes[i] == 1) {
+                                    content.append("通道 " + (i + 1) + " 关联继电器，");
+                                }
+                            }
+                            if (content.length() > 1) {
+                                content.deleteCharAt(content.length() - 1);
+                            }
+                            acrelConnectSwContent.setText(content);
+                        } else {
+                            acrelConnectSw.setVisibility(GONE);
+                        }
+
+                        if (sensoroSensor.acrelFires.hasChEnable) {
+                            int chEnable = sensoroSensor.acrelFires.chEnable;
+                            byte[] bytes = SensoroUUID.intToBits(chEnable, 5);
+                            StringBuilder content = new StringBuilder();
+                            for (int i = 0; i < bytes.length; i++) {
+                                if (bytes[i] == 1) {
+                                    content.append("通道 " + (i + 1) + " 使能，");
+                                }
+                            }
+                            if (content.length() > 1) {
+                                content.deleteCharAt(content.length() - 1);
+                            }
+                            acrelChEnableContent.setText(content);
+                        } else {
+                            acrelChEnable.setVisibility(GONE);
+                        }
+
+                        if (sensoroSensor.acrelFires.hasT1Th) {
+                            acrelT1ThContent.setText(sensoroSensor.acrelFires.t1Th + "");
+                        } else {
+                            acrelT1Th.setVisibility(GONE);
+                        }
+
+                        if (sensoroSensor.acrelFires.hasT2Th) {
+                            acrelT2ThContent.setText(sensoroSensor.acrelFires.t2Th + "");
+                        } else {
+                            acrelT2Th.setVisibility(GONE);
+                        }
+
+                        if (sensoroSensor.acrelFires.hasT3Th) {
+                            acrelT3ThContent.setText(sensoroSensor.acrelFires.t3Th + "");
+                        } else {
+                            acrelT3Th.setVisibility(GONE);
+                        }
+
+                        if (sensoroSensor.acrelFires.hasT4Th) {
+                            acrelT4ThContent.setText(sensoroSensor.acrelFires.t4Th + "");
+                        } else {
+                            acrelT1Th.setVisibility(GONE);
+                        }
+
+                        if (sensoroSensor.acrelFires.hasCurrHighSet) {
+                            String format = String.format(Locale.CHINA, "%.1f %%", sensoroSensor.acrelFires.currHighSet / 10f);
+                            acrelCurrHighSetContent.setText(format);
+                        } else {
+                            acrelCurrHighSet.setVisibility(GONE);
+                        }
+
+                        if (sensoroSensor.acrelFires.hasValHighSet) {
+                            String format = String.format(Locale.CHINA, "%.1f %%", sensoroSensor.acrelFires.valHighSet / 10f);
+                            acrelValHighSetContent.setText(format);
+                        } else {
+                            acrelValHighSet.setVisibility(GONE);
+                        }
+                        if (sensoroSensor.acrelFires.hasValLowSet) {
+                            String format = String.format(Locale.CHINA, "%.1f %%", sensoroSensor.acrelFires.valLowSet / 10f);
+                            acrelValLowSetContent.setText(format);
+                        } else {
+                            acrelValLowSet.setVisibility(GONE);
+                        }
+
+                        if (sensoroSensor.acrelFires.hasValHighType) {
+                            int valHighType = sensoroSensor.acrelFires.valHighType;
+                            byte[] bytes = SensoroUUID.intToBits(valHighType, 2);
+                            StringBuilder content = new StringBuilder();
+
+                            if (bytes[0] == 1) {
+                                content.append("保护开关：开");
+                            }
+
+                            if (bytes[1] == 1) {
+                                content.append("保护关联DO1：开");
+                            }
+                            acrelValHighTypeContent.setText(content.toString());
+                        } else {
+                            acrelValHighType.setVisibility(GONE);
+                        }
+
+                        if (sensoroSensor.acrelFires.hasValLowType) {
+                            int valLowType = sensoroSensor.acrelFires.valLowType;
+                            byte[] bytes = SensoroUUID.intToBits(valLowType, 2);
+                            StringBuilder content = new StringBuilder();
+
+                            if (bytes[0] == 1) {
+                                content.append("保护开关：开");
+                            }
+
+                            if (bytes[1] == 1) {
+                                content.append("保护关联DO1：开");
+                            }
+                            acrelValLowTypeContent.setText(content.toString());
+                        } else {
+                            acrelValLowType.setVisibility(GONE);
+                        }
+
+                        if (sensoroSensor.acrelFires.hasCurrHighType) {
+                            int currHighType = sensoroSensor.acrelFires.currHighType;
+                            byte[] bytes = SensoroUUID.intToBits(currHighType, 2);
+                            StringBuilder content = new StringBuilder();
+
+                            if (bytes[0] == 1) {
+                                content.append("保护开关：开");
+                            }
+
+                            if (bytes[1] == 1) {
+                                content.append("保护关联DO1：开");
+                            }
+                            acrelCurrHighTypeContent.setText(content.toString());
+                        } else {
+                            acrelCurrHighType.setVisibility(GONE);
+                        }
+
+                    }
+
+                    boolean hasCayMan = sensoroSensor.hasCayMan;
+                    caymanRoot.setVisibility(hasCayMan ? VISIBLE : GONE);
+                    if (hasCayMan) {
+                        if (sensoroSensor.cayManData.hasIsSmoke) {
+                            if (sensoroSensor.cayManData.isSmoke == 0) {
+                                caymanIsSmokeContent.setText("无烟雾报警");
+                            } else {
+                                caymanIsSmokeContent.setText("有烟雾报警");
+                            }
+                        }
+
+                        if (sensoroSensor.cayManData.hasIsMoved) {
+                            if (sensoroSensor.cayManData.isMoved == 0) {
+                                caymanIsSmokeContent.setText("无移动报警");
+                            } else {
+                                caymanIsSmokeContent.setText("有移动报警");
+                            }
+                        }
+
+                        if (sensoroSensor.cayManData.hasValueOfTem) {
+                            caymanValueOfTemContent.setText(sensoroSensor.cayManData.valueOfTem / 10 + "℃");
+                        }
+                        if (sensoroSensor.cayManData.hasValueOfHum) {
+                            caymanValueOfHumContent.setText(sensoroSensor.cayManData.valueOfHum + "%");
+                        }
+                        if (sensoroSensor.cayManData.hasAlarmOfHighTem) {
+                            caymanAlarmOfHighTemContent.setText(sensoroSensor.cayManData.alarmOfHighTem / 10 + "℃");
+                        }
+                        if (sensoroSensor.cayManData.hasAlarmOfLowTem) {
+                            caymanAlarmOfLowTemContent.setText(sensoroSensor.cayManData.alarmOfLowTem / 10 + "℃");
+                        }
+                        if (sensoroSensor.cayManData.hasAlarmOfHighHum) {
+                            caymanAlarmOfHighHumContent.setText(sensoroSensor.cayManData.alarmOfHighHum + "%");
+                        }
+                        if (sensoroSensor.cayManData.hasAlarmOfLowHum) {
+                            caymanAlarmOfLowHumContent.setText(sensoroSensor.cayManData.alarmOfLowHum + "%");
+                        }
+                    }
 
                     if (sensoroSensor.hasPitch || sensoroSensor
                             .hasRoll || sensoroSensor.hasYaw) {
@@ -1943,6 +2465,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     case CmdType.CMD_SET_SMOKE:
                     case CmdType.CMD_SET_ELEC_CMD:
                     case CmdType.CMD_SET_MANTUN_CMD:
+                    case CmdType.CMD_SET_ACREL_CMD:
                         break;
                     case CmdType.CMD_SET_ZERO:
                         Toast.makeText(SettingDeviceActivity.this, R.string.zero_calibrate_success, Toast
@@ -1981,6 +2504,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     case CmdType.CMD_SET_SMOKE:
                     case CmdType.CMD_SET_ELEC_CMD:
                     case CmdType.CMD_SET_MANTUN_CMD:
+                    case CmdType.CMD_SET_ACREL_CMD:
                         break;
                     case CmdType.CMD_SET_ZERO:
                         Toast.makeText(SettingDeviceActivity.this, R.string.zero_calibrate_failed, Toast
@@ -2211,7 +2735,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         String version = null;
         MsgNode1V1M5.MsgNode.Builder msgCfgBuilder = MsgNode1V1M5.MsgNode.newBuilder();
         if (sensoroDevice.hasLoraParam()) {
-            MsgNode1V1M5.LoraParam.Builder loraParamBuilder = MsgNode1V1M5.LoraParam.newBuilder();
+            MsgNode1V1M5.LpwanParam.Builder loraParamBuilder = MsgNode1V1M5.LpwanParam.newBuilder();
             loraParamBuilder.setTxPower(sensoroDevice.getLoraTxp());
             if (sensoroDevice.hasDevEui()) {
                 loraParamBuilder.setDevEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((sensoroDevice
@@ -2236,7 +2760,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             if (sensoroDevice.hasDevAddr()) {
                 loraParamBuilder.setDevAddr(sensoroDevice.getDevAdr());
             }
-            msgCfgBuilder.setLoraParam(loraParamBuilder);
+            msgCfgBuilder.setLpwanParam(loraParamBuilder);
         }
         if (sensoroDevice.hasBleParam()) {
             MsgNode1V1M5.BleParam.Builder bleParamBuilder = MsgNode1V1M5.BleParam.newBuilder();
@@ -2913,26 +3437,33 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         builder.setCmd(cmd);
         sensoroDeviceConnection.writeElecCmd(builder, this);
     }
+
     protected void doMantunControl(int cmd) {
+        int sendCmd = 1;
         switch (cmd) {
             case CMD_MANTUN_SWITCH_IN:
                 Toast.makeText(application, "合闸", Toast.LENGTH_SHORT).show();
+                sendCmd = 1;
                 break;
             case CMD_MANTUN_SWITCH_ON:
                 Toast.makeText(application, "分闸", Toast.LENGTH_SHORT).show();
+                sendCmd = 2;
                 break;
             case CMD_MANTUN_SELF_CHICK:
                 Toast.makeText(application, "自检", Toast.LENGTH_SHORT).show();
+                sendCmd = 4;
                 break;
             case CMD_MANTUN_ZERO_POWER:
                 Toast.makeText(application, "电量清零", Toast.LENGTH_SHORT).show();
+                sendCmd = 8;
                 break;
             case CMD_MANTUN_RESTORE:
                 Toast.makeText(application, "恢复出厂", Toast.LENGTH_SHORT).show();
+                sendCmd = 16;
                 break;
         }
         MsgNode1V1M5.MantunData.Builder builder = MsgNode1V1M5.MantunData.newBuilder();
-        builder.setCmd(cmd);
+        builder.setCmd(sendCmd);
         sensoroDeviceConnection.writeMantunCmd(builder, this);
     }
 
@@ -3619,7 +4150,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
             }
 
-        }else if(SETTINGS_DEVICE_RL_MANTUN_LEAKAGE.equals(tag)){
+        } else if (SETTINGS_DEVICE_RL_MANTUN_LEAKAGE.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 int i = Integer.parseInt(temp);
@@ -3627,13 +4158,13 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     Toast.makeText(this, "温度阈值范围为1-90", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                sensoroSensor.mantunData.leakageTh = i*10;
+                sensoroSensor.mantunData.leakageTh = i * 10;
                 settingsDeviceMantunLeak.setText(i + "");
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
             }
-        }else if(SETTINGS_DEVICE_RL_MANTUN_TEMP.equals(tag)){
+        } else if (SETTINGS_DEVICE_RL_MANTUN_TEMP.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 int i = Integer.parseInt(temp);
@@ -3641,13 +4172,13 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     Toast.makeText(this, "温度阈值范围为1-90", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                sensoroSensor.mantunData.tempTh = i*10;
+                sensoroSensor.mantunData.tempTh = i * 10;
                 settingsDeviceTvMauntonTemp.setText(i + "");
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
             }
-        }else if(SETTINGS_DEVICE_RL_MANTUN_CURRENT.equals(tag)){
+        } else if (SETTINGS_DEVICE_RL_MANTUN_CURRENT.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 int i = Integer.parseInt(temp);
@@ -3655,13 +4186,13 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     Toast.makeText(this, "电流阈值范围为1-96", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                sensoroSensor.mantunData.currentTh = i*100;
+                sensoroSensor.mantunData.currentTh = i * 100;
                 settingsDeviceTvMauntonCurrent.setText(i + "");
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
             }
-        }else if(SETTINGS_DEVICE_RL_MANTUN_VOL_HIGH.equals(tag)){
+        } else if (SETTINGS_DEVICE_RL_MANTUN_VOL_HIGH.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 int i = Integer.parseInt(temp);
@@ -3675,7 +4206,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
             }
-        }else if(SETTINGS_DEVICE_RL_MANTUN_VOL_LOW.equals(tag)){
+        } else if (SETTINGS_DEVICE_RL_MANTUN_VOL_LOW.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 int i = Integer.parseInt(temp);
@@ -3689,7 +4220,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
             }
-        }else if(SETTINGS_DEVICE_RL_MANTUN_POWER.equals(tag)){
+        } else if (SETTINGS_DEVICE_RL_MANTUN_POWER.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 int i = Integer.parseInt(temp);
@@ -3703,7 +4234,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
             }
-        }else if(SETTINGS_DEVICE_RL_MANTUN_TEMP_OUTSIDE.equals(tag)){
+        } else if (SETTINGS_DEVICE_RL_MANTUN_TEMP_OUTSIDE.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 int i = Integer.parseInt(temp);
@@ -3711,14 +4242,14 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     Toast.makeText(this, "箱体温度范围为45-145", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                sensoroSensor.mantunData.temp1OutsideTh = i*10;
-                Log.e("hcs","set界面:::"+sensoroSensor.mantunData.temp1OutsideTh);
+                sensoroSensor.mantunData.temp1OutsideTh = i * 10;
+                Log.e("hcs", "set界面:::" + sensoroSensor.mantunData.temp1OutsideTh);
                 settingsDeviceTvMantunOutSide.setText(i + "");
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
             }
-        }else if(SETTINGS_DEVICE_RL_MANTUN_TEMP_CONTACT.equals(tag)){
+        } else if (SETTINGS_DEVICE_RL_MANTUN_TEMP_CONTACT.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 int i = Integer.parseInt(temp);
@@ -3726,8 +4257,310 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     Toast.makeText(this, "触点温度范围为45-145", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                sensoroSensor.mantunData.temp2ContactTh = i*10;
+                sensoroSensor.mantunData.temp2ContactTh = i * 10;
                 settingsDeviceTvMantunContact.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+        } else if (SETTINGS_DEVICE_RL_ACREL_LEAKAGE.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i < 20 || i > 1000) {
+                    Toast.makeText(this, "漏电阈值范围为20-1000", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.acrelFires.leakageTh = i;
+                acrelLeakageThContent.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+        } else if (SETTINGS_DEVICE_RL_ACREL_CONNECT_SW.equals(tag)) {
+            ArrayList<ChannelData> channelDataArrayList = (ArrayList) bundle.getSerializable(SettingsMultiChoiceItemsDialogFragment.RESULT);
+            ArrayList<ChannelData> channelOpenList = channelDataArrayList;
+            StringBuffer stringBuffer = new StringBuffer();
+            byte[] bytes = new byte[channelOpenList.size()];
+            for (int i = 0; i < channelOpenList.size(); i++) {
+                ChannelData channelData = channelOpenList.get(i);
+                if (channelData.isOpen()) {
+                    stringBuffer.append(getString(R.string.setting_text_channel) + channelData.getIndex() + "关联继电器，");
+                    bytes[i] = 1;
+                } else {
+                    bytes[i] = 0;
+                }
+            }
+            sensoroSensor.acrelFires.connectSw = SensoroUUID.bitsToInt(bytes);
+            acrelConnectSwContent.setText(stringBuffer.toString());
+        } else if (SETTINGS_DEVICE_RL_ACREL_CH_ENABLE.equals(tag)) {
+            ArrayList<ChannelData> channelDataArrayList = (ArrayList) bundle.getSerializable(SettingsMultiChoiceItemsDialogFragment.RESULT);
+            ArrayList<ChannelData> channelOpenList = channelDataArrayList;
+            StringBuffer stringBuffer = new StringBuffer();
+            byte[] bytes = new byte[channelOpenList.size()];
+            for (int i = 0; i < channelOpenList.size(); i++) {
+                ChannelData channelData = channelOpenList.get(i);
+                if (channelData.isOpen()) {
+                    stringBuffer.append(getString(R.string.setting_text_channel) + channelData.getIndex() + "关联继电器，");
+                    bytes[i] = 1;
+                } else {
+                    bytes[i] = 0;
+                }
+            }
+            sensoroSensor.acrelFires.chEnable = SensoroUUID.bitsToInt(bytes);
+            acrelChEnableContent.setText(stringBuffer.toString());
+        } else if (SETTINGS_DEVICE_RL_ACREL_T1_TH.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i < 45 || i > 140) {
+                    Toast.makeText(this, "温度阈值范围为45-140", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.acrelFires.t1Th = i;
+                acrelT1ThContent.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+        } else if (SETTINGS_DEVICE_RL_ACREL_T2_TH.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i < 45 || i > 140) {
+                    Toast.makeText(this, "温度阈值范围为45-140", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.acrelFires.t2Th = i;
+                acrelT2ThContent.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+        } else if (SETTINGS_DEVICE_RL_ACREL_T3_TH.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i < 45 || i > 140) {
+                    Toast.makeText(this, "温度阈值范围为45-140", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.acrelFires.t3Th = i;
+                acrelT3ThContent.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+        } else if (SETTINGS_DEVICE_RL_ACREL_PSD.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i < 1 || i > 10000) {
+                    Toast.makeText(this, "密码范围为1-9999", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.acrelFires.passwd = i;
+                acrelPsdContent.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "密码为数字格式", Toast.LENGTH_SHORT).show();
+            }
+        } else if (SETTINGS_DEVICE_RL_ACREL_T4_TH.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i < 45 || i > 140) {
+                    Toast.makeText(this, "温度阈值范围为45-140", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.acrelFires.t4Th = i;
+                acrelT4ThContent.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+        } else if (SETTINGS_DEVICE_RL_ACREL_CURR_HIGH_SET.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i < 20.0 || i > 140.0) {
+                    Toast.makeText(this, "过流阈值范围为20.0-140.0", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.acrelFires.currHighSet = i * 10;
+                acrelCurrHighSetContent.setText(i + "%");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+        } else if (SETTINGS_DEVICE_RL_ACREL_VAL_HIGH_SET.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i < 100.0 || i > 140.0) {
+                    Toast.makeText(this, "过压阈值范围为100.0-140.0", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.acrelFires.valHighSet = i * 10;
+                acrelValHighSetContent.setText(i + "%");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+        } else if (SETTINGS_DEVICE_RL_ACREL_VAL_LOW_SET.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i < 60.0 || i > 100.0) {
+                    Toast.makeText(this, "欠压阈值范围为60.0-100.0", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.acrelFires.valLowSet = i * 10;
+                acrelValLowSetContent.setText(i + "%");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+        } else if (SETTINGS_DEVICE_RL_ACREL_VAL_HIGH_TYPE.equals(tag)) {
+            ArrayList<ChannelData> channelDataArrayList = (ArrayList) bundle.getSerializable(SettingsMultiChoiceItemsDialogFragment.RESULT);
+            ArrayList<ChannelData> channelOpenList = channelDataArrayList;
+            StringBuffer stringBuffer = new StringBuffer();
+            byte[] bytes = new byte[channelOpenList.size()];
+            for (int i = 0; i < channelOpenList.size(); i++) {
+                ChannelData channelData = channelOpenList.get(i);
+                if (channelData.isOpen()) {
+                    bytes[i] = 1;
+                    switch (i) {
+                        case 0:
+                            stringBuffer.append("保护开关 开，");
+                            break;
+                        case 1:
+                            stringBuffer.append("保护关联 DO1 开，");
+                            break;
+                    }
+                } else {
+                    bytes[i] = 0;
+                }
+            }
+
+            sensoroSensor.acrelFires.valHighType = SensoroUUID.bitsToInt(bytes);
+            acrelValHighTypeContent.setText(stringBuffer.toString());
+        } else if (SETTINGS_DEVICE_RL_ACREL_VAL_Low_TYPE.equals(tag)) {
+            ArrayList<ChannelData> channelDataArrayList = (ArrayList) bundle.getSerializable(SettingsMultiChoiceItemsDialogFragment.RESULT);
+            ArrayList<ChannelData> channelOpenList = channelDataArrayList;
+            StringBuffer stringBuffer = new StringBuffer();
+            byte[] bytes = new byte[channelOpenList.size()];
+            for (int i = 0; i < channelOpenList.size(); i++) {
+                ChannelData channelData = channelOpenList.get(i);
+                if (channelData.isOpen()) {
+                    bytes[i] = 1;
+                    switch (i) {
+                        case 0:
+                            stringBuffer.append("保护开关 开，");
+                            break;
+                        case 1:
+                            stringBuffer.append("保护关联 DO1 开，");
+                            break;
+                    }
+                } else {
+                    bytes[i] = 0;
+                }
+            }
+
+            sensoroSensor.acrelFires.valLowType = SensoroUUID.bitsToInt(bytes);
+            acrelValLowTypeContent.setText(stringBuffer.toString());
+        } else if (SETTINGS_DEVICE_RL_ACREL_CURR_HIGH_TYPE.equals(tag)) {
+            ArrayList<ChannelData> channelDataArrayList = (ArrayList) bundle.getSerializable(SettingsMultiChoiceItemsDialogFragment.RESULT);
+            ArrayList<ChannelData> channelOpenList = channelDataArrayList;
+            StringBuffer stringBuffer = new StringBuffer();
+            byte[] bytes = new byte[channelOpenList.size()];
+            for (int i = 0; i < channelOpenList.size(); i++) {
+                ChannelData channelData = channelOpenList.get(i);
+                if (channelData.isOpen()) {
+                    bytes[i] = 1;
+                    switch (i) {
+                        case 0:
+                            stringBuffer.append("保护开关 开，");
+                            break;
+                        case 1:
+                            stringBuffer.append("保护关联 DO1 开，");
+                            break;
+                    }
+                } else {
+                    bytes[i] = 0;
+                }
+            }
+
+            sensoroSensor.acrelFires.currHighType = SensoroUUID.bitsToInt(bytes);
+            acrelCurrHighTypeContent.setText(stringBuffer.toString());
+        }else if(SETTINGS_DEVICE_RL_CAYMAN_IS_SMOKE.equals(tag)){
+            int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
+            sensoroSensor.cayManData.isSmoke = index;
+            if(index == 0){
+                caymanIsSmokeContent.setText("无烟雾报警");
+            }else{
+                caymanIsSmokeContent.setText("有烟雾报警");
+            }
+        }else if(SETTINGS_DEVICE_RL_CAYMAN_IS_MOVED.equals(tag)){
+            int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
+            sensoroSensor.cayManData.isMoved = index;
+            if(index == 0){
+                caymanIsSmokeContent.setText("无移动报警");
+            }else{
+                caymanIsSmokeContent.setText("有移动报警");
+            }
+        }else if(SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_HIGH_TEM.equals(tag)){
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i < -40 || i > 140) {
+                    Toast.makeText(this, "高温度阈值范围为-40-140", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.cayManData.alarmOfHighTem = i*10;
+                acrelT3ThContent.setText(i + "℃");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+        }else if(SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_LOW_TEM.equals(tag)){
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i < -40 || i > 140) {
+                    Toast.makeText(this, "低温度阈值范围为-40-140", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.cayManData.alarmOfLowTem = i*10;
+                acrelT3ThContent.setText(i + "℃");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+        }else if(SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_HIGH_HUM.equals(tag)){
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i < 0|| i > 100) {
+                    Toast.makeText(this, "湿度阈值范围为0-100", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.cayManData.alarmOfHighHum = i;
+                acrelT3ThContent.setText(i + "℃");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+        }else if(SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_LOW_HUM.equals(tag)){
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i < 0 || i > 100) {
+                    Toast.makeText(this, "湿度阈值范围为0-100", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.cayManData.alarmOfLowHum = i;
+                acrelT3ThContent.setText(i + "%");
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
@@ -3747,7 +4580,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         }
     }
 
-    @OnClick({R.id.settings_device_rl_mantun_leak,R.id.settings_device_rl_mauton_temp,
+    @OnClick({R.id.settings_device_rl_mantun_leak, R.id.settings_device_rl_mauton_temp,
             R.id.settings_device_rl_maunton_current, R.id.settings_device_rl_maunton_overpressure,
             R.id.settings_device_rl_maunton_undervoltage, R.id.settings_device_rl_maunton_overload,
             R.id.settings_device_rl_mantun_out_side, R.id.settings_device_rl_mantun_contact,
@@ -3755,49 +4588,57 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             R.id.settings_device_rl_maunton_control_switch_on,
             R.id.settings_device_rl_maunton_control_self_chick,
             R.id.settings_device_rl_maunton_control_elec_clear_zero,
-            R.id.settings_device_rl_maunton_control_restore})
+            R.id.settings_device_rl_maunton_control_restore, R.id.acrel_leakage_th,
+            R.id.acrel_connect_sw, R.id.acrel_ch_enable, R.id.acrel_t1_th, R.id.acrel_t2_th,
+            R.id.acrel_t3_th, R.id.acrel_t4_th, R.id.acrel_curr_high_set, R.id.acrel_val_high_set,
+            R.id.acrel_val_low_set, R.id.acrel_val_high_type, R.id.acrel_val_low_type,
+            R.id.acrel_curr_high_type, R.id.acrel_cmd_reset, R.id.acrel_cmd_self_check, R.id.acrel_root,
+            R.id.acrel_psd, R.id.cayman_is_smoke, R.id.cayman_is_moved, R.id.cayman_value_of_tem,
+            R.id.cayman_value_of_hum, R.id.cayman_alarm_of_high_tem, R.id.cayman_alarm_of_low_tem,
+            R.id.cayman_alarm_of_high_hum, R.id.cayman_alarm_of_low_hum, R.id.cayman_cmd_self_check,
+            R.id.cayman_cmd_reset, R.id.cayman_cmd_clear_sound})
     public void onViewClicked(View view) {
         DialogFragment dialogFragment;
         switch (view.getId()) {
             case R.id.settings_device_rl_mantun_leak:
                 int leakageTh = sensoroSensor.mantunData.leakageTh;
-                dialogFragment = SettingsInputDialogFragment.newInstance(leakageTh/10 + "");
+                dialogFragment = SettingsInputDialogFragment.newInstance(leakageTh / 10 + "");
                 dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_MANTUN_LEAKAGE);
                 break;
             case R.id.settings_device_rl_mauton_temp:
                 int tempTh = sensoroSensor.mantunData.tempTh;
-                dialogFragment = SettingsInputDialogFragment.newInstance(tempTh/10 + "");
+                dialogFragment = SettingsInputDialogFragment.newInstance(tempTh / 10 + "");
                 dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_MANTUN_TEMP);
                 break;
             case R.id.settings_device_rl_maunton_current:
                 int currentTh = sensoroSensor.mantunData.currentTh;
-                dialogFragment = SettingsInputDialogFragment.newInstance(currentTh/100+"");
-                dialogFragment.show(getFragmentManager(),SETTINGS_DEVICE_RL_MANTUN_CURRENT);
+                dialogFragment = SettingsInputDialogFragment.newInstance(currentTh / 100 + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_MANTUN_CURRENT);
                 break;
             case R.id.settings_device_rl_maunton_overpressure:
                 int volHighTh = sensoroSensor.mantunData.volHighTh;
-                dialogFragment = SettingsInputDialogFragment.newInstance(volHighTh+"");
-                dialogFragment.show(getFragmentManager(),SETTINGS_DEVICE_RL_MANTUN_VOL_HIGH);
+                dialogFragment = SettingsInputDialogFragment.newInstance(volHighTh + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_MANTUN_VOL_HIGH);
                 break;
             case R.id.settings_device_rl_maunton_undervoltage:
                 int volLowTh = sensoroSensor.mantunData.volLowTh;
-                dialogFragment = SettingsInputDialogFragment.newInstance(volLowTh+"");
-                dialogFragment.show(getFragmentManager(),SETTINGS_DEVICE_RL_MANTUN_VOL_LOW);
+                dialogFragment = SettingsInputDialogFragment.newInstance(volLowTh + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_MANTUN_VOL_LOW);
                 break;
             case R.id.settings_device_rl_maunton_overload:
                 int powerTh = sensoroSensor.mantunData.powerTh;
-                dialogFragment = SettingsInputDialogFragment.newInstance(powerTh+"");
-                dialogFragment.show(getFragmentManager(),SETTINGS_DEVICE_RL_MANTUN_POWER);
+                dialogFragment = SettingsInputDialogFragment.newInstance(powerTh + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_MANTUN_POWER);
                 break;
             case R.id.settings_device_rl_mantun_out_side:
                 int temp1OutsideTh = sensoroSensor.mantunData.temp1OutsideTh;
-                dialogFragment = SettingsInputDialogFragment.newInstance(temp1OutsideTh/10+"");
-                dialogFragment.show(getFragmentManager(),SETTINGS_DEVICE_RL_MANTUN_TEMP_OUTSIDE);
+                dialogFragment = SettingsInputDialogFragment.newInstance(temp1OutsideTh / 10 + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_MANTUN_TEMP_OUTSIDE);
                 break;
             case R.id.settings_device_rl_mantun_contact:
                 int temp2ContactTh = sensoroSensor.mantunData.temp2ContactTh;
-                dialogFragment = SettingsInputDialogFragment.newInstance(temp2ContactTh/10+"");
-                dialogFragment.show(getFragmentManager(),SETTINGS_DEVICE_RL_MANTUN_TEMP_CONTACT);
+                dialogFragment = SettingsInputDialogFragment.newInstance(temp2ContactTh / 10 + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_MANTUN_TEMP_CONTACT);
                 break;
             case R.id.settings_device_rl_maunton_control_switch_in:
                 doMantunControl(CMD_MANTUN_SWITCH_IN);
@@ -3814,6 +4655,266 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             case R.id.settings_device_rl_maunton_control_restore:
                 doMantunControl(CMD_MANTUN_RESTORE);
                 break;
+            case R.id.acrel_leakage_th:
+                int acrelLeakageTh = sensoroSensor.acrelFires.leakageTh;
+                dialogFragment = SettingsInputDialogFragment.newInstance(acrelLeakageTh + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_ACREL_LEAKAGE);
+                break;
+            case R.id.acrel_connect_sw:
+                int connectSw = sensoroSensor.acrelFires.connectSw;
+                byte[] bytes1 = SensoroUUID.intToBits(connectSw, 5);
+                ArrayList<ChannelData> channelOpenList = new ArrayList<>();
+                for (int i = 0; i < 5; i++) {
+                    ChannelData channelData = new ChannelData();
+                    channelData.setIndex(i + 1);
+                    try {
+                        if (bytes1[i] == 1) {
+                            channelData.setOpen(true);
+                        } else {
+                            channelData.setOpen(false);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        channelData.setOpen(false);
+                    }
+                    channelOpenList.add(channelData);
+                }
+
+                dialogFragment = SettingsMultiChoiceItemsDialogFragment.newInstance(channelOpenList);
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_ACREL_CONNECT_SW);
+                break;
+            case R.id.acrel_ch_enable:
+                int chEnable = sensoroSensor.acrelFires.chEnable;
+                byte[] chEnableBytes = SensoroUUID.intToBits(chEnable, 5);
+                ArrayList<ChannelData> chEableList = new ArrayList<>();
+                for (int i = 0; i < 5; i++) {
+                    ChannelData channelData = new ChannelData();
+                    channelData.setIndex(i + 1);
+                    try {
+                        if (chEnableBytes[i] == 1) {
+                            channelData.setOpen(true);
+                        } else {
+                            channelData.setOpen(false);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        channelData.setOpen(false);
+                    }
+                    chEableList.add(channelData);
+                }
+                dialogFragment = SettingsMultiChoiceItemsDialogFragment.newInstance(chEableList);
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_ACREL_CH_ENABLE);
+                break;
+            case R.id.acrel_t1_th:
+                int t1Th = sensoroSensor.acrelFires.t1Th;
+                dialogFragment = SettingsInputDialogFragment.newInstance(t1Th + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_ACREL_T1_TH);
+                break;
+            case R.id.acrel_t2_th:
+                int t2Th = sensoroSensor.acrelFires.t2Th;
+                dialogFragment = SettingsInputDialogFragment.newInstance(t2Th + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_ACREL_T2_TH);
+                break;
+            case R.id.acrel_t3_th:
+                int t3Th = sensoroSensor.acrelFires.t3Th;
+                dialogFragment = SettingsInputDialogFragment.newInstance(t3Th + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_ACREL_T3_TH);
+                break;
+            case R.id.acrel_t4_th:
+                int t4Th = sensoroSensor.acrelFires.t4Th;
+                dialogFragment = SettingsInputDialogFragment.newInstance(t4Th + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_ACREL_T4_TH);
+                break;
+            case R.id.acrel_curr_high_set:
+                float currHighSet = sensoroSensor.acrelFires.currHighSet / 10;
+                String format = String.format(Locale.CHINA, "%.1f", currHighSet);
+                dialogFragment = SettingsInputDialogFragment.newInstance(format);
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_ACREL_CURR_HIGH_SET);
+                break;
+            case R.id.acrel_val_high_set:
+                float valHighSet = sensoroSensor.acrelFires.valHighSet / 10;
+                String valHighSetFormat = String.format(Locale.CHINA, "%.1f", valHighSet);
+                dialogFragment = SettingsInputDialogFragment.newInstance(valHighSetFormat);
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_ACREL_VAL_HIGH_SET);
+                break;
+            case R.id.acrel_val_low_set:
+                float valLowSet = sensoroSensor.acrelFires.valLowSet / 10;
+                String valLowSetFormat = String.format(Locale.CHINA, "%.1f", valLowSet);
+                dialogFragment = SettingsInputDialogFragment.newInstance(valLowSetFormat);
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_ACREL_VAL_LOW_SET);
+                break;
+            case R.id.acrel_val_high_type:
+                int valHighType = sensoroSensor.acrelFires.valHighType;
+                byte[] valHighTypeByte = SensoroUUID.intToBits(valHighType, 2);
+                ArrayList<ChannelData> valHighTypeList = new ArrayList<>();
+                for (int i = 0; i < 2; i++) {
+                    ChannelData channelData = new ChannelData();
+                    channelData.setIndex(i);
+                    try {
+                        if (valHighTypeByte[i] == 1) {
+                            channelData.setOpen(true);
+                        } else {
+                            channelData.setOpen(false);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        channelData.setOpen(false);
+                    }
+                    valHighTypeList.add(channelData);
+                }
+                dialogFragment = SettingsMultiChoiceItemsDialogFragment.newInstance(valHighTypeList);
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_ACREL_VAL_HIGH_TYPE);
+                break;
+            case R.id.acrel_val_low_type:
+                int valLowType = sensoroSensor.acrelFires.valLowType;
+                byte[] valLowTypeByte = SensoroUUID.intToBits(valLowType, 2);
+                ArrayList<ChannelData> valLowTypeList = new ArrayList<>();
+                for (int i = 0; i < 2; i++) {
+                    ChannelData channelData = new ChannelData();
+                    channelData.setIndex(i);
+                    try {
+                        if (valLowTypeByte[i] == 1) {
+                            channelData.setOpen(true);
+                        } else {
+                            channelData.setOpen(false);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        channelData.setOpen(false);
+                    }
+                    valLowTypeList.add(channelData);
+                }
+                dialogFragment = SettingsMultiChoiceItemsDialogFragment.newInstance(valLowTypeList);
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_ACREL_VAL_Low_TYPE);
+                break;
+            case R.id.acrel_curr_high_type:
+                int currHighType = sensoroSensor.acrelFires.currHighType;
+                byte[] currHighTypeByte = SensoroUUID.intToBits(currHighType, 2);
+                ArrayList<ChannelData> currHighTypeList = new ArrayList<>();
+                for (int i = 0; i < 2; i++) {
+                    ChannelData channelData = new ChannelData();
+                    channelData.setIndex(i);
+                    try {
+                        if (currHighTypeByte[i] == 1) {
+                            channelData.setOpen(true);
+                        } else {
+                            channelData.setOpen(false);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        channelData.setOpen(false);
+                    }
+                    currHighTypeList.add(channelData);
+                }
+                dialogFragment = SettingsMultiChoiceItemsDialogFragment.newInstance(currHighTypeList);
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_ACREL_CURR_HIGH_TYPE);
+                break;
+            case R.id.acrel_cmd_reset:
+                doAcrelControl(CmdType.CMD_ACREL_RESET);
+                break;
+            case R.id.acrel_cmd_self_check:
+                doAcrelControl(CmdType.CMD_ACREL_SELF_CHECK);
+                break;
+            case R.id.acrel_psd:
+                dialogFragment = SettingsInputDialogFragment.newInstance(sensoroSensor.acrelFires.passwd + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_ACREL_PSD);
+                break;
+            case R.id.cayman_is_smoke:
+                int isSmoke = sensoroSensor.cayManData.isSmoke;
+                String[] smokeItems = {"无烟雾报警", "有烟雾报警"};
+                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(smokeItems, isSmoke);
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_IS_SMOKE);
+                break;
+            case R.id.cayman_is_moved:
+                int isMoved = sensoroSensor.cayManData.isSmoke;
+                String[] moveItems = {"无移动报警", "有移动报警"};
+                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(moveItems, isMoved);
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_IS_MOVED);
+                break;
+//            case R.id.cayman_value_of_tem:
+//                float valueOfTem = sensoroSensor.cayManData.valueOfTem / 10;
+//                dialogFragment = SettingsInputDialogFragment.newInstance(valueOfTem + "");
+//                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_VALUE_OF_TEM);
+//                break;
+//            case R.id.cayman_value_of_hum:
+//                float valueOfHum = sensoroSensor.cayManData.valueOfHum;
+//                dialogFragment = SettingsInputDialogFragment.newInstance(valueOfHum + "");
+//                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_VALUE_OF_HUM);
+//                break;
+            case R.id.cayman_alarm_of_high_tem:
+                float alarmOfHighTem = sensoroSensor.cayManData.alarmOfHighTem / 10;
+                dialogFragment = SettingsInputDialogFragment.newInstance(alarmOfHighTem + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_HIGH_TEM);
+                break;
+            case R.id.cayman_alarm_of_low_tem:
+                float alarmOfLowTem = sensoroSensor.cayManData.alarmOfLowTem / 10;
+                dialogFragment = SettingsInputDialogFragment.newInstance(alarmOfLowTem + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_LOW_TEM);
+                break;
+            case R.id.cayman_alarm_of_high_hum:
+                float alarmOfHighHum = sensoroSensor.cayManData.alarmOfHighHum;
+                dialogFragment = SettingsInputDialogFragment.newInstance(alarmOfHighHum + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_HIGH_HUM);
+                break;
+            case R.id.cayman_alarm_of_low_hum:
+                float alarmOfLowHum = sensoroSensor.cayManData.alarmOfLowHum;
+                dialogFragment = SettingsInputDialogFragment.newInstance(alarmOfLowHum + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_LOW_HUM);
+                break;
+            case R.id.cayman_cmd_self_check:
+                doCaymanControl(CmdType.CMD_CAYMAN_SELEF_CHECK);
+                break;
+            case R.id.cayman_cmd_reset:
+                doCaymanControl(CmdType.CMD_CAYMAN_RESET);
+                break;
+            case R.id.cayman_cmd_clear_sound:
+                doCaymanControl(CmdType.CMD_CAYMAN_CLEAR_SOUND);
+                break;
+
         }
     }
+
+    private void doCaymanControl(int cmd) {
+        byte[] bytes = new byte[3];
+        switch (cmd){
+            case CmdType.CMD_CAYMAN_SELEF_CHECK:
+                bytes[0] = 1;
+                bytes[1] = 0;
+                bytes[2] = 0;
+                break;
+            case CmdType.CMD_CAYMAN_RESET:
+                bytes[0] = 0;
+                bytes[1] = 1;
+                bytes[2] = 0;
+                break;
+            case CmdType.CMD_CAYMAN_CLEAR_SOUND:
+                bytes[0] = 0;
+                bytes[1] = 0;
+                bytes[2] = 1;
+                break;
+        }
+
+        MsgNode1V1M5.AcrelData.Builder builder = MsgNode1V1M5.AcrelData.newBuilder();
+        builder.setCmd(SensoroUUID.bitsToInt(bytes));
+        sensoroDeviceConnection.writeAcrelCmd(builder, this);
+    }
+
+    private void doAcrelControl(int cmd) {
+        byte[] bytes = new byte[2];
+        switch (cmd) {
+            case CmdType.CMD_ACREL_RESET:
+                bytes[0] = 1;
+                bytes[1] = 0;
+                break;
+            case CmdType.CMD_ACREL_SELF_CHECK:
+                bytes[0] = 0;
+                bytes[1] = 1;
+                break;
+        }
+
+        MsgNode1V1M5.AcrelData.Builder builder = MsgNode1V1M5.AcrelData.newBuilder();
+        builder.setCmd(SensoroUUID.bitsToInt(bytes));
+        sensoroDeviceConnection.writeAcrelCmd(builder, this);
+    }
+
 }

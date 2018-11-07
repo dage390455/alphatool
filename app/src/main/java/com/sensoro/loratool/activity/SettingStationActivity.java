@@ -344,7 +344,7 @@ public class SettingStationActivity extends BaseActivity implements Constants, O
         } else if (tag.equals(SETTINGS_ROUTER)) {
             String ip = bundle.getString(SettingsInputDialogFragment.INPUT);
             routerTextView.setText(ip);
-            sensoroStation.setIp(ip);
+            sensoroStation.setGateway(ip);
         } else if (tag.equals(SETTINGS_SUBNET_MASK)) {
             String mask = bundle.getString(SettingsInputDialogFragment.INPUT);
             maskTextView.setText(mask);
@@ -355,7 +355,7 @@ public class SettingStationActivity extends BaseActivity implements Constants, O
             sensoroStation.setPdns(pdns);
         } else if (tag.equals(SETTINGS_SEC_DNS)) {
             String adns = bundle.getString(SettingsInputDialogFragment.INPUT);
-            dnsTextView.setText(adns);
+            secDnsTextView.setText(adns);
             sensoroStation.setAdns(adns);
         } else if (tag.equals(SETTINGS_NAME)) {
             String name = bundle.getString(SettingsInputDialogFragment.INPUT);

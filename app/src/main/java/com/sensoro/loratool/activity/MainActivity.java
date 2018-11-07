@@ -338,6 +338,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onNewDevice(final BLEDevice bleDevice) {
+        Log.e("hcs","new device:::"+bleDevice.getSn() + bleDevice.getSn().contains("B33F"));
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -353,6 +354,7 @@ public class MainActivity extends BaseActivity
                         deviceFragment.refreshSensorNew((SensoroSensorTest) bleDevice);
                         break;
                     case BLEDevice.TYPE_STATION:
+                        Log.e("hcs","进入基站:::");
                         stationFragment.refreshNew((SensoroStation) bleDevice);
                         break;
                 }

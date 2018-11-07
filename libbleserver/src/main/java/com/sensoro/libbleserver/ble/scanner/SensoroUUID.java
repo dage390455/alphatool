@@ -142,6 +142,42 @@ public class SensoroUUID {
         return bLocalArr;
     }
 
+    public static byte[] intToBits(int source,int byteLength){
+        byte[] bytes = new byte[byteLength];
+        if(byteLength<9){
+            for (int i = 0; i < byteLength; i++) {
+                byte bit = (byte) (source >>8*0 &0xff);
+                if((bit>>i&0xff)==0){
+                    bytes[i] = 0;
+                }else{
+                    bytes[i] = 1;
+                }
+            }
+        }else if(byteLength <19){
+            //需要两个字节 比较麻烦 再说吧
+        }
+        return bytes;
+    }
+
+    /**
+     * 目前用到的都是一个字节足够，所以没往下写，需要的时候，再说吧
+     * @param bytes
+     * @return
+     */
+    public static int bitsToInt(byte[] bytes){
+        if(bytes.length<9){
+            byte value = 0;
+            for (int i = 0; i < bytes.length; i++) {
+                if (bytes[i] == 1) {
+                    value ^= (value&(1<<i))^(1<<i);
+
+                }
+            }
+            return value;
+        }
+        return -1;
+    }
+
     public static byte[] getBytes(short data) {
         byte[] bytes = new byte[2];
         bytes[0] = (byte) (data & 0xff);

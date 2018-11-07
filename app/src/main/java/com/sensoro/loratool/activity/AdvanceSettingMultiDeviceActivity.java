@@ -383,7 +383,7 @@ public class AdvanceSettingMultiDeviceActivity extends BaseActivity implements C
         } else {
             MsgNode1V1M5.MsgNode.Builder msgNodeBuilder = MsgNode1V1M5.MsgNode.newBuilder();
             if (targetDevice.hasLoraParam()) {
-                MsgNode1V1M5.LoraParam.Builder loraParamBuilder = MsgNode1V1M5.LoraParam.newBuilder();
+                MsgNode1V1M5.LpwanParam.Builder loraParamBuilder = MsgNode1V1M5.LpwanParam.newBuilder();
                 loraParamBuilder.setTxPower(targetDevice.getLoraTxp());
                 loraParamBuilder.setDevEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration.getDevEui()))));
                 loraParamBuilder.setAppEui(ByteString.copyFrom(SensoroUtils.HexString2Bytes((deviceConfiguration.getAppEui()))));
@@ -403,7 +403,7 @@ public class AdvanceSettingMultiDeviceActivity extends BaseActivity implements C
                         loraParamBuilder.setDelay(deviceConfiguration.getDelay());
                     }
                 }
-                msgNodeBuilder.setLoraParam(loraParamBuilder);
+                msgNodeBuilder.setLpwanParam(loraParamBuilder);
             }
 
             byte[] data = msgNodeBuilder.build().toByteArray();
