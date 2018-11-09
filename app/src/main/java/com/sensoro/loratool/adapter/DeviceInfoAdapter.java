@@ -318,7 +318,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
     private boolean isDeviceHardwareContains(String deviceType) {
         String[] deviceHardwareType = Constants.DEVICE_HARDWARE_TYPE;
         for (int i = 0; i < deviceHardwareType.length; i++) {
-            if (deviceHardwareType[i].equals(deviceType)) {
+            if (deviceHardwareType[i].contains(deviceType)) {
                 return true;
             }
         }

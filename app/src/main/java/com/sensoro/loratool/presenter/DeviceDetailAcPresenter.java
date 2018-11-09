@@ -51,7 +51,7 @@ public class DeviceDetailAcPresenter extends BasePresenter<IDeviceDetailAcView> 
 
     private void initWidget() {
         for (int i = 0; i < DEVICE_HARDWARE_TYPE.length; i++) {
-            if (mDeviceInfo.getDeviceType().contains(DEVICE_HARDWARE_TYPE[i])) {
+            if (DEVICE_HARDWARE_TYPE[i].contains(mDeviceInfo.getDeviceType())) {
                 String s = mContext.getResources().getStringArray(R.array.filter_device_hardware_array)[i];
                 getView().setTvNameVisible(true);
                 getView().setTvNameContent(s);
