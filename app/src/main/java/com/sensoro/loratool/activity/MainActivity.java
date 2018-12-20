@@ -34,7 +34,7 @@ import com.sensoro.loratool.fragment.StationFragment;
 import com.sensoro.loratool.adapter.MenuInfoAdapter;
 import com.sensoro.libbleserver.ble.BLEDevice;
 import com.sensoro.libbleserver.ble.SensoroDevice;
-import com.sensoro.libbleserver.ble.SensoroSensorTest;
+import com.sensoro.libbleserver.ble.SensoroSensor;
 import com.sensoro.libbleserver.ble.SensoroStation;
 import com.sensoro.libbleserver.ble.scanner.BLEDeviceManager;
 import com.sensoro.loratool.constant.Constants;
@@ -351,7 +351,7 @@ public class MainActivity extends BaseActivity
                         }
                         break;
                     case BLEDevice.TYPE_SENSOR:
-                        deviceFragment.refreshSensorNew((SensoroSensorTest) bleDevice);
+                        deviceFragment.refreshSensorNew((SensoroSensor) bleDevice);
                         break;
                     case BLEDevice.TYPE_STATION:
                         Log.e("hcs","进入基站:::");
@@ -373,7 +373,7 @@ public class MainActivity extends BaseActivity
                         deviceFragment.refreshGone((SensoroDevice) bleDevice);
                         break;
                     case BLEDevice.TYPE_SENSOR:
-                        deviceFragment.refreshSensorGone((SensoroSensorTest) bleDevice);
+                        deviceFragment.refreshSensorGone((SensoroSensor) bleDevice);
                         break;
                     case BLEDevice.TYPE_STATION:
                         stationFragment.refreshGone((SensoroStation) bleDevice);
@@ -395,7 +395,7 @@ public class MainActivity extends BaseActivity
 //                    deviceFragment.refreshSensor(sensoroSensor);
 //                    break;
                 case BLEDevice.TYPE_SENSOR:
-                    SensoroSensorTest sensoroSensor = (SensoroSensorTest) bleDevice;
+                    SensoroSensor sensoroSensor = (SensoroSensor) bleDevice;
                     deviceFragment.refreshSensor(sensoroSensor);
                     break;
                 case BLEDevice.TYPE_DEVICE:

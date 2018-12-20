@@ -170,7 +170,7 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.0.1'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.1.2'
     implementation 'cn.bingoogolapple:bga-qrcode-zxing:1.2.4'
-    implementation project(':libbleserver')
+    implementation project(':sensor-kit')
     implementation "com.mcxiaoke.volley:library:$volleyVersion"
 
 

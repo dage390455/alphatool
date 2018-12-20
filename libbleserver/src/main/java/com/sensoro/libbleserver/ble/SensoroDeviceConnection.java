@@ -910,7 +910,7 @@ public class SensoroDeviceConnection {
             }
             //
 //            SensoroSensor sensoroSensor = new SensoroSensor();
-            SensoroSensorTest sensoroSensorTest = new SensoroSensorTest();
+            SensoroSensor sensoroSensorTest = new SensoroSensorTest();
             boolean hasFlame = msgNode.hasFlame();
             sensoroSensorTest.hasFlame = hasFlame;
             if (hasFlame) {//aae7e4 ble on off temp lower disable

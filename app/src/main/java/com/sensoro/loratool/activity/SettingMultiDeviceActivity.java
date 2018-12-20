@@ -35,7 +35,7 @@ import com.sensoro.libbleserver.ble.SensoroDevice;
 import com.sensoro.libbleserver.ble.SensoroDeviceConfiguration;
 import com.sensoro.libbleserver.ble.SensoroDeviceConnection;
 import com.sensoro.libbleserver.ble.SensoroSensorConfiguration;
-import com.sensoro.libbleserver.ble.SensoroSensorTest;
+import com.sensoro.libbleserver.ble.SensoroSensor;
 import com.sensoro.libbleserver.ble.SensoroSlot;
 import com.sensoro.libbleserver.ble.SensoroUtils;
 import com.sensoro.libbleserver.ble.SensoroWriteCallback;
@@ -651,7 +651,7 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
             }
             if (targetDevice.hasSensorParam()) {
                 sensorParamLayout.setVisibility(VISIBLE);
-                SensoroSensorTest sensoroSensorTest = targetDevice.getSensoroSensorTest();
+                SensoroSensor sensoroSensorTest = targetDevice.getSensoroSensorTest();
                 if (sensoroSensorTest.hasCo) {
                     coLinearLayout.setVisibility(VISIBLE);
                 } else {
@@ -808,7 +808,7 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
 
         if (targetDevice.hasSensorParam()) {
             sensorParamLayout.setVisibility(VISIBLE);
-            SensoroSensorTest sensoroSensorTest = targetDevice.getSensoroSensorTest();
+            SensoroSensor sensoroSensorTest = targetDevice.getSensoroSensorTest();
             if (sensoroSensorTest.hasCo) {
                 coAlarmHigh = sensoroSensorTest.co.alarmHigh_float;
             }
@@ -1266,7 +1266,7 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
             SensoroDeviceConfiguration.Builder builder = new SensoroDeviceConfiguration.Builder();
             SensoroSensorConfiguration.Builder sensorBuilder = new SensoroSensorConfiguration.Builder();
             if (targetDevice.hasSensorParam()) {
-                SensoroSensorTest sensoroSensorTest = targetDevice.getSensoroSensorTest();
+                SensoroSensor sensoroSensorTest = targetDevice.getSensoroSensorTest();
                 if (sensoroSensorTest.hasCo) {
                     sensorBuilder.setCoAlarmHigh(coAlarmHigh);
                     sensorBuilder.setCoData(sensoroSensorTest.co.data_float);
@@ -1720,7 +1720,7 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
         }
 
         if (targetDevice.hasSensorParam()) {
-            SensoroSensorTest sensoroSensorTest = targetDevice.getSensoroSensorTest();
+            SensoroSensor sensoroSensorTest = targetDevice.getSensoroSensorTest();
             if (sensoroSensorTest.hasCo) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
                 builder.setAlarmHigh(coAlarmHigh);

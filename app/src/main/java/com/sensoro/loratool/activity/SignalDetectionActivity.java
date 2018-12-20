@@ -163,7 +163,7 @@ public class SignalDetectionActivity extends BaseActivity implements OnPositiveB
             }
         });
         progressDialog.setCanceledOnTouchOutside(false);
-        sensoroDeviceConnection = new SensoroDeviceConnection(this, sensoroDevice, true);
+        sensoroDeviceConnection = new SensoroDeviceConnection(this, sensoroDevice.getMacAddress(), true);
     }
 
     private void showChoiceDialog() {

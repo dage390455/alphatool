@@ -1,0 +1,3 @@
+[submodule "sensor-kit"]
+	path = sensor-kit
+	url = git@gitlab.sensoro.com:android/sensor-kit.git

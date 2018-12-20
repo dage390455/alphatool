@@ -42,7 +42,7 @@ import com.sensoro.loratool.adapter.DeviceInfoAdapter;
 import com.sensoro.loratool.adapter.SearchHistoryAdapter;
 import com.sensoro.libbleserver.ble.BLEDevice;
 import com.sensoro.libbleserver.ble.SensoroDevice;
-import com.sensoro.libbleserver.ble.SensoroSensorTest;
+import com.sensoro.libbleserver.ble.SensoroSensor;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.widget.RecycleViewItemClickListener;
 import com.sensoro.loratool.widget.SensoroLinearLayoutManager;
@@ -534,7 +534,7 @@ public class SearchDeviceActivity extends AppCompatActivity implements View.OnCl
                         mDeviceInfoAdapter.refreshNew((SensoroDevice) bleDevice, true);
                         break;
                     case BLEDevice.TYPE_SENSOR:
-                        mDeviceInfoAdapter.refreshSensorNew((SensoroSensorTest) bleDevice);
+                        mDeviceInfoAdapter.refreshSensorNew((SensoroSensor) bleDevice);
                         break;
                 }
             }
@@ -552,7 +552,7 @@ public class SearchDeviceActivity extends AppCompatActivity implements View.OnCl
                         mDeviceInfoAdapter.refreshGone((SensoroDevice) bleDevice, true);
                         break;
                     case BLEDevice.TYPE_SENSOR:
-                        mDeviceInfoAdapter.refreshSensorGone((SensoroSensorTest) bleDevice);
+                        mDeviceInfoAdapter.refreshSensorGone((SensoroSensor) bleDevice);
                         break;
                 }
             }
@@ -570,7 +570,7 @@ public class SearchDeviceActivity extends AppCompatActivity implements View.OnCl
                     BLEDevice bleDevice = deviceList.get(i);
                     switch (bleDevice.getType()) {
                         case BLEDevice.TYPE_SENSOR:
-                            SensoroSensorTest sensoroSensor = (SensoroSensorTest) bleDevice;
+                            SensoroSensor sensoroSensor = (SensoroSensor) bleDevice;
                             mDeviceInfoAdapter.refreshSensor(sensoroSensor);
                             break;
                         case BLEDevice.TYPE_DEVICE:

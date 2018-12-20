@@ -23,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.sensoro.libbleserver.ble.SensoroSensor;
 import com.sensoro.lora.setting.server.ILoRaSettingServer;
 import com.sensoro.lora.setting.server.bean.DeviceInfo;
 import com.sensoro.lora.setting.server.bean.DeviceInfoListRsp;
@@ -39,7 +40,7 @@ import com.sensoro.loratool.activity.SignalDetectionActivity;
 import com.sensoro.loratool.activity.UpgradeFirmwareListActivity;
 import com.sensoro.loratool.adapter.DeviceInfoAdapter;
 import com.sensoro.libbleserver.ble.SensoroDevice;
-import com.sensoro.libbleserver.ble.SensoroSensorTest;
+import com.sensoro.libbleserver.ble.SensoroSensor;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.store.DeviceDataDao;
 import com.sensoro.loratool.utils.LogUtils;
@@ -480,19 +481,19 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
         }
     }
 
-    public void refreshSensorGone(SensoroSensorTest sensoroSensor) {
+    public void refreshSensorGone(SensoroSensor sensoroSensor) {
         if (mDeviceInfoAdapter != null) {
             mDeviceInfoAdapter.refreshSensorGone(sensoroSensor);
         }
     }
 
-    public void refreshSensorNew(SensoroSensorTest sensoroSensor) {
+    public void refreshSensorNew(SensoroSensor sensoroSensor) {
         if (mDeviceInfoAdapter != null) {
             mDeviceInfoAdapter.refreshSensorNew(sensoroSensor);
         }
     }
 
-    public void refreshSensor(SensoroSensorTest sensoroSensor) {
+    public void refreshSensor(SensoroSensor sensoroSensor) {
         if (mDeviceInfoAdapter != null) {
             mDeviceInfoAdapter.refreshSensor(sensoroSensor);
         }

@@ -27,7 +27,7 @@ import com.sensoro.libbleserver.ble.SensoroConnectionCallback;
 import com.sensoro.libbleserver.ble.SensoroDevice;
 import com.sensoro.libbleserver.ble.SensoroDeviceConfiguration;
 import com.sensoro.libbleserver.ble.SensoroDeviceConnection;
-import com.sensoro.libbleserver.ble.SensoroSensorTest;
+import com.sensoro.libbleserver.ble.SensoroSensor;
 import com.sensoro.libbleserver.ble.SensoroSlot;
 import com.sensoro.libbleserver.ble.SensoroUtils;
 import com.sensoro.libbleserver.ble.SensoroWriteCallback;
@@ -896,7 +896,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     private LoRaSettingApplication application;
     private SensoroDeviceConfiguration deviceConfiguration;
     private ProgressDialog progressDialog;
-    private SensoroSensorTest sensoroSensor;
+    private SensoroSensor sensoroSensor;
     private int[] txp_array;
 
     @Override
@@ -2424,7 +2424,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
 //            builder.setSensorConfiguration(sensorConfiguration);
 //            deviceConfiguration = builder.build();
             sensoroDeviceConnection.writeData05Configuration(sensoroDevice, this);
-        } catch (InvalidProtocolBufferException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -20,7 +20,7 @@ import com.sensoro.lora.setting.server.bean.DeviceInfo;
 import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
 import com.sensoro.libbleserver.ble.SensoroDevice;
-import com.sensoro.libbleserver.ble.SensoroSensorTest;
+import com.sensoro.libbleserver.ble.SensoroSensor;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.utils.DateUtil;
 import com.sensoro.loratool.widget.BatteryView;
@@ -47,7 +47,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
     private final List<DeviceInfo> mDeviceInfoList = Collections.synchronizedList(new ArrayList<DeviceInfo>());
     private final ConcurrentHashMap<String, DeviceInfo> mCacheDeviceInfoMap = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, SensoroDevice> mNearByDeviceMap = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, SensoroSensorTest> mSensorMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, SensoroSensor> mSensorMap = new ConcurrentHashMap<>();
 
     public DeviceInfoAdapter(Context context) {
         this.mContext = context;
@@ -169,7 +169,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
         }
     }
 
-    public void refreshSensorNew(final SensoroSensorTest sensoroSensor) {
+    public void refreshSensorNew(final SensoroSensor sensoroSensor) {
         if (!mSensorMap.containsKey(sensoroSensor.getSn())) {
             mSensorMap.put(sensoroSensor.getSn(), sensoroSensor);
             notifyDataSetChanged();
@@ -177,14 +177,14 @@ public class DeviceInfoAdapter extends BaseAdapter {
 
     }
 
-    public void refreshSensor(SensoroSensorTest sensoroSensor) {
+    public void refreshSensor(SensoroSensor sensoroSensor) {
         if (mSensorMap.containsKey(sensoroSensor.getSn())) {
             mSensorMap.replace(sensoroSensor.getSn(), mSensorMap.get(sensoroSensor.getSn()), sensoroSensor);
             notifyDataSetChanged();
         }
     }
 
-    public void refreshSensorGone(final SensoroSensorTest sensoroSensor) {
+    public void refreshSensorGone(final SensoroSensor sensoroSensor) {
         if (mSensorMap.containsKey(sensoroSensor.getSn())) {
             mSensorMap.remove(sensoroSensor.getSn());
             notifyDataSetChanged();
@@ -646,7 +646,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
             itemViewHolder.sensorRollAngleLayout.setVisibility(GONE);
             itemViewHolder.sensorYawAngleLayout.setVisibility(GONE);
             itemViewHolder.sensorWaterPressureLayout.setVisibility(GONE);
-            SensoroSensorTest sensoroSensor = mSensorMap.get(deviceInfo_sn);
+            SensoroSensor sensoroSensor = mSensorMap.get(deviceInfo_sn);
             if (sensoroSensor != null && isNearby) {
                 int sensor_counter = 0;
                 if (sensoroSensor.hasTemperature && sensoroSensor.temperature.has_data) {

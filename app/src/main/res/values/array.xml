@@ -366,8 +366,13 @@
         <item>CH4(ST)</item>
         <item>LPG(ST)</item>
         <item>Connection checker(JF)</item>
+        //三相电
         <item>Electric fires(MT)</item>
         <item>Electric fires(AC)</item>
+        //单相电
+        <item>Electric fires(AC)</item>
+        <item>CH4(BM)</item>
+        <item>LPG(BM)</item>
 
     </string-array>
     <string-array name="filter_device_band_array">

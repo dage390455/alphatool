@@ -364,8 +364,14 @@
         <item>可燃气传感器-CH4(ST型）</item>
         <item>可燃气传感器-LPG(ST型）</item>
         <item>通断监测传感器(JF型)</item>
+        //电气火灾
         <item>电气火灾传感器(MT型)</item>
         <item>三相电(AC型)</item>
+        //单相电
+        <item>单相电(AC型)</item>
+        <item>天然气(BM型)</item>
+        <item>液化气(BM型)</item>
+
 
 
     </string-array>
