@@ -3,7 +3,6 @@ package com.sensoro.loratool.activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.print.PageRange;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Base64;
@@ -56,7 +55,6 @@ import butterknife.OnClick;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.sensoro.loratool.constant.Constants.SETTINGS_DEVICE_SGL_DATA_RATE;
 
 /**
  * Created by sensoro on 16/10/11.

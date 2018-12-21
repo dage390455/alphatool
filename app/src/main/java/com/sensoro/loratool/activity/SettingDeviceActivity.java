@@ -866,6 +866,48 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     LinearLayout caymanCmdClearSound;
     @BindView(R.id.cayman_root)
     LinearLayout caymanRoot;
+    @BindView(R.id.baymax_density_content)
+    TextView baymaxDensityContent;
+    @BindView(R.id.baymax_density)
+    LinearLayout baymaxDensity;
+    @BindView(R.id.baymax_density_l1_content)
+    TextView baymaxDensityL1Content;
+    @BindView(R.id.baymax_density_l1)
+    LinearLayout baymaxDensityL1;
+    @BindView(R.id.baymax_density_l2_content)
+    TextView baymaxDensityL2Content;
+    @BindView(R.id.baymax_density_l2)
+    LinearLayout baymaxDensityL2;
+    @BindView(R.id.baymax_density_l3_content)
+    TextView baymaxDensityL3Content;
+    @BindView(R.id.baymax_density_l3)
+    LinearLayout baymaxDensityL3;
+    @BindView(R.id.baymax_disassembly_content)
+    TextView baymaxDisassemblyContent;
+    @BindView(R.id.baymax_disassembly)
+    LinearLayout baymaxDisassembly;
+    @BindView(R.id.baymax_lose_pwr_content)
+    TextView baymaxLosePwrContent;
+    @BindView(R.id.baymax_lose_pwr)
+    LinearLayout baymaxLosePwr;
+    @BindView(R.id.baymax_em_valve_content)
+    TextView baymaxEmValveContent;
+    @BindView(R.id.baymax_em_valve)
+    LinearLayout baymaxEmValve;
+    @BindView(R.id.baymax_coms_down_content)
+    TextView baymaxComsDownContent;
+    @BindView(R.id.baymax_coms_down)
+    LinearLayout baymaxComsDown;
+    @BindView(R.id.baymax_cmd_self_check)
+    LinearLayout baymaxCmdSelfCheck;
+    @BindView(R.id.baymax_cmd_reset)
+    LinearLayout baymaxCmdReset;
+    @BindView(R.id.baymax_cmd_mute)
+    LinearLayout baymaxCmdMute;
+    @BindView(R.id.baymax_cmd_close_electronic_valve)
+    LinearLayout baymaxCmdCloseElectronicValve;
+    @BindView(R.id.baymax_root)
+    LinearLayout baymaxRoot;
 
     private String[] blePowerItems;
     private String[] bleTimeItems;
@@ -1753,6 +1795,61 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         }
                     }
 
+                    boolean hasBaymax = sensoroSensor.hasBaymax;
+                    baymaxRoot.setVisibility(hasBaymax ? VISIBLE : GONE);
+                    if (hasBaymax) {
+                        baymaxDensity.setVisibility(sensoroSensor.baymax.hasGasDensity ? VISIBLE : GONE);
+                        if (sensoroSensor.baymax.hasGasDensity) {
+                            baymaxDensityContent.setText(sensoroSensor.baymax.gasDensity+"%");
+                        }
+                        baymaxDensity.setVisibility(sensoroSensor.baymax.hasGasDensityL1 ? VISIBLE : GONE);
+                        if (sensoroSensor.baymax.hasGasDensityL1) {
+                            baymaxDensityL1Content.setText(sensoroSensor.baymax.gasDensityL1+"%");
+                        }
+                        baymaxDensity.setVisibility(sensoroSensor.baymax.hasGasDensityL2 ? VISIBLE : GONE);
+                        if (sensoroSensor.baymax.hasGasDensityL2) {
+                            baymaxDensityL2Content.setText(sensoroSensor.baymax.gasDensityL2+"%");
+                        }
+                        baymaxDensity.setVisibility(sensoroSensor.baymax.hasGasDensityL3 ? VISIBLE : GONE);
+                        if (sensoroSensor.baymax.hasGasDensityL3) {
+                            baymaxDensityL3Content.setText(sensoroSensor.baymax.gasDensityL3+"%");
+                        }
+                        baymaxDensity.setVisibility(sensoroSensor.baymax.hasGasDisassembly ? VISIBLE : GONE);
+                        if (sensoroSensor.baymax.hasGasDisassembly) {
+                            if (sensoroSensor.baymax.gasDisassembly == 1){
+                                baymaxDisassemblyContent.setText(getString(R.string.disassembled));
+                            }else if(sensoroSensor.baymax.gasDisassembly == 0){
+                                baymaxDisassemblyContent.setText(getString(R.string.installed));
+                            }
+
+                        }
+                        baymaxDensity.setVisibility(sensoroSensor.baymax.hasGasLosePwr ? VISIBLE : GONE);
+                        if (sensoroSensor.baymax.hasGasLosePwr) {
+                            if (sensoroSensor.baymax.gasLosePwr == 1){
+                                baymaxLosePwrContent.setText(getString(R.string.disconnected));
+                            }else if(sensoroSensor.baymax.gasLosePwr == 0){
+                                baymaxLosePwrContent.setText(getString(R.string.connected));
+                            }
+                        }
+                        baymaxDensity.setVisibility(sensoroSensor.baymax.hasGasEMValve ? VISIBLE : GONE);
+                        if (sensoroSensor.baymax.hasGasEMValve) {
+                            if (sensoroSensor.baymax.gasEMValve == 1){
+                                baymaxEmValveContent.setText(getString(R.string.baymax_closed));
+                            }else if(sensoroSensor.baymax.gasEMValve == 0){
+                                baymaxEmValveContent.setText(getString(R.string.baymax_opened));
+                            }
+                        }
+                        baymaxDensity.setVisibility(sensoroSensor.baymax.hasGasDeviceComsDown ? VISIBLE : GONE);
+                        if(sensoroSensor.baymax.hasGasDeviceComsDown){
+                            if (sensoroSensor.baymax.gasDeviceComsDown == 1){
+                                baymaxComsDownContent.setText(getString(R.string.baymax_malfunction));
+                            }else if(sensoroSensor.baymax.gasDeviceComsDown == 0){
+                                baymaxEmValveContent.setText(getString(R.string.baymax_normal));
+                            }
+                        }
+
+                    }
+
                     if (sensoroSensor.hasPitch || sensoroSensor
                             .hasRoll || sensoroSensor.hasYaw) {
                         zeroCommandLinearLayout.setVisibility(VISIBLE);
@@ -2471,6 +2568,12 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         Toast.makeText(SettingDeviceActivity.this, R.string.zero_calibrate_success, Toast
                                 .LENGTH_SHORT).show();
                         break;
+                    case CmdType.CMD_SET_BAYMAX_CMD:
+                        if (progressDialog != null && progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(),getString(R.string.send_success),Toast.LENGTH_SHORT).show();
+                        }
+                            break;
                     default:
                         try {
                             switch (sensoroDevice.getDataVersion()) {
@@ -2509,6 +2612,12 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     case CmdType.CMD_SET_ZERO:
                         Toast.makeText(SettingDeviceActivity.this, R.string.zero_calibrate_failed, Toast
                                 .LENGTH_SHORT).show();
+                        break;
+                    case CmdType.CMD_SET_BAYMAX_CMD:
+                        if (progressDialog != null && progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(),getString(R.string.send_failed)+errorCode,Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     default:
                         Toast.makeText(getApplicationContext(), getString(R.string.save_fail) + " 错误码" + errorCode,
@@ -2938,6 +3047,205 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 }
                 msgCfgBuilder.setFireData(builder);
             }
+            if(sensoroSensor.hasMantunData){
+                MsgNode1V1M5.MantunData.Builder builder = MsgNode1V1M5.MantunData.newBuilder();
+                if (sensoroSensor.mantunData.hasVolVal) {
+                    builder.setVolVal(sensoroSensor.mantunData.volVal);
+                }
+                if (sensoroSensor.mantunData.hasCurrVal) {
+                    builder.setCurrVal(sensoroSensor.mantunData.currVal);
+                }
+                if (sensoroSensor.mantunData.hasLeakageVal) {
+                    builder.setLeakageVal(sensoroSensor.mantunData.leakageVal);
+                }
+                if (sensoroSensor.mantunData.hasPowerVal) {
+                    builder.setPowerVal(sensoroSensor.mantunData.powerVal);
+                }
+                if (sensoroSensor.mantunData.hasKwhVal) {
+                    builder.setKwhVal(sensoroSensor.mantunData.kwhVal);
+                }
+                if (sensoroSensor.mantunData.hasTempVal) {
+                    builder.setTempVal(sensoroSensor.mantunData.tempVal);
+                }
+                if (sensoroSensor.mantunData.hasStatus) {
+                    builder.setStatus(sensoroSensor.mantunData.status);
+                }
+                if (sensoroSensor.mantunData.hasSwOnOff) {
+                    builder.setSwOnOff(sensoroSensor.mantunData.swOnOff);
+                }
+                if (sensoroSensor.mantunData.hasTemp1Outside) {
+                    builder.setTemp1Outside(sensoroSensor.mantunData.temp1Outside);
+                }
+                if (sensoroSensor.mantunData.hasTemp2Contact) {
+                    builder.setTemp2Contact(sensoroSensor.mantunData.temp2Contact);
+                }
+                if (sensoroSensor.mantunData.hasVolHighTh) {
+                    builder.setVolHighTh(sensoroSensor.mantunData.volHighTh);
+                }
+                if (sensoroSensor.mantunData.hasVolLowTh) {
+                    builder.setVolLowTh(sensoroSensor.mantunData.volLowTh);
+                }
+                if (sensoroSensor.mantunData.hasLeakageTh) {
+                    builder.setLeakageTh(sensoroSensor.mantunData.leakageTh);
+                }
+                if (sensoroSensor.mantunData.hasTempTh) {
+                    builder.setTempTh(sensoroSensor.mantunData.tempTh);
+                }
+                if (sensoroSensor.mantunData.hasCurrentTh) {
+                    builder.setCurrentTh(sensoroSensor.mantunData.currentTh);
+                }
+                if (sensoroSensor.mantunData.hasPowerTh) {
+                    builder.setPowerTh(sensoroSensor.mantunData.powerTh);
+                }
+                if (sensoroSensor.mantunData.hasTemp1OutsideTh) {
+                    builder.setTemp1OutsideTh(sensoroSensor.mantunData.temp1OutsideTh);
+                }
+                if (sensoroSensor.mantunData.hasTemp2ContactTh) {
+                    builder.setTemp2ContactTh(sensoroSensor.mantunData.temp2ContactTh);
+                }
+                if (sensoroSensor.mantunData.hasAttribute) {
+                    builder.setAttribute(sensoroSensor.mantunData.attribute);
+                }
+                if (sensoroSensor.mantunData.hasCmd) {
+                    builder.setCmd(sensoroSensor.mantunData.cmd);
+                }
+                msgCfgBuilder.setMtunData(builder);
+            }
+
+            if (sensoroSensor.hasAcrelFires) {
+                MsgNode1V1M5.AcrelData.Builder builder = MsgNode1V1M5.AcrelData.newBuilder();
+                if (sensoroSensor.acrelFires.hasConnectSw) {
+                    builder.setConnectSw(sensoroSensor.acrelFires.connectSw);
+                }
+                if (sensoroSensor.acrelFires.hasChEnable) {
+                    builder.setChEnable(sensoroSensor.acrelFires.chEnable);
+                }
+                if (sensoroSensor.acrelFires.hasLeakageTh) {
+                    builder.setLeakageTh(sensoroSensor.acrelFires.leakageTh);
+                }
+                if (sensoroSensor.acrelFires.hasPasswd) {
+                    builder.setPasswd(sensoroSensor.acrelFires.passwd);
+                }
+                if (sensoroSensor.acrelFires.hasT1Th) {
+                    int t1Th = sensoroSensor.acrelFires.t1Th;
+                    builder.setT1Th(sensoroSensor.acrelFires.t1Th);
+                }
+                if (sensoroSensor.acrelFires.hasT2Th) {
+                    builder.setT2Th(sensoroSensor.acrelFires.t2Th);
+                }
+                if (sensoroSensor.acrelFires.hasT3Th) {
+                    builder.setT3Th(sensoroSensor.acrelFires.t3Th);
+                }
+                if (sensoroSensor.acrelFires.hasT4Th) {
+                    builder.setT4Th(sensoroSensor.acrelFires.t4Th);
+                }
+                if (sensoroSensor.acrelFires.hasPasswd) {
+                    builder.setPasswd(sensoroSensor.acrelFires.passwd);
+                }
+                if (sensoroSensor.acrelFires.hasValHighSet) {
+                    builder.setValHighSet(sensoroSensor.acrelFires.valHighSet);
+                }
+                if (sensoroSensor.acrelFires.hasValLowSet) {
+                    builder.setValLowSet(sensoroSensor.acrelFires.valLowSet);
+                }
+                if (sensoroSensor.acrelFires.hasCurrHighSet) {
+                    builder.setCurrHighSet(sensoroSensor.acrelFires.currHighSet);
+                }
+
+                if (sensoroSensor.acrelFires.hasValHighType) {
+                    builder.setValHighType(sensoroSensor.acrelFires.valHighType);
+                }
+                if (sensoroSensor.acrelFires.hasValLowType) {
+                    builder.setValLowType(sensoroSensor.acrelFires.valLowType);
+                }
+                if (sensoroSensor.acrelFires.hasCurrHighType) {
+                    builder.setCurrHighType(sensoroSensor.acrelFires.currHighType);
+                }
+                if (sensoroSensor.acrelFires.hasIct) {
+                    builder.setIct(sensoroSensor.acrelFires.ict);
+                }
+                if (sensoroSensor.acrelFires.hasCt) {
+                    builder.setCt(sensoroSensor.acrelFires.ct);
+                }
+//            if (sensoroSensor.acrelFires.hasCmd) {
+                builder.setCmd(sensoroSensor.acrelFires.cmd);
+//            }
+                msgCfgBuilder.setAcrelData(builder);
+
+            }
+
+            //嘉德 自研烟感
+            if (sensoroSensor.hasCayMan) {
+                MsgNode1V1M5.Cayman.Builder builder = MsgNode1V1M5.Cayman.newBuilder();
+                if (sensoroSensor.cayManData.hasIsSmoke) {
+                    builder.setIsSmoke(sensoroSensor.cayManData.isSmoke);
+                }
+                if (sensoroSensor.cayManData.hasIsMoved) {
+                    builder.setIsMoved(sensoroSensor.cayManData.isMoved);
+                }
+                if (sensoroSensor.cayManData.hasValueOfTem) {
+                    builder.setValueOfTem(sensoroSensor.cayManData.valueOfTem);
+                }
+                if (sensoroSensor.cayManData.hasValueOfHum) {
+                    builder.setValueOfHum(sensoroSensor.cayManData.valueOfHum);
+                }
+                if (sensoroSensor.cayManData.hasAlarmOfHighTem) {
+                    builder.setAlarmOfHighTem(sensoroSensor.cayManData.alarmOfHighTem);
+                }
+                if (sensoroSensor.cayManData.hasAlarmOfLowTem) {
+                    builder.setAlarmOfLowTem(sensoroSensor.cayManData.alarmOfLowTem);
+                }
+                if (sensoroSensor.cayManData.hasAlarmOfHighHum) {
+                    builder.setAlarmOfHighHum(sensoroSensor.cayManData.alarmOfHighHum);
+                }
+                if (sensoroSensor.cayManData.hasAlarmOfLowHum) {
+                    builder.setAlarmOfLowHum(sensoroSensor.cayManData.alarmOfLowHum);
+                }
+                if (sensoroSensor.cayManData.hasCmd) {
+                    builder.setCmd(sensoroSensor.cayManData.cmd);
+                }
+                msgCfgBuilder.setCaymanData(builder);
+            }
+
+            //baymax ch4 lpg
+            if (sensoroSensor.hasBaymax) {
+                MsgNode1V1M5.Baymax.Builder builder = MsgNode1V1M5.Baymax.newBuilder();
+                if (sensoroSensor.baymax.hasGasDensity) {
+                    builder.setGasDensity(sensoroSensor.baymax.gasDensity);
+                }
+                if (sensoroSensor.baymax.hasGasDensityL1) {
+                    builder.setGasDensityL1(sensoroSensor.baymax.gasDensityL1);
+                }
+                if (sensoroSensor.baymax.hasGasDensityL2) {
+                    builder.setGasDensityL2(sensoroSensor.baymax.gasDensityL2);
+                }
+                if (sensoroSensor.baymax.hasGasDensityL3) {
+                    builder.setGasDensityL3(sensoroSensor.baymax.gasDensityL3);
+                }
+                if (sensoroSensor.baymax.hasGasDisassembly) {
+                    builder.setGasDisassembly(sensoroSensor.baymax.gasDisassembly);
+                }
+                if (sensoroSensor.baymax.hasGasLosePwr) {
+                    builder.setGasLosePwr(sensoroSensor.baymax.gasLosePwr);
+                }
+                if (sensoroSensor.baymax.hasGasEMValve) {
+                    builder.setGasEMValve(sensoroSensor.baymax.gasEMValve);
+                }
+                if (sensoroSensor.baymax.hasGasDeviceStatus) {
+                    builder.setGasDeviceStatus(sensoroSensor.baymax.gasDeviceStatus);
+                }
+                if (sensoroSensor.baymax.hasGasDeviceOpState) {
+                    builder.setGasDeviceOpState(sensoroSensor.baymax.gasDeviceOpState);
+                }
+                if (sensoroSensor.baymax.hasGasDeviceComsDown) {
+                    builder.setGasDeviceComsDown(sensoroSensor.baymax.gasDeviceComsDown);
+                }
+                if (sensoroSensor.baymax.hasGasDeviceCMD) {
+                    builder.setGasDeviceCMD(sensoroSensor.baymax.gasDeviceCMD);
+                }
+                msgCfgBuilder.setBaymaxData(builder);
+            }
+
         }
         MsgNode1V1M5.MsgNode msgCfg = msgCfgBuilder.build();
         byte[] data = msgCfg.toByteArray();
@@ -3402,7 +3710,6 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             case R.id.settings_device_rl_fhsj_elec_control_zero_power:
                 doElecControl(CMD_ELEC_ZERO_POWER);
                 break;
-
 
             default:
                 break;
@@ -4493,23 +4800,23 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
 
             sensoroSensor.acrelFires.currHighType = SensoroUUID.bitsToInt(bytes);
             acrelCurrHighTypeContent.setText(stringBuffer.toString());
-        }else if(SETTINGS_DEVICE_RL_CAYMAN_IS_SMOKE.equals(tag)){
+        } else if (SETTINGS_DEVICE_RL_CAYMAN_IS_SMOKE.equals(tag)) {
             int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
             sensoroSensor.cayManData.isSmoke = index;
-            if(index == 0){
+            if (index == 0) {
                 caymanIsSmokeContent.setText("无烟雾报警");
-            }else{
+            } else {
                 caymanIsSmokeContent.setText("有烟雾报警");
             }
-        }else if(SETTINGS_DEVICE_RL_CAYMAN_IS_MOVED.equals(tag)){
+        } else if (SETTINGS_DEVICE_RL_CAYMAN_IS_MOVED.equals(tag)) {
             int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
             sensoroSensor.cayManData.isMoved = index;
-            if(index == 0){
+            if (index == 0) {
                 caymanIsSmokeContent.setText("无移动报警");
-            }else{
+            } else {
                 caymanIsSmokeContent.setText("有移动报警");
             }
-        }else if(SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_HIGH_TEM.equals(tag)){
+        } else if (SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_HIGH_TEM.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 int i = Integer.parseInt(temp);
@@ -4517,13 +4824,13 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     Toast.makeText(this, "高温度阈值范围为-40-140", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                sensoroSensor.cayManData.alarmOfHighTem = i*10;
+                sensoroSensor.cayManData.alarmOfHighTem = i * 10;
                 acrelT3ThContent.setText(i + "℃");
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
             }
-        }else if(SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_LOW_TEM.equals(tag)){
+        } else if (SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_LOW_TEM.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 int i = Integer.parseInt(temp);
@@ -4531,17 +4838,17 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     Toast.makeText(this, "低温度阈值范围为-40-140", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                sensoroSensor.cayManData.alarmOfLowTem = i*10;
+                sensoroSensor.cayManData.alarmOfLowTem = i * 10;
                 acrelT3ThContent.setText(i + "℃");
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
             }
-        }else if(SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_HIGH_HUM.equals(tag)){
+        } else if (SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_HIGH_HUM.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 int i = Integer.parseInt(temp);
-                if (i < 0|| i > 100) {
+                if (i < 0 || i > 100) {
                     Toast.makeText(this, "湿度阈值范围为0-100", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -4551,7 +4858,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
             }
-        }else if(SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_LOW_HUM.equals(tag)){
+        } else if (SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_LOW_HUM.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 int i = Integer.parseInt(temp);
@@ -4561,6 +4868,48 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 }
                 sensoroSensor.cayManData.alarmOfLowHum = i;
                 acrelT3ThContent.setText(i + "%");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+        }else if (SETTINGS_DEVICE_RL_BAYMAX_GAS_DENSITY_L1.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i < 0 || i > 20) {
+                    Toast.makeText(this, "一级浓度阈值范围为0-20", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.baymax.gasDensityL1 = i;
+                baymaxDensityL1Content.setText(i + "%");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+        }else if (SETTINGS_DEVICE_RL_BAYMAX_GAS_DENSITY_L2.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i < 0 || i > 20) {
+                    Toast.makeText(this, "二级浓度阈值范围为0-20", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.baymax.gasDensityL2 = i;
+                baymaxDensityL2Content.setText(i + "%");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+        }else if (SETTINGS_DEVICE_RL_BAYMAX_GAS_DENSITY_L3.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i < 0 || i > 20) {
+                    Toast.makeText(this, "三级浓度阈值范围为0-20", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.baymax.gasDensityL3 = i;
+                baymaxDensityL3Content.setText(i + "%");
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
@@ -4596,7 +4945,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             R.id.acrel_psd, R.id.cayman_is_smoke, R.id.cayman_is_moved, R.id.cayman_value_of_tem,
             R.id.cayman_value_of_hum, R.id.cayman_alarm_of_high_tem, R.id.cayman_alarm_of_low_tem,
             R.id.cayman_alarm_of_high_hum, R.id.cayman_alarm_of_low_hum, R.id.cayman_cmd_self_check,
-            R.id.cayman_cmd_reset, R.id.cayman_cmd_clear_sound})
+            R.id.cayman_cmd_reset, R.id.cayman_cmd_clear_sound,R.id.baymax_density_l1,R.id.baymax_density_l2,R.id.baymax_density_l3,
+            R.id.baymax_cmd_close_electronic_valve,R.id.baymax_cmd_self_check,R.id.baymax_cmd_reset,R.id.baymax_cmd_mute})
     public void onViewClicked(View view) {
         DialogFragment dialogFragment;
         switch (view.getId()) {
@@ -4870,13 +5220,51 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             case R.id.cayman_cmd_clear_sound:
                 doCaymanControl(CmdType.CMD_CAYMAN_CLEAR_SOUND);
                 break;
+            case R.id.baymax_density_l1:
+                int gasDensityL1 = sensoroSensor.baymax.gasDensityL1;
+                dialogFragment = SettingsInputDialogFragment.newInstance(gasDensityL1 + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_BAYMAX_GAS_DENSITY_L1);
+                break;
+            case R.id.baymax_density_l2:
+                int gasDensityL2 = sensoroSensor.baymax.gasDensityL2;
+                dialogFragment = SettingsInputDialogFragment.newInstance(gasDensityL2 + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_BAYMAX_GAS_DENSITY_L2);
+                break;
+            case R.id.baymax_density_l3:
+                int gasDensityL3 = sensoroSensor.baymax.gasDensityL3;
+                dialogFragment = SettingsInputDialogFragment.newInstance(gasDensityL3 + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_BAYMAX_GAS_DENSITY_L3);
+                break;
+            case R.id.baymax_cmd_self_check:
+                doBaymaxControl(1);
+                break;
+            case R.id.baymax_cmd_reset:
+                doBaymaxControl(2);
+
+                break;
+            case R.id.baymax_cmd_mute:
+                doBaymaxControl(4);
+                break;
+            case R.id.baymax_cmd_close_electronic_valve:
+                doBaymaxControl(8);
+                break;
 
         }
     }
 
+    private void doBaymaxControl(int cmd) {
+        if (progressDialog!=null&&!progressDialog.isShowing()) {
+            progressDialog.setMessage(getString(R.string.send_cmd));
+            progressDialog.show();
+        }
+        MsgNode1V1M5.Baymax.Builder builder = MsgNode1V1M5.Baymax.newBuilder();
+        builder.setGasDeviceCMD(cmd);
+        sensoroDeviceConnection.writeBaymaxCmd(builder, this);
+    }
+
     private void doCaymanControl(int cmd) {
         byte[] bytes = new byte[3];
-        switch (cmd){
+        switch (cmd) {
             case CmdType.CMD_CAYMAN_SELEF_CHECK:
                 bytes[0] = 1;
                 bytes[1] = 0;
@@ -4894,9 +5282,9 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 break;
         }
 
-        MsgNode1V1M5.AcrelData.Builder builder = MsgNode1V1M5.AcrelData.newBuilder();
+        MsgNode1V1M5.Cayman.Builder builder = MsgNode1V1M5.Cayman.newBuilder();
         builder.setCmd(SensoroUUID.bitsToInt(bytes));
-        sensoroDeviceConnection.writeAcrelCmd(builder, this);
+        sensoroDeviceConnection.writeCaymanCmd(builder, this);
     }
 
     private void doAcrelControl(int cmd) {

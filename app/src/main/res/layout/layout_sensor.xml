@@ -2661,6 +2661,9 @@
     <!--嘉德 自研烟感-->
     <include layout="@layout/layout_cay_man"/>
 
+    <!--baymax -->
+    <include layout="@layout/layout_bay_max"/>
+
     <include layout="@layout/layout_smoke"/>
 
 </LinearLayout>

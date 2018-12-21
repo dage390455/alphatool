@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -280,6 +281,7 @@ public class SearchDeviceActivity extends AppCompatActivity implements View.OnCl
             //Tracker 1.0
             //sensor 1.1
             //module 1.1
+            Log.e("hcs",":信号测试::"+selectedDeviceInfo.getBand()+"  "+selectedDeviceInfo.getDeviceType());
             if (selectedDeviceInfo.isCanSignal()) {
                 signalLayout.setVisibility(VISIBLE);
             } else {

@@ -341,6 +341,10 @@ public interface Constants {
     String SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_LOW_TEM = "settings_device_rl_cayman_alarm_of_low_tem";
     String SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_HIGH_HUM = "settings_device_rl_cayman_alarm_of_high_hum";
     String SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_LOW_HUM = "settings_device_rl_cayman_alarm_of_low_hum";
+    //maybax ch4 lpg
+    String SETTINGS_DEVICE_RL_BAYMAX_GAS_DENSITY_L1 = "settings_device_rl_baymax_gas_density_l1";
+    String SETTINGS_DEVICE_RL_BAYMAX_GAS_DENSITY_L2 = "settings_device_rl_baymax_gas_density_l2";
+    String SETTINGS_DEVICE_RL_BAYMAX_GAS_DENSITY_L3 = "settings_device_rl_baymax_gas_density_l3";
 
 
 

@@ -542,5 +542,29 @@
     <string name="tag_setting">设 置</string>
 
     <string name="setting_text_sg_status">单通道</string>
+    <string name="ac_setting_device_density">可燃气体浓度</string>
+    <string name="ac_setting_device_density_l1">一级浓度阈值</string>
+    <string name="ac_setting_device_density_l2">二级浓度阈值</string>
+    <string name="ac_setting_device_density_l3">三级浓度阈值</string>
+    <string name="ac_setting_device_baymax_shell_status">设备外壳状态</string>
+    <string name="ac_setting_device_baymax_pwr_status">交流电源</string>
+    <string name="ac_setting_device_baymax_electronic_valve_status">电子阀</string>
+    <string name="ac_setting_device_baymax_coms_down_status">传感器通讯</string>
+    <string name="ac_setting_device_baymax_control">设备控制</string>
+    <string name="self_test">自检</string>
+    <string name="reset">恢复出厂</string>
+    <string name="ac_setting_device_baymax_mute_60">语音静音60s</string>
+    <string name="ac_setting_device_baymax_close_electronic_valve">关闭电子阀</string>
+    <string name="disassembled">被拆卸</string>
+    <string name="installed">已安装</string>
+    <string name="disconnected">已断开</string>
+    <string name="connected">未断开</string>
+    <string name="baymax_closed">已闭合</string>
+    <string name="baymax_opened">未闭合</string>
+    <string name="baymax_malfunction">通讯故障</string>
+    <string name="baymax_normal">通讯正常</string>
+    <string name="send_cmd">正在发送命令</string>
+    <string name="send_success">发送成功</string>
+    <string name="send_failed">发送失败,错误码：</string>
 
 </resources>

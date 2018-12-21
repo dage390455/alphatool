@@ -79,7 +79,9 @@ public class SignalDetectionActivity extends BaseActivity implements OnPositiveB
     }
 
     private void setFreqTextViewVisible(boolean isVisible) {
-        freqTextView.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+        //频点选择功能去掉了
+        freqTextView.setVisibility(View.GONE);
+//        freqTextView.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 
     @OnClick(R.id.settings_v4_signal_back)

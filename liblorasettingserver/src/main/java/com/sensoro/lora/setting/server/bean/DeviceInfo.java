@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -747,6 +748,10 @@ public class DeviceInfo implements Parcelable, Comparable {
     public boolean isCanSignal() {
         String firmwareVersion = getFirmwareVersion();
         boolean isCan = false;
+        String[] cnCanSignal = {"acrel_single","baymax_ch4","baymax_lpg","fhsj_smoke"};
+        if("CN470".equals(band)&& Arrays.asList(cnCanSignal).contains(deviceType)){
+            return true;
+        }
         if (isOpenLoraDevice()) {
             return false;
         } else {
