@@ -376,7 +376,11 @@ public class MainActivity extends BaseActivity
                         deviceFragment.refreshSensorGone((SensoroSensor) bleDevice);
                         break;
                     case BLEDevice.TYPE_STATION:
-                        stationFragment.refreshGone((SensoroStation) bleDevice);
+                        try {
+                            stationFragment.refreshGone((SensoroStation) bleDevice);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         break;
                 }
             }
@@ -399,7 +403,11 @@ public class MainActivity extends BaseActivity
                     deviceFragment.refreshSensor(sensoroSensor);
                     break;
                 case BLEDevice.TYPE_DEVICE:
-                    deviceFragment.refreshNew((SensoroDevice) bleDevice);
+                    try {
+                        deviceFragment.refreshNew((SensoroDevice) bleDevice);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     break;
             }
         }

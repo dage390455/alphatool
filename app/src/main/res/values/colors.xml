@@ -44,4 +44,11 @@
     <color name="list_sep_color">#F5F6F7</color>
     <color name="upload_btn_bg">#48b0f7</color>
     <color name="sensoro_lost">#3b4752</color>
+    <color name="c_666666">#666666</color>
+    <color name="c_999999">#999999</color>
+    <color name="c_dfdfdf">#DFDFDF</color>
+    <color name="c_252525">#252525</color>
+    <color name="a6a6a6">#A6A6A6</color>
+    <color name="c_f4f4f4">#F4F4F4</color>
+    <color name="c_eeeeee">#EEEEEE</color>
 </resources>

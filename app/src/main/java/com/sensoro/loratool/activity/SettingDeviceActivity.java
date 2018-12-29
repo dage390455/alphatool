@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -27,6 +29,7 @@ import com.sensoro.libbleserver.ble.SensoroConnectionCallback;
 import com.sensoro.libbleserver.ble.SensoroDevice;
 import com.sensoro.libbleserver.ble.SensoroDeviceConfiguration;
 import com.sensoro.libbleserver.ble.SensoroDeviceConnection;
+import com.sensoro.libbleserver.ble.SensoroMantunData;
 import com.sensoro.libbleserver.ble.SensoroSensor;
 import com.sensoro.libbleserver.ble.SensoroSlot;
 import com.sensoro.libbleserver.ble.SensoroUtils;
@@ -40,6 +43,8 @@ import com.sensoro.lora.setting.server.bean.EidInfoListRsp;
 import com.sensoro.lora.setting.server.bean.ResponseBase;
 import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
+import com.sensoro.loratool.adapter.MatunFireAdapter;
+import com.sensoro.loratool.adapter.RecyclerItemClickListener;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.event.OnPositiveButtonClickListener;
 import com.sensoro.loratool.fragment.SettingsInputDialogFragment;
@@ -48,8 +53,10 @@ import com.sensoro.loratool.fragment.SettingsMultiChoiceItemsDialogFragment;
 import com.sensoro.loratool.fragment.SettingsSingleChoiceItemsFragment;
 import com.sensoro.loratool.fragment.SettingsUUIDDialogFragment;
 import com.sensoro.loratool.model.ChannelData;
+import com.sensoro.loratool.model.SettingDeviceModel;
 import com.sensoro.loratool.store.DeviceDataDao;
 import com.sensoro.loratool.utils.ParamUtil;
+import com.sensoro.loratool.widget.SettingEnterDialogUtils;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONArray;
@@ -458,78 +465,78 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     /**
      * 曼顿电气火灾器
      */
-    @BindView(R.id.iv_mantun_leak)
-    ImageView ivMantunLeak;
-    @BindView(R.id.settings_device_mantun_leak)
-    TextView settingsDeviceMantunLeak;
-    @BindView(R.id.settings_device_rl_mantun_leak)
-    RelativeLayout settingsDeviceRlMantunLeak;
-    @BindView(R.id.iv_maunton_temp)
-    ImageView ivMauntonTemp;
-    @BindView(R.id.settings_device_tv_maunton_temp)
-    TextView settingsDeviceTvMauntonTemp;
-    @BindView(R.id.settings_device_rl_mauton_temp)
-    RelativeLayout settingsDeviceRlMautonTemp;
-    @BindView(R.id.iv_maunton_current)
-    ImageView ivMauntonCurrent;
-    @BindView(R.id.settings_device_tv_maunton_current)
-    TextView settingsDeviceTvMauntonCurrent;
-    @BindView(R.id.settings_device_rl_maunton_current)
-    RelativeLayout settingsDeviceRlMauntonCurrent;
-    @BindView(R.id.iv_maunton_overpressure)
-    ImageView ivMauntonOverpressure;
-    @BindView(R.id.settings_device_tv_maunton_overpressure)
-    TextView settingsDeviceTvMauntonOverpressure;
-    @BindView(R.id.settings_device_rl_maunton_overpressure)
-    RelativeLayout settingsDeviceRlMauntonOverpressure;
-    @BindView(R.id.iv_maunton_undervoltage)
-    ImageView ivMauntonUndervoltage;
-    @BindView(R.id.settings_device_tv_maunton_undervoltage)
-    TextView settingsDeviceTvMauntonUndervoltage;
-    @BindView(R.id.settings_device_rl_maunton_undervoltage)
-    RelativeLayout settingsDeviceRlMauntonUndervoltage;
-    @BindView(R.id.iv_maunton_overload)
-    ImageView ivMauntonOverload;
-    @BindView(R.id.settings_device_tv_maunton_overload)
-    TextView settingsDeviceTvMauntonOverload;
-    @BindView(R.id.settings_device_rl_maunton_overload)
-    RelativeLayout settingsDeviceRlMauntonOverload;
-    @BindView(R.id.iv_maunton_mantun_out_side)
-    ImageView ivMauntonMantunOutSide;
-    @BindView(R.id.settings_device_tv_mantun_out_side)
-    TextView settingsDeviceTvMantunOutSide;
-    @BindView(R.id.settings_device_rl_mantun_out_side)
-    RelativeLayout settingsDeviceRlMantunOutSide;
-    @BindView(R.id.iv_maunton_mantun_contact)
-    ImageView ivMauntonMantunContact;
-    @BindView(R.id.settings_device_tv_mantun_contact)
-    TextView settingsDeviceTvMantunContact;
-    @BindView(R.id.settings_device_rl_mantun_contact)
-    RelativeLayout settingsDeviceRlMantunContact;
-    @BindView(R.id.settings_device_ll_matun_root)
-    LinearLayout settingsDeviceLlMatunRoot;
-    @BindView(R.id.settings_device_tv_maunton_control_switch_in)
-    TextView settingsDeviceTvMauntonControlSwitchIn;
-    @BindView(R.id.settings_device_rl_maunton_control_switch_in)
-    RelativeLayout settingsDeviceRlMauntonControlSwitchIn;
-    @BindView(R.id.settings_device_tv_maunton_control_switch_on)
-    TextView settingsDeviceTvMauntonControlSwitchOn;
-    @BindView(R.id.settings_device_rl_maunton_control_switch_on)
-    RelativeLayout settingsDeviceRlMauntonControlSwitchOn;
-    @BindView(R.id.settings_device_tv_maunton_control_self_chick)
-    TextView settingsDeviceTvMauntonControlSelfChick;
-    @BindView(R.id.settings_device_rl_maunton_control_self_chick)
-    RelativeLayout settingsDeviceRlMauntonControlSelfChick;
-    @BindView(R.id.settings_device_tv_maunton_control_elec_clear_zero)
-    TextView settingsDeviceTvMauntonControlElecClearZero;
-    @BindView(R.id.settings_device_rl_maunton_control_elec_clear_zero)
-    RelativeLayout settingsDeviceRlMauntonControlElecClearZero;
-    @BindView(R.id.settings_device_tv_maunton_control_restore)
-    TextView settingsDeviceTvMauntonControlRestore;
-    @BindView(R.id.settings_device_rl_maunton_control_restore)
-    RelativeLayout settingsDeviceRlMauntonControlRestore;
-    @BindView(R.id.settings_device_ll_maunton_control)
-    LinearLayout settingsDeviceLlMauntonControl;
+//    @BindView(R.id.iv_mantun_leak)
+//    ImageView ivMantunLeak;
+//    @BindView(R.id.settings_device_mantun_leak)
+//    TextView settingsDeviceMantunLeak;
+//    @BindView(R.id.settings_device_rl_mantun_leak)
+//    RelativeLayout settingsDeviceRlMantunLeak;
+//    @BindView(R.id.iv_maunton_temp)
+//    ImageView ivMauntonTemp;
+//    @BindView(R.id.settings_device_tv_maunton_temp)
+//    TextView settingsDeviceTvMauntonTemp;
+//    @BindView(R.id.settings_device_rl_mauton_temp)
+//    RelativeLayout settingsDeviceRlMautonTemp;
+//    @BindView(R.id.iv_maunton_current)
+//    ImageView ivMauntonCurrent;
+//    @BindView(R.id.settings_device_tv_maunton_current)
+//    TextView settingsDeviceTvMauntonCurrent;
+//    @BindView(R.id.settings_device_rl_maunton_current)
+//    RelativeLayout settingsDeviceRlMauntonCurrent;
+//    @BindView(R.id.iv_maunton_overpressure)
+//    ImageView ivMauntonOverpressure;
+//    @BindView(R.id.settings_device_tv_maunton_overpressure)
+//    TextView settingsDeviceTvMauntonOverpressure;
+//    @BindView(R.id.settings_device_rl_maunton_overpressure)
+//    RelativeLayout settingsDeviceRlMauntonOverpressure;
+//    @BindView(R.id.iv_maunton_undervoltage)
+//    ImageView ivMauntonUndervoltage;
+//    @BindView(R.id.settings_device_tv_maunton_undervoltage)
+//    TextView settingsDeviceTvMauntonUndervoltage;
+//    @BindView(R.id.settings_device_rl_maunton_undervoltage)
+//    RelativeLayout settingsDeviceRlMauntonUndervoltage;
+//    @BindView(R.id.iv_maunton_overload)
+//    ImageView ivMauntonOverload;
+//    @BindView(R.id.settings_device_tv_maunton_overload)
+//    TextView settingsDeviceTvMauntonOverload;
+//    @BindView(R.id.settings_device_rl_maunton_overload)
+//    RelativeLayout settingsDeviceRlMauntonOverload;
+//    @BindView(R.id.iv_maunton_mantun_out_side)
+//    ImageView ivMauntonMantunOutSide;
+//    @BindView(R.id.settings_device_tv_mantun_out_side)
+//    TextView settingsDeviceTvMantunOutSide;
+//    @BindView(R.id.settings_device_rl_mantun_out_side)
+//    RelativeLayout settingsDeviceRlMantunOutSide;
+//    @BindView(R.id.iv_maunton_mantun_contact)
+//    ImageView ivMauntonMantunContact;
+//    @BindView(R.id.settings_device_tv_mantun_contact)
+//    TextView settingsDeviceTvMantunContact;
+//    @BindView(R.id.settings_device_rl_mantun_contact)
+//    RelativeLayout settingsDeviceRlMantunContact;
+//    @BindView(R.id.settings_device_ll_matun_root)
+//    LinearLayout settingsDeviceLlMatunRoot;
+//    @BindView(R.id.settings_device_tv_maunton_control_switch_in)
+//    TextView settingsDeviceTvMauntonControlSwitchIn;
+//    @BindView(R.id.settings_device_rl_maunton_control_switch_in)
+//    RelativeLayout settingsDeviceRlMauntonControlSwitchIn;
+//    @BindView(R.id.settings_device_tv_maunton_control_switch_on)
+//    TextView settingsDeviceTvMauntonControlSwitchOn;
+//    @BindView(R.id.settings_device_rl_maunton_control_switch_on)
+//    RelativeLayout settingsDeviceRlMauntonControlSwitchOn;
+//    @BindView(R.id.settings_device_tv_maunton_control_self_chick)
+//    TextView settingsDeviceTvMauntonControlSelfChick;
+//    @BindView(R.id.settings_device_rl_maunton_control_self_chick)
+//    RelativeLayout settingsDeviceRlMauntonControlSelfChick;
+//    @BindView(R.id.settings_device_tv_maunton_control_elec_clear_zero)
+//    TextView settingsDeviceTvMauntonControlElecClearZero;
+//    @BindView(R.id.settings_device_rl_maunton_control_elec_clear_zero)
+//    RelativeLayout settingsDeviceRlMauntonControlElecClearZero;
+//    @BindView(R.id.settings_device_tv_maunton_control_restore)
+//    TextView settingsDeviceTvMauntonControlRestore;
+//    @BindView(R.id.settings_device_rl_maunton_control_restore)
+//    RelativeLayout settingsDeviceRlMauntonControlRestore;
+//    @BindView(R.id.settings_device_ll_maunton_control)
+//    LinearLayout settingsDeviceLlMauntonControl;
     @BindView(R.id.settings_device_rl_ibeacon)
     RelativeLayout settingsDeviceRlIbeacon;
     @BindView(R.id.iv_uuid_value)
@@ -908,6 +915,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     LinearLayout baymaxCmdCloseElectronicValve;
     @BindView(R.id.baymax_root)
     LinearLayout baymaxRoot;
+    @BindView(R.id.settings_device_rc_matun_fire)
+    RecyclerView rcMatunFire;
 
     private String[] blePowerItems;
     private String[] bleTimeItems;
@@ -940,6 +949,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     private ProgressDialog progressDialog;
     private SensoroSensor sensoroSensor;
     private int[] txp_array;
+    private SettingEnterDialogUtils mSettingEnterDialogUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1563,53 +1573,56 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         }
 
                     }
-                    boolean hasMantunData = sensoroSensor.hasMantunData;
-                    settingsDeviceLlMatunRoot.setVisibility(hasMantunData ? VISIBLE : GONE);
-                    settingsDeviceLlMauntonControl.setVisibility(hasMantunData ? VISIBLE : GONE);
-                    if (hasMantunData) {
-                        if (sensoroSensor.mantunData.hasLeakageTh) {
-                            settingsDeviceMantunLeak.setText(sensoroSensor.mantunData.leakageTh / 10 + "");
-                        } else {
-                            settingsDeviceRlMantunLeak.setVisibility(GONE);
-                        }
-                        if (sensoroSensor.mantunData.hasTempTh) {
-                            settingsDeviceTvMauntonTemp.setText(sensoroSensor.mantunData.tempTh / 10 + "");
-                        } else {
-                            settingsDeviceRlMautonTemp.setVisibility(GONE);
-                        }
 
-                        if (sensoroSensor.mantunData.hasCurrentTh) {
-                            settingsDeviceTvMauntonCurrent.setText(sensoroSensor.mantunData.currentTh / 100 + "");
-                        } else {
-                            settingsDeviceRlMauntonCurrent.setVisibility(GONE);
-                        }
-                        if (sensoroSensor.mantunData.hasVolHighTh) {
-                            settingsDeviceTvMauntonOverpressure.setText(sensoroSensor.mantunData.volHighTh + "");
-                        } else {
-                            settingsDeviceRlMauntonOverpressure.setVisibility(GONE);
-                        }
-                        if (sensoroSensor.mantunData.hasVolLowTh) {
-                            settingsDeviceTvMauntonUndervoltage.setText(sensoroSensor.mantunData.volLowTh + "");
-                        } else {
-                            settingsDeviceRlMauntonUndervoltage.setVisibility(GONE);
-                        }
-                        if (sensoroSensor.mantunData.hasPowerTh) {
-                            settingsDeviceTvMauntonOverload.setText(sensoroSensor.mantunData.powerTh + "");
-                        } else {
-                            settingsDeviceRlMauntonOverload.setVisibility(GONE);
-                        }
-                        if (sensoroSensor.mantunData.hasTemp1OutsideTh) {
-                            settingsDeviceTvMantunOutSide.setText(sensoroSensor.mantunData.temp1OutsideTh / 10 + "");
-                        } else {
-                            settingsDeviceRlMantunOutSide.setVisibility(GONE);
-                        }
-                        if (sensoroSensor.mantunData.hasTemp2ContactTh) {
-                            settingsDeviceTvMantunContact.setText(sensoroSensor.mantunData.temp2ContactTh / 10 + "");
-                        } else {
-                            settingsDeviceRlMantunContact.setVisibility(GONE);
-                        }
-
-                    }
+                    //曼顿电气火灾
+                    loadMantunData();
+//                    boolean hasMantunData = sensoroSensor.hasMantunData;
+//                    settingsDeviceLlMatunRoot.setVisibility(hasMantunData ? VISIBLE : GONE);
+//                    settingsDeviceLlMauntonControl.setVisibility(hasMantunData ? VISIBLE : GONE);
+//                    if (hasMantunData) {
+//                        if (sensoroSensor.mantunData.hasLeakageTh) {
+//                            settingsDeviceMantunLeak.setText(sensoroSensor.mantunData.leakageTh / 10 + "");
+//                        } else {
+//                            settingsDeviceRlMantunLeak.setVisibility(GONE);
+//                        }
+//                        if (sensoroSensor.mantunData.hasTempTh) {
+//                            settingsDeviceTvMauntonTemp.setText(sensoroSensor.mantunData.tempTh / 10 + "");
+//                        } else {
+//                            settingsDeviceRlMautonTemp.setVisibility(GONE);
+//                        }
+//
+//                        if (sensoroSensor.mantunData.hasCurrentTh) {
+//                            settingsDeviceTvMauntonCurrent.setText(sensoroSensor.mantunData.currentTh / 100 + "");
+//                        } else {
+//                            settingsDeviceRlMauntonCurrent.setVisibility(GONE);
+//                        }
+//                        if (sensoroSensor.mantunData.hasVolHighTh) {
+//                            settingsDeviceTvMauntonOverpressure.setText(sensoroSensor.mantunData.volHighTh + "");
+//                        } else {
+//                            settingsDeviceRlMauntonOverpressure.setVisibility(GONE);
+//                        }
+//                        if (sensoroSensor.mantunData.hasVolLowTh) {
+//                            settingsDeviceTvMauntonUndervoltage.setText(sensoroSensor.mantunData.volLowTh + "");
+//                        } else {
+//                            settingsDeviceRlMauntonUndervoltage.setVisibility(GONE);
+//                        }
+//                        if (sensoroSensor.mantunData.hasPowerTh) {
+//                            settingsDeviceTvMauntonOverload.setText(sensoroSensor.mantunData.powerTh + "");
+//                        } else {
+//                            settingsDeviceRlMauntonOverload.setVisibility(GONE);
+//                        }
+//                        if (sensoroSensor.mantunData.hasTemp1OutsideTh) {
+//                            settingsDeviceTvMantunOutSide.setText(sensoroSensor.mantunData.temp1OutsideTh / 10 + "");
+//                        } else {
+//                            settingsDeviceRlMantunOutSide.setVisibility(GONE);
+//                        }
+//                        if (sensoroSensor.mantunData.hasTemp2ContactTh) {
+//                            settingsDeviceTvMantunContact.setText(sensoroSensor.mantunData.temp2ContactTh / 10 + "");
+//                        } else {
+//                            settingsDeviceRlMantunContact.setVisibility(GONE);
+//                        }
+//
+//                    }
 
                     boolean hasAcrelFires = sensoroSensor.hasAcrelFires;
                     acrelRoot.setVisibility(hasAcrelFires ? VISIBLE : GONE);
@@ -1800,50 +1813,55 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     if (hasBaymax) {
                         baymaxDensity.setVisibility(sensoroSensor.baymax.hasGasDensity ? VISIBLE : GONE);
                         if (sensoroSensor.baymax.hasGasDensity) {
-                            baymaxDensityContent.setText(sensoroSensor.baymax.gasDensity+"%");
+                            if ("baymax_lpg".equals(deviceType)) {
+                                baymaxDensityContent.setText(sensoroSensor.baymax.gasDensity /180+ "%");
+                            }else if("baymax_ch4".equals(deviceType)){
+                                baymaxDensityContent.setText(sensoroSensor.baymax.gasDensity /500+ "%");
+                            }
+
                         }
                         baymaxDensity.setVisibility(sensoroSensor.baymax.hasGasDensityL1 ? VISIBLE : GONE);
                         if (sensoroSensor.baymax.hasGasDensityL1) {
-                            baymaxDensityL1Content.setText(sensoroSensor.baymax.gasDensityL1+"%");
+                            baymaxDensityL1Content.setText(sensoroSensor.baymax.gasDensityL1 + "%");
                         }
                         baymaxDensity.setVisibility(sensoroSensor.baymax.hasGasDensityL2 ? VISIBLE : GONE);
                         if (sensoroSensor.baymax.hasGasDensityL2) {
-                            baymaxDensityL2Content.setText(sensoroSensor.baymax.gasDensityL2+"%");
+                            baymaxDensityL2Content.setText(sensoroSensor.baymax.gasDensityL2 + "%");
                         }
                         baymaxDensity.setVisibility(sensoroSensor.baymax.hasGasDensityL3 ? VISIBLE : GONE);
                         if (sensoroSensor.baymax.hasGasDensityL3) {
-                            baymaxDensityL3Content.setText(sensoroSensor.baymax.gasDensityL3+"%");
+                            baymaxDensityL3Content.setText(sensoroSensor.baymax.gasDensityL3 + "%");
                         }
                         baymaxDensity.setVisibility(sensoroSensor.baymax.hasGasDisassembly ? VISIBLE : GONE);
                         if (sensoroSensor.baymax.hasGasDisassembly) {
-                            if (sensoroSensor.baymax.gasDisassembly == 1){
+                            if (sensoroSensor.baymax.gasDisassembly == 1) {
                                 baymaxDisassemblyContent.setText(getString(R.string.disassembled));
-                            }else if(sensoroSensor.baymax.gasDisassembly == 0){
+                            } else if (sensoroSensor.baymax.gasDisassembly == 0) {
                                 baymaxDisassemblyContent.setText(getString(R.string.installed));
                             }
 
                         }
                         baymaxDensity.setVisibility(sensoroSensor.baymax.hasGasLosePwr ? VISIBLE : GONE);
                         if (sensoroSensor.baymax.hasGasLosePwr) {
-                            if (sensoroSensor.baymax.gasLosePwr == 1){
+                            if (sensoroSensor.baymax.gasLosePwr == 1) {
                                 baymaxLosePwrContent.setText(getString(R.string.disconnected));
-                            }else if(sensoroSensor.baymax.gasLosePwr == 0){
+                            } else if (sensoroSensor.baymax.gasLosePwr == 0) {
                                 baymaxLosePwrContent.setText(getString(R.string.connected));
                             }
                         }
                         baymaxDensity.setVisibility(sensoroSensor.baymax.hasGasEMValve ? VISIBLE : GONE);
                         if (sensoroSensor.baymax.hasGasEMValve) {
-                            if (sensoroSensor.baymax.gasEMValve == 1){
+                            if (sensoroSensor.baymax.gasEMValve == 1) {
                                 baymaxEmValveContent.setText(getString(R.string.baymax_closed));
-                            }else if(sensoroSensor.baymax.gasEMValve == 0){
+                            } else if (sensoroSensor.baymax.gasEMValve == 0) {
                                 baymaxEmValveContent.setText(getString(R.string.baymax_opened));
                             }
                         }
                         baymaxDensity.setVisibility(sensoroSensor.baymax.hasGasDeviceComsDown ? VISIBLE : GONE);
-                        if(sensoroSensor.baymax.hasGasDeviceComsDown){
-                            if (sensoroSensor.baymax.gasDeviceComsDown == 1){
+                        if (sensoroSensor.baymax.hasGasDeviceComsDown) {
+                            if (sensoroSensor.baymax.gasDeviceComsDown == 1) {
                                 baymaxComsDownContent.setText(getString(R.string.baymax_malfunction));
-                            }else if(sensoroSensor.baymax.gasDeviceComsDown == 0){
+                            } else if (sensoroSensor.baymax.gasDeviceComsDown == 0) {
                                 baymaxEmValveContent.setText(getString(R.string.baymax_normal));
                             }
                         }
@@ -1891,6 +1909,164 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 return;
             }
             Toast.makeText(getApplicationContext(), getString(R.string.connect_success), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void loadMantunData() {
+        if (sensoroSensor.mantunDatas != null && sensoroSensor.mantunDatas.size() > 0) {
+            rcMatunFire.setVisibility(VISIBLE);
+            MatunFireAdapter matunFireAdapter = new MatunFireAdapter(this);
+            LinearLayoutManager manager = new LinearLayoutManager(this);
+            manager.setOrientation(LinearLayoutManager.VERTICAL);
+            rcMatunFire.setLayoutManager(manager);
+            rcMatunFire.setNestedScrollingEnabled(false);
+            ArrayList<SettingDeviceModel> datas = new ArrayList<>();
+            for (SensoroMantunData mantunData : sensoroSensor.mantunDatas) {
+                int attribute = mantunData.attribute;
+                int i = attribute & 0x00ff;
+                int current = attribute >> 8;
+
+                SettingDeviceModel settingDeviceModel = new SettingDeviceModel();
+                settingDeviceModel.title = "Id：" + mantunData.id;
+                settingDeviceModel.viewType = 2;
+                datas.add(settingDeviceModel);
+
+                SettingDeviceModel settingDeviceModel3 = new SettingDeviceModel();
+                settingDeviceModel3.name = getString(R.string.attribute);
+                if (i == 8) {
+                    settingDeviceModel3.content = getString(R.string.elect_split_road);
+                } else if (i == 7) {
+                    settingDeviceModel3.content = getString(R.string.elect_main_road);
+                }
+                settingDeviceModel3.eventType = -1;
+                settingDeviceModel3.isArrow = false;
+                datas.add(settingDeviceModel3);
+
+                SettingDeviceModel settingDeviceModel1 = new SettingDeviceModel(getString(R.string.Overcurrent_threshold), String.valueOf(mantunData.currentTh), 1);
+                settingDeviceModel1.min = 0f;
+                settingDeviceModel1.max = current * 1.5f;
+                settingDeviceModel1.hint = getString(R.string.current_threshold_range) + settingDeviceModel1.min + "-" + settingDeviceModel1.max;
+                settingDeviceModel1.errMsg = getString(R.string.over_current_Threshold_range);
+                settingDeviceModel1.tag = mantunData.id + "currentTh";
+                datas.add(settingDeviceModel1);
+
+                SettingDeviceModel settingDeviceModel2 = new SettingDeviceModel(getString(R.string.power_threshold), String.valueOf(mantunData.powerTh), 1);
+                settingDeviceModel2.min = 0f;
+                settingDeviceModel2.max = current * 220 * 1.5f;
+                settingDeviceModel2.hint = getString(R.string.power_threshold_range) + settingDeviceModel1.min + "-" + settingDeviceModel1.max;
+                settingDeviceModel2.errMsg = getString(R.string.over_power_Threshold_range);
+                settingDeviceModel2.tag = mantunData.id + "powerTh";
+                settingDeviceModel2.isDivider = false;
+                datas.add(settingDeviceModel2);
+
+
+            }
+
+            SettingDeviceModel settingDeviceModel4 = new SettingDeviceModel();
+            settingDeviceModel4.viewType = 2;
+            settingDeviceModel4.title = getString(R.string.elect_control);
+            datas.add(settingDeviceModel4);
+            SettingDeviceModel settingDeviceModel5 = new SettingDeviceModel();
+            settingDeviceModel5.viewType = 1;
+            settingDeviceModel5.eventType = 2;
+            settingDeviceModel5.cmd = 0;
+            settingDeviceModel5.name = getString(R.string.query);
+            datas.add(settingDeviceModel5);
+            for (SensoroMantunData mantunData : sensoroSensor.mantunDatas) {
+                SettingDeviceModel settingDeviceModel6 = new SettingDeviceModel();
+                settingDeviceModel6.eventType = 2;
+                settingDeviceModel6.cmd = 2;
+                settingDeviceModel6.name = String.format(Locale.CHINESE, "%s(%d)", getString(R.string.close_brake), (int)mantunData.id);
+                datas.add(settingDeviceModel6);
+
+                SettingDeviceModel settingDeviceModel7 = new SettingDeviceModel();
+                settingDeviceModel7.eventType = 2;
+                settingDeviceModel7.cmd = 4;
+                settingDeviceModel7.name = String.format(Locale.CHINESE, "%s(%d)", getString(R.string.spearate_brake), (int)mantunData.id);
+                datas.add(settingDeviceModel7);
+            }
+            rcMatunFire.setAdapter(matunFireAdapter);
+            matunFireAdapter.updateData(datas);
+            matunFireAdapter.setOnItemClickListener(new RecyclerItemClickListener() {
+                @Override
+                public void onItemClick(SettingDeviceModel model, int position) {
+                    switch (model.eventType) {
+                        case 1:
+                            mSettingEnterDialogUtils.show(model.content,model.hint, model.errMsg, model.max, model.min, new SettingEnterDialogUtils.SettingEnterUtilsClickListener() {
+                                @Override
+                                public void onCancelClick() {
+
+                                }
+
+                                @Override
+                                public void onConfirmClick(float value) {
+                                    for (SensoroMantunData mantunData : sensoroSensor.mantunDatas) {
+                                        String mantunCurrentTag = mantunData.id + "currentTh";
+                                        String mantunPowerTag = mantunData.id + "powerTh";
+                                        model.content = String.valueOf(value);
+                                        if (model.tag != null) {
+                                            if (model.tag.equals(mantunCurrentTag)) {
+                                                mantunData.currentTh = (int) (value * 100);
+                                            } else if (model.tag.equals(mantunPowerTag)) {
+                                                mantunData.powerTh = (int) value;
+                                            }
+                                        }
+                                    }
+                                    matunFireAdapter.notifyDataSetChanged();
+                                }
+                            });
+                            break;
+                        case 2:
+                            MsgNode1V1M5.MantunData.Builder builder = MsgNode1V1M5.MantunData.newBuilder();
+                            if (model.cmd == 2 || model.cmd == 4) {
+                                for (SensoroMantunData mantunData : sensoroSensor.mantunDatas) {
+                                    if (String.valueOf(mantunData.id).equals(model.content)) {
+                                        builder.setId(mantunData.id);
+                                        break;
+                                    }
+                                }
+                            }
+                            builder.setCmd(model.cmd);
+                            sensoroDeviceConnection.writeMantunCmd(builder, new SensoroWriteCallback() {
+                                @Override
+                                public void onWriteSuccess(Object o, int cmd) {
+                                    showSendCmdSuccessProgressDialog();
+                                }
+
+                                @Override
+                                public void onWriteFailure(int errorCode, int cmd) {
+                                    showSendCmdFailedProgressDialog(errorCode);
+                                }
+                            });
+                            showSendCmdProgressDialog();
+                            break;
+                    }
+                }
+            });
+
+        } else {
+            rcMatunFire.setVisibility(GONE);
+        }
+    }
+
+    private void showSendCmdSuccessProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+            Toast.makeText(getApplicationContext(), getString(R.string.send_success), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void showSendCmdFailedProgressDialog(int errorCode) {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+            Toast.makeText(getApplicationContext(), getString(R.string.send_failed) + errorCode, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void showSendCmdProgressDialog() {
+        if (progressDialog != null && !progressDialog.isShowing()) {
+            progressDialog.setMessage(getString(R.string.send_cmd));
+            progressDialog.show();
         }
     }
 
@@ -2571,9 +2747,9 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     case CmdType.CMD_SET_BAYMAX_CMD:
                         if (progressDialog != null && progressDialog.isShowing()) {
                             progressDialog.dismiss();
-                            Toast.makeText(getApplicationContext(),getString(R.string.send_success),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.send_success), Toast.LENGTH_SHORT).show();
                         }
-                            break;
+                        break;
                     default:
                         try {
                             switch (sensoroDevice.getDataVersion()) {
@@ -2616,7 +2792,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     case CmdType.CMD_SET_BAYMAX_CMD:
                         if (progressDialog != null && progressDialog.isShowing()) {
                             progressDialog.dismiss();
-                            Toast.makeText(getApplicationContext(),getString(R.string.send_failed)+errorCode,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.send_failed) + errorCode, Toast.LENGTH_SHORT).show();
                         }
                         break;
                     default:
@@ -2650,8 +2826,13 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 progressDialog.dismiss();
                 registerUiEvent();
                 refresh();
+                initEnterDialog();
             }
         });
+    }
+
+    private void initEnterDialog() {
+        mSettingEnterDialogUtils = new SettingEnterDialogUtils(this);
     }
 
     @Override
@@ -3047,69 +3228,78 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 }
                 msgCfgBuilder.setFireData(builder);
             }
-            if(sensoroSensor.hasMantunData){
-                MsgNode1V1M5.MantunData.Builder builder = MsgNode1V1M5.MantunData.newBuilder();
-                if (sensoroSensor.mantunData.hasVolVal) {
-                    builder.setVolVal(sensoroSensor.mantunData.volVal);
+            if (sensoroSensor.mantunDatas != null&&sensoroSensor.mantunDatas.size()>0) {
+                for (SensoroMantunData mantunData : sensoroSensor.mantunDatas) {
+                    MsgNode1V1M5.MantunData.Builder builder = MsgNode1V1M5.MantunData.newBuilder();
+                    if (mantunData.hasCurrentTh) {
+                        builder.setCurrentTh(mantunData.currentTh);
+                    }
+                    if (mantunData.hasPowerTh) {
+                        builder.setPowerTh(mantunData.powerTh);
+                    }
+                    msgCfgBuilder.addMtunData(builder);
                 }
-                if (sensoroSensor.mantunData.hasCurrVal) {
-                    builder.setCurrVal(sensoroSensor.mantunData.currVal);
-                }
-                if (sensoroSensor.mantunData.hasLeakageVal) {
-                    builder.setLeakageVal(sensoroSensor.mantunData.leakageVal);
-                }
-                if (sensoroSensor.mantunData.hasPowerVal) {
-                    builder.setPowerVal(sensoroSensor.mantunData.powerVal);
-                }
-                if (sensoroSensor.mantunData.hasKwhVal) {
-                    builder.setKwhVal(sensoroSensor.mantunData.kwhVal);
-                }
-                if (sensoroSensor.mantunData.hasTempVal) {
-                    builder.setTempVal(sensoroSensor.mantunData.tempVal);
-                }
-                if (sensoroSensor.mantunData.hasStatus) {
-                    builder.setStatus(sensoroSensor.mantunData.status);
-                }
-                if (sensoroSensor.mantunData.hasSwOnOff) {
-                    builder.setSwOnOff(sensoroSensor.mantunData.swOnOff);
-                }
-                if (sensoroSensor.mantunData.hasTemp1Outside) {
-                    builder.setTemp1Outside(sensoroSensor.mantunData.temp1Outside);
-                }
-                if (sensoroSensor.mantunData.hasTemp2Contact) {
-                    builder.setTemp2Contact(sensoroSensor.mantunData.temp2Contact);
-                }
-                if (sensoroSensor.mantunData.hasVolHighTh) {
-                    builder.setVolHighTh(sensoroSensor.mantunData.volHighTh);
-                }
-                if (sensoroSensor.mantunData.hasVolLowTh) {
-                    builder.setVolLowTh(sensoroSensor.mantunData.volLowTh);
-                }
-                if (sensoroSensor.mantunData.hasLeakageTh) {
-                    builder.setLeakageTh(sensoroSensor.mantunData.leakageTh);
-                }
-                if (sensoroSensor.mantunData.hasTempTh) {
-                    builder.setTempTh(sensoroSensor.mantunData.tempTh);
-                }
-                if (sensoroSensor.mantunData.hasCurrentTh) {
-                    builder.setCurrentTh(sensoroSensor.mantunData.currentTh);
-                }
-                if (sensoroSensor.mantunData.hasPowerTh) {
-                    builder.setPowerTh(sensoroSensor.mantunData.powerTh);
-                }
-                if (sensoroSensor.mantunData.hasTemp1OutsideTh) {
-                    builder.setTemp1OutsideTh(sensoroSensor.mantunData.temp1OutsideTh);
-                }
-                if (sensoroSensor.mantunData.hasTemp2ContactTh) {
-                    builder.setTemp2ContactTh(sensoroSensor.mantunData.temp2ContactTh);
-                }
-                if (sensoroSensor.mantunData.hasAttribute) {
-                    builder.setAttribute(sensoroSensor.mantunData.attribute);
-                }
-                if (sensoroSensor.mantunData.hasCmd) {
-                    builder.setCmd(sensoroSensor.mantunData.cmd);
-                }
-                msgCfgBuilder.setMtunData(builder);
+//                if (sensoroSensor.mantunData.hasVolVal) {
+//                    builder.setVolVal(sensoroSensor.mantunData.volVal);
+//                }
+//                if (sensoroSensor.mantunData.hasCurrVal) {
+//                    builder.setCurrVal(sensoroSensor.mantunData.currVal);
+//                }
+//                if (sensoroSensor.mantunData.hasLeakageVal) {
+//                    builder.setLeakageVal(sensoroSensor.mantunData.leakageVal);
+//                }
+//                if (sensoroSensor.mantunData.hasPowerVal) {
+//                    builder.setPowerVal(sensoroSensor.mantunData.powerVal);
+//                }
+//                if (sensoroSensor.mantunData.hasKwhVal) {
+//                    builder.setKwhVal(sensoroSensor.mantunData.kwhVal);
+//                }
+//                if (sensoroSensor.mantunData.hasTempVal) {
+//                    builder.setTempVal(sensoroSensor.mantunData.tempVal);
+//                }
+//                if (sensoroSensor.mantunData.hasStatus) {
+//                    builder.setStatus(sensoroSensor.mantunData.status);
+//                }
+//                if (sensoroSensor.mantunData.hasSwOnOff) {
+//                    builder.setSwOnOff(sensoroSensor.mantunData.swOnOff);
+//                }
+//                if (sensoroSensor.mantunData.hasTemp1Outside) {
+//                    builder.setTemp1Outside(sensoroSensor.mantunData.temp1Outside);
+//                }
+//                if (sensoroSensor.mantunData.hasTemp2Contact) {
+//                    builder.setTemp2Contact(sensoroSensor.mantunData.temp2Contact);
+//                }
+//                if (sensoroSensor.mantunData.hasVolHighTh) {
+//                    builder.setVolHighTh(sensoroSensor.mantunData.volHighTh);
+//                }
+//                if (sensoroSensor.mantunData.hasVolLowTh) {
+//                    builder.setVolLowTh(sensoroSensor.mantunData.volLowTh);
+//                }
+//                if (sensoroSensor.mantunData.hasLeakageTh) {
+//                    builder.setLeakageTh(sensoroSensor.mantunData.leakageTh);
+//                }
+//                if (sensoroSensor.mantunData.hasTempTh) {
+//                    builder.setTempTh(sensoroSensor.mantunData.tempTh);
+//                }
+//                if (sensoroSensor.mantunData.hasCurrentTh) {
+//                    builder.setCurrentTh(sensoroSensor.mantunData.currentTh);
+//                }
+//                if (sensoroSensor.mantunData.hasPowerTh) {
+//                    builder.setPowerTh(sensoroSensor.mantunData.powerTh);
+//                }
+//                if (sensoroSensor.mantunData.hasTemp1OutsideTh) {
+//                    builder.setTemp1OutsideTh(sensoroSensor.mantunData.temp1OutsideTh);
+//                }
+//                if (sensoroSensor.mantunData.hasTemp2ContactTh) {
+//                    builder.setTemp2ContactTh(sensoroSensor.mantunData.temp2ContactTh);
+//                }
+//                if (sensoroSensor.mantunData.hasAttribute) {
+//                    builder.setAttribute(sensoroSensor.mantunData.attribute);
+//                }
+//                if (sensoroSensor.mantunData.hasCmd) {
+//                    builder.setCmd(sensoroSensor.mantunData.cmd);
+//                }
+//                msgCfgBuilder.setMtunData(builder);
             }
 
             if (sensoroSensor.hasAcrelFires) {
@@ -4457,7 +4647,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
             }
 
-        } else if (SETTINGS_DEVICE_RL_MANTUN_LEAKAGE.equals(tag)) {
+        } /*else if (SETTINGS_DEVICE_RL_MANTUN_LEAKAGE.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 int i = Integer.parseInt(temp);
@@ -4570,7 +4760,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
             }
-        } else if (SETTINGS_DEVICE_RL_ACREL_LEAKAGE.equals(tag)) {
+        } */else if (SETTINGS_DEVICE_RL_ACREL_LEAKAGE.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 int i = Integer.parseInt(temp);
@@ -4872,7 +5062,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
             }
-        }else if (SETTINGS_DEVICE_RL_BAYMAX_GAS_DENSITY_L1.equals(tag)) {
+        } else if (SETTINGS_DEVICE_RL_BAYMAX_GAS_DENSITY_L1.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 int i = Integer.parseInt(temp);
@@ -4886,7 +5076,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
             }
-        }else if (SETTINGS_DEVICE_RL_BAYMAX_GAS_DENSITY_L2.equals(tag)) {
+        } else if (SETTINGS_DEVICE_RL_BAYMAX_GAS_DENSITY_L2.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 int i = Integer.parseInt(temp);
@@ -4900,7 +5090,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
             }
-        }else if (SETTINGS_DEVICE_RL_BAYMAX_GAS_DENSITY_L3.equals(tag)) {
+        } else if (SETTINGS_DEVICE_RL_BAYMAX_GAS_DENSITY_L3.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 int i = Integer.parseInt(temp);
@@ -4920,16 +5110,19 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
         if (sensoroDeviceConnection != null) {
             sensoroDeviceConnection.disconnect();
         }
+        if (mSettingEnterDialogUtils != null) {
+            mSettingEnterDialogUtils.destroy();
+        }
+        super.onDestroy();
     }
 
-    @OnClick({R.id.settings_device_rl_mantun_leak, R.id.settings_device_rl_mauton_temp,
+    @OnClick({/*{R.id.settings_device_rl_mantun_leak, R.id.settings_device_rl_mauton_temp,
             R.id.settings_device_rl_maunton_current, R.id.settings_device_rl_maunton_overpressure,
             R.id.settings_device_rl_maunton_undervoltage, R.id.settings_device_rl_maunton_overload,
             R.id.settings_device_rl_mantun_out_side, R.id.settings_device_rl_mantun_contact,
@@ -4937,7 +5130,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             R.id.settings_device_rl_maunton_control_switch_on,
             R.id.settings_device_rl_maunton_control_self_chick,
             R.id.settings_device_rl_maunton_control_elec_clear_zero,
-            R.id.settings_device_rl_maunton_control_restore, R.id.acrel_leakage_th,
+            R.id.settings_device_rl_maunton_control_restore,*/ R.id.acrel_leakage_th,
             R.id.acrel_connect_sw, R.id.acrel_ch_enable, R.id.acrel_t1_th, R.id.acrel_t2_th,
             R.id.acrel_t3_th, R.id.acrel_t4_th, R.id.acrel_curr_high_set, R.id.acrel_val_high_set,
             R.id.acrel_val_low_set, R.id.acrel_val_high_type, R.id.acrel_val_low_type,
@@ -4945,66 +5138,66 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             R.id.acrel_psd, R.id.cayman_is_smoke, R.id.cayman_is_moved, R.id.cayman_value_of_tem,
             R.id.cayman_value_of_hum, R.id.cayman_alarm_of_high_tem, R.id.cayman_alarm_of_low_tem,
             R.id.cayman_alarm_of_high_hum, R.id.cayman_alarm_of_low_hum, R.id.cayman_cmd_self_check,
-            R.id.cayman_cmd_reset, R.id.cayman_cmd_clear_sound,R.id.baymax_density_l1,R.id.baymax_density_l2,R.id.baymax_density_l3,
-            R.id.baymax_cmd_close_electronic_valve,R.id.baymax_cmd_self_check,R.id.baymax_cmd_reset,R.id.baymax_cmd_mute})
+            R.id.cayman_cmd_reset, R.id.cayman_cmd_clear_sound, R.id.baymax_density_l1, R.id.baymax_density_l2, R.id.baymax_density_l3,
+            R.id.baymax_cmd_close_electronic_valve, R.id.baymax_cmd_self_check, R.id.baymax_cmd_reset, R.id.baymax_cmd_mute})
     public void onViewClicked(View view) {
         DialogFragment dialogFragment;
         switch (view.getId()) {
-            case R.id.settings_device_rl_mantun_leak:
-                int leakageTh = sensoroSensor.mantunData.leakageTh;
-                dialogFragment = SettingsInputDialogFragment.newInstance(leakageTh / 10 + "");
-                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_MANTUN_LEAKAGE);
-                break;
-            case R.id.settings_device_rl_mauton_temp:
-                int tempTh = sensoroSensor.mantunData.tempTh;
-                dialogFragment = SettingsInputDialogFragment.newInstance(tempTh / 10 + "");
-                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_MANTUN_TEMP);
-                break;
-            case R.id.settings_device_rl_maunton_current:
-                int currentTh = sensoroSensor.mantunData.currentTh;
-                dialogFragment = SettingsInputDialogFragment.newInstance(currentTh / 100 + "");
-                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_MANTUN_CURRENT);
-                break;
-            case R.id.settings_device_rl_maunton_overpressure:
-                int volHighTh = sensoroSensor.mantunData.volHighTh;
-                dialogFragment = SettingsInputDialogFragment.newInstance(volHighTh + "");
-                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_MANTUN_VOL_HIGH);
-                break;
-            case R.id.settings_device_rl_maunton_undervoltage:
-                int volLowTh = sensoroSensor.mantunData.volLowTh;
-                dialogFragment = SettingsInputDialogFragment.newInstance(volLowTh + "");
-                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_MANTUN_VOL_LOW);
-                break;
-            case R.id.settings_device_rl_maunton_overload:
-                int powerTh = sensoroSensor.mantunData.powerTh;
-                dialogFragment = SettingsInputDialogFragment.newInstance(powerTh + "");
-                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_MANTUN_POWER);
-                break;
-            case R.id.settings_device_rl_mantun_out_side:
-                int temp1OutsideTh = sensoroSensor.mantunData.temp1OutsideTh;
-                dialogFragment = SettingsInputDialogFragment.newInstance(temp1OutsideTh / 10 + "");
-                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_MANTUN_TEMP_OUTSIDE);
-                break;
-            case R.id.settings_device_rl_mantun_contact:
-                int temp2ContactTh = sensoroSensor.mantunData.temp2ContactTh;
-                dialogFragment = SettingsInputDialogFragment.newInstance(temp2ContactTh / 10 + "");
-                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_MANTUN_TEMP_CONTACT);
-                break;
-            case R.id.settings_device_rl_maunton_control_switch_in:
-                doMantunControl(CMD_MANTUN_SWITCH_IN);
-                break;
-            case R.id.settings_device_rl_maunton_control_switch_on:
-                doMantunControl(CMD_MANTUN_SWITCH_ON);
-                break;
-            case R.id.settings_device_rl_maunton_control_self_chick:
-                doMantunControl(CMD_MANTUN_SELF_CHICK);
-                break;
-            case R.id.settings_device_rl_maunton_control_elec_clear_zero:
-                doMantunControl(CMD_MANTUN_ZERO_POWER);
-                break;
-            case R.id.settings_device_rl_maunton_control_restore:
-                doMantunControl(CMD_MANTUN_RESTORE);
-                break;
+//            case R.id.settings_device_rl_mantun_leak:
+//                int leakageTh = sensoroSensor.mantunData.leakageTh;
+//                dialogFragment = SettingsInputDialogFragment.newInstance(leakageTh / 10 + "");
+//                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_MANTUN_LEAKAGE);
+//                break;
+//            case R.id.settings_device_rl_mauton_temp:
+//                int tempTh = sensoroSensor.mantunData.tempTh;
+//                dialogFragment = SettingsInputDialogFragment.newInstance(tempTh / 10 + "");
+//                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_MANTUN_TEMP);
+//                break;
+//            case R.id.settings_device_rl_maunton_current:
+//                int currentTh = sensoroSensor.mantunData.currentTh;
+//                dialogFragment = SettingsInputDialogFragment.newInstance(currentTh / 100 + "");
+//                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_MANTUN_CURRENT);
+//                break;
+//            case R.id.settings_device_rl_maunton_overpressure:
+//                int volHighTh = sensoroSensor.mantunData.volHighTh;
+//                dialogFragment = SettingsInputDialogFragment.newInstance(volHighTh + "");
+//                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_MANTUN_VOL_HIGH);
+//                break;
+//            case R.id.settings_device_rl_maunton_undervoltage:
+//                int volLowTh = sensoroSensor.mantunData.volLowTh;
+//                dialogFragment = SettingsInputDialogFragment.newInstance(volLowTh + "");
+//                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_MANTUN_VOL_LOW);
+//                break;
+//            case R.id.settings_device_rl_maunton_overload:
+//                int powerTh = sensoroSensor.mantunData.powerTh;
+//                dialogFragment = SettingsInputDialogFragment.newInstance(powerTh + "");
+//                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_MANTUN_POWER);
+//                break;
+//            case R.id.settings_device_rl_mantun_out_side:
+//                int temp1OutsideTh = sensoroSensor.mantunData.temp1OutsideTh;
+//                dialogFragment = SettingsInputDialogFragment.newInstance(temp1OutsideTh / 10 + "");
+//                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_MANTUN_TEMP_OUTSIDE);
+//                break;
+//            case R.id.settings_device_rl_mantun_contact:
+//                int temp2ContactTh = sensoroSensor.mantunData.temp2ContactTh;
+//                dialogFragment = SettingsInputDialogFragment.newInstance(temp2ContactTh / 10 + "");
+//                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_MANTUN_TEMP_CONTACT);
+//                break;
+//            case R.id.settings_device_rl_maunton_control_switch_in:
+//                doMantunControl(CMD_MANTUN_SWITCH_IN);
+//                break;
+//            case R.id.settings_device_rl_maunton_control_switch_on:
+//                doMantunControl(CMD_MANTUN_SWITCH_ON);
+//                break;
+//            case R.id.settings_device_rl_maunton_control_self_chick:
+//                doMantunControl(CMD_MANTUN_SELF_CHICK);
+//                break;
+//            case R.id.settings_device_rl_maunton_control_elec_clear_zero:
+//                doMantunControl(CMD_MANTUN_ZERO_POWER);
+//                break;
+//            case R.id.settings_device_rl_maunton_control_restore:
+//                doMantunControl(CMD_MANTUN_RESTORE);
+//                break;
             case R.id.acrel_leakage_th:
                 int acrelLeakageTh = sensoroSensor.acrelFires.leakageTh;
                 dialogFragment = SettingsInputDialogFragment.newInstance(acrelLeakageTh + "");
@@ -5253,7 +5446,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     }
 
     private void doBaymaxControl(int cmd) {
-        if (progressDialog!=null&&!progressDialog.isShowing()) {
+        if (progressDialog != null && !progressDialog.isShowing()) {
             progressDialog.setMessage(getString(R.string.send_cmd));
             progressDialog.show();
         }

@@ -566,5 +566,24 @@
     <string name="send_cmd">正在发送命令</string>
     <string name="send_success">发送成功</string>
     <string name="send_failed">发送失败,错误码：</string>
+    <string name="Overcurrent_threshold">过流阈值</string>
+    <string name="power_threshold">功率阈值</string>
+    <string name="attribute">属性</string>
+    <string name="elect_split_road">分路</string>
+    <string name="elect_main_road">总路</string>
+    <string name="close_brake">合闸</string>
+    <string name="spearate_brake">分闸</string>
+    <string name="elect_control">电表控制</string>
+    <string name="setting">设置</string>
+    <string name="number_format_error">数据格式错误</string>
+    <string name="beyond_value_rang">超出阈值范围</string>
+    <string name="please_enter_correct_value">请输入正确的数值</string>
+    <string name="please_enter_thresold">请输入阈值</string>
+    <string name="please_enter_over_current_threshold">请输入过流阈值</string>
+    <string name="over_current_Threshold_range">超出过流阈值取值范围</string>
+    <string name="current_threshold_range">过流阈值取值范围：</string>
+    <string name="power_threshold_range" >功率阈值取值范围：</string>
+    <string name="over_power_Threshold_range">超出功率阈值取值范围</string>
+    <string name="query">查询</string>
 
 </resources>
