@@ -1,9 +1,12 @@
 package com.sensoro.loratool;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -43,7 +46,7 @@ public class LoRaSettingApplication extends Application implements BLEDeviceList
 
 
 
-    public ConcurrentHashMap<String, SensoroDevice> mNearDeviceMap;
+    public ConcurrentHashMap<String, SensoroDevice> mNearDeviceMap = new ConcurrentHashMap<>();
 
     public ConcurrentHashMap<String, DeviceInfo> mCacheDeviceMap;
     public IStation station;
@@ -55,6 +58,7 @@ public class LoRaSettingApplication extends Application implements BLEDeviceList
     private ArrayList<SensoroDeviceListener> sensoroDeviceListeners = new ArrayList<>();
     private RefWatcher refWatcher;
     private ArrayList<INearDeviceListener> nearDeviceListenerList = new ArrayList<INearDeviceListener>();
+    private int count = 0;
 
     @Override
     public void onCreate() {
@@ -72,10 +76,59 @@ public class LoRaSettingApplication extends Application implements BLEDeviceList
     private void init() {
 //        refWatcher = LeakCanary.install(this);
         loRaSettingServer = LoRaSettingServerImpl.getInstance(getApplicationContext());
+        //判断程序是否在后台
+        registerActivityLifecycle();
         initStationHandler();
         LoraDbHelper.init(this);
         initSensoroSDK();
         initBuglySdk();
+    }
+
+
+
+    private void registerActivityLifecycle() {
+        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+                if(count == 0 && bleDeviceManager != null){
+                    bleDeviceManager.startScan();
+                }
+                count++;
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+                count--;
+                if(count == 0 && bleDeviceManager != null){
+                    bleDeviceManager.stopScan();
+                }
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+
+            }
+        });
     }
 
     private void initBuglySdk() {
@@ -92,17 +145,17 @@ public class LoRaSettingApplication extends Application implements BLEDeviceList
         try {
             bleDeviceManager = BLEDeviceManager.getInstance(this);
             boolean isEnable = bleDeviceManager.startService();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                bleDeviceManager.setForegroundScanPeriod(7000);
-                bleDeviceManager.setOutOfRangeDelay(15000);
-            }
-//            else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-//                bleDeviceManager.setForegroundScanPeriod(5000);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                bleDeviceManager.setForegroundScanPeriod(7000);
 //                bleDeviceManager.setOutOfRangeDelay(15000);
 //            }
-            else {
-                bleDeviceManager.setOutOfRangeDelay(10000);
-            }
+////            else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+////                bleDeviceManager.setForegroundScanPeriod(5000);
+////                bleDeviceManager.setOutOfRangeDelay(15000);
+////            }
+//            else {
+//                bleDeviceManager.setOutOfRangeDelay(10000);
+//            }
 
             if (!isEnable) {
                 Toast.makeText(this, R.string.tips_open_ble_service, Toast.LENGTH_SHORT).show();
@@ -110,7 +163,6 @@ public class LoRaSettingApplication extends Application implements BLEDeviceList
                 bleDeviceManager.setBLEDeviceListener(this);
                 bleDeviceManager.setBackgroundMode(true);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }//yangzhiqiang@sensoro.com 123456
@@ -222,6 +274,15 @@ public class LoRaSettingApplication extends Application implements BLEDeviceList
 
     public void unregisterNearDeviceListener(INearDeviceListener listener){
         nearDeviceListenerList.remove(listener);
+    }
+
+    public void release() {
+        //释放资源
+        stationInfoList.clear();
+        deviceInfoList.clear();
+        sensoroDeviceMap.clear();
+        LoraDbHelper.instance.close();
+        bleDeviceManager.stopService();
     }
 
     public interface SensoroDeviceListener {

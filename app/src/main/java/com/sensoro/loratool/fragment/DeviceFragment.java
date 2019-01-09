@@ -825,7 +825,6 @@ public class DeviceFragment extends Fragment implements Callable, AdapterView.On
     public void doSingle(int position) {
         if (position >= 0) {
             selectedDeviceInfo = mDeviceInfoAdapter.getItem(position);
-            Log.e("hcs",":::"+selectedDeviceInfo.getDeviceType()+"  "+selectedDeviceInfo.getName());
             if (mDeviceInfoAdapter.isNearBy(selectedDeviceInfo.getSn())) {
                 mTargetDevice = mDeviceInfoAdapter.getNearByDeviceMap().get(selectedDeviceInfo.getSn());
                 mTargetDevice.setPassword(selectedDeviceInfo.getPassword());

@@ -587,4 +587,5 @@
     <string name="power_threshold_range" >功率阈值取值范围：</string>
     <string name="over_power_Threshold_range">超出功率阈值取值范围</string>
     <string name="query">查询</string>
+    <string name="all_upgrade_completed">全部升级完成</string>
 </resources>

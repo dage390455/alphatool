@@ -373,6 +373,7 @@
         <item>Electric fires(AC)</item>
         <item>CH4(BM)</item>
         <item>LPG(BM)</item>
+        <item>Tacker(BB)</item>
 
     </string-array>
     <string-array name="filter_device_band_array">

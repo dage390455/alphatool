@@ -1814,9 +1814,9 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         baymaxDensity.setVisibility(sensoroSensor.baymax.hasGasDensity ? VISIBLE : GONE);
                         if (sensoroSensor.baymax.hasGasDensity) {
                             if ("baymax_lpg".equals(deviceType)) {
-                                baymaxDensityContent.setText(sensoroSensor.baymax.gasDensity /180+ "%");
+                                baymaxDensityContent.setText(String.format(Locale.CHINESE,"%.2f%%",(float)(sensoroSensor.baymax.gasDensity /210)));
                             }else if("baymax_ch4".equals(deviceType)){
-                                baymaxDensityContent.setText(sensoroSensor.baymax.gasDensity /500+ "%");
+                                baymaxDensityContent.setText(String.format(Locale.CHINESE,"%.2f%%",(float)(sensoroSensor.baymax.gasDensity /500)));
                             }
 
                         }

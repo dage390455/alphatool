@@ -2,6 +2,7 @@ package com.sensoro.lora.setting.server.bean;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -748,7 +749,7 @@ public class DeviceInfo implements Parcelable, Comparable {
     public boolean isCanSignal() {
         String firmwareVersion = getFirmwareVersion();
         boolean isCan = false;
-        String[] cnCanSignal = {"acrel_single","baymax_ch4","baymax_lpg","fhsj_smoke"};
+        String[] cnCanSignal = {"acrel_single","baymax_ch4","baymax_lpg","fhsj_smoke","bigbang_tracker"};
         if("CN470".equals(band)&& Arrays.asList(cnCanSignal).contains(deviceType)){
             return true;
         }
@@ -794,6 +795,7 @@ public class DeviceInfo implements Parcelable, Comparable {
                     break;
                 default:
                     isCan = false;
+                    break;
             }
         }
         return isCan;

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -203,6 +204,7 @@ public class SignalDetectionActivity extends BaseActivity implements OnPositiveB
         receiveTextView.setText(getString(R.string.receive) + " " + receiveCount);
         rateTextView.setText(getString(R.string.success_rate) + " " + rateString + "%");
         mSignalAdapter.appendData(signalData);
+        Log.e("hcs",":加入数据::");
         mSignalAdapter.notifyDataSetChanged();
     }
 
@@ -244,7 +246,7 @@ public class SignalDetectionActivity extends BaseActivity implements OnPositiveB
     public void onConnectedSuccess(BLEDevice bleDevice, int cmd) {
         String sn = sensoroDevice.getSn();
         String firmwareVersion = sensoroDevice.getFirmwareVersion();
-        sensoroDevice = (SensoroDevice) bleDevice;
+//        sensoroDevice = (SensoroDevice) bleDevice;
         sensoroDevice.setFirmwareVersion(firmwareVersion);
         sensoroDevice.setSn(sn);
         runOnUiThread(new Runnable() {
@@ -261,6 +263,7 @@ public class SignalDetectionActivity extends BaseActivity implements OnPositiveB
                 buttonStatus = STOP;
                 setFreqTextViewVisible(false);
                 sendDetectionCmd();
+                Log.e("hcs","连接成功:::");
                 Toast.makeText(SignalDetectionActivity.this, R.string.connect_success, Toast.LENGTH_SHORT).show();
             }
         });
@@ -295,12 +298,15 @@ public class SignalDetectionActivity extends BaseActivity implements OnPositiveB
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                Log.e("hcs",":写入返回::"+cmd);
                 if (cmd == CmdType.CMD_SIGNAL) {
                     if (o == null) {
+                        Log.e("hcs",":写入返回第一次::");
                         buttonStatus = START;
                         signalPlayButton.setImageResource(R.mipmap.ic_stop);
                     } else {
                         ProtoMsgTest1U1.MsgTest msgTest = (ProtoMsgTest1U1.MsgTest) o;
+                        Log.e("hcs",":写入返回::刷新");
                         refresh(msgTest);
                     }
 

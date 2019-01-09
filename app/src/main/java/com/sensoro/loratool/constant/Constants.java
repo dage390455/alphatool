@@ -1,5 +1,7 @@
 package com.sensoro.loratool.constant;
 
+import java.util.ArrayList;
+
 /**
  * Created by tangrisheng on 2016/5/13.
  * All Constant
@@ -61,7 +63,7 @@ public interface Constants {
             "tvoc", "o3", "pm", "leak", "temp_humi", "ch4", "lpg", "cover", "smoke", "angle", "gps", "op_node",
             "flame", "op_chip", "winsen_ch4", "winsen_lpg", "winsen_gas", "bhenergy_water", "chip_s", "chip_e",
             "tester|t1", "temp_humi_one", "fhsj_ch4", "fhsj_lpg", "concox_tracker", "tk","fhsj_smoke","fhsj_elec_fires",
-            "siter_ch4","siter_lpg","jf_connection","mantun_fires","acrel_fires","acrel_single","baymax_ch4","baymax_lpg"};
+            "siter_ch4","siter_lpg","jf_connection","mantun_fires","acrel_fires","acrel_single","baymax_ch4","baymax_lpg","bigbang_tracker"};
 
     boolean permission[] = {
             false,//sCfgByBle
@@ -347,11 +349,12 @@ public interface Constants {
     String SETTINGS_DEVICE_RL_BAYMAX_GAS_DENSITY_L3 = "settings_device_rl_baymax_gas_density_l3";
 
 
-
-
-
-
-
-
+    ArrayList<String> CHIP_E_UPGRADE_LIST = new ArrayList<String>(3){
+        {
+            add("t1");
+            add("chip_e");
+            add("bigbang_tracker");
+        }
+    };
 }
 

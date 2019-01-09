@@ -90,7 +90,6 @@ public class SensoroDeviceConnection {
                     }
 
                     gatt.discoverServices();
-                    count = 0;
                 } else {
                     LogUtils.loge("连接状态connected 没有成功");
                     reConnectDevice(ResultCode.BLUETOOTH_ERROR, "连接失败 bluetoothgatt");
@@ -313,7 +312,6 @@ public class SensoroDeviceConnection {
             },500);
 
         }else{
-            count = 0;
             freshCache();
             sensoroConnectionCallback.onConnectedFailure(resultCode);
             LogUtils.loge(msg);

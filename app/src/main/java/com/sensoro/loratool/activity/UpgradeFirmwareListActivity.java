@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -135,9 +136,10 @@ public class UpgradeFirmwareListActivity extends BaseActivity implements Constan
         });
     }
 
-    private void showPopup(final String url) {
+    private void showPopup(final String url,final  String firmVersion) {
         String[] mItems = {getString(R.string.upgrade), getString(R.string.advance), getString(R.string.cancel)};
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        Log.e("升级",":::"+firmVersion);
         builder.setItems(mItems, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -149,7 +151,8 @@ public class UpgradeFirmwareListActivity extends BaseActivity implements Constan
                         intent.putExtra(EXTRA_UPGRADE_INDEX, 0);
                         intent.putExtra(EXTRA_NAME_DEVICE_HARDWARE_VERSION, getIntent().getStringExtra(EXTRA_NAME_DEVICE_HARDWARE_VERSION));
                         intent.putExtra(EXTRA_NAME_BAND, getIntent().getStringExtra(EXTRA_NAME_BAND));
-                        intent.putExtra(EXTRA_NAME_DEVICE_FIRMWARE_VERSION, getIntent().getStringExtra(EXTRA_NAME_DEVICE_FIRMWARE_VERSION));
+                        intent.putExtra(EXTRA_NAME_DEVICE_FIRMWARE_VERSION, firmVersion);
+                        intent.putExtra(Constants.EXTRA_NAME_DEVICE_TYPE, getIntent().getStringExtra(EXTRA_NAME_DEVICE_TYPE));
                         startActivity(intent);
                         break;
                     case 1:
@@ -159,7 +162,8 @@ public class UpgradeFirmwareListActivity extends BaseActivity implements Constan
                         advanceIntent.putExtra(EXTRA_UPGRADE_INDEX, 1);
                         advanceIntent.putExtra(EXTRA_NAME_DEVICE_HARDWARE_VERSION, getIntent().getStringExtra(EXTRA_NAME_DEVICE_HARDWARE_VERSION));
                         advanceIntent.putExtra(EXTRA_NAME_BAND, getIntent().getStringExtra(EXTRA_NAME_BAND));
-                        advanceIntent.putExtra(EXTRA_NAME_DEVICE_FIRMWARE_VERSION, getIntent().getStringExtra(EXTRA_NAME_DEVICE_FIRMWARE_VERSION));
+                        advanceIntent.putExtra(EXTRA_NAME_DEVICE_FIRMWARE_VERSION, firmVersion);
+                        advanceIntent.putExtra(Constants.EXTRA_NAME_DEVICE_TYPE, getIntent().getStringExtra(EXTRA_NAME_DEVICE_TYPE));
                         startActivity(advanceIntent);
                         break;
                     case 2:
@@ -198,7 +202,7 @@ public class UpgradeFirmwareListActivity extends BaseActivity implements Constan
     @Override
     public void onItemClick(View view, int position) {
         UpgradeInfo upgradeInfo = mUpgradeInfoAdapter.getData(position);
-        showPopup(upgradeInfo.getUrl());
+        showPopup(upgradeInfo.getUrl(),upgradeInfo.getVersion());
 
     }
 

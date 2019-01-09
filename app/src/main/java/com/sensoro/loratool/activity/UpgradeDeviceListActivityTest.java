@@ -141,7 +141,7 @@ public class UpgradeDeviceListActivityTest extends BaseActivity<IUpgradeDeviceLi
 
     @OnClick(R.id.upgrade_device_start)
     public void start() {
-        if (!mPresenter.isStartUpgrade) {
+        if (!mPresenter.isStartUpgrade&& !mPresenter.isUpgradeAll()) {
             showProgressDialog();
             mPresenter.isStartUpgrade = true;
             mPresenter.requestDownLoadZip();

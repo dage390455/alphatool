@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.StringRes;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -20,7 +20,6 @@ import com.sensoro.lora.setting.server.bean.DeviceInfo;
 import com.sensoro.lora.setting.server.bean.ResponseBase;
 import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
-import com.sensoro.loratool.activity.UpgradeDeviceListActivityTest;
 import com.sensoro.loratool.base.BasePresenter;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.imainview.IUpgradeDeviceListActivityView;
@@ -42,7 +41,7 @@ import no.nordicsemi.android.dfu.DfuProgressListener;
 import no.nordicsemi.android.dfu.DfuServiceInitiator;
 
 public class UpgradeDeviceListActivityPresenter extends BasePresenter<IUpgradeDeviceListActivityView>
-implements Constants,LoRaSettingApplication.SensoroDeviceListener,DfuProgressListener,SensoroConnectionCallback, SensoroWriteCallback, SensoroDirectWriteDfuCallBack {
+        implements Constants, LoRaSettingApplication.SensoroDeviceListener, DfuProgressListener, SensoroConnectionCallback, SensoroWriteCallback, SensoroDirectWriteDfuCallBack {
     private Activity mActivity;
     private String mDefBand;
     private String mDefHardwareVersion;
@@ -65,6 +64,7 @@ implements Constants,LoRaSettingApplication.SensoroDeviceListener,DfuProgressLis
             listenDfu(mActivity.getString(R.string.upgrade_failed));
         }
     };
+    private boolean isChipE;
 
 
     @Override
@@ -76,9 +76,11 @@ implements Constants,LoRaSettingApplication.SensoroDeviceListener,DfuProgressLis
         mDefHardwareVersion = sensoroDevice.getHardwareVersion();
         mDefFirmwareVersion = sensoroDevice.getFirmwareVersion();
         firmwareVersionString = mActivity.getIntent().getStringExtra(EXTRA_NAME_DEVICE_FIRMWARE_VERSION);
+        String devicetype = mActivity.getIntent().getStringExtra(EXTRA_NAME_DEVICE_TYPE);
+        isChipE = Constants.CHIP_E_UPGRADE_LIST.contains(devicetype);
 
         int upgrade_index = mActivity.getIntent().getIntExtra(EXTRA_UPGRADE_INDEX, 0);
-        getView().setAddIvVisible(upgrade_index!=0);
+        getView().setAddIvVisible(upgrade_index != 0);
 
         getView().updateRcData(targetDeviceList);
 
@@ -171,27 +173,29 @@ implements Constants,LoRaSettingApplication.SensoroDeviceListener,DfuProgressLis
     }
 
     private void listenDfu(String title) {
+        if (getView() != null) {
+            ArrayList<SensoroDevice> data = getView().getAdapterData();
+            if (data.size() > 0) {
+//            SensoroDevice itemData = getView().getItemData(deviceIndex);
+                if (deviceIndex == (data.size() - 1)) {
+                    getView().updateRcPercentAndTip(deviceIndex, 0, title);
 
-        ArrayList<SensoroDevice> data = getView().getAdapterData();
-        if (data.size() > 0) {
-            SensoroDevice itemData = getView().getItemData(deviceIndex);
-            if (deviceIndex == (data.size() - 1)) {
-                getView().updateRcPercentAndTip(deviceIndex,0,title);
+                    requestUpdateDeviceUpgradeInfo();
+                    isStartUpgrade = false;
+                    System.out.println("设备已全部升级完毕===>");
+                    getView().setStartButtonBg(R.drawable.shape_upgrade_enable);
 
-                requestUpdateDeviceUpgradeInfo();
-                isStartUpgrade = false;
-                System.out.println("设备已全部升级完毕===>");
-                getView().setStartButtonBg(R.drawable.shape_upgrade_enable);
+                } else if(deviceIndex < data.size()){
+                    getView().updateRcPercentAndTip(deviceIndex, 0, title);
+                    deviceIndex++;
+                    targetDevice = data.get(deviceIndex);
+                    System.out.println("升级设备===>" + targetDevice.getSn());
+                    connectDevice();
 
-            } else {
-                getView().updateRcPercentAndTip(deviceIndex,0,title);
-                deviceIndex++;
-                targetDevice = data.get(deviceIndex);
-                System.out.println("升级设备===>" + targetDevice.getSn());
-                connectDevice();
-
+                }
             }
         }
+
 
     }
 
@@ -227,8 +231,12 @@ implements Constants,LoRaSettingApplication.SensoroDeviceListener,DfuProgressLis
 
     private void connectDevice() {
         try {
-            sensoroConnection = new SensoroDeviceConnection(mActivity, targetDevice.getMacAddress(), targetDevice.isDfu());
-            sensoroConnection.setOnSensoroDirectWriteDfuCallBack(this);
+            if (isChipE) {
+                sensoroConnection = new SensoroDeviceConnection(mActivity, targetDevice.getMacAddress(), false, false, true);
+            } else {
+                sensoroConnection = new SensoroDeviceConnection(mActivity, targetDevice.getMacAddress(), targetDevice.isDfu());
+                sensoroConnection.setOnSensoroDirectWriteDfuCallBack(this);
+            }
             sensoroConnection.connect(targetDevice.getPassword(), this);
         } catch (Exception e) {
             e.printStackTrace();
@@ -302,18 +310,22 @@ implements Constants,LoRaSettingApplication.SensoroDeviceListener,DfuProgressLis
     private void startUpgrade() {
         isStartUpgrade = true;
 //        deviceIndex = 0;
+
         if (getView().getAdapterData().size() > 0) {
             targetDevice = getView().getItemData(deviceIndex);
-            while (targetDevice.getDfuInfo() != null && targetDevice.getDfuInfo().equals(mActivity.getString(R.string.upgrade_finish))) {
-                if (deviceIndex < getView().getAdapterData().size() - 1) {
-                    deviceIndex++;
-                    targetDevice = getView().getItemData(deviceIndex);
-                } else {
-                    getView().toastShort("设备已全部升级完毕");
-                    return;
+            if (!isChipE) {
+                while (targetDevice.getDfuInfo() != null && targetDevice.getDfuInfo().equals(mActivity.getString(R.string.upgrade_finish))) {
+                    if (deviceIndex < getView().getAdapterData().size() - 1) {
+                        deviceIndex++;
+                        targetDevice = getView().getItemData(deviceIndex);
+                    } else {
+                        getView().toastShort("设备已全部升级完毕");
+                        return;
+                    }
                 }
             }
-            getView().updateRc(deviceIndex,R.string.dfu_connecting);
+
+            getView().updateRc(deviceIndex, R.string.dfu_connecting);
             getView().setStartButtonBg(R.drawable.shape_upgrade_disable);
             System.out.println("升级设备===>" + targetDevice.getSn());
             connectDevice();
@@ -336,14 +348,14 @@ implements Constants,LoRaSettingApplication.SensoroDeviceListener,DfuProgressLis
     @Override
     public void onDfuProcessStarting(String deviceAddress) {
         LogUtils.loge("dfu开始升级");
-        getView().updateRc(deviceIndex,R.string.dfu_ready);
+        getView().updateRc(deviceIndex, R.string.dfu_ready);
 
     }
 
     @Override
     public void onDfuProcessStarted(String deviceAddress) {
         LogUtils.loge("等待传输控件");
-        getView().updateRc(deviceIndex,R.string.dfu_trans);
+        getView().updateRc(deviceIndex, R.string.dfu_trans);
     }
 
     @Override
@@ -354,7 +366,7 @@ implements Constants,LoRaSettingApplication.SensoroDeviceListener,DfuProgressLis
     @Override
     public void onProgressChanged(String deviceAddress, int percent, float speed, float avgSpeed, int currentPart, int partsTotal) {
         LogUtils.loge("升级进度:::" + percent);
-        getView().updateRcProgressChanged(deviceIndex,percent);
+        getView().updateRcProgressChanged(deviceIndex, percent);
     }
 
     @Override
@@ -365,7 +377,7 @@ implements Constants,LoRaSettingApplication.SensoroDeviceListener,DfuProgressLis
     @Override
     public void onDeviceDisconnecting(String deviceAddress) {
         LogUtils.loge("dfu断开连接中");
-        getView().updateRcPercentAndTip(deviceIndex,101,"升级中");
+        getView().updateRcPercentAndTip(deviceIndex, 101, "升级中");
 
         mHandler.postDelayed(dfuUpgradeTimeout, 60000);
     }
@@ -419,19 +431,115 @@ implements Constants,LoRaSettingApplication.SensoroDeviceListener,DfuProgressLis
 
     @Override
     public void onConnectedSuccess(BLEDevice bleDevice, int cmd) {
-        String sn = targetDevice.getSn();
-        String macAddress = targetDevice.getMacAddress();
-        String firmwareVersion = targetDevice.getFirmwareVersion();
-        targetDevice = (SensoroDevice) bleDevice;
-        targetDevice.setFirmwareVersion(firmwareVersion);
-        targetDevice.setSn(sn);
-        targetDevice.setMacAddress(macAddress);
 
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                getView().updateRcPercentAndTip(deviceIndex,0,mActivity.getString(R.string.dfu_connect_success));
-                sensoroConnection.writeCmd(UpgradeDeviceListActivityPresenter.this);
+                getView().updateRcPercentAndTip(deviceIndex, 0, mActivity.getString(R.string.dfu_connect_success));
+                if (isChipE) {
+                    startUpgradeChipE();
+                } else {
+                    stratUpgrade((SensoroDevice) bleDevice);
+                }
+            }
+        });
+    }
+
+    private void stratUpgrade(SensoroDevice bleDevice) {
+        String sn = targetDevice.getSn();
+        String macAddress = targetDevice.getMacAddress();
+        String firmwareVersion = targetDevice.getFirmwareVersion();
+        targetDevice = bleDevice;
+        targetDevice.setFirmwareVersion(firmwareVersion);
+        targetDevice.setSn(sn);
+        targetDevice.setMacAddress(macAddress);
+        sensoroConnection.writeUpgradeCmd(UpgradeDeviceListActivityPresenter.this);
+    }
+
+    private void startUpgradeChipE() {
+        isStartUpgrade = true;
+        getView().dismissProgressDialog();
+        ArrayList<SensoroDevice> data = getView().getAdapterData();
+        if (data == null || deviceIndex >= data.size()) {
+            AlphaToast.INSTANCE.makeText(mActivity.getApplicationContext(), mActivity.getString(R.string.all_upgrade_completed), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        sensoroConnection.writeUpgradeCmd(zipFileString, 1, new SensoroWriteCallback() {
+            @Override
+            public void onWriteSuccess(Object o, int cmd) {
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (o instanceof Integer) {
+                            Integer i = (Integer) o;
+                            LogUtils.loge("index =" + deviceIndex + "i = " + i);
+                            if (i <= 100) {
+                                getView().updateRcProgressChanged(deviceIndex, (Integer) o);
+                            } else {
+                                snJSonArray.put(targetDevice.getSn());
+                                getView().updateRcPercentAndTip(deviceIndex, 0, mActivity.getString(R.string.upgrade_finish));
+
+                                deviceIndex++;
+                                Log.e("ddf", deviceIndex + ":ddf::" + data.size());
+                                if (deviceIndex < data.size()) {
+                                    targetDevice = data.get(deviceIndex);
+                                    System.out.println("升级设备===>" + targetDevice.getSn());
+                                    connectDevice();
+                                } else if (deviceIndex == data.size()) {
+                                    requestUpdateDeviceUpgradeInfo();
+                                    isStartUpgrade = false;
+                                    System.out.println("设备已全部升级完毕===>");
+//                                    sensoroConnection.disconnect();
+                                    getView().setStartButtonBg(R.drawable.shape_upgrade_enable);
+                                }
+
+                            }
+                        }
+                    }
+                });
+
+
+            }
+
+            @Override
+            public void onWriteFailure(int errorCode, int cmd) {
+
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String s = "异常";
+                        switch (errorCode) {
+                            case 0:
+                                s = "文件为空";
+                                break;
+                            case 1:
+                                s = "文件大小为空";
+                                break;
+                            case 2:
+                                s = "packet包错误";
+                                break;
+                            case 3:
+                                s = "发送包失败";
+                                break;
+                            case 4:
+                                s = "发送数据错误";
+                                break;
+                            case 5:
+                                s = "发送确认指令失败";
+                            case 6:
+                                s = "升级异常";
+                                break;
+                            case 7:
+                                s = "升级过程错误";
+                                break;
+                        }
+                        getView().updateRcPercentAndTip(deviceIndex, 0, s);
+                        isStartUpgrade = false;
+                        getView().setStartButtonBg(R.drawable.shape_upgrade_enable);
+                        sensoroConnection.disconnect();
+                    }
+                });
+
             }
         });
     }
@@ -442,6 +550,8 @@ implements Constants,LoRaSettingApplication.SensoroDeviceListener,DfuProgressLis
             @Override
             public void run() {
                 listenDfu(mActivity.getString(R.string.connect_failed));
+
+
             }
         });
     }
@@ -465,7 +575,7 @@ implements Constants,LoRaSettingApplication.SensoroDeviceListener,DfuProgressLis
                 sensoroConnection.disconnect();
                 targetDevice.setDfu(true);
                 dfuStart();
-                getView().updateRc(deviceIndex,R.string.dfu_write_success);
+                getView().updateRc(deviceIndex, R.string.dfu_write_success);
             }
         });
     }
@@ -477,10 +587,11 @@ implements Constants,LoRaSettingApplication.SensoroDeviceListener,DfuProgressLis
             @Override
             public void run() {
                 LogUtils.loge("写入dfu命令成功");
+                getView().dismissProgressDialog();
                 sensoroConnection.disconnect();
                 targetDevice.setDfu(true);
                 dfuStart();
-                getView().updateRc(deviceIndex,R.string.dfu_write_success);
+                getView().updateRc(deviceIndex, R.string.dfu_write_success);
             }
         });
     }
@@ -510,5 +621,12 @@ implements Constants,LoRaSettingApplication.SensoroDeviceListener,DfuProgressLis
         getView().notigyAdapter();
 
         getView().toastShort("找到" + count + "个匹配设备");
+    }
+
+    public boolean isUpgradeAll() {
+        if(deviceIndex == 0){
+            return  getView().getAdapterData().get(0).getDfuInfo() != null &&mActivity.getString(R.string.upgrade_finish).equals(getView().getAdapterData().get(0).getDfuInfo());
+        }
+        return deviceIndex >= getView().getAdapterData().size()-1;
     }
 }

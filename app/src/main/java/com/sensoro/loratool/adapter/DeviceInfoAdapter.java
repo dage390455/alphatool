@@ -45,15 +45,17 @@ public class DeviceInfoAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mInflater;
     private final List<DeviceInfo> mDeviceInfoList = Collections.synchronizedList(new ArrayList<DeviceInfo>());
-    private final ConcurrentHashMap<String, DeviceInfo> mCacheDeviceInfoMap = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, SensoroDevice> mNearByDeviceMap = new ConcurrentHashMap<>();
+    private  ConcurrentHashMap<String, DeviceInfo> mCacheDeviceInfoMap = new ConcurrentHashMap<>();
+    private  ConcurrentHashMap<String, SensoroDevice> mNearByDeviceMap;
     private final ConcurrentHashMap<String, SensoroSensor> mSensorMap = new ConcurrentHashMap<>();
 
     public DeviceInfoAdapter(Context context) {
         this.mContext = context;
         this.mInflater = LayoutInflater.from(mContext);
-        ((LoRaSettingApplication) context.getApplicationContext()).setmNearDeviceMap(mNearByDeviceMap);
+//        ((LoRaSettingApplication) context.getApplicationContext()).setmNearDeviceMap(mNearByDeviceMap);
         ((LoRaSettingApplication) context.getApplicationContext()).setmCacheDeviceMap(mCacheDeviceInfoMap);
+        LoRaSettingApplication application = (LoRaSettingApplication)context.getApplicationContext();
+       mNearByDeviceMap = application.getmNearDeviceMap();
     }
 
     public ConcurrentHashMap<String, SensoroDevice> getNearByDeviceMap() {
@@ -119,12 +121,11 @@ public class DeviceInfoAdapter extends BaseAdapter {
 
     public void refreshNew(SensoroDevice sensoroDevice, boolean isSearchStatus) {
         String sn = sensoroDevice.getSn();
-        if (sn.endsWith("A939")){
-            Log.e("",sn);
-        }
         if (!mNearByDeviceMap.containsKey(sn)) {
             mNearByDeviceMap.put(sn, sensoroDevice);
-            ((LoRaSettingApplication) mContext.getApplicationContext()).updateNearDeviceMap();
+            LoRaSettingApplication applicationContext = (LoRaSettingApplication) mContext.getApplicationContext();
+            applicationContext.mNearDeviceMap.put(sn, sensoroDevice);
+            applicationContext.updateNearDeviceMap();
 //            notifyDataSetChanged();
         }
         final DeviceInfo cacheDeviceInfo = mCacheDeviceInfoMap.get(sn);
@@ -151,7 +152,9 @@ public class DeviceInfoAdapter extends BaseAdapter {
         //TODO 修改删除方式
         if (mNearByDeviceMap.containsKey(sn)) {
             mNearByDeviceMap.remove(sn, sensoroDevice);
-            ((LoRaSettingApplication) mContext.getApplicationContext()).updateNearDeviceMap();
+            LoRaSettingApplication applicationContext = (LoRaSettingApplication) mContext.getApplicationContext();
+            applicationContext.mNearDeviceMap.remove(sn, sensoroDevice);
+            applicationContext.updateNearDeviceMap();
             for (int j = 0; j < mDeviceInfoList.size(); j++) {
                 final DeviceInfo deviceInfo = mDeviceInfoList.get(j);
                 if (sn.equalsIgnoreCase(deviceInfo.getSn())) {

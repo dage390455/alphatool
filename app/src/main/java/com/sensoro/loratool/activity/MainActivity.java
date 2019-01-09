@@ -76,6 +76,8 @@ public class MainActivity extends BaseActivity
     private PointDeployFragment pointDeployFragment;
     private ImageView filterIv;
     private ImageView mScan;
+    //登录切换的时候，不释放资源
+    private boolean isRelease = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -282,6 +284,7 @@ public class MainActivity extends BaseActivity
         switch (view.getId()) {
             case R.id.main_exit:
             case R.id.main_ll_exit:
+                isRelease = false;
                 SharedPreferences sp = getSharedPreferences(PREFERENCE_LOGIN, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
                 editor.remove(PREFERENCE_KEY_SESSION_ID);
@@ -319,8 +322,12 @@ public class MainActivity extends BaseActivity
     @Override
     public void onDestroy() {
         super.onDestroy();
-        loRaSettingApplication.unRegistersSensoroDeviceListener(this);
-        BLEDeviceManager.getInstance(this).stopService();
+        if(isRelease){
+            loRaSettingApplication.unRegistersSensoroDeviceListener(this);
+            BLEDeviceManager.getInstance(this).stopService();
+            loRaSettingApplication.release();
+        }
+
     }
 
     @Override
@@ -338,7 +345,6 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onNewDevice(final BLEDevice bleDevice) {
-        Log.e("hcs","new device:::"+bleDevice.getSn() + bleDevice.getSn().contains("B33F"));
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
