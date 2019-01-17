@@ -160,6 +160,9 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
     @BindView(R.id.settings_device_tv_classB_periodicity)
     TextView classBPeriodicityTextView;
 
+    @BindView(R.id.settings_device_ll_channel_et)
+    LinearLayout settingsDeviceLlChannelEt;
+
     private ArrayList<ChannelData> channelOpenList = new ArrayList<>();
     private int loraDr = 0;
     private int activation = 0;
