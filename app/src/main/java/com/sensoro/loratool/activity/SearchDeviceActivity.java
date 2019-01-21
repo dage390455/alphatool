@@ -550,6 +550,7 @@ public class SearchDeviceActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void run() {
                 switch (bleDevice.getType()) {
+
                     case BLEDevice.TYPE_DEVICE:
                         mDeviceInfoAdapter.refreshGone((SensoroDevice) bleDevice, true);
                         break;

@@ -130,6 +130,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
         }
         final DeviceInfo cacheDeviceInfo = mCacheDeviceInfoMap.get(sn);
         if (isSearchStatus || cacheDeviceInfo == null) {
+            notifyDataSetChanged();
             return;
         }
         boolean isContains = false;
@@ -170,6 +171,7 @@ public class DeviceInfoAdapter extends BaseAdapter {
             }
             notifyDataSetChanged();
         }
+
     }
 
     public void refreshSensorNew(final SensoroSensor sensoroSensor) {

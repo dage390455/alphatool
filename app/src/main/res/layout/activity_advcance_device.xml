@@ -802,13 +802,13 @@
                         <!--android:textColor="#999999"-->
                         <!--android:textSize="18sp" />-->
                 </RelativeLayout>
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="0.8dp"
-                    android:background="#c8c7cc"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:contentDescription="@null" />
+                <!--<ImageView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="0.8dp"-->
+                    <!--android:background="#c8c7cc"-->
+                    <!--android:layout_marginLeft="12dp"-->
+                    <!--android:layout_marginRight="12dp"-->
+                    <!--android:contentDescription="@null" />-->
             </LinearLayout>
 
             <LinearLayout

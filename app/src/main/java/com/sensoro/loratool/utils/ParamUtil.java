@@ -109,6 +109,10 @@ public class ParamUtil {
                 break;
             case Constants.LORA_BAND_CN470:
                 index = getIndexByValue(Constants.LORA_CN470_DR, dr);
+                break;
+            case Constants.LORA_BAND_SE800:
+                index = getIndexByValue(Constants.LORA_SE800_DR, dr);
+                break;
 
         }
         if (index == -1) {
@@ -167,6 +171,8 @@ public class ParamUtil {
                 return Constants.LORA_AU915_DR[index];
             case "CN470":
                 return Constants.LORA_CN470_DR[index];
+            case "SE800":
+                return Constants.LORA_SE800_DR[index];
             default:
                 return 0;
         }
@@ -195,6 +201,8 @@ public class ParamUtil {
                 return Constants.LORA_AU915_SF[index];
             case "CN470":
                 return Constants.LORA_CN470_SF[index];
+            case "SE800":
+                return Constants.LORA_SE800_SF[index];
             default:
                 return "";
         }

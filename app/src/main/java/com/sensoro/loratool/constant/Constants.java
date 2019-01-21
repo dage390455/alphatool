@@ -59,6 +59,7 @@ public interface Constants {
     String LORA_BAND_SE915 = "SE915";
     String LORA_BAND_SE780 = "SE780";
     String LORA_BAND_CN470 = "CN470";
+    String LORA_BAND_SE800 = "SE800";
     String DEVICE_HARDWARE_TYPE[] = {"##","sensoro_smoke","chip", "module", "node", "co2", "co", "no2", "so2", "nh3",
             "tvoc", "o3", "pm", "leak", "temp_humi", "ch4", "lpg", "cover", "smoke", "angle", "gps", "op_node",
             "flame", "op_chip", "winsen_ch4", "winsen_lpg", "winsen_gas", "bhenergy_water", "chip_s", "chip_e",
@@ -137,7 +138,11 @@ public interface Constants {
     String LORA_CN470_MAX_EIRP[] = {"MaxEIRP - 0 \n12 dBm", "MaxEIRP - 2 \n10 dBm", "MaxEIRP -4 \n8 dBm", "MaxEIRP -6 \n6 dBm", "MaxEIRP -4 \n4 dBm", "MaxEIRP -8 \n2 dBm", "MaxEIRP -10 \n0 dBm","MaxEIRP -12 \n-2 dBm"};
     String LORA_CN470_MAX_EIRP_VALUE[] = {"MaxEIRP - 0", "MaxEIRP - 2", "MaxEIRP -4", "MaxEIRP -6", "MaxEIRP -8", "MaxEIRP -10", "MaxEIRP -12","MaxEIRP -14"};
 
-
+    int LORA_SE800_TXP[] = {7, 6, 5, 4, 3, 2, 1, 0};
+    String LORA_SE800_SF[] = {"SF7 / 125 kHz", "SF8 / 125 kHz", "SF9 / 125 kHz", "SF10 / 125 kHz", "SF11 / 125 kHz", "SF12 / 125 kHz"};
+    int LORA_SE800_DR[] = {5, 4, 3, 2, 1, 0};
+    String LORA_SE800_MAX_EIRP[] = {"MaxEIRP - 0 \n12 dBm", "MaxEIRP - 2 \n10 dBm", "MaxEIRP -4 \n8 dBm", "MaxEIRP -6 \n6 dBm", "MaxEIRP -4 \n4 dBm", "MaxEIRP -8 \n2 dBm", "MaxEIRP -10 \n0 dBm","MaxEIRP -12 \n-2 dBm"};
+    String LORA_SE800_MAX_EIRP_VALUE[] = {"MaxEIRP - 0", "MaxEIRP - 2", "MaxEIRP -4", "MaxEIRP -6", "MaxEIRP -8", "MaxEIRP -10", "MaxEIRP -12","MaxEIRP -14"};
     int LORA_BAND_SE_433[] = {0, 433300000, 433500000, 433700000, 433900000, 434300000, 434500000, 434700000, 434900000};
 
     int LORA_BAND_SE_470[] = {0, 486300000, 486500000, 486700000, 486900000, 487100000, 487300000, 487500000, 487700000};
@@ -356,5 +361,7 @@ public interface Constants {
             add("bigbang_tracker");
         }
     };
+    String EXTRA_CHANNEL_EDITOR_DEVICE = "extra_channel_editor_device";
+    String EXTRA_CHANNEL_RESULT = "extra_channel_result";
 }
 

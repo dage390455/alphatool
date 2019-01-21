@@ -1073,6 +1073,11 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 txp_array = Constants.LORA_CN470_TXP;
                 loraEirpItems = obtainEirpItems();
                 loraEirpValues = Constants.LORA_CN470_MAX_EIRP_VALUE;
+            case Constants.LORA_BAND_SE800:
+                txp_array = Constants.LORA_SE800_TXP;
+                loraEirpItems = obtainEirpItems();
+                loraEirpValues = Constants.LORA_SE800_MAX_EIRP_VALUE;
+
         }
         loraTxpItems = new String[txp_array.length];
         for (int i = 0; i < txp_array.length; i++) {
@@ -1995,11 +2000,11 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             mSettingEnterDialogUtils.show(model.content,model.hint, model.errMsg, model.max, model.min, new SettingEnterDialogUtils.SettingEnterUtilsClickListener() {
                                 @Override
                                 public void onCancelClick() {
-
+                                    mSettingEnterDialogUtils.dismiss();
                                 }
 
                                 @Override
-                                public void onConfirmClick(float value) {
+                                public void onConfirmClick(double value) {
                                     for (SensoroMantunData mantunData : sensoroSensor.mantunDatas) {
                                         String mantunCurrentTag = mantunData.id + "currentTh";
                                         String mantunPowerTag = mantunData.id + "powerTh";

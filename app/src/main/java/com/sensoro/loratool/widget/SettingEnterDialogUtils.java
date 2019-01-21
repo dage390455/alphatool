@@ -28,12 +28,16 @@ public class SettingEnterDialogUtils {
     private String hint;
 
     public SettingEnterDialogUtils(Activity activity) {
-        this(activity,activity.getString(R.string.please_enter_thresold),null,0,0,false);
-
+        this(activity,activity.getString(R.string.please_enter_thresold),null,-1,-1,false);
     }
 
     public SettingEnterDialogUtils(Activity activity,String hint,float max,float min) {
         this(activity,hint,null,max,min,false);
+
+    }
+
+    public SettingEnterDialogUtils(Activity activity,String hint) {
+        this(activity,hint,null,-1,-1,false);
 
     }
 
@@ -86,7 +90,15 @@ public class SettingEnterDialogUtils {
             @Override
             public void onClick(View v) {
                 try {
-                    Float aFloat = Float.valueOf(mEt.getText().toString());
+                    Double aFloat = Double.valueOf(mEt.getText().toString());
+                    if(max == -1 && min == -1){
+                        mInputLayout.setErrorEnabled(false);
+                        mDialog.dismiss();
+                        if (listener != null) {
+                            listener.onConfirmClick(aFloat);
+                        }
+                        return;
+                    }
                     if(aFloat<min ||aFloat>max){
                         if (TextUtils.isEmpty(errMsg)) {
                             mInputLayout.setError(mActivity.getString(R.string.beyond_value_rang));
@@ -128,6 +140,9 @@ public class SettingEnterDialogUtils {
     }
 
     private void checkNumber(Editable s) {
+        if(max == -1 && min == -1){
+            return;
+        }
         if (TextUtils.isEmpty(s.toString())) {
             mInputLayout.setErrorEnabled(false);
             return;
@@ -182,6 +197,14 @@ public class SettingEnterDialogUtils {
         }
     }
 
+    public void show(String content, String hint, SettingEnterUtilsClickListener listener) {
+        if (mDialog != null) {
+            initMsg(content,hint,null,-1,-1);
+            this.listener = listener;
+            mDialog.show();
+        }
+    }
+
 
     public void dismiss() {
         if (mDialog != null) {
@@ -208,6 +231,6 @@ public class SettingEnterDialogUtils {
     public interface SettingEnterUtilsClickListener {
         void onCancelClick();
 
-        void onConfirmClick(float value);
+        void onConfirmClick(double value);
     }
 }

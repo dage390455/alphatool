@@ -526,6 +526,12 @@ public class SettingMultiDeviceActivity extends BaseActivity implements Constant
                 txp_array = Constants.LORA_CN470_TXP;
                 loraEirpItems = Constants.LORA_CN470_MAX_EIRP;
                 loraEirpValues = Constants.LORA_CN470_MAX_EIRP_VALUE;
+                break;
+            case Constants.LORA_BAND_SE800:
+                txp_array = Constants.LORA_SE800_TXP;
+                loraEirpItems = Constants.LORA_SE800_MAX_EIRP;
+                loraEirpValues = Constants.LORA_SE800_MAX_EIRP_VALUE;
+                break;
         }
         loraTxpItems = new String[txp_array.length + 1];
         for (int i = 0; i < txp_array.length; i++) {

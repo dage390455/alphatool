@@ -105,6 +105,10 @@ public class MatunFireAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return mList.size();
     }
 
+    public List<SettingDeviceModel> getData() {
+        return mList;
+    }
+
     class MatunFireGeneralHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.item_general_type_tv_name)
         TextView itemGeneralTypeTvName;
