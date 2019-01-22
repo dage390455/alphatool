@@ -7,14 +7,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.adapter.MatunFireAdapter;
 import com.sensoro.loratool.base.BaseActivity;
-import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.imainview.IChannelEditorActivityView;
 import com.sensoro.loratool.model.SettingDeviceModel;
 import com.sensoro.loratool.presenter.ChannelEditorPresenter;
+import com.sensoro.loratool.widget.AlphaToast;
 import com.sensoro.loratool.widget.SettingEnterDialogUtils;
 
 import java.util.ArrayList;
@@ -113,5 +114,24 @@ public class ChannelEditorActivity extends BaseActivity<IChannelEditorActivityVi
     public void setIntentResult(int resultCode, Intent intent) {
         setResult(resultCode,intent);
         finish();
+    }
+
+    @Override
+    public SettingDeviceModel getItem(int position) {
+        if(position < 0){
+            return null;
+        }
+
+        return matunFireAdapter.getData().get(position);
+    }
+
+    @Override
+    public void toastShort(String msg) {
+        AlphaToast.INSTANCE.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void toastLong(String msg) {
+
     }
 }

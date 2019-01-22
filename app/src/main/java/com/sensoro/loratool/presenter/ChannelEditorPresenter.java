@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.sensoro.libbleserver.ble.bean.SensoroChannel;
 import com.sensoro.libbleserver.ble.proto.MsgNode1V1M5;
+import com.sensoro.loratool.R;
 import com.sensoro.loratool.adapter.RecyclerItemClickListener;
 import com.sensoro.loratool.base.BasePresenter;
 import com.sensoro.loratool.constant.Constants;
@@ -26,6 +27,7 @@ public class ChannelEditorPresenter extends BasePresenter<IChannelEditorActivity
     private Activity mActivity;
     private ArrayList<SensoroChannel> channelArrayList = new ArrayList<>();
     private SettingDeviceModel mModel;
+
 
     @Override
     public void initData(Context context) {
@@ -48,18 +50,14 @@ public class ChannelEditorPresenter extends BasePresenter<IChannelEditorActivity
             settingDeviceModel1.viewType = 1;
             settingDeviceModel1.tag = String.format(Locale.ROOT, "%d,%d", i, 1);
             datas.add(settingDeviceModel1);
-            Log.e("hcs",":频点::"+channelArrayList.get(i).frequency);
 
             SettingDeviceModel settingDeviceModel2 = new SettingDeviceModel();
             settingDeviceModel2.name = "下行/MHz";
             settingDeviceModel2.isDivider = false;
-
-
             settingDeviceModel2.content = String.valueOf(channelArrayList.get(i).rx1Frequency/1000000d);
             settingDeviceModel2.viewType = 1;
             settingDeviceModel2.tag = String.format(Locale.ROOT, "%d,%d", i, 2);
             datas.add(settingDeviceModel2);
-
         }
         getView().updateData(datas);
     }
@@ -72,6 +70,14 @@ public class ChannelEditorPresenter extends BasePresenter<IChannelEditorActivity
     @Override
     public void onItemClick(SettingDeviceModel model, int position) {
         mModel = model;
+        SettingDeviceModel mPreItem = getView().getItem(position - 1);
+        if (mPreItem != null && mPreItem.content != null) {
+            if (Double.valueOf(mPreItem.content) <= 0) {
+                getView().toastShort(mActivity.getString(R.string.up_channel_not_zero));
+                getView().dismissDialog();
+                return;
+            }
+        }
         getView().showDialog(model);
     }
 
@@ -82,7 +88,6 @@ public class ChannelEditorPresenter extends BasePresenter<IChannelEditorActivity
 
     @Override
     public void onConfirmClick(double value) {
-        Log.e("hcs","shezhi:::"+value);
         mModel.content = String.valueOf(value);
         getView().notifyData();
         getView().dismissDialog();
@@ -95,9 +100,9 @@ public class ChannelEditorPresenter extends BasePresenter<IChannelEditorActivity
                 String[] split = datum.tag.split(",");
                 SensoroChannel sensoroChannel = channelArrayList.get(Integer.valueOf(split[0]));
                 if ("1".equals(split[1])) {
-                    sensoroChannel.frequency = (int) (Float.valueOf(datum.content) * 1000000);
+                    sensoroChannel.frequency = (int) (Double.valueOf(datum.content) * 1000000);
                 } else if ("2".equals(split[1])) {
-                    sensoroChannel.rx1Frequency = (int) (Float.valueOf(datum.content) * 1000000);
+                    sensoroChannel.rx1Frequency = (int) (Double.valueOf(datum.content) * 1000000);
                 }
             }
         }

@@ -23,6 +23,7 @@ import com.sensoro.loratool.R;
 import com.sensoro.loratool.base.BasePresenter;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.imainview.IUpgradeDeviceListActivityView;
+import com.sensoro.loratool.model.CheckDeviceUpgradeInfo;
 import com.sensoro.loratool.service.DfuService;
 import com.sensoro.loratool.store.DeviceDataDao;
 import com.sensoro.loratool.utils.DownloadUtil;
@@ -61,10 +62,11 @@ public class UpgradeDeviceListActivityPresenter extends BasePresenter<IUpgradeDe
     private Runnable dfuUpgradeTimeout = new Runnable() {
         @Override
         public void run() {
-            listenDfu(mActivity.getString(R.string.upgrade_failed));
+            listenDfu(0);
         }
     };
     private boolean isChipE;
+    private CheckDeviceUpgradeInfo mCheckDeviceUpgradeInfo;
 
 
     @Override
@@ -109,18 +111,41 @@ public class UpgradeDeviceListActivityPresenter extends BasePresenter<IUpgradeDe
         if (bleDevice instanceof SensoroDevice) {
             System.out.println("found device =>" + bleDevice.getSn());
             final SensoroDevice newDevice = (SensoroDevice) bleDevice;
-            if (isFit(newDevice)) {
-                System.out.println(" device fit =>" + bleDevice.getSn());
-                // todo 自己更新
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-////                        mUpgradeDeviceAdapter.getData().add(newDevice);
-////                        mUpgradeDeviceAdapter.notifyDataSetChanged();
-//                    }
-//                });
+            if (mCheckDeviceUpgradeInfo != null && mCheckDeviceUpgradeInfo.isNeedCheck
+                    && newDevice.getSn().equals(mCheckDeviceUpgradeInfo.sn)
+                    && mCheckDeviceUpgradeInfo.firmVersion.startsWith(newDevice.getFirmwareVersion())) {
+                if (isChipE) {
+                    getView().updateRcPercentAndTip(deviceIndex, 0, mActivity.getString(R.string.upgrade_finish));
+                    deviceIndex++;
+                    ArrayList<SensoroDevice> adapterData = getView().getAdapterData();
+                    if(deviceIndex < adapterData.size()){
+                        targetDevice = adapterData.get(deviceIndex);
+                        connectDevice();
+                    }else if(deviceIndex == adapterData.size()){
+                        requestUpdateDeviceUpgradeInfo();
+                        isStartUpgrade = false;
+                        System.out.println("设备已全部升级完毕===>");
+//                                    sensoroConnection.disconnect();
+                        getView().setStartButtonBg(R.drawable.shape_upgrade_enable);
+                    }
+
+                }else{
+                    listenDfu(3);
+                }
 
             }
+//            if (isFit(newDevice)) {
+//                System.out.println(" device fit =>" + bleDevice.getSn());
+//                // todo 自己更新
+////                runOnUiThread(new Runnable() {
+////                    @Override
+////                    public void run() {
+//////                        mUpgradeDeviceAdapter.getData().add(newDevice);
+//////                        mUpgradeDeviceAdapter.notifyDataSetChanged();
+////                    }
+////                });
+//
+//            }
         }
     }
 
@@ -172,31 +197,65 @@ public class UpgradeDeviceListActivityPresenter extends BasePresenter<IUpgradeDe
         return isExist;
     }
 
-    private void listenDfu(String title) {
+    private void listenDfu(int status) {
+        String title = null;
+        switch (status) {
+            case 0:
+                title = mActivity.getString(R.string.upgrade_failed);
+                break;
+            case 1:
+                title = mActivity.getString(R.string.connect_failed);
+                break;
+            case 2:
+                title = mActivity.getString(R.string.upgrading);
+                break;
+            case 3:
+                title = mActivity.getString(R.string.upgrade_finish);
+                break;
+        }
         if (getView() != null) {
             ArrayList<SensoroDevice> data = getView().getAdapterData();
             if (data.size() > 0) {
 //            SensoroDevice itemData = getView().getItemData(deviceIndex);
                 if (deviceIndex == (data.size() - 1)) {
                     getView().updateRcPercentAndTip(deviceIndex, 0, title);
+                    if(status == 2){
+                        initCheckUpgradeDeviceInfo();
+                    }else{
+                        requestUpdateDeviceUpgradeInfo();
+                        isStartUpgrade = false;
+                        System.out.println("设备已全部升级完毕===>");
+                        getView().setStartButtonBg(R.drawable.shape_upgrade_enable);
+                    }
 
-                    requestUpdateDeviceUpgradeInfo();
-                    isStartUpgrade = false;
-                    System.out.println("设备已全部升级完毕===>");
-                    getView().setStartButtonBg(R.drawable.shape_upgrade_enable);
-
-                } else if(deviceIndex < data.size()){
+                } else if (deviceIndex < data.size()) {
                     getView().updateRcPercentAndTip(deviceIndex, 0, title);
-                    deviceIndex++;
-                    targetDevice = data.get(deviceIndex);
                     System.out.println("升级设备===>" + targetDevice.getSn());
-                    connectDevice();
+                    if (status == 2) {
+                        //设备正在升级，等待升级成功，连接下一个设备
+                        initCheckUpgradeDeviceInfo();
 
+                    } else {
+                        deviceIndex++;
+                        targetDevice = data.get(deviceIndex);
+                        connectDevice();
+                    }
                 }
+
+
             }
         }
 
 
+    }
+
+    private void initCheckUpgradeDeviceInfo() {
+        if (mCheckDeviceUpgradeInfo == null) {
+            mCheckDeviceUpgradeInfo = new CheckDeviceUpgradeInfo();
+        }
+        mCheckDeviceUpgradeInfo.sn = targetDevice.getSn();
+        mCheckDeviceUpgradeInfo.firmVersion = firmwareVersionString;
+        mCheckDeviceUpgradeInfo.isNeedCheck = true;
     }
 
     private void requestUpdateDeviceUpgradeInfo() {
@@ -391,14 +450,14 @@ public class UpgradeDeviceListActivityPresenter extends BasePresenter<IUpgradeDe
     public void onDfuCompleted(String deviceAddress) {
         LogUtils.loge("dfuComplete完成了");
         snJSonArray.put(targetDevice.getSn());
-        listenDfu(mActivity.getString(R.string.upgrade_finish));
+        listenDfu(2);
         mHandler.removeCallbacks(dfuUpgradeTimeout);
     }
 
     @Override
     public void onDfuAborted(String deviceAddress) {
         LogUtils.loge(":dfu::" + "中断了");
-        listenDfu(mActivity.getString(R.string.upgrade_failed));
+        listenDfu(0);
         mHandler.removeCallbacks(dfuUpgradeTimeout);
     }
 
@@ -411,7 +470,7 @@ public class UpgradeDeviceListActivityPresenter extends BasePresenter<IUpgradeDe
             dfu_count++;
         } else {
             if (dfu_count > DFU_MAX_COUNT) {
-                listenDfu(mActivity.getString(R.string.upgrade_failed));
+                listenDfu(0);
                 sensoroConnection.disconnect();
                 mHandler.removeCallbacksAndMessages(null);
             } else {
@@ -476,21 +535,16 @@ public class UpgradeDeviceListActivityPresenter extends BasePresenter<IUpgradeDe
                             if (i <= 100) {
                                 getView().updateRcProgressChanged(deviceIndex, (Integer) o);
                             } else {
-                                snJSonArray.put(targetDevice.getSn());
-                                getView().updateRcPercentAndTip(deviceIndex, 0, mActivity.getString(R.string.upgrade_finish));
-
-                                deviceIndex++;
-                                Log.e("ddf", deviceIndex + ":ddf::" + data.size());
-                                if (deviceIndex < data.size()) {
-                                    targetDevice = data.get(deviceIndex);
-                                    System.out.println("升级设备===>" + targetDevice.getSn());
-                                    connectDevice();
-                                } else if (deviceIndex == data.size()) {
-                                    requestUpdateDeviceUpgradeInfo();
-                                    isStartUpgrade = false;
-                                    System.out.println("设备已全部升级完毕===>");
-//                                    sensoroConnection.disconnect();
-                                    getView().setStartButtonBg(R.drawable.shape_upgrade_enable);
+//                                snJSonArray.put(targetDevice.getSn());
+                                getView().updateRcPercentAndTip(deviceIndex, 0, mActivity.getString(R.string.upgrading));
+                                if (deviceIndex < data.size()-1) {
+                                    initCheckUpgradeDeviceInfo();
+//                                    deviceIndex++;
+//                                    targetDevice = data.get(deviceIndex);
+//                                    System.out.println("升级设备===>" + targetDevice.getSn());
+//                                    connectDevice();
+                                } else if (deviceIndex == data.size()-1) {
+                                    initCheckUpgradeDeviceInfo();
                                 }
 
                             }
@@ -549,7 +603,7 @@ public class UpgradeDeviceListActivityPresenter extends BasePresenter<IUpgradeDe
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                listenDfu(mActivity.getString(R.string.connect_failed));
+                listenDfu(1);
 
 
             }
@@ -562,7 +616,7 @@ public class UpgradeDeviceListActivityPresenter extends BasePresenter<IUpgradeDe
             @Override
             public void run() {
                 LogUtils.loge("更新界面 连接失败");
-                listenDfu(mActivity.getString(R.string.connect_failed));
+                listenDfu(1);
             }
         });
     }
@@ -603,7 +657,7 @@ public class UpgradeDeviceListActivityPresenter extends BasePresenter<IUpgradeDe
             @Override
             public void run() {
                 LogUtils.loge("切换dfu失败，在UpgradeDeviceListActivity onWriteFailure");
-                listenDfu(mActivity.getString(R.string.upgrade_failed));
+                listenDfu(0);
             }
         });
     }
@@ -624,9 +678,9 @@ public class UpgradeDeviceListActivityPresenter extends BasePresenter<IUpgradeDe
     }
 
     public boolean isUpgradeAll() {
-        if(deviceIndex == 0){
-            return  getView().getAdapterData().get(0).getDfuInfo() != null &&mActivity.getString(R.string.upgrade_finish).equals(getView().getAdapterData().get(0).getDfuInfo());
+        if (deviceIndex == 0) {
+            return getView().getAdapterData().get(0).getDfuInfo() != null && mActivity.getString(R.string.upgrade_finish).equals(getView().getAdapterData().get(0).getDfuInfo());
         }
-        return deviceIndex >= getView().getAdapterData().size()-1;
+        return deviceIndex >= getView().getAdapterData().size() - 1;
     }
 }

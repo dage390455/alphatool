@@ -2,12 +2,13 @@ package com.sensoro.loratool.imainview;
 
 import android.content.Intent;
 
+import com.sensoro.loratool.iwidget.IToast;
 import com.sensoro.loratool.model.SettingDeviceModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public interface IChannelEditorActivityView {
+public interface IChannelEditorActivityView extends IToast {
     void updateData(ArrayList<SettingDeviceModel> datas);
 
     void showDialog(SettingDeviceModel model);
@@ -19,4 +20,6 @@ public interface IChannelEditorActivityView {
     List<SettingDeviceModel> getData();
 
     void setIntentResult(int resultCode, Intent intent);
+
+    SettingDeviceModel getItem(int position);
 }

@@ -589,4 +589,5 @@
     <string name="query">查询</string>
     <string name="all_upgrade_completed">全部升级完成</string>
     <string name="setting_text_et_channel">频点编辑</string>
+    <string name="up_channel_not_zero">上行频点不能为0，请配置上行频点后再配置下行频点</string>
 </resources>

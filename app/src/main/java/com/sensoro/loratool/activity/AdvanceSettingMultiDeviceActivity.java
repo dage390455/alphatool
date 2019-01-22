@@ -144,7 +144,7 @@ public class AdvanceSettingMultiDeviceActivity extends BaseActivity implements C
     private String band;
     private String deviceType;
 
-    private SensoroDeviceConfiguration deviceConfiguration;
+    private SensoroDevice deviceConfiguration;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -373,8 +373,8 @@ public class AdvanceSettingMultiDeviceActivity extends BaseActivity implements C
             ProtoStd1U1.MsgStd.Builder msgStdBuilder = ProtoStd1U1.MsgStd.newBuilder();
             msgStdBuilder.setCustomData(msgCfgBuilder.build().toByteString());
             msgStdBuilder.setEnableClassB(deviceConfiguration.getClassBEnabled());
-            msgStdBuilder.setClassBDataRate(deviceConfiguration.getClassDateRate());
-            msgStdBuilder.setClassBPeriodicity(deviceConfiguration.getClassPeriodicity());
+            msgStdBuilder.setClassBDataRate(deviceConfiguration.getClassBDataRate());
+            msgStdBuilder.setClassBPeriodicity(deviceConfiguration.getClassBPeriodicity());
             ProtoStd1U1.MsgStd msgStd = msgStdBuilder.build();
 
             byte[] data = msgStd.toByteArray();
@@ -662,63 +662,63 @@ public class AdvanceSettingMultiDeviceActivity extends BaseActivity implements C
             if (writeDataRateIndex != SETTING_STATUS_UNSET) {
                 dataRate = writeDataRateIndex == 1? 1: 0;
             }
-            SensoroDeviceConfiguration.Builder builder = new SensoroDeviceConfiguration.Builder();
-            builder.setLoraAdr(dataRate);
+            SensoroDevice sensoroDevice = new SensoroDevice();
+            sensoroDevice.setLoraAdr(dataRate);
 
             if (targetDevice.hasActivation()) {
-                builder.setActivation(activation);
-                builder.setHasActivation(true);
+                sensoroDevice.setActivation(activation);
+                sensoroDevice.setHasActivation(true);
             } else {
-                builder.setHasActivation(false);
+                sensoroDevice.setHasActivation(false);
             }
             if (targetDevice.hasDevEui()) {
-                builder.setHasDevEui(true);
-                builder.setDevEui(devEui);
+                sensoroDevice.setHasDevEui(true);
+                sensoroDevice.setDevEui(devEui);
             } else {
-                builder.setHasDevEui(false);
+                sensoroDevice.setHasDevEui(false);
             }
             if (targetDevice.hasAppEui()) {
-                builder.setAppEui(appEui);
-                builder.setHasAppEui(true);
+                sensoroDevice.setAppEui(appEui);
+                sensoroDevice.setHasAppEui(true);
             } else {
-                builder.setHasAppEui(false);
+                sensoroDevice.setHasAppEui(false);
             }
             if (targetDevice.hasAppKey()) {
-                builder.setAppKey(appKey);
-                builder.setHasAppKey(true);
+                sensoroDevice.setAppKey(appKey);
+                sensoroDevice.setHasAppKey(true);
             } else {
-                builder.setHasAppKey(false);
+                sensoroDevice.setHasAppKey(false);
             }
             if (targetDevice.hasAppSkey()) {
-                builder.setAppSkey(appsKey);
-                builder.setHasAppSkey(true);
+                sensoroDevice.setAppSkey(appsKey);
+                sensoroDevice.setHasAppSkey(true);
             } else {
-                builder.setHasAppSkey(false);
+                sensoroDevice.setHasAppSkey(false);
             }
             if (targetDevice.hasNwkSkey() || activation == 1) {
-                builder.setNwkSkey(nwkSessionKey);
-                builder.setHasNwkSkey(true);
+                sensoroDevice.setNwkSkey(nwkSessionKey);
+                sensoroDevice.setHasNwkSkey(true);
             } else {
-                builder.setHasNwkSkey(false);
+                sensoroDevice.setHasNwkSkey(false);
             }
             if (targetDevice.hasDevAddr() || activation == 1) {
-                builder.setHasDevAddr(true);
-                builder.setDevAdr(devAdr);
+                sensoroDevice.setHasDevAddr(true);
+                sensoroDevice.setDevAdr(devAdr);
             } else {
-                builder.setHasDevAddr(false);
+                sensoroDevice.setHasDevAddr(false);
             }
             if (targetDevice.hasActivation() || activation == 1) {
-                builder.setActivation(activation);
-                builder.setHasActivation(true);
+                sensoroDevice.setActivation(activation);
+                sensoroDevice.setHasActivation(true);
             } else {
-                builder.setHasActivation(false);
+                sensoroDevice.setHasActivation(false);
             }
-            builder.setLoraDr(loraDr);
+            sensoroDevice.setLoraDr(loraDr);
             if (targetDevice.hasDelay()) {
-                builder.setDelay(delay);
-                builder.setHasDelay(true);
+                sensoroDevice.setDelay(delay);
+                sensoroDevice.setHasDelay(true);
             } else {
-                builder.setHasDelay(false);
+                sensoroDevice.setHasDelay(false);
             }
             List<Integer> list = targetDevice.getChannelMaskList();
             int array[] = new int[list.size()];
@@ -734,7 +734,8 @@ public class AdvanceSettingMultiDeviceActivity extends BaseActivity implements C
             for (int i = 0 ; i < array.length; i ++) {
                 tempList.add(array[i]);
             }
-            builder.setChannelList(tempList);
+            sensoroDevice.setChannelMaskList(tempList);
+
             if (targetDevice.getFirmwareVersion().compareTo("1.3") >= 0) {
                 if (writeClassBEnableIndex != SETTING_STATUS_UNSET) {
                     String classBPeriodicityString = classBPeriodicityTextView.getText().toString();
@@ -751,13 +752,13 @@ public class AdvanceSettingMultiDeviceActivity extends BaseActivity implements C
                     } else {
                         classBDataRate = Integer.parseInt(classBDatarateString);
                     }
-                    builder.setClassBEnabled(writeClassBEnableIndex == 1 ? 1 : 0)
-                            .setClassBPeriodicity(getClassBPeridicity(classBPeriodicity))
-                            .setClassBDataRate(getClassBDataRate(classBDataRate));
+                    sensoroDevice.setClassBEnabled(writeClassBEnableIndex == 1 ? 1 : 0);
+                    sensoroDevice.setClassBPeriodicity(getClassBPeridicity(classBPeriodicity));
+                    sensoroDevice .setClassBDataRate(getClassBDataRate(classBDataRate));
                 }
 
             }
-            deviceConfiguration = builder.build();
+            deviceConfiguration = sensoroDevice;
             sensoroDeviceConnection.writeDeviceAdvanceConfiguration(deviceConfiguration, this);
         } catch (Exception e) {
             e.printStackTrace();
