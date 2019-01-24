@@ -2086,14 +2086,19 @@
             android:contentDescription="@null"/>
     </LinearLayout>
 
-    <!--曼顿电气火灾-->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/settings_device_rc_matun_fire"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/settings_device_rc_matun_fire"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
 
-    </android.support.v7.widget.RecyclerView>
+        </android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
+    <!--曼顿电气火灾-->
+
     <!--<LinearLayout-->
         <!--android:id="@+id/settings_device_ll_matun_root"-->
         <!--android:layout_width="match_parent"-->

@@ -96,8 +96,8 @@ public class ChannelEditorPresenter extends BasePresenter<IChannelEditorActivity
     public void doSave() {
         List<SettingDeviceModel> data = getView().getData();
         for (SettingDeviceModel datum : data) {
-            if (datum.tag != null) {
-                String[] split = datum.tag.split(",");
+            if (datum.tag instanceof String) {
+                String[] split = ((String)datum.tag).split(",");
                 SensoroChannel sensoroChannel = channelArrayList.get(Integer.valueOf(split[0]));
                 if ("1".equals(split[1])) {
                     sensoroChannel.frequency = (int) (Double.valueOf(datum.content) * 1000000);

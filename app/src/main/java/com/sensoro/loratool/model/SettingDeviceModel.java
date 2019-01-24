@@ -12,13 +12,13 @@ public class SettingDeviceModel {
     //判断范围 包括min max两个值
     public Float max;
     public Float min;
-    public String tag;
+    public Object tag;
 
     // 1 普通的带有箭头的布局 2.title布局，只展示，不可点击
     public int viewType = 1;
     // 1.输入数值对话框 2.电表命令
     public int eventType;
-
+    public boolean canClick = true;
 
 
     public SettingDeviceModel() {

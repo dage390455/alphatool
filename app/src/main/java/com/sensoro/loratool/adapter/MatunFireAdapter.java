@@ -78,7 +78,7 @@ public class MatunFireAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         holder.itemGeneralTypeLlRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listener != null) {
+                if (listener != null && model.canClick) {
                     listener.onItemClick(model,position);
                 }
             }

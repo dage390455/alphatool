@@ -1953,6 +1953,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 settingDeviceModel1.hint = getString(R.string.current_threshold_range) + settingDeviceModel1.min + "-" + settingDeviceModel1.max;
                 settingDeviceModel1.errMsg = getString(R.string.over_current_Threshold_range);
                 settingDeviceModel1.tag = mantunData.id + "currentTh";
+                settingDeviceModel1.canClick = false;
                 datas.add(settingDeviceModel1);
 
                 SettingDeviceModel settingDeviceModel2 = new SettingDeviceModel(getString(R.string.power_threshold), String.valueOf(mantunData.powerTh), 1);
@@ -1961,6 +1962,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 settingDeviceModel2.hint = getString(R.string.power_threshold_range) + settingDeviceModel1.min + "-" + settingDeviceModel1.max;
                 settingDeviceModel2.errMsg = getString(R.string.over_power_Threshold_range);
                 settingDeviceModel2.tag = mantunData.id + "powerTh";
+                settingDeviceModel2.canClick = false;
                 settingDeviceModel2.isDivider = false;
                 datas.add(settingDeviceModel2);
 
@@ -1975,20 +1977,30 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             settingDeviceModel5.viewType = 1;
             settingDeviceModel5.eventType = 2;
             settingDeviceModel5.cmd = 0;
+            settingDeviceModel5.tag = 0;
             settingDeviceModel5.name = getString(R.string.query);
             datas.add(settingDeviceModel5);
             for (SensoroMantunData mantunData : sensoroSensor.mantunDatas) {
                 SettingDeviceModel settingDeviceModel6 = new SettingDeviceModel();
                 settingDeviceModel6.eventType = 2;
                 settingDeviceModel6.cmd = 2;
-                settingDeviceModel6.name = String.format(Locale.CHINESE, "%s(%d)", getString(R.string.close_brake), (int)mantunData.id);
+                settingDeviceModel6.name = String.format(Locale.CHINESE, "%s(id:%d)", getString(R.string.close_brake), (int)mantunData.id);
+                settingDeviceModel6.tag = mantunData.id;
                 datas.add(settingDeviceModel6);
 
                 SettingDeviceModel settingDeviceModel7 = new SettingDeviceModel();
                 settingDeviceModel7.eventType = 2;
                 settingDeviceModel7.cmd = 4;
-                settingDeviceModel7.name = String.format(Locale.CHINESE, "%s(%d)", getString(R.string.spearate_brake), (int)mantunData.id);
+                settingDeviceModel7.name = String.format(Locale.CHINESE, "%s(id:%d)", getString(R.string.spearate_brake), (int)mantunData.id);
+                settingDeviceModel7.tag = mantunData.id;
                 datas.add(settingDeviceModel7);
+
+                SettingDeviceModel settingDeviceModel8 = new SettingDeviceModel();
+                settingDeviceModel8.eventType = 2;
+                settingDeviceModel8.cmd = 8;
+                settingDeviceModel8.name = String.format(Locale.CHINESE, "%s(id:%d)", getString(R.string.smoke_silence), (int)mantunData.id);
+                settingDeviceModel8.tag = mantunData.id;
+                datas.add(settingDeviceModel8);
             }
             rcMatunFire.setAdapter(matunFireAdapter);
             matunFireAdapter.updateData(datas);
@@ -2009,10 +2021,11 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                                         String mantunCurrentTag = mantunData.id + "currentTh";
                                         String mantunPowerTag = mantunData.id + "powerTh";
                                         model.content = String.valueOf(value);
-                                        if (model.tag != null) {
-                                            if (model.tag.equals(mantunCurrentTag)) {
+                                        if (model.tag instanceof String) {
+                                            String tag = (String) model.tag;
+                                            if(mantunCurrentTag.equals(tag)) {
                                                 mantunData.currentTh = (int) (value * 100);
-                                            } else if (model.tag.equals(mantunPowerTag)) {
+                                            } else if (tag.equals(mantunPowerTag)) {
                                                 mantunData.powerTh = (int) value;
                                             }
                                         }
@@ -2023,27 +2036,25 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             break;
                         case 2:
                             MsgNode1V1M5.MantunData.Builder builder = MsgNode1V1M5.MantunData.newBuilder();
-                            if (model.cmd == 2 || model.cmd == 4) {
-                                for (SensoroMantunData mantunData : sensoroSensor.mantunDatas) {
-                                    if (String.valueOf(mantunData.id).equals(model.content)) {
-                                        builder.setId(mantunData.id);
-                                        break;
-                                    }
+                            if (model.cmd == 0 || model.cmd == 2 || model.cmd == 4 || model.cmd == 8) {
+                                if (model.tag instanceof Integer) {
+                                    builder.setId((Integer) model.tag);
+                                    builder.setCmd(model.cmd);
+                                    sensoroDeviceConnection.writeMantunCmd(builder, new SensoroWriteCallback() {
+                                        @Override
+                                        public void onWriteSuccess(Object o, int cmd) {
+                                            showSendCmdSuccessProgressDialog();
+                                        }
+
+                                        @Override
+                                        public void onWriteFailure(int errorCode, int cmd) {
+                                            showSendCmdFailedProgressDialog(errorCode);
+                                        }
+                                    });
+                                    showSendCmdProgressDialog();
                                 }
                             }
-                            builder.setCmd(model.cmd);
-                            sensoroDeviceConnection.writeMantunCmd(builder, new SensoroWriteCallback() {
-                                @Override
-                                public void onWriteSuccess(Object o, int cmd) {
-                                    showSendCmdSuccessProgressDialog();
-                                }
 
-                                @Override
-                                public void onWriteFailure(int errorCode, int cmd) {
-                                    showSendCmdFailedProgressDialog(errorCode);
-                                }
-                            });
-                            showSendCmdProgressDialog();
                             break;
                     }
                 }
