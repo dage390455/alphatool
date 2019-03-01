@@ -847,6 +847,26 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     TextView caymanValueOfTemContent;
     @BindView(R.id.cayman_value_of_tem)
     LinearLayout caymanValueOfTem;
+    @BindView(R.id.cayman_value_of_photor_content)
+    TextView caymanValueOfPhotorContent;
+    @BindView(R.id.cayman_value_of_photor)
+    LinearLayout caymanValueOfPhotor;
+    @BindView(R.id.cayman_ble_adv_type_content)
+    TextView caymanBleAdvTypeContent;
+    @BindView(R.id.cayman_ble_adv_type)
+    LinearLayout caymanBleAdvType;
+    @BindView(R.id.cayman_ble_adv_start_time_content)
+    TextView caymanBleAdvStartTimeContent;
+    @BindView(R.id.cayman_ble_adv_start_time)
+    LinearLayout caymanBleAdvStartTime;
+    @BindView(R.id.cayman_ble_adv_end_time_content)
+    TextView caymanBleAdvEndTimeContent;
+    @BindView(R.id.cayman_ble_adv_end_time_hum)
+    LinearLayout caymanBleAdvEndTime;
+    @BindView(R.id.cayman_value_of_batb_content)
+    TextView caymanValueOfBatbContent;
+    @BindView(R.id.cayman_value_of_batb)
+    LinearLayout caymanValueOfBatb;
     @BindView(R.id.cayman_value_of_hum_content)
     TextView caymanValueOfHumContent;
     @BindView(R.id.cayman_value_of_hum)
@@ -1589,54 +1609,6 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     //曼顿电气火灾
                     loadMantunData();
 
-//                    boolean hasMantunData = sensoroSensor.hasMantunData;
-//                    settingsDeviceLlMatunRoot.setVisibility(hasMantunData ? VISIBLE : GONE);
-//                    settingsDeviceLlMauntonControl.setVisibility(hasMantunData ? VISIBLE : GONE);
-//                    if (hasMantunData) {
-//                        if (sensoroSensor.mantunData.hasLeakageTh) {
-//                            settingsDeviceMantunLeak.setText(sensoroSensor.mantunData.leakageTh / 10 + "");
-//                        } else {
-//                            settingsDeviceRlMantunLeak.setVisibility(GONE);
-//                        }
-//                        if (sensoroSensor.mantunData.hasTempTh) {
-//                            settingsDeviceTvMauntonTemp.setText(sensoroSensor.mantunData.tempTh / 10 + "");
-//                        } else {
-//                            settingsDeviceRlMautonTemp.setVisibility(GONE);
-//                        }
-//
-//                        if (sensoroSensor.mantunData.hasCurrentTh) {
-//                            settingsDeviceTvMauntonCurrent.setText(sensoroSensor.mantunData.currentTh / 100 + "");
-//                        } else {
-//                            settingsDeviceRlMauntonCurrent.setVisibility(GONE);
-//                        }
-//                        if (sensoroSensor.mantunData.hasVolHighTh) {
-//                            settingsDeviceTvMauntonOverpressure.setText(sensoroSensor.mantunData.volHighTh + "");
-//                        } else {
-//                            settingsDeviceRlMauntonOverpressure.setVisibility(GONE);
-//                        }
-//                        if (sensoroSensor.mantunData.hasVolLowTh) {
-//                            settingsDeviceTvMauntonUndervoltage.setText(sensoroSensor.mantunData.volLowTh + "");
-//                        } else {
-//                            settingsDeviceRlMauntonUndervoltage.setVisibility(GONE);
-//                        }
-//                        if (sensoroSensor.mantunData.hasPowerTh) {
-//                            settingsDeviceTvMauntonOverload.setText(sensoroSensor.mantunData.powerTh + "");
-//                        } else {
-//                            settingsDeviceRlMauntonOverload.setVisibility(GONE);
-//                        }
-//                        if (sensoroSensor.mantunData.hasTemp1OutsideTh) {
-//                            settingsDeviceTvMantunOutSide.setText(sensoroSensor.mantunData.temp1OutsideTh / 10 + "");
-//                        } else {
-//                            settingsDeviceRlMantunOutSide.setVisibility(GONE);
-//                        }
-//                        if (sensoroSensor.mantunData.hasTemp2ContactTh) {
-//                            settingsDeviceTvMantunContact.setText(sensoroSensor.mantunData.temp2ContactTh / 10 + "");
-//                        } else {
-//                            settingsDeviceRlMantunContact.setVisibility(GONE);
-//                        }
-//
-//                    }
-
                     boolean hasAcrelFires = sensoroSensor.hasAcrelFires;
                     acrelRoot.setVisibility(hasAcrelFires ? VISIBLE : GONE);
                     if (hasAcrelFires) {
@@ -1787,17 +1759,17 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     if (hasCayMan) {
                         if (sensoroSensor.cayManData.hasIsSmoke) {
                             if (sensoroSensor.cayManData.isSmoke == 0) {
-                                caymanIsSmokeContent.setText("无烟雾报警");
+                                caymanIsSmokeContent.setText("无烟");
                             } else {
-                                caymanIsSmokeContent.setText("有烟雾报警");
+                                caymanIsSmokeContent.setText("有烟");
                             }
                         }
 
                         if (sensoroSensor.cayManData.hasIsMoved) {
                             if (sensoroSensor.cayManData.isMoved == 0) {
-                                caymanIsMovedContent.setText("无移动报警");
+                                caymanIsMovedContent.setText("未拆卸");
                             } else {
-                                caymanIsMovedContent.setText("有移动报警");
+                                caymanIsMovedContent.setText("拆卸");
                             }
                         }
 
@@ -1805,7 +1777,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             caymanValueOfTemContent.setText(sensoroSensor.cayManData.valueOfTem / 10 + "℃");
                         }
                         if (sensoroSensor.cayManData.hasValueOfHum) {
-                            caymanValueOfHumContent.setText(sensoroSensor.cayManData.valueOfHum + "%");
+                            caymanValueOfHumContent.setText(sensoroSensor.cayManData.valueOfHum/10 + "%");
                         }
                         if (sensoroSensor.cayManData.hasAlarmOfHighTem) {
                             caymanAlarmOfHighTemContent.setText(sensoroSensor.cayManData.alarmOfHighTem / 10 + "℃");
@@ -1814,11 +1786,24 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             caymanAlarmOfLowTemContent.setText(sensoroSensor.cayManData.alarmOfLowTem / 10 + "℃");
                         }
                         if (sensoroSensor.cayManData.hasAlarmOfHighHum) {
-                            caymanAlarmOfHighHumContent.setText(sensoroSensor.cayManData.alarmOfHighHum + "%");
+                            caymanAlarmOfHighHumContent.setText(sensoroSensor.cayManData.alarmOfHighHum/10 + "%");
                         }
                         if (sensoroSensor.cayManData.hasAlarmOfLowHum) {
-                            caymanAlarmOfLowHumContent.setText(sensoroSensor.cayManData.alarmOfLowHum + "%");
+                            caymanAlarmOfLowHumContent.setText(sensoroSensor.cayManData.alarmOfLowHum/10 + "%");
                         }
+                        if (sensoroSensor.cayManData.hasValueOfphotor) {
+                            caymanValueOfPhotorContent.setText(String.valueOf(sensoroSensor.cayManData.valueOfphotor));
+                        }
+                        if (sensoroSensor.cayManData.hasBleAdvType) {
+                            caymanBleAdvTypeContent.setText(sensoroSensor.cayManData.bleAdvType == 0 ? "持续广播" : "间断广播");
+                        }
+                        if (sensoroSensor.cayManData.hasValueOfBatb && sensoroSensor.cayManData.valueOfBatb > -1) {
+                            caymanValueOfBatbContent.setText(sensoroSensor.cayManData.valueOfBatb/1000 +"v");
+                        }else{
+                            caymanValueOfBatb.setVisibility(GONE);
+                        }
+
+
                     }
 
                     boolean hasBaymax = sensoroSensor.hasBaymax;
@@ -2923,8 +2908,6 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 switch (cmd) {
                     case CmdType.CMD_SET_SMOKE:
                     case CmdType.CMD_SET_ELEC_CMD:
-                    case CmdType.CMD_SET_MANTUN_CMD:
-                    case CmdType.CMD_SET_ACREL_CMD:
                         break;
                     case CmdType.CMD_SET_ZERO:
                         Toast.makeText(SettingDeviceActivity.this, R.string.zero_calibrate_success, Toast
@@ -2968,8 +2951,6 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 switch (cmd) {
                     case CmdType.CMD_SET_SMOKE:
                     case CmdType.CMD_SET_ELEC_CMD:
-                    case CmdType.CMD_SET_MANTUN_CMD:
-                    case CmdType.CMD_SET_ACREL_CMD:
                         break;
                     case CmdType.CMD_SET_ZERO:
                         Toast.makeText(SettingDeviceActivity.this, R.string.zero_calibrate_failed, Toast
@@ -5139,22 +5120,6 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
 
             sensoroSensor.acrelFires.currHighType = SensoroUUID.bitsToInt(bytes);
             acrelCurrHighTypeContent.setText(stringBuffer.toString());
-        } else if (SETTINGS_DEVICE_RL_CAYMAN_IS_SMOKE.equals(tag)) {
-            int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
-            sensoroSensor.cayManData.isSmoke = index;
-            if (index == 0) {
-                caymanIsSmokeContent.setText("无烟雾报警");
-            } else {
-                caymanIsSmokeContent.setText("有烟雾报警");
-            }
-        } else if (SETTINGS_DEVICE_RL_CAYMAN_IS_MOVED.equals(tag)) {
-            int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
-            sensoroSensor.cayManData.isMoved = index;
-            if (index == 0) {
-                caymanIsSmokeContent.setText("无移动报警");
-            } else {
-                caymanIsSmokeContent.setText("有移动报警");
-            }
         } else if (SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_HIGH_TEM.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
@@ -5197,6 +5162,10 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
             }
+        }else if(SETTINGS_DEVICE_RL_CAYMAN_ADV_TYPE.equals(tag)){
+            int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
+            sensoroSensor.cayManData.bleAdvType = index;
+            caymanBleAdvTypeContent.setText(index == 0 ? "持续广播" : "间断广播");
         } else if (SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_LOW_HUM.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
@@ -5276,7 +5245,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             R.id.acrel_t3_th, R.id.acrel_t4_th, R.id.acrel_curr_high_set, R.id.acrel_val_high_set,
             R.id.acrel_val_low_set, R.id.acrel_val_high_type, R.id.acrel_val_low_type,
             R.id.acrel_curr_high_type, R.id.acrel_cmd_reset, R.id.acrel_cmd_self_check, R.id.acrel_root,
-            R.id.acrel_psd, R.id.cayman_is_smoke, R.id.cayman_is_moved, R.id.cayman_value_of_tem,
+            R.id.acrel_psd, R.id.cayman_is_smoke, R.id.cayman_is_moved, R.id.cayman_value_of_tem,R.id.cayman_value_of_photor,
+            R.id.cayman_ble_adv_type,R.id.cayman_ble_adv_start_time,R.id.cayman_ble_adv_end_time_hum,R.id.cayman_value_of_batb,
             R.id.cayman_value_of_hum, R.id.cayman_alarm_of_high_tem, R.id.cayman_alarm_of_low_tem,
             R.id.cayman_alarm_of_high_hum, R.id.cayman_alarm_of_low_hum, R.id.cayman_cmd_self_check,
             R.id.cayman_cmd_reset, R.id.cayman_cmd_clear_sound, R.id.baymax_density_l1, R.id.baymax_density_l2, R.id.baymax_density_l3,
@@ -5448,18 +5418,18 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 dialogFragment = SettingsInputDialogFragment.newInstance(sensoroSensor.acrelFires.passwd + "");
                 dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_ACREL_PSD);
                 break;
-            case R.id.cayman_is_smoke:
-                int isSmoke = sensoroSensor.cayManData.isSmoke;
-                String[] smokeItems = {"无烟雾报警", "有烟雾报警"};
-                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(smokeItems, isSmoke);
-                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_IS_SMOKE);
-                break;
-            case R.id.cayman_is_moved:
-                int isMoved = sensoroSensor.cayManData.isSmoke;
-                String[] moveItems = {"无移动报警", "有移动报警"};
-                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(moveItems, isMoved);
-                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_IS_MOVED);
-                break;
+//            case R.id.cayman_is_smoke:
+//                int isSmoke = sensoroSensor.cayManData.isSmoke;
+//                String[] smokeItems = {"无烟雾报警", "有烟雾报警"};
+//                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(smokeItems, isSmoke);
+//                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_IS_SMOKE);
+//                break;
+//            case R.id.cayman_is_moved:
+//                int isMoved = sensoroSensor.cayManData.isSmoke;
+//                String[] moveItems = {"无移动报警", "有移动报警"};
+//                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(moveItems, isMoved);
+//                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_IS_MOVED);
+//                break;
 //            case R.id.cayman_value_of_tem:
 //                float valueOfTem = sensoroSensor.cayManData.valueOfTem / 10;
 //                dialogFragment = SettingsInputDialogFragment.newInstance(valueOfTem + "");
@@ -5470,6 +5440,16 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
 //                dialogFragment = SettingsInputDialogFragment.newInstance(valueOfHum + "");
 //                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_VALUE_OF_HUM);
 //                break;
+            case R.id.cayman_ble_adv_type:
+                int advType = sensoroSensor.cayManData.bleAdvType;
+                String[] moveItems = {"持续广播", "间断广播"};
+                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(moveItems, advType);
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_ADV_TYPE);
+                break;
+            case R.id.cayman_ble_adv_start_time:
+                break;
+            case R.id.cayman_ble_adv_end_time_hum:
+                break;
             case R.id.cayman_alarm_of_high_tem:
                 float alarmOfHighTem = sensoroSensor.cayManData.alarmOfHighTem / 10;
                 dialogFragment = SettingsInputDialogFragment.newInstance(alarmOfHighTem + "");
