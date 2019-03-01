@@ -3,7 +3,7 @@ package com.sensoro.loratool.imainview;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 
-import com.sensoro.libbleserver.ble.SensoroDevice;
+import com.sensoro.libbleserver.ble.entity.SensoroDevice;
 import com.sensoro.loratool.iwidget.IProgressDialog;
 import com.sensoro.loratool.iwidget.IToast;
 

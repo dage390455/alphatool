@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 
-import com.sensoro.libbleserver.ble.SensoroDevice;
+import com.sensoro.libbleserver.ble.entity.SensoroDevice;
 import com.sensoro.lora.setting.server.bean.DeviceInfo;
 import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;

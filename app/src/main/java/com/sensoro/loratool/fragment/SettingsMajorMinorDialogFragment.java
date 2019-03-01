@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.activity.SettingDeviceActivity;
+import com.sensoro.loratool.event.OnPositiveButtonClickListener;
 
 
 /**
@@ -29,6 +30,7 @@ public class SettingsMajorMinorDialogFragment extends SettingsBaseDialogFragment
     private EditText decEditText;
 
     private int majorMinorValue;
+    private OnPositiveButtonClickListener listener;
 
     public static SettingsMajorMinorDialogFragment newInstance(int value) {
         SettingsMajorMinorDialogFragment settingsMajorMinorDialogFragment = new SettingsMajorMinorDialogFragment();
@@ -68,6 +70,9 @@ public class SettingsMajorMinorDialogFragment extends SettingsBaseDialogFragment
                     public void onClick(DialogInterface dialog, int which) {
                         Bundle bundle = new Bundle();
                         bundle.putInt(VALUE, Integer.valueOf(decEditText.getText().toString()));
+                        if (listener != null) {
+                            listener.onPositiveButtonClick(SettingsMajorMinorDialogFragment.this.getTag(), bundle);
+                        }
                         onPositiveButtonClickListener.onPositiveButtonClick(SettingsMajorMinorDialogFragment.this.getTag(), bundle);
                     }
                 })
@@ -189,4 +194,8 @@ public class SettingsMajorMinorDialogFragment extends SettingsBaseDialogFragment
 
         }
     };
+
+    public void setOnPositiveClickListener(OnPositiveButtonClickListener listener) {
+        this.listener = listener;
+    }
 }

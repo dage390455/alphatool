@@ -3,6 +3,7 @@ package com.sensoro.loratool.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +20,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MatunFireAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class DeviceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final Context mContext;
     private final List<SettingDeviceModel> mList = new ArrayList<>();
     private RecyclerItemClickListener listener;
 
-    public MatunFireAdapter(Context context) {
+    public DeviceAdapter(Context context) {
         mContext = context;
     }
 
@@ -48,6 +49,7 @@ public class MatunFireAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
         SettingDeviceModel model = mList.get(position);
         switch (model.viewType){
             case 1:

@@ -14,7 +14,13 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.protobuf.ByteString;
+import com.sensoro.libbleserver.ble.callback.SensoroConnectionCallback;
+import com.sensoro.libbleserver.ble.callback.SensoroWriteCallback;
+import com.sensoro.libbleserver.ble.connection.SensoroDeviceConnection;
+import com.sensoro.libbleserver.ble.entity.BLEDevice;
+import com.sensoro.libbleserver.ble.entity.SensoroDevice;
 import com.sensoro.libbleserver.ble.proto.MsgNode1V1M5;
+import com.sensoro.libbleserver.ble.utils.SensoroUtils;
 import com.sensoro.lora.setting.server.bean.DeviceInfo;
 import com.sensoro.lora.setting.server.bean.ResponseBase;
 import com.sensoro.loratool.LoRaSettingApplication;
@@ -22,13 +28,6 @@ import com.sensoro.loratool.R;
 import com.sensoro.loratool.fragment.SettingsInputDialogFragment;
 import com.sensoro.loratool.fragment.SettingsMultiChoiceItemsFragment;
 import com.sensoro.loratool.fragment.SettingsSingleChoiceItemsFragment;
-import com.sensoro.libbleserver.ble.BLEDevice;
-import com.sensoro.libbleserver.ble.SensoroConnectionCallback;
-import com.sensoro.libbleserver.ble.SensoroDevice;
-import com.sensoro.libbleserver.ble.SensoroDeviceConfiguration;
-import com.sensoro.libbleserver.ble.SensoroDeviceConnection;
-import com.sensoro.libbleserver.ble.SensoroUtils;
-import com.sensoro.libbleserver.ble.SensoroWriteCallback;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.event.OnPositiveButtonClickListener;
 import com.sensoro.loratool.model.ChannelData;
@@ -57,7 +56,7 @@ import static android.view.View.VISIBLE;
  * Created by sensoro on 16/10/11.
  */
 
-public class AdvanceSettingMultiDeviceActivity extends BaseActivity implements Constants, OnPositiveButtonClickListener,  SensoroConnectionCallback, SensoroWriteCallback {
+public class AdvanceSettingMultiDeviceActivity extends BaseActivity implements Constants, OnPositiveButtonClickListener, SensoroConnectionCallback, SensoroWriteCallback {
 
     private SensoroDeviceConnection sensoroDeviceConnection;
     private SensoroDevice targetDevice = null;

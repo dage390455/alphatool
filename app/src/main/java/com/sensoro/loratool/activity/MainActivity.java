@@ -26,16 +26,16 @@ import android.widget.Toast;
 
 import com.example.menudrawer.MenuDrawer;
 import com.example.menudrawer.Position;
+import com.sensoro.libbleserver.ble.entity.BLEDevice;
+import com.sensoro.libbleserver.ble.entity.SensoroDevice;
+import com.sensoro.libbleserver.ble.entity.SensoroSensor;
+import com.sensoro.libbleserver.ble.entity.SensoroStation;
 import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.fragment.DeviceFragment;
 import com.sensoro.loratool.fragment.PointDeployFragment;
 import com.sensoro.loratool.fragment.StationFragment;
 import com.sensoro.loratool.adapter.MenuInfoAdapter;
-import com.sensoro.libbleserver.ble.BLEDevice;
-import com.sensoro.libbleserver.ble.SensoroDevice;
-import com.sensoro.libbleserver.ble.SensoroSensor;
-import com.sensoro.libbleserver.ble.SensoroStation;
 import com.sensoro.libbleserver.ble.scanner.BLEDeviceManager;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.service.PollingService;
@@ -405,8 +405,11 @@ public class MainActivity extends BaseActivity
 //                    deviceFragment.refreshSensor(sensoroSensor);
 //                    break;
                 case BLEDevice.TYPE_SENSOR:
-                    SensoroSensor sensoroSensor = (SensoroSensor) bleDevice;
-                    deviceFragment.refreshSensor(sensoroSensor);
+                    if (bleDevice instanceof SensoroSensor) {
+                        SensoroSensor sensoroSensor = (SensoroSensor) bleDevice;
+                        deviceFragment.refreshSensor(sensoroSensor);
+                    }
+
                     break;
                 case BLEDevice.TYPE_DEVICE:
                     try {

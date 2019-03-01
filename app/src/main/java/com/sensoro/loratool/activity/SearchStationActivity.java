@@ -31,12 +31,12 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sensoro.libbleserver.ble.entity.BLEDevice;
+import com.sensoro.libbleserver.ble.entity.SensoroStation;
 import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.adapter.SearchHistoryAdapter;
 import com.sensoro.loratool.adapter.StationInfoAdapter;
-import com.sensoro.libbleserver.ble.BLEDevice;
-import com.sensoro.libbleserver.ble.SensoroStation;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.widget.RecycleViewItemClickListener;
 import com.sensoro.loratool.widget.SensoroLinearLayoutManager;

@@ -34,6 +34,9 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.sensoro.libbleserver.ble.entity.BLEDevice;
+import com.sensoro.libbleserver.ble.entity.SensoroDevice;
+import com.sensoro.libbleserver.ble.entity.SensoroSensor;
 import com.sensoro.lora.setting.server.ILoRaSettingServer;
 import com.sensoro.lora.setting.server.bean.DeviceInfo;
 import com.sensoro.lora.setting.server.bean.DeviceInfoListRsp;
@@ -41,9 +44,7 @@ import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.adapter.DeviceInfoAdapter;
 import com.sensoro.loratool.adapter.SearchHistoryAdapter;
-import com.sensoro.libbleserver.ble.BLEDevice;
-import com.sensoro.libbleserver.ble.SensoroDevice;
-import com.sensoro.libbleserver.ble.SensoroSensor;
+
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.widget.RecycleViewItemClickListener;
 import com.sensoro.loratool.widget.SensoroLinearLayoutManager;

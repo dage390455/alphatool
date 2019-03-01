@@ -3,8 +3,11 @@ package com.sensoro.loratool.model;
 public class SettingDeviceModel {
     public String name;
     public String content;
+    //必要的时候可以用这个记录原始数据，限定是int值
+    public int originContent;
     public boolean isArrow = true;
     public boolean isDivider = true;
+    // view type 为2的时候，添加
     public String title;
     public int cmd;
     public String hint;

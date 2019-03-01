@@ -7,14 +7,21 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.google.protobuf.ByteString;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.constant.Constants;
 
 import java.lang.reflect.Field;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -222,5 +229,43 @@ public class Utils {
         // statusBarHeight是上面所求的状态栏的高度
         int  titleBarHeight = contentViewTop - statusBarHeight;
         return  titleBarHeight;
+    }
+
+
+    public static String byteString2String(ByteString byteString) {
+        if (byteString != null) {
+            Log.e("cxy","::size:"+byteString.size());
+        }else{
+            Log.e("cxy","::bytestring 为null:");
+        }
+        if (byteString != null && byteString.size() > 0) {
+
+            byte[] bytes = byteString.toByteArray();
+            ByteBuffer buffer = ByteBuffer.allocate(bytes.length);
+            buffer.put(bytes);
+            buffer.flip();
+
+            CharsetDecoder charsetDecoder = Charset.forName("utf-8").newDecoder();
+            try {
+                CharBuffer decode = charsetDecoder.decode(buffer.asReadOnlyBuffer());
+                Log.e("cxy",":::"+decode.toString());
+                return decode.toString();
+            } catch (CharacterCodingException e) {
+                e.printStackTrace();
+                Log.e("cxy","::转换错误:"+e.getMessage());
+                return null;
+            }
+        }else{
+            return null;
+        }
+
+    }
+
+    public static ByteString string2ByteString(String string) {
+        if (TextUtils.isEmpty(string)) {
+            return ByteString.EMPTY;
+        }else{
+            return ByteString.copyFromUtf8(string);
+        }
     }
 }

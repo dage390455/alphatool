@@ -16,12 +16,12 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.sensoro.libbleserver.ble.entity.SensoroDevice;
 import com.sensoro.lora.setting.server.bean.UpgradeInfo;
 import com.sensoro.lora.setting.server.bean.UpgradeListRsp;
 import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.adapter.UpgradeInfoAdapter;
-import com.sensoro.libbleserver.ble.SensoroDevice;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.widget.RecycleViewDivider;
 import com.sensoro.loratool.widget.RecycleViewItemClickListener;

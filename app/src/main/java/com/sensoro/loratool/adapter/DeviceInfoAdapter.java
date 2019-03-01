@@ -16,11 +16,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.sensoro.libbleserver.ble.entity.SensoroDevice;
+import com.sensoro.libbleserver.ble.entity.SensoroSensor;
 import com.sensoro.lora.setting.server.bean.DeviceInfo;
 import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
-import com.sensoro.libbleserver.ble.SensoroDevice;
-import com.sensoro.libbleserver.ble.SensoroSensor;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.utils.DateUtil;
 import com.sensoro.loratool.widget.BatteryView;

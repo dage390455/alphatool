@@ -6,7 +6,20 @@
     android:background="@color/white"
     android:orientation="vertical"
     android:visibility="gone">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/c_f4f4f4"
+        android:textSize="16sp"
+        android:text="自定义功能"
+        android:textColor="@color/a6a6a6"
+        android:paddingStart="15dp"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
+        android:paddingEnd="15dp">
 
+
+    </TextView>
     <LinearLayout
         android:id="@+id/cayman_is_smoke"
         android:layout_width="match_parent"
@@ -19,7 +32,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="15dp"
             android:text="烟雾状态"
             android:textColor="#252525"
             android:textSize="18sp" />
@@ -40,15 +53,15 @@
             android:layout_height="18dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="15dp"
             android:src="@drawable/icon_arrow" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:background="#dfdfdf" />
 
     <LinearLayout
@@ -63,7 +76,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="15dp"
             android:text="移动状态"
             android:textColor="#252525"
             android:textSize="18sp" />
@@ -84,15 +97,15 @@
             android:layout_height="18dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="15dp"
             android:src="@drawable/icon_arrow" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:background="#dfdfdf" />
 
     <LinearLayout
@@ -107,7 +120,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="15dp"
             android:text="温度值"
             android:textColor="#252525"
             android:textSize="18sp" />
@@ -128,15 +141,15 @@
             android:layout_height="18dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="15dp"
             android:src="@drawable/icon_arrow" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:background="#dfdfdf" />
 
     <LinearLayout
@@ -151,7 +164,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="15dp"
             android:text="湿度值"
             android:textColor="#252525"
             android:textSize="18sp" />
@@ -172,15 +185,15 @@
             android:layout_height="18dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="15dp"
             android:src="@drawable/icon_arrow" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:background="#dfdfdf" />
 
     <LinearLayout
@@ -195,7 +208,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="15dp"
             android:text="温度预警值（高）"
             android:textColor="#252525"
             android:textSize="18sp" />
@@ -216,15 +229,15 @@
             android:layout_height="18dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="15dp"
             android:src="@drawable/icon_arrow" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:background="#dfdfdf" />
 
     <LinearLayout
@@ -239,7 +252,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="15dp"
             android:text="温度预警值（低）"
             android:textColor="#252525"
             android:textSize="18sp" />
@@ -260,15 +273,15 @@
             android:layout_height="18dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="15dp"
             android:src="@drawable/icon_arrow" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:background="#dfdfdf" />
 
     <LinearLayout
@@ -283,7 +296,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="15dp"
             android:text="湿度预警值（高）"
             android:textColor="#252525"
             android:textSize="18sp" />
@@ -304,15 +317,15 @@
             android:layout_height="18dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="15dp"
             android:src="@drawable/icon_arrow" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:background="#dfdfdf" />
 
     <LinearLayout
@@ -327,7 +340,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="15dp"
             android:text="湿度预警值（低）"
             android:textColor="#252525"
             android:textSize="18sp" />
@@ -348,15 +361,15 @@
             android:layout_height="18dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="15dp"
             android:src="@drawable/icon_arrow" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:background="#dfdfdf" />
 
 
@@ -364,7 +377,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#f4f4f4"
-        android:paddingStart="20dp"
+        android:paddingStart="15dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:text="电表控制"
@@ -383,7 +396,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="15dp"
             android:layout_weight="1"
             android:text="自检"
             android:textColor="#252525"
@@ -394,15 +407,15 @@
             android:layout_height="18dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="15dp"
             android:src="@drawable/icon_arrow" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:background="#dfdfdf" />
 
     <LinearLayout
@@ -417,7 +430,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="15dp"
             android:layout_weight="1"
             android:text="恢复出厂"
             android:textColor="#252525"
@@ -428,15 +441,15 @@
             android:layout_height="18dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="15dp"
             android:src="@drawable/icon_arrow" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:background="#dfdfdf" />
 
     <LinearLayout
@@ -451,7 +464,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="15dp"
             android:layout_weight="1"
             android:text="恢复出厂"
             android:textColor="#252525"
@@ -462,7 +475,7 @@
             android:layout_height="18dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="15dp"
             android:src="@drawable/icon_arrow" />
     </LinearLayout>
 

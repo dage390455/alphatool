@@ -60,7 +60,7 @@ public interface Constants {
     String LORA_BAND_SE780 = "SE780";
     String LORA_BAND_CN470 = "CN470";
     String LORA_BAND_SE800 = "SE800";
-    String DEVICE_HARDWARE_TYPE[] = {"##","sensoro_smoke","chip", "module", "node", "co2", "co", "no2", "so2", "nh3",
+    String DEVICE_HARDWARE_TYPE[] = {"##","cayman_smoke","chip", "module", "node", "co2", "co", "no2", "so2", "nh3",
             "tvoc", "o3", "pm", "leak", "temp_humi", "ch4", "lpg", "cover", "smoke", "angle", "gps", "op_node",
             "flame", "op_chip", "winsen_ch4", "winsen_lpg", "winsen_gas", "bhenergy_water", "chip_s", "chip_e",
             "tester|t1", "temp_humi_one", "fhsj_ch4", "fhsj_lpg", "concox_tracker", "tk","fhsj_smoke","fhsj_elec_fires",

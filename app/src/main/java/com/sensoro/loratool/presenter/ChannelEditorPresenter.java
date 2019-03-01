@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.sensoro.libbleserver.ble.bean.SensoroChannel;
+import com.sensoro.libbleserver.ble.entity.SensoroChannel;
 import com.sensoro.libbleserver.ble.proto.MsgNode1V1M5;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.adapter.RecyclerItemClickListener;

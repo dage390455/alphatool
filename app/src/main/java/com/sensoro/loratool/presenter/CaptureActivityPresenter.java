@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.sensoro.libbleserver.ble.SensoroDevice;
+import com.sensoro.libbleserver.ble.entity.SensoroDevice;
 import com.sensoro.lora.setting.server.ILoRaSettingServer;
 import com.sensoro.lora.setting.server.bean.DeviceInfo;
 import com.sensoro.lora.setting.server.bean.DeviceInfoListRsp;

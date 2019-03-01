@@ -14,6 +14,7 @@ import android.widget.EditText;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.activity.SettingDeviceActivity;
 import com.sensoro.loratool.activity.SettingStationActivity;
+import com.sensoro.loratool.event.OnPositiveButtonClickListener;
 
 /**
  * Created by Sensoro on 15/8/5.
@@ -24,6 +25,7 @@ public class SettingsInputDialogFragment extends SettingsBaseDialogFragment {
 
     private View dialogView;
     private EditText inputEditText;
+    private OnPositiveButtonClickListener listener;
 
     public static SettingsInputDialogFragment newInstance(String input) {
         SettingsInputDialogFragment settingsInputDialogFragment = new SettingsInputDialogFragment();
@@ -114,6 +116,10 @@ public class SettingsInputDialogFragment extends SettingsBaseDialogFragment {
                         String str = inputEditText.getText().toString();
                         Bundle bundle = new Bundle();
                         bundle.putString(INPUT, str);
+                        if (listener != null) {
+                            listener.onPositiveButtonClick(getTag(), bundle);
+                        }
+
                         onPositiveButtonClickListener.onPositiveButtonClick(getTag(), bundle);
 
                     }
@@ -139,5 +145,9 @@ public class SettingsInputDialogFragment extends SettingsBaseDialogFragment {
         dialogView = inflater.inflate(R.layout.dialog_settings_input_v4, null);
 
         inputEditText = (EditText) dialogView.findViewById(R.id.settings_input_v4_et_input);
+    }
+
+    public void setOnPositiveClickListener(OnPositiveButtonClickListener listener) {
+        this.listener = listener;
     }
 }

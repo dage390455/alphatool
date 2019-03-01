@@ -416,8 +416,8 @@
     <string name="setting_unset">Unset</string>
     <string name="setting_text_parameters">Hardware Parameters</string>
     <string name="setting_text_uuid">UUID</string>
-    <string name="setting_text_major">Major</string>
-    <string name="setting_text_minor">Minor</string>
+    <string name="setting_text_major">MAJOR</string>
+    <string name="setting_text_minor">MINOR</string>
     <string name="setting_text_power">Power Level</string>
     <string name="setting_text_eid">EID</string>
     <string name="setting_text_rate">Advertising Interval</string>
@@ -590,4 +590,9 @@
     <string name="all_upgrade_completed">全部升级完成</string>
     <string name="setting_text_et_channel">频点编辑</string>
     <string name="up_channel_not_zero">上行频点不能为0，请配置上行频点后再配置下行频点</string>
+    <string name="setting_text_mrssi">MRSSI</string>
+    <string name="new_wx_uuid">AB8190D5-D11E-4941-ACC4-42F30510B408</string>
+    <string name="new_wx">微信新增</string>
+    <string name="kontakt">Kontakt</string>
+    <string name="kontakt_uuid">F7826DA6-4FA2-4E98-8024-BC5B71E0893E</string>
 </resources>

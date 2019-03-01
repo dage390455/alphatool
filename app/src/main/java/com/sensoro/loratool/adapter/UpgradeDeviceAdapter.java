@@ -9,8 +9,8 @@ import android.view.animation.AlphaAnimation;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sensoro.libbleserver.ble.entity.SensoroDevice;
 import com.sensoro.loratool.R;
-import com.sensoro.libbleserver.ble.SensoroDevice;
 import com.sensoro.loratool.utils.RcItemTouchHelperCallback;
 import com.sensoro.loratool.widget.AlphaToast;
 import com.sensoro.loratool.widget.RecycleViewItemClickListener;

@@ -7,9 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.sensoro.libbleserver.ble.entity.SensoroDevice;
 import com.sensoro.lora.setting.server.bean.UpgradeInfo;
 import com.sensoro.loratool.R;
-import com.sensoro.libbleserver.ble.SensoroDevice;
 import com.sensoro.loratool.utils.DateUtil;
 import com.sensoro.loratool.widget.RecycleViewItemClickListener;
 

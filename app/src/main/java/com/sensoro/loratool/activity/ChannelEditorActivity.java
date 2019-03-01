@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sensoro.loratool.R;
-import com.sensoro.loratool.adapter.MatunFireAdapter;
+import com.sensoro.loratool.adapter.DeviceAdapter;
 import com.sensoro.loratool.base.BaseActivity;
 import com.sensoro.loratool.imainview.IChannelEditorActivityView;
 import com.sensoro.loratool.model.SettingDeviceModel;
@@ -35,7 +35,7 @@ public class ChannelEditorActivity extends BaseActivity<IChannelEditorActivityVi
     TextView includeTopTitleTvSubtitle;
     @BindView(R.id.ac_channel_editor_rc)
     RecyclerView acChannelEditorRc;
-    private MatunFireAdapter matunFireAdapter;
+    private DeviceAdapter matunFireAdapter;
     private SettingEnterDialogUtils mEnterDialogUtils;
 
     @Override
@@ -58,7 +58,7 @@ public class ChannelEditorActivity extends BaseActivity<IChannelEditorActivityVi
     }
 
     private void initRC() {
-        matunFireAdapter = new MatunFireAdapter(this);
+        matunFireAdapter = new DeviceAdapter(this);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         acChannelEditorRc.setLayoutManager(manager);

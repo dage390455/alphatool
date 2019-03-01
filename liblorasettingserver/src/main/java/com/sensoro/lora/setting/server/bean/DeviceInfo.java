@@ -88,6 +88,7 @@ public class DeviceInfo implements Parcelable, Comparable {
     private boolean isConnectable;
     private boolean isSelected;
     private int rssi;//附近才有
+    private String firmwareVersion_2 ="2.0";
 
     public DeviceInfo() {
 
@@ -749,7 +750,16 @@ public class DeviceInfo implements Parcelable, Comparable {
     public boolean isCanSignal() {
         String firmwareVersion = getFirmwareVersion();
         boolean isCan = false;
-        String[] cnCanSignal = {"acrel_single","baymax_ch4","baymax_lpg","fhsj_smoke","bigbang_tracker"};
+        switch (deviceType){
+            case "cayman_smoke" :
+                return true;
+            case "fhsj_smoke":
+                if(firmwareVersion.compareTo(firmwareVersion_2)>=0){
+                    return true;
+                }
+                break;
+        }
+        String[] cnCanSignal = {"acrel_single","baymax_ch4","baymax_lpg","fhsj_smoke","bigbang_tracker","mantun_fires"};
         if("CN470".equals(band)&& Arrays.asList(cnCanSignal).contains(deviceType)){
             return true;
         }

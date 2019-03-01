@@ -13,12 +13,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.sensoro.libbleserver.ble.BLEDevice;
-import com.sensoro.libbleserver.ble.SensoroConnectionCallback;
-import com.sensoro.libbleserver.ble.SensoroStation;
-import com.sensoro.libbleserver.ble.SensoroStationConfiguration;
-import com.sensoro.libbleserver.ble.SensoroStationConnection;
-import com.sensoro.libbleserver.ble.SensoroWriteCallback;
+import com.sensoro.libbleserver.ble.callback.SensoroConnectionCallback;
+import com.sensoro.libbleserver.ble.callback.SensoroWriteCallback;
+import com.sensoro.libbleserver.ble.connection.SensoroStationConnection;
+import com.sensoro.libbleserver.ble.entity.BLEDevice;
+import com.sensoro.libbleserver.ble.entity.SensoroStation;
+import com.sensoro.libbleserver.ble.entity.SensoroStationConfiguration;
 import com.sensoro.libbleserver.ble.proto.ProtoStationMsgV2;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.constant.Constants;

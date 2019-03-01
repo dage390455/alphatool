@@ -2090,6 +2090,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/settings_device_rc_ibeacon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+        </android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/settings_device_rc_matun_fire"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -2678,5 +2690,6 @@
     <include layout="@layout/layout_bay_max"/>
 
     <include layout="@layout/layout_smoke"/>
+
 
 </LinearLayout>

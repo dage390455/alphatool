@@ -19,17 +19,17 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.sensoro.libbleserver.ble.SensoroDirectWriteDfuCallBack;
+import com.sensoro.libbleserver.ble.callback.SensoroConnectionCallback;
+import com.sensoro.libbleserver.ble.callback.SensoroDirectWriteDfuCallBack;
+import com.sensoro.libbleserver.ble.callback.SensoroWriteCallback;
+import com.sensoro.libbleserver.ble.connection.SensoroDeviceConnection;
+import com.sensoro.libbleserver.ble.entity.BLEDevice;
+import com.sensoro.libbleserver.ble.entity.SensoroDevice;
 import com.sensoro.lora.setting.server.bean.DeviceInfo;
 import com.sensoro.lora.setting.server.bean.ResponseBase;
 import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.adapter.UpgradeDeviceAdapter;
-import com.sensoro.libbleserver.ble.BLEDevice;
-import com.sensoro.libbleserver.ble.SensoroConnectionCallback;
-import com.sensoro.libbleserver.ble.SensoroDevice;
-import com.sensoro.libbleserver.ble.SensoroDeviceConnection;
-import com.sensoro.libbleserver.ble.SensoroWriteCallback;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.imainview.IUpgradeDeviceListActivityView;
 import com.sensoro.loratool.presenter.UpgradeDeviceListActivityPresenter;
@@ -67,7 +67,7 @@ import no.nordicsemi.android.dfu.DfuServiceListenerHelper;
 
 public class UpgradeDeviceListActivity extends BaseActivity<IUpgradeDeviceListActivityView,UpgradeDeviceListActivityPresenter> implements Constants,
         DfuProgressListener,RecycleViewItemClickListener,LoRaSettingApplication.SensoroDeviceListener,
-        SensoroConnectionCallback, SensoroWriteCallback ,SensoroDirectWriteDfuCallBack{
+        SensoroConnectionCallback, SensoroWriteCallback,SensoroDirectWriteDfuCallBack {
 
     public static final String EXTERN_DIRECTORY_NAME = "sensoro_dfu";
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 101;

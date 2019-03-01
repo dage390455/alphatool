@@ -125,8 +125,8 @@
         <activity android:name=".activity.UpgradeDeviceListActivityTest" />
         <activity android:name=".activity.ChannelEditorActivity" />
 
-        <service android:name="com.sensoro.libbleserver.ble.scanner.BLEDeviceService" />
-        <service android:name="com.sensoro.libbleserver.ble.scanner.IntentProcessorService" />
+        <service android:name="com.sensoro.libbleserver.ble.service.BLEDeviceService" />
+        <!--<service android:name="com.sensoro.libbleserver.ble.scanner.IntentProcessorService" />-->
         <service android:name=".service.PollingService" />
         <service
             android:name=".service.DfuService"

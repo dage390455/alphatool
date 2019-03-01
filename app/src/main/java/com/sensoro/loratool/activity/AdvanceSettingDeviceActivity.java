@@ -17,17 +17,16 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.protobuf.ByteString;
-import com.sensoro.libbleserver.ble.BLEDevice;
-import com.sensoro.libbleserver.ble.SensoroConnectionCallback;
-import com.sensoro.libbleserver.ble.SensoroDevice;
-import com.sensoro.libbleserver.ble.SensoroDeviceConfiguration;
-import com.sensoro.libbleserver.ble.SensoroDeviceConnection;
-import com.sensoro.libbleserver.ble.SensoroUtils;
-import com.sensoro.libbleserver.ble.SensoroWriteCallback;
-import com.sensoro.libbleserver.ble.bean.SensoroChannel;
+import com.sensoro.libbleserver.ble.callback.SensoroConnectionCallback;
+import com.sensoro.libbleserver.ble.callback.SensoroWriteCallback;
+import com.sensoro.libbleserver.ble.connection.SensoroDeviceConnection;
+import com.sensoro.libbleserver.ble.entity.BLEDevice;
+import com.sensoro.libbleserver.ble.entity.SensoroChannel;
+import com.sensoro.libbleserver.ble.entity.SensoroDevice;
 import com.sensoro.libbleserver.ble.proto.MsgNode1V1M5;
 import com.sensoro.libbleserver.ble.proto.ProtoMsgCfgV1U1;
 import com.sensoro.libbleserver.ble.proto.ProtoStd1U1;
+import com.sensoro.libbleserver.ble.utils.SensoroUtils;
 import com.sensoro.lora.setting.server.bean.DeviceInfo;
 import com.sensoro.lora.setting.server.bean.ResponseBase;
 import com.sensoro.loratool.LoRaSettingApplication;
@@ -279,8 +278,12 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
             } else {
                 classBLinearLayout.setVisibility(View.GONE);
             }
-            Log.e("hcs", "sizie:::" + sensoroDevice.getChannelList().size());
-            settingsDeviceLlChannelEt.setVisibility(sensoroDevice.getChannelList().size() > 0 ? VISIBLE : GONE);
+            ArrayList<SensoroChannel> channelList = sensoroDevice.getChannelList();
+            if (channelList != null && channelList.size() > 0) {
+                settingsDeviceLlChannelEt.setVisibility(VISIBLE);
+            }else{
+                settingsDeviceLlChannelEt.setVisibility(GONE);
+            }
 
 //            if(sensoroDevice.hasSglStatus()){
 //                settingsDeviceRlSglStatus.setVisibility(VISIBLE);

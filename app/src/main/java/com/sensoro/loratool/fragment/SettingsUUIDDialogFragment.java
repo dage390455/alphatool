@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.Selection;
 import android.text.Spannable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.sensoro.loratool.R;
+import com.sensoro.loratool.event.OnPositiveButtonClickListener;
 
 
 /**
@@ -27,6 +29,7 @@ public class SettingsUUIDDialogFragment extends SettingsBaseDialogFragment imple
     private RelativeLayout airlocateUUIDRelativeLayout;
     private RelativeLayout estimoteUUIDRelativeLayout;
     private RelativeLayout wxUUIDRelativeLayout;
+    private OnPositiveButtonClickListener listener;
 
     public static SettingsUUIDDialogFragment newInstance(String uuid) {
         SettingsUUIDDialogFragment settingsUUIDDialogFragment = new SettingsUUIDDialogFragment();
@@ -35,6 +38,8 @@ public class SettingsUUIDDialogFragment extends SettingsBaseDialogFragment imple
         settingsUUIDDialogFragment.setArguments(args);
         return settingsUUIDDialogFragment;
     }
+
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -60,7 +65,10 @@ public class SettingsUUIDDialogFragment extends SettingsBaseDialogFragment imple
                         Bundle bundle = new Bundle();
                         String uuidText = uuidEditText.getText().toString();
 
-                        bundle.putString(UUID, uuidText.replaceAll("-", ""));
+                        bundle.putString(UUID, TextUtils.isEmpty(uuidText) ? "" : uuidText.replaceAll("-", ""));
+                        if (listener != null) {
+                            listener.onPositiveButtonClick(SettingsUUIDDialogFragment.this.getTag(), bundle);
+                        }
                         onPositiveButtonClickListener.onPositiveButtonClick(SettingsUUIDDialogFragment.this.getTag(), bundle);
                     }
                 })
@@ -93,6 +101,9 @@ public class SettingsUUIDDialogFragment extends SettingsBaseDialogFragment imple
         wxUUIDRelativeLayout.setOnClickListener(this);
     }
 
+    public void setOnClickLisenter(OnPositiveButtonClickListener listener){
+        this.listener = listener;
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -108,6 +119,13 @@ public class SettingsUUIDDialogFragment extends SettingsBaseDialogFragment imple
             case R.id.settings_v4_rl_wx_uuid:
                 uuidEditText.setText(R.string.wx_uuid);
                 break;
+                case R.id.settings_v4_rl_new_wx_uuid:
+                uuidEditText.setText(R.string.new_wx_uuid);
+                break;
+                case R.id.settings_v4_rl_kontakt_uuid:
+                uuidEditText.setText(R.string.kontakt_uuid);
+                break;
+
             default:
                 break;
         }
