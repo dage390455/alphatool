@@ -335,7 +335,10 @@ public class SearchDeviceActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onResponse(final DeviceInfoListRsp response) {
                 ArrayList searchList = (ArrayList) response.getData().getItems();
-                mDeviceInfoAdapter.appendSearchData(searchList);
+                if (searchList != null) {
+                    mDeviceInfoAdapter.appendSearchData(searchList);
+                }
+
                 progressDialog.dismiss();
             }
         }, new Response.ErrorListener() {
@@ -351,7 +354,10 @@ public class SearchDeviceActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onResponse(final DeviceInfoListRsp response) {
                 ArrayList<DeviceInfo> tempArrayList = (ArrayList) response.getData().getItems();
-                mDeviceInfoAdapter.appendSearchData(tempArrayList);
+                if (tempArrayList != null) {
+                    mDeviceInfoAdapter.appendSearchData(tempArrayList);
+                }
+
                 progressDialog.dismiss();
             }
         }, new Response.ErrorListener() {
@@ -366,8 +372,9 @@ public class SearchDeviceActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onResponse(final DeviceInfoListRsp response) {
                 ArrayList<DeviceInfo> tempArrayList = (ArrayList) response.getData().getItems();
-
-                mDeviceInfoAdapter.appendSearchData(tempArrayList);
+                if (tempArrayList != null) {
+                    mDeviceInfoAdapter.appendSearchData(tempArrayList);
+                }
                 progressDialog.dismiss();
 
             }
@@ -570,17 +577,21 @@ public class SearchDeviceActivity extends AppCompatActivity implements View.OnCl
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < deviceList.size(); i++) {
-                    BLEDevice bleDevice = deviceList.get(i);
-                    switch (bleDevice.getType()) {
-                        case BLEDevice.TYPE_SENSOR:
-                            SensoroSensor sensoroSensor = (SensoroSensor) bleDevice;
-                            mDeviceInfoAdapter.refreshSensor(sensoroSensor);
-                            break;
-                        case BLEDevice.TYPE_DEVICE:
-                            mDeviceInfoAdapter.refreshNew((SensoroDevice) bleDevice, true);
-                            break;
+                try {
+                    for (int i = 0; i < deviceList.size(); i++) {
+                        BLEDevice bleDevice = deviceList.get(i);
+                        switch (bleDevice.getType()) {
+                            case BLEDevice.TYPE_SENSOR:
+                                SensoroSensor sensoroSensor = (SensoroSensor) bleDevice;
+                                mDeviceInfoAdapter.refreshSensor(sensoroSensor);
+                                break;
+                            case BLEDevice.TYPE_DEVICE:
+                                mDeviceInfoAdapter.refreshNew((SensoroDevice) bleDevice, true);
+                                break;
+                        }
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });

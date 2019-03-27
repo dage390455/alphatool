@@ -15,6 +15,7 @@ ext.gsonVersion = '2.8.5'
 ext.volleyVersion = '1.0.19'
 buildscript {
     repositories {
+        google()
         jcenter()
         maven {
             url 'https://maven.google.com/'
@@ -31,6 +32,7 @@ buildscript {
 
 allprojects {
     repositories {
+        google()
         jcenter()
         mavenCentral()
         maven {
