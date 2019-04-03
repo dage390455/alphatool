@@ -372,10 +372,7 @@
         <item>天然气(BM型)</item>
         <item>液化气(BM型)</item>
         <item>定位器(BB型)</item>
-
-
-
-
+        <item>三相电(ACA型)</item>
 
     </string-array>
     <string-array name="filter_device_band_array">

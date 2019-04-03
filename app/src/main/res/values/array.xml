@@ -374,6 +374,7 @@
         <item>CH4(BM)</item>
         <item>LPG(BM)</item>
         <item>Tacker(BB)</item>
+        <item>Electric fires(ACA)</item>
 
     </string-array>
     <string-array name="filter_device_band_array">
