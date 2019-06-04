@@ -106,7 +106,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentLeft="true"
-                                android:layout_marginLeft="15dp"
+                                android:layout_marginLeft="20dp"
                                 android:text="@string/setting_text_uuid"
                                 android:textColor="#666666"
                                 android:textSize="18sp" />
@@ -160,7 +160,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentLeft="true"
-                                android:layout_marginLeft="15dp"
+                                android:layout_marginLeft="20dp"
                                 android:text="@string/setting_text_major"
                                 android:textColor="#666666"
                                 android:textSize="18sp" />
@@ -211,7 +211,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentLeft="true"
-                                android:layout_marginLeft="15dp"
+                                android:layout_marginLeft="20dp"
                                 android:text="@string/setting_text_minor"
                                 android:textColor="#666666"
                                 android:textSize="18sp" />
@@ -259,7 +259,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentLeft="true"
-                                android:layout_marginLeft="15dp"
+                                android:layout_marginLeft="20dp"
                                 android:text="@string/setting_text_mrssi"
                                 android:textColor="#666666"
                                 android:textSize="18sp" />
@@ -1076,25 +1076,67 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
+                    android:paddingStart="15dp"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
+                    android:background="#fafafa"
                     android:text="@string/sensor_app_param"
-                    android:textColor="#333333"
-                    android:textSize="18sp" />
+                    android:textColor="#a6a6a6"
+                    android:textSize="16sp" />
 
-                <ImageView
+
+                <RelativeLayout
+                    android:id="@+id/settings_device_rl_app_param_upload"
                     android:layout_width="match_parent"
-                    android:layout_height="0.8dp"
-                    android:background="#c8c7cc"
-                    android:contentDescription="@null" />
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_item_selector"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="15dp"
+                        android:text="@string/app_param_upload_interval"
+                        android:textColor="#666666"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_upload_upper_limit"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="20dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/icon_arrow" />
+
+                    <TextView
+                        android:id="@+id/settings_device_tv_upload_upper_limit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_toLeftOf="@id/iv_upload_upper_limit"
+                        android:ellipsize="end"
+                        android:maxEms="8"
+                        android:singleLine="true"
+                        android:textColor="#999999"
+                        android:textSize="18sp" />
+
+                </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/settings_device_rl_app_param_confirm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_item_selector"
-                    android:paddingTop="10dp">
+                    android:paddingBottom="10dp"
+                    >
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -1103,7 +1145,8 @@
                         android:layout_marginLeft="15dp"
                         android:text="@string/app_param_confirm"
                         android:textColor="#666666"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:layout_marginTop="10dp"/>
 
                     <ImageView
                         android:id="@+id/iv_confirm_package"
@@ -1133,30 +1176,32 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="#c8c7cc"
-                        android:layout_below="@+id/settings_device_tv_confirm"
-                        android:layout_marginTop="@dimen/y30"
-                        android:contentDescription="@null" />
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:contentDescription="@null"
+                        />
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/settings_device_rl_app_param_upload"
+                    android:id="@+id/settings_device_rl_app_battery_beep"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_item_selector"
-                    android:paddingBottom="10dp">
+                    android:paddingBottom="10dp"
+                    >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_marginLeft="15dp"
-                        android:layout_marginTop="@dimen/y30"
-                        android:text="@string/app_param_upload_interval"
+                        android:text="@string/low_battery_alarm"
                         android:textColor="#666666"
+                        android:layout_marginTop="10dp"
                         android:textSize="18sp" />
 
                     <ImageView
-                        android:id="@+id/iv_upload_upper_limit"
+                        android:id="@+id/iv_app_battery_beep"
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:layout_alignParentRight="true"
@@ -1167,25 +1212,83 @@
                         android:src="@drawable/icon_arrow" />
 
                     <TextView
-                        android:id="@+id/settings_device_tv_upload_upper_limit"
+                        android:id="@+id/settings_device_tv_app_battery_beep"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="12dp"
-                        android:layout_toLeftOf="@id/iv_upload_upper_limit"
+                        android:layout_toLeftOf="@id/iv_app_battery_beep"
                         android:ellipsize="end"
                         android:maxEms="8"
                         android:singleLine="true"
                         android:textColor="#999999"
                         android:textSize="18sp" />
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#c8c7cc"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:contentDescription="@null"
+                        />
                 </RelativeLayout>
 
-                <ImageView
+
+                <RelativeLayout
+                    android:id="@+id/settings_device_rl_app_demo"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#c8c7cc"
-                    android:contentDescription="@null" />
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_item_selector"
+                    android:paddingBottom="10dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="15dp"
+                        android:text="@string/app_param_demo"
+                        android:textColor="#666666"
+                        android:textSize="18sp"
+                        android:layout_marginTop="10dp"/>
+
+                    <ImageView
+                        android:id="@+id/iv_app_demo"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="20dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/icon_arrow" />
+
+                    <TextView
+                        android:id="@+id/settings_device_tv_demo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_toLeftOf="@id/iv_app_demo"
+                        android:ellipsize="end"
+                        android:maxEms="8"
+                        android:singleLine="true"
+                        android:textColor="#999999"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#c8c7cc"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:contentDescription="@null"
+                        />
+                </RelativeLayout>
+
+
             </LinearLayout>
 
             <LinearLayout

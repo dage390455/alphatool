@@ -759,8 +759,8 @@ public class DeviceInfo implements Parcelable, Comparable {
                 }
                 break;
         }
-        String[] cnCanSignal = {"acrel_single","baymax_ch4","baymax_lpg","fhsj_smoke","bigbang_tracker","mantun_fires"};
-        if("CN470".equals(band)&& Arrays.asList(cnCanSignal).contains(deviceType)){
+
+        if("CN470".equals(band)){
             return true;
         }
         if (isOpenLoraDevice()) {

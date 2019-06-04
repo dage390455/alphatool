@@ -37,17 +37,14 @@ import com.sensoro.loratool.fragment.SettingsInputDialogFragment;
 import com.sensoro.loratool.fragment.SettingsMultiChoiceItemsFragment;
 import com.sensoro.loratool.fragment.SettingsSingleChoiceItemsFragment;
 import com.sensoro.loratool.model.ChannelData;
-import com.sensoro.loratool.model.SettingDeviceModel;
 import com.sensoro.loratool.store.DeviceDataDao;
 import com.sensoro.loratool.utils.ParamUtil;
-import com.sensoro.loratool.widget.AlphaToast;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;

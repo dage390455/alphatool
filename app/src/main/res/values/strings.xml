@@ -595,4 +595,8 @@
     <string name="new_wx">微信新增</string>
     <string name="kontakt">Kontakt</string>
     <string name="kontakt_uuid">F7826DA6-4FA2-4E98-8024-BC5B71E0893E</string>
+    <string name="app_param_demo">演示模式</string>
+    <string name="demo_normal">正常模式</string>
+    <string name="demo_model">演示模式</string>
+    <string name="low_battery_alarm">低电报警</string>
 </resources>

@@ -64,7 +64,8 @@ public interface Constants {
             "tvoc", "o3", "pm", "leak", "temp_humi", "ch4", "lpg", "cover", "smoke", "angle", "gps", "op_node",
             "flame", "op_chip", "winsen_ch4", "winsen_lpg", "winsen_gas", "bhenergy_water", "chip_s", "chip_e",
             "tester|t1", "temp_humi_one", "fhsj_ch4", "fhsj_lpg", "concox_tracker", "tk","fhsj_smoke","fhsj_elec_fires",
-            "siter_ch4","siter_lpg","jf_connection","mantun_fires","acrel_fires","acrel_single","baymax_ch4","baymax_lpg","bigbang_tracker","acrel_alpha"};
+            "siter_ch4","siter_lpg","jf_connection","mantun_fires","acrel_fires","acrel_single","baymax_ch4","baymax_lpg",
+            "bigbang_tracker","acrel_alpha","n16w_smoke"};
 
     boolean permission[] = {
             false,//sCfgByBle
@@ -353,6 +354,10 @@ public interface Constants {
     String SETTINGS_DEVICE_RL_BAYMAX_GAS_DENSITY_L1 = "settings_device_rl_baymax_gas_density_l1";
     String SETTINGS_DEVICE_RL_BAYMAX_GAS_DENSITY_L2 = "settings_device_rl_baymax_gas_density_l2";
     String SETTINGS_DEVICE_RL_BAYMAX_GAS_DENSITY_L3 = "settings_device_rl_baymax_gas_density_l3";
+
+    // app设定
+    String SETTINGS_DEVICE_RL_APP_DEMO = "settings_device_rl_app_demo";
+    String SETTINGS_DEVICE_RL_APP_LOW_BATTERY_BEEP = "settings_device_rl_app_low_battery_beep";
 
 
     ArrayList<String> CHIP_E_UPGRADE_LIST = new ArrayList<String>(3){

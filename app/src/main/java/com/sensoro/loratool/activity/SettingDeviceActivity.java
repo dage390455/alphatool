@@ -242,6 +242,14 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     RelativeLayout confirmLayout;
     @BindView(R.id.settings_device_tv_confirm)
     TextView confirmTextView;
+    @BindView(R.id.settings_device_rl_app_demo)
+    RelativeLayout demoLayout;
+    @BindView(R.id.settings_device_tv_demo)
+    TextView demoTextView;
+    @BindView(R.id.settings_device_rl_app_battery_beep)
+    RelativeLayout batteryBeepLayout;
+    @BindView(R.id.settings_device_tv_app_battery_beep)
+    TextView batteryBeepTextView;
     @BindView(R.id.settings_device_ll_sensor_param)
     LinearLayout sensorParamLayout;
     @BindView(R.id.settings_device_ll_co)
@@ -827,6 +835,18 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     LinearLayout acrelCmdReset;
     @BindView(R.id.acrel_cmd_self_check)
     LinearLayout acrelCmdSelfCheck;
+    @BindView(R.id.view_acrel_line_query)
+    View acrelLineQuery;
+    @BindView(R.id.acrel_cmd_query)
+    LinearLayout acrelCmdQuery;
+    @BindView(R.id.view_acrel_line_mute)
+    View acrelLineMute;
+    @BindView(R.id.acrel_cmd_mute)
+    LinearLayout acrelCmdMute;
+    @BindView(R.id.view_acrel_line_zero_claring)
+    View acrelLineZeroClearing;
+    @BindView(R.id.acrel_cmd_zero_clearing)
+    LinearLayout acrelCmdZeroClearing;
     @BindView(R.id.acrel_root)
     LinearLayout acrelRoot;
     @BindView(R.id.layout_root)
@@ -1777,7 +1797,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             caymanValueOfTemContent.setText(sensoroSensor.cayManData.valueOfTem / 10 + "℃");
                         }
                         if (sensoroSensor.cayManData.hasValueOfHum) {
-                            caymanValueOfHumContent.setText(sensoroSensor.cayManData.valueOfHum/10 + "%");
+                            caymanValueOfHumContent.setText(sensoroSensor.cayManData.valueOfHum / 10 + "%");
                         }
                         if (sensoroSensor.cayManData.hasAlarmOfHighTem) {
                             caymanAlarmOfHighTemContent.setText(sensoroSensor.cayManData.alarmOfHighTem / 10 + "℃");
@@ -1786,10 +1806,10 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             caymanAlarmOfLowTemContent.setText(sensoroSensor.cayManData.alarmOfLowTem / 10 + "℃");
                         }
                         if (sensoroSensor.cayManData.hasAlarmOfHighHum) {
-                            caymanAlarmOfHighHumContent.setText(sensoroSensor.cayManData.alarmOfHighHum/10 + "%");
+                            caymanAlarmOfHighHumContent.setText(sensoroSensor.cayManData.alarmOfHighHum / 10 + "%");
                         }
                         if (sensoroSensor.cayManData.hasAlarmOfLowHum) {
-                            caymanAlarmOfLowHumContent.setText(sensoroSensor.cayManData.alarmOfLowHum/10 + "%");
+                            caymanAlarmOfLowHumContent.setText(sensoroSensor.cayManData.alarmOfLowHum / 10 + "%");
                         }
                         if (sensoroSensor.cayManData.hasValueOfphotor) {
                             caymanValueOfPhotorContent.setText(String.valueOf(sensoroSensor.cayManData.valueOfphotor));
@@ -1798,8 +1818,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             caymanBleAdvTypeContent.setText(sensoroSensor.cayManData.bleAdvType == 0 ? "持续广播" : "间断广播");
                         }
                         if (sensoroSensor.cayManData.hasValueOfBatb && sensoroSensor.cayManData.valueOfBatb > -1) {
-                            caymanValueOfBatbContent.setText(sensoroSensor.cayManData.valueOfBatb/1000 +"v");
-                        }else{
+                            caymanValueOfBatbContent.setText(sensoroSensor.cayManData.valueOfBatb / 1000 + "v");
+                        } else {
                             caymanValueOfBatb.setVisibility(GONE);
                         }
 
@@ -1897,8 +1917,31 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     } else {
                         confirmLayout.setVisibility(GONE);
                     }
+
+                    if (sensoroDevice.hasDemoMode()) {
+                        demoLayout.setVisibility(VISIBLE);
+
+                        if (sensoroDevice.getDemoMode() == 0) {
+                            demoTextView.setText(getString(R.string.close));
+                        } else if (sensoroDevice.getDemoMode() == 1) {
+                            demoTextView.setText(getString(R.string.open));
+                        }
+                    } else {
+                        demoLayout.setVisibility(GONE);
+                    }
                 } else {
                     appParamLayout.setVisibility(GONE);
+                }
+
+                if (sensoroDevice.hasBatteryBeep()) {
+                    batteryBeepLayout.setVisibility(VISIBLE);
+                    if (sensoroDevice.getBatteryBeep() == 0) {
+                        batteryBeepTextView.setText(getString(R.string.close));
+                    } else if (sensoroDevice.getBatteryBeep() == 1) {
+                        batteryBeepTextView.setText(getString(R.string.open));
+                    }
+                } else {
+                    batteryBeepLayout.setVisibility(GONE);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1946,7 +1989,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             if (sensoroSensor.ibeacon.hasMajor) {
                 SettingDeviceModel model2 = new SettingDeviceModel();
                 model2.name = "MAJOR";
-                model2.content = String.format(Locale.ROOT,"0x%04X",sensoroSensor.ibeacon.major);
+                model2.content = String.format(Locale.ROOT, "0x%04X", sensoroSensor.ibeacon.major);
                 model2.tag = 2;
                 model2.originContent = sensoroSensor.ibeacon.major;
                 datas.add(model2);
@@ -1955,7 +1998,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             if (sensoroSensor.ibeacon.hasMinor) {
                 SettingDeviceModel model3 = new SettingDeviceModel();
                 model3.name = "MINOR";
-                model3.content = String.format(Locale.ROOT,"0x%04X",sensoroSensor.ibeacon.minor);
+                model3.content = String.format(Locale.ROOT, "0x%04X", sensoroSensor.ibeacon.minor);
                 model3.tag = 3;
                 model3.originContent = sensoroSensor.ibeacon.minor;
                 datas.add(model3);
@@ -1974,20 +2017,20 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             ibeaconAdapter.setOnItemClickListener(new RecyclerItemClickListener() {
                 @Override
                 public void onItemClick(SettingDeviceModel model, int position) {
-                    switch ((int)model.tag){
+                    switch ((int) model.tag) {
                         case 1:
                             //uuid
-                            showUUIDDialog(model,ibeaconAdapter);
+                            showUUIDDialog(model, ibeaconAdapter);
                             break;
                         case 2:
                             //major
-                            showMajorDialog(model,ibeaconAdapter);
+                            showMajorDialog(model, ibeaconAdapter);
                             break;
                         case 3:
-                            showMinorDialog(model,ibeaconAdapter);
+                            showMinorDialog(model, ibeaconAdapter);
                             break;
                         case 4:
-                            showMrssiDialog(model,ibeaconAdapter);
+                            showMrssiDialog(model, ibeaconAdapter);
                             break;
                     }
                 }
@@ -2012,7 +2055,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     ibeaconAdapter.notifyDataSetChanged();
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
-                    AlphaToast.INSTANCE.makeText(SettingDeviceActivity.this,getString(R.string.please_enter_correct_value),Toast.LENGTH_SHORT).show();
+                    AlphaToast.INSTANCE.makeText(SettingDeviceActivity.this, getString(R.string.please_enter_correct_value), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -2049,7 +2092,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     }
 
     private void showUUIDDialog(SettingDeviceModel model, DeviceAdapter ibeaconAdapter) {
-        String str = TextUtils.isEmpty(model.content) ? null : model.content.replaceAll("-","");
+        String str = TextUtils.isEmpty(model.content) ? null : model.content.replaceAll("-", "");
         SettingsUUIDDialogFragment dialogFragment = SettingsUUIDDialogFragment.newInstance(str);
         dialogFragment.show(getFragmentManager(), SETTINGS_UUID);
         dialogFragment.setOnClickLisenter(new OnPositiveButtonClickListener() {
@@ -2058,14 +2101,14 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 String uuid = bundle.getString(SettingsUUIDDialogFragment.UUID);
                 if (TextUtils.isEmpty(uuid)) {
                     model.content = "";
-                }else{
+                } else {
                     StringBuilder uuidString = new StringBuilder(uuid);
                     uuidString.insert(8, "-");
                     uuidString.insert(13, "-");
                     uuidString.insert(18, "-");
                     uuidString.insert(23, "-");
                     model.content = uuidString.toString();
-                    sensoroSensor.ibeacon.uuid= Utils.string2ByteString(uuid);
+                    sensoroSensor.ibeacon.uuid = Utils.string2ByteString(uuid);
                 }
                 ibeaconAdapter.notifyDataSetChanged();
             }
@@ -3237,6 +3280,16 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 appParamBuilder.setConfirm(sensoroDevice.getConfirm());
                 msgCfgBuilder.setAppParam(appParamBuilder);
             }
+
+            if (sensoroDevice.hasDemoMode()) {
+                appParamBuilder.setDemoMode(sensoroDevice.getDemoMode());
+                msgCfgBuilder.setAppParam(appParamBuilder);
+            }
+
+            if (sensoroDevice.hasBatteryBeep()) {
+                appParamBuilder.setLowBatteryBeep(sensoroDevice.getBatteryBeep());
+                msgCfgBuilder.setAppParam(appParamBuilder);
+            }
         }
         if (sensoroDevice.hasSensorParam()) {
             if (sensoroSensor.hasCo) {
@@ -3548,7 +3601,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 }
                 msgCfgBuilder.setBaymaxData(builder);
             }
-            if(sensoroSensor.hasIbeacon){
+            if (sensoroSensor.hasIbeacon) {
                 MsgNode1V1M5.iBeacon.Builder builder = MsgNode1V1M5.iBeacon.newBuilder();
                 if (sensoroSensor.ibeacon.hasUuid) {
                     builder.setUuid(sensoroSensor.ibeacon.uuid);
@@ -3564,6 +3617,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 }
                 msgCfgBuilder.setIbeacon(builder);
             }
+
+
 
 
         }
@@ -4505,6 +4560,16 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
             String item = bundle.getString(SettingsSingleChoiceItemsFragment.ITEM);
             eddyStoneSlot4Item2Value.setText(item);
+        } else if (SETTINGS_DEVICE_RL_APP_LOW_BATTERY_BEEP.equals(tag)) {
+            int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
+            String item = bundle.getString(SettingsSingleChoiceItemsFragment.ITEM);
+            sensoroDevice.setBatteryBeep(index);
+            batteryBeepTextView.setText(item);
+        } else if (SETTINGS_DEVICE_RL_APP_DEMO.equals(tag)) {
+            int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
+            String item = bundle.getString(SettingsSingleChoiceItemsFragment.ITEM);
+            sensoroDevice.setDemoMode(index);
+            demoTextView.setText(item);
         } else if (tag.equals(SETTINGS_CUSTOM_PACKAGE1)) {
             String ctp1 = bundle.getString(SettingsInputDialogFragment.INPUT);
             String regString = "[a-f0-9A-F]{1,56}";
@@ -4776,121 +4841,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
             }
-
-        } /*else if (SETTINGS_DEVICE_RL_MANTUN_LEAKAGE.equals(tag)) {
-            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
-            try {
-                int i = Integer.parseInt(temp);
-                if (i < 1 || i > 30) {
-                    Toast.makeText(this, "温度阈值范围为1-90", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                sensoroSensor.mantunData.leakageTh = i * 10;
-                settingsDeviceMantunLeak.setText(i + "");
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
-            }
-        } else if (SETTINGS_DEVICE_RL_MANTUN_TEMP.equals(tag)) {
-            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
-            try {
-                int i = Integer.parseInt(temp);
-                if (i < 1 || i > 90) {
-                    Toast.makeText(this, "温度阈值范围为1-90", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                sensoroSensor.mantunData.tempTh = i * 10;
-                settingsDeviceTvMauntonTemp.setText(i + "");
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
-            }
-        } else if (SETTINGS_DEVICE_RL_MANTUN_CURRENT.equals(tag)) {
-            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
-            try {
-                int i = Integer.parseInt(temp);
-                if (i < 1 || i > 96) {
-                    Toast.makeText(this, "电流阈值范围为1-96", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                sensoroSensor.mantunData.currentTh = i * 100;
-                settingsDeviceTvMauntonCurrent.setText(i + "");
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
-            }
-        } else if (SETTINGS_DEVICE_RL_MANTUN_VOL_HIGH.equals(tag)) {
-            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
-            try {
-                int i = Integer.parseInt(temp);
-                if (i < 221 || i > 260) {
-                    Toast.makeText(this, "过压阈值范围为221-260", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                sensoroSensor.mantunData.volHighTh = i;
-                settingsDeviceTvMauntonOverpressure.setText(i + "");
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
-            }
-        } else if (SETTINGS_DEVICE_RL_MANTUN_VOL_LOW.equals(tag)) {
-            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
-            try {
-                int i = Integer.parseInt(temp);
-                if (i < 100 || i > 219) {
-                    Toast.makeText(this, "欠压阈值范围为100-219", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                sensoroSensor.mantunData.volLowTh = i;
-                settingsDeviceTvMauntonUndervoltage.setText(i + "");
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
-            }
-        } else if (SETTINGS_DEVICE_RL_MANTUN_POWER.equals(tag)) {
-            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
-            try {
-                int i = Integer.parseInt(temp);
-                if (i < 1 || i > 16896) {
-                    Toast.makeText(this, "过载阈值范围为1-16896", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                sensoroSensor.mantunData.powerTh = i;
-                settingsDeviceTvMauntonOverload.setText(i + "");
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
-            }
-        } else if (SETTINGS_DEVICE_RL_MANTUN_TEMP_OUTSIDE.equals(tag)) {
-            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
-            try {
-                int i = Integer.parseInt(temp);
-                if (i < 45 || i > 145) {
-                    Toast.makeText(this, "箱体温度范围为45-145", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                sensoroSensor.mantunData.temp1OutsideTh = i * 10;
-                Log.e("hcs", "set界面:::" + sensoroSensor.mantunData.temp1OutsideTh);
-                settingsDeviceTvMantunOutSide.setText(i + "");
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
-            }
-        } else if (SETTINGS_DEVICE_RL_MANTUN_TEMP_CONTACT.equals(tag)) {
-            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
-            try {
-                int i = Integer.parseInt(temp);
-                if (i < 45 || i > 145) {
-                    Toast.makeText(this, "触点温度范围为45-145", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                sensoroSensor.mantunData.temp2ContactTh = i * 10;
-                settingsDeviceTvMantunContact.setText(i + "");
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
-            }
-        } */ else if (SETTINGS_DEVICE_RL_ACREL_LEAKAGE.equals(tag)) {
+        } else if (SETTINGS_DEVICE_RL_ACREL_LEAKAGE.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 int i = Integer.parseInt(temp);
@@ -5010,8 +4961,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 int i = Integer.parseInt(temp);
-                if (i < 20.0 || i > 140.0) {
-                    Toast.makeText(this, "过流阈值范围为20.0-140.0", Toast.LENGTH_SHORT).show();
+                if (i < 0.1 || i > 150.0) {
+                    Toast.makeText(this, "过流阈值范围为0.1%-150%", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 sensoroSensor.acrelFires.currHighSet = i * 10;
@@ -5162,7 +5113,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
             }
-        }else if(SETTINGS_DEVICE_RL_CAYMAN_ADV_TYPE.equals(tag)){
+        } else if (SETTINGS_DEVICE_RL_CAYMAN_ADV_TYPE.equals(tag)) {
             int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
             sensoroSensor.cayManData.bleAdvType = index;
             caymanBleAdvTypeContent.setText(index == 0 ? "持续广播" : "间断广播");
@@ -5244,13 +5195,15 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             R.id.acrel_connect_sw, R.id.acrel_ch_enable, R.id.acrel_t1_th, R.id.acrel_t2_th,
             R.id.acrel_t3_th, R.id.acrel_t4_th, R.id.acrel_curr_high_set, R.id.acrel_val_high_set,
             R.id.acrel_val_low_set, R.id.acrel_val_high_type, R.id.acrel_val_low_type,
-            R.id.acrel_curr_high_type, R.id.acrel_cmd_reset, R.id.acrel_cmd_self_check, R.id.acrel_root,
-            R.id.acrel_psd, R.id.cayman_is_smoke, R.id.cayman_is_moved, R.id.cayman_value_of_tem,R.id.cayman_value_of_photor,
-            R.id.cayman_ble_adv_type,R.id.cayman_ble_adv_start_time,R.id.cayman_ble_adv_end_time_hum,R.id.cayman_value_of_batb,
+            R.id.acrel_curr_high_type, R.id.acrel_cmd_reset, R.id.acrel_cmd_self_check, R.id.acrel_cmd_query,
+            R.id.acrel_cmd_mute, R.id.acrel_cmd_zero_clearing, R.id.acrel_root,
+            R.id.acrel_psd, R.id.cayman_is_smoke, R.id.cayman_is_moved, R.id.cayman_value_of_tem, R.id.cayman_value_of_photor,
+            R.id.cayman_ble_adv_type, R.id.cayman_ble_adv_start_time, R.id.cayman_ble_adv_end_time_hum, R.id.cayman_value_of_batb,
             R.id.cayman_value_of_hum, R.id.cayman_alarm_of_high_tem, R.id.cayman_alarm_of_low_tem,
             R.id.cayman_alarm_of_high_hum, R.id.cayman_alarm_of_low_hum, R.id.cayman_cmd_self_check,
             R.id.cayman_cmd_reset, R.id.cayman_cmd_clear_sound, R.id.baymax_density_l1, R.id.baymax_density_l2, R.id.baymax_density_l3,
-            R.id.baymax_cmd_close_electronic_valve, R.id.baymax_cmd_self_check, R.id.baymax_cmd_reset, R.id.baymax_cmd_mute})
+            R.id.baymax_cmd_close_electronic_valve, R.id.baymax_cmd_self_check, R.id.baymax_cmd_reset, R.id.baymax_cmd_mute,
+            R.id.settings_device_rl_app_battery_beep, R.id.settings_device_rl_app_demo})
     public void onViewClicked(View view) {
         DialogFragment dialogFragment;
         switch (view.getId()) {
@@ -5414,6 +5367,15 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             case R.id.acrel_cmd_self_check:
                 doAcrelControl(CmdType.CMD_ACREL_SELF_CHECK);
                 break;
+            case R.id.acrel_cmd_query:
+                doAcrelControl(CmdType.CMD_ACREL_QUERY);
+                break;
+            case R.id.acrel_cmd_mute:
+                doAcrelControl(CmdType.CMD_ACREL_MUTE);
+                break;
+            case R.id.acrel_cmd_zero_clearing:
+                doAcrelControl(CmdType.CMD_ACREL_ZERO_CLEARING);
+                break;
             case R.id.acrel_psd:
                 dialogFragment = SettingsInputDialogFragment.newInstance(sensoroSensor.acrelFires.passwd + "");
                 dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_ACREL_PSD);
@@ -5507,6 +5469,16 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             case R.id.baymax_cmd_close_electronic_valve:
                 doBaymaxControl(8);
                 break;
+            case R.id.settings_device_rl_app_battery_beep:
+                String[] batteryItems = {"关闭", "开启"};
+                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(batteryItems, sensoroDevice.getBatteryBeep());
+                dialogFragment.show(getFragmentManager(), Constants.SETTINGS_DEVICE_RL_APP_LOW_BATTERY_BEEP);
+                break;
+            case R.id.settings_device_rl_app_demo:
+                String[] demoItems = {"关闭", "开启"};
+                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(demoItems, sensoroDevice.getDemoMode());
+                dialogFragment.show(getFragmentManager(), Constants.SETTINGS_DEVICE_RL_APP_DEMO);
+                break;
 
         }
     }
@@ -5547,20 +5519,28 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     }
 
     private void doAcrelControl(int cmd) {
-        byte[] bytes = new byte[2];
+        int acrelCmd = 0;
         switch (cmd) {
             case CmdType.CMD_ACREL_RESET:
-                bytes[0] = 1;
-                bytes[1] = 0;
+                acrelCmd = 1;
                 break;
             case CmdType.CMD_ACREL_SELF_CHECK:
-                bytes[0] = 0;
-                bytes[1] = 1;
+                acrelCmd = 2;
                 break;
+            case CmdType.CMD_ACREL_QUERY:
+                acrelCmd = 0;
+                break;
+            case CmdType.CMD_ACREL_MUTE:
+                acrelCmd = 4;
+                break;
+            case CmdType.CMD_ACREL_ZERO_CLEARING:
+                acrelCmd = 8;
+                break;
+
         }
 
         MsgNode1V1M5.AcrelData.Builder builder = MsgNode1V1M5.AcrelData.newBuilder();
-        builder.setCmd(SensoroUUID.bitsToInt(bytes));
+        builder.setCmd(acrelCmd);
         sensoroDeviceConnection.writeAcrelCmd(builder, this);
     }
 

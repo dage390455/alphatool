@@ -292,6 +292,23 @@
         <item>2.0</item>
         <item>2.1</item>
         <item>2.2</item>
+        <item>2.3</item>
+        <item>2.4</item>
+        <item>2.5</item>
+        <item>2.6</item>
+        <item>2.7</item>
+        <item>2.8</item>
+        <item>2.9</item>
+        <item>3.0</item>
+        <item>3.1</item>
+        <item>3.2</item>
+        <item>3.3</item>
+        <item>3.4</item>
+        <item>3.5</item>
+        <item>3.6</item>
+        <item>3.7</item>
+        <item>3.8</item>
+        <item>3.0</item>
     </string-array>
     <string-array name="filter_station_firmware_array">
         <item>0.1</item>
@@ -373,6 +390,9 @@
         <item>液化气(BM型)</item>
         <item>定位器(BB型)</item>
         <item>三相电(ACA型)</item>
+        //
+        <item>伊爱烟雾传感器</item>
+
 
     </string-array>
     <string-array name="filter_device_band_array">
@@ -386,6 +406,7 @@
         <item>AU915</item>
         <item>AS923</item>
         <item>CN470</item>
+        <item>SE800</item>
     </string-array>
     <string-array name="filter_station_hardware_array">
         <item>α 基站</item>

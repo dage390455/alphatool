@@ -7,6 +7,17 @@
     android:orientation="vertical"
     android:visibility="visible">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#f4f4f4"
+        android:paddingStart="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="电表"
+        android:textColor="#a6a6a6"
+        android:textSize="16sp" />
+
     <LinearLayout
         android:id="@+id/baymax_density"
         android:layout_width="match_parent"
