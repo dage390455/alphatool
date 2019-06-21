@@ -24,12 +24,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.example.menudrawer.MenuDrawer;
 import com.example.menudrawer.Position;
 import com.sensoro.libbleserver.ble.entity.BLEDevice;
 import com.sensoro.libbleserver.ble.entity.SensoroDevice;
 import com.sensoro.libbleserver.ble.entity.SensoroSensor;
 import com.sensoro.libbleserver.ble.entity.SensoroStation;
+import com.sensoro.lora.setting.server.bean.DeviceTyps;
 import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.fragment.DeviceFragment;
@@ -39,6 +42,7 @@ import com.sensoro.loratool.adapter.MenuInfoAdapter;
 import com.sensoro.libbleserver.ble.scanner.BLEDeviceManager;
 import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.service.PollingService;
+import com.sensoro.loratool.store.PreferencesHelper;
 import com.sensoro.loratool.widget.MainPager;
 
 

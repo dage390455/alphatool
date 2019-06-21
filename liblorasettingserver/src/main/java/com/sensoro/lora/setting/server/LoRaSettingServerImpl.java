@@ -3,6 +3,7 @@ package com.sensoro.lora.setting.server;
 import android.content.Context;
 import android.util.Log;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -11,12 +12,14 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.sensoro.lora.setting.server.bean.DeviceInfoListRsp;
+import com.sensoro.lora.setting.server.bean.DeviceTyps;
 import com.sensoro.lora.setting.server.bean.EidInfoListRsp;
 import com.sensoro.lora.setting.server.bean.LoginReq;
 import com.sensoro.lora.setting.server.bean.LoginRsp;
 import com.sensoro.lora.setting.server.bean.ResponseBase;
 import com.sensoro.lora.setting.server.bean.StationListRsp;
 import com.sensoro.lora.setting.server.bean.UpgradeListRsp;
+import com.sensoro.volleymanager.GsonRequest;
 import com.sensoro.volleymanager.VolleyManager;
 
 import org.json.JSONException;
@@ -45,6 +48,8 @@ public class LoRaSettingServerImpl implements ILoRaSettingServer {
     public static final String TWO_AUTHENTICATION = "/twofactor/authentication/verify";
     public static final String HEADER_SESSION_ID = "x-session-id";
     public static final String HEADER_USER_AGENT = "User-Agent";
+    public static final String DEVICE_TYPES = "/device/types";
+
     public static final String TAG = "Lora";
 
     Context context;
@@ -138,6 +143,7 @@ public class LoRaSettingServerImpl implements ILoRaSettingServer {
 
         if (sessionId != null) {
             // add sessionId for authorization.
+            Log.e("cxy","deviceList  :sessionId::"+sessionId);
             headers.put(HEADER_SESSION_ID, sessionId);
         }
 
@@ -298,11 +304,35 @@ public class LoRaSettingServerImpl implements ILoRaSettingServer {
         Map<String, String> headers = new HashMap<>();
 
         if (sessionId != null) {
+            Log.e("cxy","secondAuth  :sessionId::"+sessionId);
             // add sessionId for authorization.
             headers.put(HEADER_SESSION_ID, sessionId);
         }
         volleyManager.gsonRequest(TAG, Request.Method.POST, headers, jsonObject.toString(), SCOPE +
                 TWO_AUTHENTICATION, ResponseBase.class, listener, errorListener);
 
+    }
+
+    @Override
+    public void getDeviceTypes(Response.Listener<DeviceTyps> listener, Response.ErrorListener errorListener) {
+        HashMap<String, String> headers = new HashMap<>();
+        if (sessionId != null) {
+//            Log.e("cxy","getDeviceTypes  :sessionId::"+sessionId);
+            headers.put(HEADER_SESSION_ID,sessionId);
+        }
+        JSONObject jsonObject = new JSONObject();
+
+
+        GsonRequest<DeviceTyps> deviceTypsGsonRequest = volleyManager.gsonRequest(TAG, Request.Method.GET, headers,jsonObject.toString(), SCOPE + DEVICE_TYPES, DeviceTyps.class, listener, errorListener);
+
+        try {
+            Map<String, String> headers1 = deviceTypsGsonRequest.getHeaders();
+            for (String s : headers.keySet()) {
+                String s1 = headers.get(s);
+                int i = 1;
+            }
+        } catch (AuthFailureError authFailureError) {
+            authFailureError.printStackTrace();
+        }
     }
 }

@@ -12,16 +12,20 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.sensoro.lora.setting.server.bean.DeviceTyps;
 import com.sensoro.lora.setting.server.bean.ResponseBase;
 import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.constant.Constants;
+import com.sensoro.loratool.store.PreferencesHelper;
 import com.sensoro.loratool.utils.AESUtil;
 import com.sensoro.loratool.utils.Utils;
 import com.sensoro.loratool.widget.NumberKeyboardView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -66,58 +70,58 @@ public class AuthActivity extends AppCompatActivity implements Constants, Number
     public void onNumberReturn(String number) {
         if (textCount < 6) {
 //            authText.append(number);
-           switch (textCount) {
-               case 0:
-                   button1.setText(number);
-                   break;
-               case 1:
-                   button2.setText(number);
-                   break;
-               case 2:
-                   button3.setText(number);
-                   break;
-               case 3:
-                   button4.setText(number);
-                   break;
-               case 4:
-                   button5.setText(number);
-                   break;
-               case 5:
-                   button6.setText(number);
-                   break;
-           }
-            textCount ++;
+            switch (textCount) {
+                case 0:
+                    button1.setText(number);
+                    break;
+                case 1:
+                    button2.setText(number);
+                    break;
+                case 2:
+                    button3.setText(number);
+                    break;
+                case 3:
+                    button4.setText(number);
+                    break;
+                case 4:
+                    button5.setText(number);
+                    break;
+                case 5:
+                    button6.setText(number);
+                    break;
+            }
+            textCount++;
         }
     }
 
 
     @Override
     public void onNumberDelete() {
-         if (textCount > 0) {
-             switch (textCount) {
-                 case 1:
-                     button1.setText("");
-                     break;
-                 case 2:
-                     button2.setText("");
-                     break;
-                 case 3:
-                     button3.setText("");
-                     break;
-                 case 4:
-                     button4.setText("");
-                     break;
-                 case 5:
-                     button5.setText("");
-                     break;
-                 case 6:
-                     button6.setText("");
-                     break;
-             }
+        if (textCount > 0) {
+            switch (textCount) {
+                case 1:
+                    button1.setText("");
+                    break;
+                case 2:
+                    button2.setText("");
+                    break;
+                case 3:
+                    button3.setText("");
+                    break;
+                case 4:
+                    button4.setText("");
+                    break;
+                case 5:
+                    button5.setText("");
+                    break;
+                case 6:
+                    button6.setText("");
+                    break;
+            }
 
-             textCount --;
+            textCount--;
 
-         }
+        }
     }
 
     @OnClick(R.id.auth_iv_close)
@@ -127,8 +131,8 @@ public class AuthActivity extends AppCompatActivity implements Constants, Number
 
     @OnClick(R.id.auth_forward)
     public void forward() {
-        if (textCount == 6 ) {
-            String code = button1.getText().toString() + button2.getText().toString() + button3.getText().toString() + button4.getText().toString() + button5.getText().toString() +button6.getText().toString();
+        if (textCount == 6) {
+            String code = button1.getText().toString() + button2.getText().toString() + button3.getText().toString() + button4.getText().toString() + button5.getText().toString() + button6.getText().toString();
             doSecondAuth(code);
         } else {
             Toast.makeText(this, R.string.tips_auth_length_error, Toast.LENGTH_SHORT).show();
@@ -161,6 +165,8 @@ public class AuthActivity extends AppCompatActivity implements Constants, Number
             @Override
             public void onResponse(ResponseBase response) {
                 if (response.getErr_code() == 0) {
+                    getAccountDevicesType();
+
                     Utils.checkBleStatus(getApplicationContext());
                     Intent intent = new Intent();
                     intent.setClass(AuthActivity.this, MainActivity.class);
@@ -191,6 +197,31 @@ public class AuthActivity extends AppCompatActivity implements Constants, Number
 
             }
         });
+    }
+
+    private void getAccountDevicesType() {
+        final LoRaSettingApplication app = (LoRaSettingApplication) getApplication();
+        app.loRaSettingServer.getDeviceTypes(
+                new Response.Listener<DeviceTyps>() {
+                    @Override
+                    public void onResponse(DeviceTyps response) {
+                        if (response != null && response.getData() != null) {
+                            DeviceTyps.DataBean data = response.getData();
+                            List<String> devices = data.getDevices();
+                            if (devices != null && devices.size() > 0) {
+                                PreferencesHelper.getInstance().saveDeviceTypes(AuthActivity.this, devices);
+                            }
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        int i = 1;
+                        String s = new String(error.networkResponse.data);
+                        int statusCode = error.networkResponse.statusCode;
+
+                    }
+                });
     }
 
 }

@@ -20,7 +20,9 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.sensoro.lora.setting.server.LoRaSettingServerImpl;
+import com.sensoro.lora.setting.server.bean.DeviceTyps;
 import com.sensoro.lora.setting.server.bean.LoginRsp;
+import com.sensoro.lora.setting.server.bean.ResponseBase;
 import com.sensoro.loratool.LoRaSettingApplication;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.constant.Constants;
@@ -191,7 +193,7 @@ public class LoginActivity extends BaseActivity implements Constants, Permission
     private int scope_selectedIndex = 0;
 
     private void switchApi() {
-        final String[] urlArr = new String[]{"正式环境", "MOCHA环境","测试环境"};
+        final String[] urlArr = new String[]{"正式环境", "MOCHA环境", "测试环境"};
 
         SharedPreferences sp = getSharedPreferences(PREFERENCE_SCOPE, Context.MODE_PRIVATE);
         String url = sp.getString(PREFERENCE_KEY_URL, null);
@@ -199,7 +201,7 @@ public class LoginActivity extends BaseActivity implements Constants, Permission
             LoRaSettingServerImpl.SCOPE = url;
             if (url.equals(LoRaSettingServerImpl.SCOPE_MOCHA)) {
                 scope_selectedIndex = 1;
-            }else if(url.equals(LoRaSettingServerImpl.SCOPE_TEST)){
+            } else if (url.equals(LoRaSettingServerImpl.SCOPE_TEST)) {
                 scope_selectedIndex = 2;
             }
         }
@@ -215,7 +217,7 @@ public class LoginActivity extends BaseActivity implements Constants, Permission
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        switch (scope_selectedIndex){
+                        switch (scope_selectedIndex) {
                             case 0:
                                 login_btn.setBackground(getResources().getDrawable(R.drawable.shape_button));
                                 LoRaSettingServerImpl.SCOPE = LoRaSettingServerImpl.SCOPE_IOT;
@@ -263,9 +265,9 @@ public class LoginActivity extends BaseActivity implements Constants, Permission
         if (url != null) {
             if (url.equals(LoRaSettingServerImpl.SCOPE_MOCHA)) {
                 login_btn.setBackground(getResources().getDrawable(R.drawable.shape_button_mocha));
-            } else if(url.equals(LoRaSettingServerImpl.SCOPE_IOT)){
+            } else if (url.equals(LoRaSettingServerImpl.SCOPE_IOT)) {
                 login_btn.setBackground(getResources().getDrawable(R.drawable.shape_button));
-            }else{
+            } else {
                 login_btn.setBackground(getResources().getDrawable(R.drawable.shape_button_test));
             }
         }
@@ -338,9 +340,13 @@ public class LoginActivity extends BaseActivity implements Constants, Permission
                 }
                 PreferencesHelper.getInstance().savePermissionData(app);
 
+
+
                 if (response.isTwofactorauth()) {
                     showAuthDialog(response);
                 } else {
+                    //获取账户下设备类型
+                    getAccountDevicesType();
                     Utils.checkBleStatus(getApplicationContext());
                     PreferencesHelper.getInstance().saveLoginData(app, response.getName(), username, pwd, response
                             .getExpires(), response.getSessionId());
@@ -372,7 +378,7 @@ public class LoginActivity extends BaseActivity implements Constants, Permission
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        AlphaToast.INSTANCE.makeText(getApplicationContext(),"登录失败",Toast.LENGTH_SHORT).show();
+                        AlphaToast.INSTANCE.makeText(getApplicationContext(), "登录失败", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(LoginActivity.this, R.string.tips_network_error, Toast.LENGTH_LONG).show();
@@ -381,6 +387,29 @@ public class LoginActivity extends BaseActivity implements Constants, Permission
             }
         });
     }
+
+    private void getAccountDevicesType() {
+        app.loRaSettingServer.getDeviceTypes(new Response.Listener<DeviceTyps>() {
+                                                                    @Override
+                                                                    public void onResponse(DeviceTyps response) {
+                                                                        if (response != null && response.getData() != null) {
+                                                                            DeviceTyps.DataBean data = response.getData();
+                                                                            List<String> devices = data.getDevices();
+                                                                            if ( devices!= null && devices.size() > 0) {
+                                                                                PreferencesHelper.getInstance().saveDeviceTypes(LoginActivity.this,data.getDevices());
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                , new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        String s = new String(error.networkResponse.data);
+                        int i = 1;
+                    }
+                });
+    }
+
 
     @Override
     protected void onDestroy() {

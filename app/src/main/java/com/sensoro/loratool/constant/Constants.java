@@ -32,6 +32,7 @@ public interface Constants {
 
     String PREFERENCE_FILTER = "alpha_filter_data";
     String PREFERENCE_LOGIN = "alpha_tool_login";
+    String PREFERENCE_DEVICE_TYPES = "alpha_tool_device_type";
     String PREFERENCE_SCOPE = "alpha_tool_scope";
     String PREFERENCE_DEVICE_HISTORY = "alpha_tool_device_history";
     String PREFERENCE_STATION_HISTORY = "alpha_tool_station_history";
@@ -48,6 +49,9 @@ public interface Constants {
     String PREFERENCE_KEY_PERMISSION_4 = "permission4";
     String PREFERENCE_KEY_PERMISSION_5 = "permission5";
     String PREFERENCE_KEY_PERMISSION_6 = "permission6";
+    String PREFERENCE_KEY_DEVICE_TYPE = "preference_key_device_type";
+    String PREFERENCE_KEY_DEVICE_TYPE_NAME = "preference_key_device_type_name";
+
     String PREFERENCE_KEY_HISTORY_KEYWORD = "key_search_history_keyword";
     String LORA_BAND_US915 = "US915";
     String LORA_BAND_EU433 = "EU433";

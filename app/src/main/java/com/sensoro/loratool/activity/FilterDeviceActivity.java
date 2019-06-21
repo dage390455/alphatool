@@ -3,6 +3,7 @@ package com.sensoro.loratool.activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -77,7 +78,21 @@ public class FilterDeviceActivity extends BaseActivity {
         String[] hardwareArray = getResources().getStringArray(R.array.filter_device_hardware_array);
         String[] bandArray = getResources().getStringArray(R.array.filter_device_band_array);
         //添加支持的硬件类型
-        String[] hardwareValueArray = DEVICE_HARDWARE_TYPE;
+        String hardwareSp = getSharedPreferences(Constants.PREFERENCE_DEVICE_TYPES, Context.MODE_PRIVATE).getString(Constants.PREFERENCE_KEY_DEVICE_TYPE, null);
+        String hardwareNameSp = getSharedPreferences(Constants.PREFERENCE_DEVICE_TYPES, Context.MODE_PRIVATE).getString(Constants.PREFERENCE_KEY_DEVICE_TYPE_NAME, null);
+        String[] hardwareValueArray;
+        if (!TextUtils.isEmpty(hardwareSp) && !TextUtils.isEmpty(hardwareNameSp)) {
+            String[] split = hardwareSp.split(",");
+            String[] nameSplit = hardwareNameSp.split(",");
+            if (split.length > 0) {
+                hardwareValueArray = split;
+                hardwareArray = nameSplit;
+            }else{
+                hardwareValueArray = DEVICE_HARDWARE_TYPE;
+            }
+        }else{
+            hardwareValueArray = DEVICE_HARDWARE_TYPE;
+        }
         String[] nearArray = getResources().getStringArray(R.array.filter_near_array);
         String[] enableArray = getResources().getStringArray(R.array.filter_enable);
         if (enableFilterSet != null) {

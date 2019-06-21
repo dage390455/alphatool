@@ -2,6 +2,7 @@ package com.sensoro.lora.setting.server;
 
 import com.android.volley.Response;
 import com.sensoro.lora.setting.server.bean.DeviceInfoListRsp;
+import com.sensoro.lora.setting.server.bean.DeviceTyps;
 import com.sensoro.lora.setting.server.bean.EidInfo;
 import com.sensoro.lora.setting.server.bean.EidInfoListRsp;
 import com.sensoro.lora.setting.server.bean.LoginRsp;
@@ -41,4 +42,6 @@ public interface ILoRaSettingServer {
     void stopAllRequest();
 
     void secondAuth(String pinCode, Response.Listener<ResponseBase> listener, Response.ErrorListener errorListener);
+
+    void getDeviceTypes(Response.Listener<DeviceTyps> listener, Response.ErrorListener errorListener);
 }
