@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical"
-    android:visibility="gone">
+    android:visibility="visible">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,6 +53,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/view_cayman_is_smoke"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="15dp"
@@ -91,6 +92,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/view_cayman_is_move"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="15dp"
@@ -130,6 +132,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/view_cayman_value_of_tem"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="15dp"
@@ -168,6 +171,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/view_cayman_value_of_hum"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="15dp"
@@ -212,6 +216,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/view_cayman_alarm_of_high_tem"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="15dp"
@@ -256,6 +261,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/view_cayman_alarm_of_low_tem"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="15dp"
@@ -300,6 +306,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/view_cayman_alarm_of_high_hum"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="15dp"
@@ -344,6 +351,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/view_cayman_alarm_of_low_hum"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="15dp"
@@ -381,6 +389,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/view_cayman_value_of_photor"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="15dp"
@@ -424,6 +433,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/view_cayman_ble_adv_type"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="15dp"
@@ -549,6 +559,234 @@
             android:layout_marginEnd="15dp"/>
         />
     </LinearLayout>
+    <View
+        android:id="@+id/view_cayman_value_of_batb"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:background="#dfdfdf"
+        android:visibility="visible"/>
+    <LinearLayout
+        android:id="@+id/cayman_human_detection_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_item_selector"
+        android:orientation="horizontal"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="人体检测时间"
+            android:textColor="#252525"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/cayman_human_detection_time_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:lines="1"
+            android:textColor="#a6a6a6"
+            android:textSize="18sp"
+            android:layout_marginEnd="15dp"/>
+        />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:background="#dfdfdf"
+        android:visibility="visible"/>
+    <LinearLayout
+        android:id="@+id/cayman_defense_mode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_item_selector"
+        android:orientation="horizontal"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="设防模式"
+            android:textColor="#252525"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/cayman_defense_mode_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:lines="1"
+            android:textColor="#a6a6a6"
+            android:textSize="18sp"
+            android:layout_marginEnd="15dp"/>
+        />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:background="#dfdfdf"
+        android:visibility="visible"/>
+    <LinearLayout
+        android:id="@+id/cayman_defense_timer_mode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_item_selector"
+        android:orientation="horizontal"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="定时设防模式"
+            android:textColor="#252525"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/cayman_defense_timer_mode_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:lines="1"
+            android:textColor="#a6a6a6"
+            android:textSize="18sp"
+            android:layout_marginEnd="15dp"/>
+        />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:background="#dfdfdf"
+        android:visibility="visible"/>
+    <LinearLayout
+        android:id="@+id/cayman_defense_mode_start_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_item_selector"
+        android:orientation="horizontal"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="定时设防开始时间"
+            android:textColor="#252525"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/cayman_defense_mode_start_time_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:lines="1"
+            android:textColor="#a6a6a6"
+            android:textSize="18sp"
+            android:layout_marginEnd="15dp"/>
+        />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:background="#dfdfdf"
+        android:visibility="visible"/>
+    <LinearLayout
+        android:id="@+id/cayman_defense_mode_stop_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_item_selector"
+        android:orientation="horizontal"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="定时设防结束时间"
+            android:textColor="#252525"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/cayman_defense_mode_stop_time_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:lines="1"
+            android:textColor="#a6a6a6"
+            android:textSize="18sp"
+            android:layout_marginEnd="15dp"/>
+        />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:background="#dfdfdf"
+        android:visibility="visible"/>
+    <LinearLayout
+        android:id="@+id/cayman_invade_alarm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_item_selector"
+        android:orientation="horizontal"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="入侵报警"
+            android:textColor="#252525"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/cayman_invade_alarm_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:lines="1"
+            android:textColor="#a6a6a6"
+            android:textSize="18sp"
+            android:layout_marginEnd="15dp"/>
+        />
+    </LinearLayout>
 
 
 
@@ -645,7 +883,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_weight="1"
-            android:text="恢复出厂"
+            android:text="消音"
             android:textColor="#252525"
             android:textSize="18sp" />
 

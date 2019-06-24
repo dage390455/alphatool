@@ -250,6 +250,16 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     RelativeLayout batteryBeepLayout;
     @BindView(R.id.settings_device_tv_app_battery_beep)
     TextView batteryBeepTextView;
+    @BindView(R.id.settings_device_rl_app_beep_mute_time)
+    RelativeLayout beepMuteTimeLayout;
+    @BindView(R.id.settings_device_tv_app_beep_mute_time)
+    TextView beepMuteTimeTextView;
+    @BindView(R.id.settings_device_rl_app_led_status)
+    RelativeLayout ledStatusLayout;
+    @BindView(R.id.settings_device_tv_app_led_status)
+    TextView ledStatusTextView;
+    @BindView(R.id.view_cayman_value_of_batb)
+    View viewCaymanValueOfBatb;
     @BindView(R.id.settings_device_ll_sensor_param)
     LinearLayout sensorParamLayout;
     @BindView(R.id.settings_device_ll_co)
@@ -887,6 +897,30 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     TextView caymanValueOfBatbContent;
     @BindView(R.id.cayman_value_of_batb)
     LinearLayout caymanValueOfBatb;
+    @BindView(R.id.cayman_human_detection_time_content)
+    TextView caymanHumanDetctionTimeContent;
+    @BindView(R.id.cayman_human_detection_time)
+    LinearLayout caymanHumanDetectionTime;
+    @BindView(R.id.cayman_defense_mode_content)
+    TextView caymanDefenseModeContent;
+    @BindView(R.id.cayman_defense_mode)
+    LinearLayout caymanDefenseMode;
+    @BindView(R.id.cayman_defense_timer_mode_content)
+    TextView caymanDefenseTimerModeContent;
+    @BindView(R.id.cayman_defense_timer_mode)
+    LinearLayout caymanDefenseTimerMode;
+    @BindView(R.id.cayman_defense_mode_start_time_content)
+    TextView caymanDefenseModeStartTimeContent;
+    @BindView(R.id.cayman_defense_mode_start_time)
+    LinearLayout caymanDefenseModeStartTime;
+    @BindView(R.id.cayman_defense_mode_stop_time_content)
+    TextView caymanDefenseModeStopTimeContent;
+    @BindView(R.id.cayman_defense_mode_stop_time)
+    LinearLayout caymanDefenseModeStopTime;
+    @BindView(R.id.cayman_invade_alarm_content)
+    TextView caymanInvadeAlarmContent;
+    @BindView(R.id.cayman_invade_alarm)
+    LinearLayout caymanInvadeAlarm;
     @BindView(R.id.cayman_value_of_hum_content)
     TextView caymanValueOfHumContent;
     @BindView(R.id.cayman_value_of_hum)
@@ -1821,6 +1855,31 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             caymanValueOfBatbContent.setText(sensoroSensor.cayManData.valueOfBatb / 1000 + "v");
                         } else {
                             caymanValueOfBatb.setVisibility(GONE);
+                            viewCaymanValueOfBatb.setVisibility(GONE);
+                        }
+
+                        if(sensoroSensor.cayManData.hasHumanDetectionTime){
+                            caymanHumanDetctionTimeContent.setText(sensoroSensor.cayManData.humanDetectionTime+"s");
+                        }
+
+                        if (sensoroSensor.cayManData.hasDefenseMode) {
+                            caymanDefenseModeContent.setText(sensoroSensor.cayManData.defenseMode == 0 ? R.string.close : R.string.open);
+                        }
+
+                        if (sensoroSensor.cayManData.hasDefenseTimerMode) {
+                            caymanDefenseTimerModeContent.setText(sensoroSensor.cayManData.defenseTimerMode == 0 ? R.string.close : R.string.open);
+                        }
+
+                        if (sensoroSensor.cayManData.hasDefenseModeStartTime) {
+                            caymanDefenseModeStartTimeContent.setText(sensoroSensor.cayManData.defenseModeStartTime+"min");
+                        }
+
+                        if (sensoroSensor.cayManData.hasDefenseModeStopTime) {
+                            caymanDefenseModeStopTimeContent.setText(sensoroSensor.cayManData.defenseModeStopTime+"min");
+                        }
+
+                        if (sensoroSensor.cayManData.hasInvadeAlarm) {
+                            caymanInvadeAlarmContent.setText(sensoroSensor.cayManData.invadeAlarm == 0 ? R.string.close : R.string.open);
                         }
 
 
@@ -1942,6 +2001,24 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     }
                 } else {
                     batteryBeepLayout.setVisibility(GONE);
+                }
+
+                if (sensoroDevice.hasBeepMuteTime()) {
+                    beepMuteTimeLayout.setVisibility(VISIBLE);
+                    beepMuteTimeTextView.setText(sensoroDevice.getBeepMuteTime()+"s");
+                } else {
+                    beepMuteTimeLayout.setVisibility(GONE);
+                }
+
+                if (sensoroDevice.hasLedStatus()) {
+                    ledStatusTextView.setVisibility(VISIBLE);
+                    if (sensoroDevice.getLedStatus() == 0) {
+                        ledStatusTextView.setText(getString(R.string.close));
+                    } else if (sensoroDevice.getLedStatus() == 1) {
+                        ledStatusTextView.setText(getString(R.string.open));
+                    }
+                } else {
+                    ledStatusLayout.setVisibility(GONE);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -2951,6 +3028,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 switch (cmd) {
                     case CmdType.CMD_SET_SMOKE:
                     case CmdType.CMD_SET_ELEC_CMD:
+                    case CmdType.CMD_SET_CAYMAN_CMD:
                         break;
                     case CmdType.CMD_SET_ZERO:
                         Toast.makeText(SettingDeviceActivity.this, R.string.zero_calibrate_success, Toast
@@ -2962,6 +3040,22 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             Toast.makeText(getApplicationContext(), getString(R.string.send_success), Toast.LENGTH_SHORT).show();
                         }
                         break;
+//                    case CmdType.CMD_CAYMAN_RESET:
+//                                progressDialog.setMessage("正在恢复出厂设置，请稍后...");
+//                                progressDialog.show();
+////                            try {
+////                                Thread.sleep(4000);
+////                            } catch (InterruptedException e) {
+////                                e.printStackTrace();
+////                            }
+////                            runOnUiThread(new Runnable() {
+////                                @Override
+////                                public void run() {
+////                                    connectDevice();
+////                                }
+////                            });
+//
+//                        break;
                     default:
                         try {
                             switch (sensoroDevice.getDataVersion()) {
@@ -3018,6 +3112,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
 
     @Override
     public void onConnectedSuccess(BLEDevice bleDevice, int cmd) {
+
         Log.v(TAG, "onConnectedSuccess");
         String sn = sensoroDevice.getSn();
         String firmwareVersion = sensoroDevice.getFirmwareVersion();
@@ -3274,22 +3369,30 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             MsgNode1V1M5.AppParam.Builder appParamBuilder = MsgNode1V1M5.AppParam.newBuilder();
             if (sensoroDevice.hasUploadInterval()) {
                 appParamBuilder.setUploadInterval(sensoroDevice.getUploadInterval());
-                msgCfgBuilder.setAppParam(appParamBuilder);
             }
             if (sensoroDevice.hasConfirm()) {
                 appParamBuilder.setConfirm(sensoroDevice.getConfirm());
-                msgCfgBuilder.setAppParam(appParamBuilder);
             }
 
             if (sensoroDevice.hasDemoMode()) {
                 appParamBuilder.setDemoMode(sensoroDevice.getDemoMode());
-                msgCfgBuilder.setAppParam(appParamBuilder);
             }
 
             if (sensoroDevice.hasBatteryBeep()) {
                 appParamBuilder.setLowBatteryBeep(sensoroDevice.getBatteryBeep());
-                msgCfgBuilder.setAppParam(appParamBuilder);
             }
+
+            if (sensoroDevice.hasBeepMuteTime()) {
+                appParamBuilder.setBeepMuteTime(sensoroDevice.getBeepMuteTime());
+            }
+
+            if (sensoroDevice.hasLedStatus()) {
+                appParamBuilder.setLedStatus(sensoroDevice.getLedStatus());
+            }
+
+            msgCfgBuilder.setAppParam(appParamBuilder);
+
+
         }
         if (sensoroDevice.hasSensorParam()) {
             if (sensoroSensor.hasCo) {
@@ -3552,6 +3655,24 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 }
                 if (sensoroSensor.cayManData.hasCmd) {
                     builder.setCmd(sensoroSensor.cayManData.cmd);
+                }
+                if (sensoroSensor.cayManData.hasHumanDetectionTime) {
+                    builder.setHumanDetectionTime(sensoroSensor.cayManData.humanDetectionTime);
+                }
+                if (sensoroSensor.cayManData.hasDefenseMode) {
+                    builder.setDefenseMode(sensoroSensor.cayManData.defenseMode);
+                }
+                if (sensoroSensor.cayManData.hasDefenseTimerMode) {
+                    builder.setDefenseTimerMode(sensoroSensor.cayManData.defenseTimerMode);
+                }
+                if (sensoroSensor.cayManData.hasDefenseModeStartTime) {
+                    builder.setDefenseModeStartTime(sensoroSensor.cayManData.defenseModeStartTime);
+                }
+                if (sensoroSensor.cayManData.hasDefenseModeStopTime) {
+                    builder.setDefenseModeStopTime(sensoroSensor.cayManData.defenseModeStopTime);
+                }
+                if (sensoroSensor.cayManData.hasInvadeAlarm) {
+                    builder.setInvadeAlarm(sensoroSensor.cayManData.invadeAlarm);
                 }
                 msgCfgBuilder.setCaymanData(builder);
 
@@ -4943,7 +5064,63 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 e.printStackTrace();
                 Toast.makeText(this, "密码为数字格式", Toast.LENGTH_SHORT).show();
             }
-        } else if (SETTINGS_DEVICE_RL_ACREL_T4_TH.equals(tag)) {
+        } else if (SETTINGS_DEVICE_RL_CAYMAN_HUMAN_DETECTION_TIME.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i < 1 || i > 30) {
+                    Toast.makeText(this, "时间范围为1-30", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.cayManData.humanDetectionTime = i;
+                caymanHumanDetctionTimeContent.setText(i + "s");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "范围为数字格式", Toast.LENGTH_SHORT).show();
+            }
+        }else if (SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE_START_TIME.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i < 1 || i > 1439) {
+                    Toast.makeText(this, "定时设防开始时间范围为1-1439", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.cayManData.defenseModeStartTime = i;
+                caymanDefenseModeStartTimeContent.setText(i + "min");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入数字", Toast.LENGTH_SHORT).show();
+            }
+        }else if (SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE_STOP_TIME.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i < 1 || i > 1439) {
+                    Toast.makeText(this, "定时设防结束时间范围为1-1439", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.cayManData.defenseModeStopTime = i;
+                caymanDefenseModeStopTimeContent.setText(i + "min");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入数字", Toast.LENGTH_SHORT).show();
+            }
+        } else if (SETTINGS_DEVICE_RL_APP_BEEP_MUTE_TIME.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                int i = Integer.parseInt(temp);
+                if (i < 0) {
+                    Toast.makeText(this, "请输入正数", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroDevice.setBeepMuteTime(i);
+                beepMuteTimeTextView.setText(i + "s");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入数字", Toast.LENGTH_SHORT).show();
+            }
+        }else if (SETTINGS_DEVICE_RL_ACREL_T4_TH.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 int i = Integer.parseInt(temp);
@@ -5080,7 +5257,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     return;
                 }
                 sensoroSensor.cayManData.alarmOfHighTem = i * 10;
-                acrelT3ThContent.setText(i + "℃");
+                caymanAlarmOfHighTemContent.setText(i + "℃");
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
@@ -5094,7 +5271,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     return;
                 }
                 sensoroSensor.cayManData.alarmOfLowTem = i * 10;
-                acrelT3ThContent.setText(i + "℃");
+                caymanAlarmOfLowTemContent.setText(i + "℃");
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
@@ -5107,8 +5284,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     Toast.makeText(this, "湿度阈值范围为0-100", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                sensoroSensor.cayManData.alarmOfHighHum = i;
-                acrelT3ThContent.setText(i + "℃");
+                sensoroSensor.cayManData.alarmOfHighHum = i*10;
+                caymanAlarmOfHighHumContent.setText(i + "%");
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
@@ -5117,7 +5294,23 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
             sensoroSensor.cayManData.bleAdvType = index;
             caymanBleAdvTypeContent.setText(index == 0 ? "持续广播" : "间断广播");
-        } else if (SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_LOW_HUM.equals(tag)) {
+        }else if (SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE.equals(tag)) {
+            int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
+            sensoroSensor.cayManData.defenseMode = index;
+            caymanDefenseModeContent.setText(index == 0 ? "关闭" : "开启");
+        }else if (SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_TIMER_MODE.equals(tag)) {
+            int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
+            sensoroSensor.cayManData.defenseTimerMode = index;
+            caymanDefenseTimerModeContent.setText(index == 0 ? "关闭" : "开启");
+        }else if (SETTINGS_DEVICE_RL_CAYMAN_INVADE_ALARM.equals(tag)) {
+            int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
+            sensoroSensor.cayManData.invadeAlarm = index;
+            caymanInvadeAlarmContent.setText(index == 0 ? "关闭" : "开启");
+        } else if (SETTINGS_DEVICE_APP_LED_STATUS.equals(tag)) {
+            int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
+            sensoroDevice.setLedStatus(index);
+            ledStatusTextView.setText(index == 0 ? "关闭" : "开启");
+        }else if (SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_LOW_HUM.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 int i = Integer.parseInt(temp);
@@ -5125,8 +5318,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     Toast.makeText(this, "湿度阈值范围为0-100", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                sensoroSensor.cayManData.alarmOfLowHum = i;
-                acrelT3ThContent.setText(i + "%");
+                sensoroSensor.cayManData.alarmOfLowHum = i*10;
+                caymanAlarmOfLowHumContent.setText(i + "%");
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
@@ -5199,9 +5392,11 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             R.id.acrel_cmd_mute, R.id.acrel_cmd_zero_clearing, R.id.acrel_root,
             R.id.acrel_psd, R.id.cayman_is_smoke, R.id.cayman_is_moved, R.id.cayman_value_of_tem, R.id.cayman_value_of_photor,
             R.id.cayman_ble_adv_type, R.id.cayman_ble_adv_start_time, R.id.cayman_ble_adv_end_time_hum, R.id.cayman_value_of_batb,
+            R.id.cayman_human_detection_time,R.id.cayman_defense_mode,R.id.cayman_defense_timer_mode,
+            R.id.cayman_defense_mode_start_time,R.id.cayman_defense_mode_stop_time,R.id.cayman_invade_alarm,
             R.id.cayman_value_of_hum, R.id.cayman_alarm_of_high_tem, R.id.cayman_alarm_of_low_tem,
-            R.id.cayman_alarm_of_high_hum, R.id.cayman_alarm_of_low_hum, R.id.cayman_cmd_self_check,
-            R.id.cayman_cmd_reset, R.id.cayman_cmd_clear_sound, R.id.baymax_density_l1, R.id.baymax_density_l2, R.id.baymax_density_l3,
+            R.id.cayman_alarm_of_high_hum, R.id.settings_device_rl_app_led_status,R.id.cayman_alarm_of_low_hum, R.id.cayman_cmd_self_check,
+            R.id.cayman_cmd_reset, R.id.cayman_cmd_clear_sound,R.id.settings_device_rl_app_beep_mute_time, R.id.baymax_density_l1, R.id.baymax_density_l2, R.id.baymax_density_l3,
             R.id.baymax_cmd_close_electronic_valve, R.id.baymax_cmd_self_check, R.id.baymax_cmd_reset, R.id.baymax_cmd_mute,
             R.id.settings_device_rl_app_battery_beep, R.id.settings_device_rl_app_demo})
     public void onViewClicked(View view) {
@@ -5412,23 +5607,59 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 break;
             case R.id.cayman_ble_adv_end_time_hum:
                 break;
+            case R.id.cayman_human_detection_time:
+                dialogFragment = SettingsInputDialogFragment.newInstance(sensoroSensor.cayManData.humanDetectionTime+"");
+                dialogFragment.show(getFragmentManager(),SETTINGS_DEVICE_RL_CAYMAN_HUMAN_DETECTION_TIME);
+                break;
+            case R.id.cayman_defense_mode:
+                String[] items = {"关闭", "开启"};
+                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(items,sensoroSensor.cayManData.defenseMode);
+                dialogFragment.show(getFragmentManager(),SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE);
+                break;
+            case R.id.cayman_defense_timer_mode:
+                String[] timerItems = {"关闭", "开启"};
+                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(timerItems,sensoroSensor.cayManData.defenseTimerMode);
+                dialogFragment.show(getFragmentManager(),SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_TIMER_MODE);
+                break;
+            case R.id.cayman_defense_mode_start_time:
+                dialogFragment = SettingsInputDialogFragment.newInstance(sensoroSensor.cayManData.defenseModeStartTime+"");
+                dialogFragment.show(getFragmentManager(),SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE_START_TIME);
+                break;
+            case R.id.cayman_defense_mode_stop_time:
+                dialogFragment = SettingsInputDialogFragment.newInstance(sensoroSensor.cayManData.defenseModeStopTime+"");
+                dialogFragment.show(getFragmentManager(),SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE_STOP_TIME);
+                break;
+            case R.id.cayman_invade_alarm:
+                String[] invadeAlarmItems = {"关闭", "开启"};
+                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(invadeAlarmItems,sensoroSensor.cayManData.defenseTimerMode);
+                dialogFragment.show(getFragmentManager(),SETTINGS_DEVICE_RL_CAYMAN_INVADE_ALARM);
+                break;
+            case R.id.settings_device_rl_app_led_status:
+                String[] ledStatusItems = {"关闭", "开启"};
+                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(ledStatusItems,sensoroDevice.getLedStatus());
+                dialogFragment.show(getFragmentManager(),SETTINGS_DEVICE_APP_LED_STATUS);
+                break;
+            case R.id.settings_device_rl_app_beep_mute_time:
+                dialogFragment = SettingsInputDialogFragment.newInstance(sensoroSensor.cayManData.defenseModeStopTime+"");
+                dialogFragment.show(getFragmentManager(),SETTINGS_DEVICE_RL_APP_BEEP_MUTE_TIME);
+                break;
             case R.id.cayman_alarm_of_high_tem:
-                float alarmOfHighTem = sensoroSensor.cayManData.alarmOfHighTem / 10;
+                int alarmOfHighTem = sensoroSensor.cayManData.alarmOfHighTem / 10;
                 dialogFragment = SettingsInputDialogFragment.newInstance(alarmOfHighTem + "");
                 dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_HIGH_TEM);
                 break;
             case R.id.cayman_alarm_of_low_tem:
-                float alarmOfLowTem = sensoroSensor.cayManData.alarmOfLowTem / 10;
+                int alarmOfLowTem = sensoroSensor.cayManData.alarmOfLowTem / 10;
                 dialogFragment = SettingsInputDialogFragment.newInstance(alarmOfLowTem + "");
                 dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_LOW_TEM);
                 break;
             case R.id.cayman_alarm_of_high_hum:
-                float alarmOfHighHum = sensoroSensor.cayManData.alarmOfHighHum;
+                int alarmOfHighHum = sensoroSensor.cayManData.alarmOfHighHum/10;
                 dialogFragment = SettingsInputDialogFragment.newInstance(alarmOfHighHum + "");
                 dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_HIGH_HUM);
                 break;
             case R.id.cayman_alarm_of_low_hum:
-                float alarmOfLowHum = sensoroSensor.cayManData.alarmOfLowHum;
+                int alarmOfLowHum = sensoroSensor.cayManData.alarmOfLowHum/10;
                 dialogFragment = SettingsInputDialogFragment.newInstance(alarmOfLowHum + "");
                 dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_LOW_HUM);
                 break;
@@ -5436,7 +5667,11 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 doCaymanControl(CmdType.CMD_CAYMAN_SELEF_CHECK);
                 break;
             case R.id.cayman_cmd_reset:
-                doCaymanControl(CmdType.CMD_CAYMAN_RESET);
+
+                //恢复出厂设置后，需要断开连接 再连接上 然后将新的配置文件推送到服务器
+                MsgNode1V1M5.Cayman.Builder builder = MsgNode1V1M5.Cayman.newBuilder();
+                builder.setCmd(2);
+                sensoroDeviceConnection.writeCaymanCmd(builder, CmdType.CMD_CAYMAN_RESET,this);
                 break;
             case R.id.cayman_cmd_clear_sound:
                 doCaymanControl(CmdType.CMD_CAYMAN_CLEAR_SOUND);
@@ -5514,8 +5749,9 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         }
 
         MsgNode1V1M5.Cayman.Builder builder = MsgNode1V1M5.Cayman.newBuilder();
-        builder.setCmd(SensoroUUID.bitsToInt(bytes));
-        sensoroDeviceConnection.writeCaymanCmd(builder, this);
+        int i = SensoroUUID.bitsToInt(bytes);
+        builder.setCmd(i);
+        sensoroDeviceConnection.writeCaymanCmd(builder, -1,this);
     }
 
     private void doAcrelControl(int cmd) {

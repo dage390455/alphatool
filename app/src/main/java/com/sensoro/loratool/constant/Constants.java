@@ -300,6 +300,8 @@ public interface Constants {
     String SETTINGS_DEVICE_SGL_STATUS = "settings_device_sgl_status";
     String SETTINGS_DEVICE_SGL_DATA_RATE = "settings_device_sgl_data_rate";
     String SETTINGS_DEVICE_SGL_FREQUENCY = "settings_device_sgl_frequency";
+    String SETTINGS_DEVICE_APP_LED_STATUS = "settings_device_app_led_status";
+    String SETTINGS_DEVICE_RL_APP_BEEP_MUTE_TIME = "settings_device_rl_app_beep_mute_time";
 
 
 
@@ -354,6 +356,12 @@ public interface Constants {
     String SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_HIGH_HUM = "settings_device_rl_cayman_alarm_of_high_hum";
     String SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_LOW_HUM = "settings_device_rl_cayman_alarm_of_low_hum";
     String SETTINGS_DEVICE_RL_CAYMAN_ADV_TYPE = "SETTINGS_DEVICE_RL_CAYMAN_ADV_TYPE";
+    String SETTINGS_DEVICE_RL_CAYMAN_HUMAN_DETECTION_TIME = "settings_device_rl_cayman_human_detection_time";
+    String SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE = "settings_device_rl_cayman_defense_mode";
+    String SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_TIMER_MODE = "settings_device_rl_cayman_defense_timer_mode";
+    String SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE_START_TIME = "settings_device_rl_cayman_defense_mode_start_time";
+    String SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE_STOP_TIME = "settings_device_rl_cayman_defense_mode_stop_time";
+    String SETTINGS_DEVICE_RL_CAYMAN_INVADE_ALARM = "settings_device_rl_cayman_invade_alarm";
     //maybax ch4 lpg
     String SETTINGS_DEVICE_RL_BAYMAX_GAS_DENSITY_L1 = "settings_device_rl_baymax_gas_density_l1";
     String SETTINGS_DEVICE_RL_BAYMAX_GAS_DENSITY_L2 = "settings_device_rl_baymax_gas_density_l2";
