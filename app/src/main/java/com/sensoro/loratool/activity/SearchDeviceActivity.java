@@ -560,10 +560,15 @@ public class SearchDeviceActivity extends AppCompatActivity implements View.OnCl
                 switch (bleDevice.getType()) {
 
                     case BLEDevice.TYPE_DEVICE:
-                        mDeviceInfoAdapter.refreshGone((SensoroDevice) bleDevice, true);
+                        if (bleDevice instanceof SensoroDevice) {
+                            mDeviceInfoAdapter.refreshGone((SensoroDevice) bleDevice, true);
+
+                        }
                         break;
                     case BLEDevice.TYPE_SENSOR:
-                        mDeviceInfoAdapter.refreshSensorGone((SensoroSensor) bleDevice);
+                        if (bleDevice instanceof SensoroSensor) {
+                            mDeviceInfoAdapter.refreshSensorGone((SensoroSensor) bleDevice);
+                        }
                         break;
                 }
             }

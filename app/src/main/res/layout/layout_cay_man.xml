@@ -478,6 +478,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/view_ble_adv_start_time"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="15dp"
@@ -523,6 +524,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/view_ble_adv_end_time_hum"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="15dp"
@@ -599,6 +601,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/view_cayman_human_detection_time"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="15dp"
@@ -637,6 +640,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/view_cayman_defense_mode"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="15dp"
@@ -675,6 +679,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/view_cayman_defense_timer_mode"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="15dp"
@@ -713,6 +718,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/view_cayman_defense_mode_start_time"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="15dp"
@@ -751,6 +757,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/view_cayman_defense_mode_stop_time"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="15dp"
@@ -791,6 +798,7 @@
 
 
     <TextView
+        android:id="@+id/view_cayman_invade_alarm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#f4f4f4"
@@ -829,6 +837,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/view_cayman_cmd_self_check"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="15dp"
@@ -863,6 +872,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/view_cayman_cmd_reset"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="15dp"

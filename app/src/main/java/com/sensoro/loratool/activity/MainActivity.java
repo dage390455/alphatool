@@ -385,7 +385,10 @@ public class MainActivity extends BaseActivity
                         }
                         break;
                     case BLEDevice.TYPE_SENSOR:
-                        deviceFragment.refreshSensorGone((SensoroSensor) bleDevice);
+                        if (bleDevice instanceof SensoroSensor) {
+                            deviceFragment.refreshSensorGone((SensoroSensor) bleDevice);
+
+                        }
                         break;
                     case BLEDevice.TYPE_STATION:
                         try {

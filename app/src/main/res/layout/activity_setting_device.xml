@@ -1195,7 +1195,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_marginLeft="15dp"
-                        android:text="设备消音"
+                        android:text="设备定时消音"
                         android:textColor="#666666"
                         android:layout_marginTop="10dp"
                         android:textSize="18sp" />

@@ -69,6 +69,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -995,6 +996,46 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     RecyclerView rcMatunFire;
     @BindView(R.id.settings_device_rc_ibeacon)
     RecyclerView rcIbeacon;
+    @BindView(R.id.view_cayman_is_smoke)
+    View viewCaymanIsSmoke;
+    @BindView(R.id.view_cayman_is_move)
+    View viewCaymanIsMove;
+    @BindView(R.id.view_cayman_value_of_tem)
+    View viewCaymanValueOfTem;
+    @BindView(R.id.view_cayman_value_of_hum)
+    View viewCaymanValueOfHum;
+    @BindView(R.id.view_cayman_alarm_of_high_tem)
+    View viewCaymanAlarmOfHighTem;
+    @BindView(R.id.view_cayman_alarm_of_low_tem)
+    View viewCaymanAlarmOfLowTem;
+    @BindView(R.id.view_cayman_alarm_of_high_hum)
+    View viewCaymanAlarmOfHighHum;
+    @BindView(R.id.view_cayman_alarm_of_low_hum)
+    View viewCaymanAlarmOfLowHum;
+    @BindView(R.id.view_cayman_value_of_photor)
+    View viewCaymanValueOfPhotor;
+    @BindView(R.id.view_cayman_ble_adv_type)
+    View viewCaymanBleAdvType;
+    @BindView(R.id.view_ble_adv_start_time)
+    View viewBleAdvStartTime;
+    @BindView(R.id.view_ble_adv_end_time_hum)
+    View viewBleAdvEndTimeHum;
+    @BindView(R.id.view_cayman_human_detection_time)
+    View viewCaymanHumanDetectionTime;
+    @BindView(R.id.view_cayman_defense_mode)
+    View viewCaymanDefenseMode;
+    @BindView(R.id.view_cayman_defense_timer_mode)
+    View viewCaymanDefenseTimerMode;
+    @BindView(R.id.view_cayman_defense_mode_start_time)
+    View viewCaymanDefenseModeStartTime;
+    @BindView(R.id.view_cayman_defense_mode_stop_time)
+    View viewCaymanDefenseModeStopTime;
+    @BindView(R.id.view_cayman_invade_alarm)
+    TextView viewCaymanInvadeAlarm;
+    @BindView(R.id.view_cayman_cmd_self_check)
+    View viewCaymanCmdSelfCheck;
+    @BindView(R.id.view_cayman_cmd_reset)
+    View viewCaymanCmdReset;
 
     private String[] blePowerItems;
     private String[] bleTimeItems;
@@ -1028,6 +1069,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     private SensoroSensor sensoroSensor;
     private int[] txp_array;
     private SettingEnterDialogUtils mSettingEnterDialogUtils;
+    private int isCaymanReset = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1817,6 +1859,9 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             } else {
                                 caymanIsSmokeContent.setText("有烟");
                             }
+                        } else {
+                            caymanIsSmoke.setVisibility(GONE);
+                            viewCaymanIsSmoke.setVisibility(GONE);
                         }
 
                         if (sensoroSensor.cayManData.hasIsMoved) {
@@ -1825,61 +1870,108 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             } else {
                                 caymanIsMovedContent.setText("拆卸");
                             }
+                        }else {
+                            caymanIsMoved.setVisibility(GONE);
+                            viewCaymanIsMove.setVisibility(GONE);
                         }
 
                         if (sensoroSensor.cayManData.hasValueOfTem) {
-                            caymanValueOfTemContent.setText(sensoroSensor.cayManData.valueOfTem / 10 + "℃");
+                            caymanValueOfTemContent.setText(sensoroSensor.cayManData.valueOfTem / 10f + "℃");
+                        }else {
+                            caymanValueOfTem.setVisibility(GONE);
+                            viewCaymanValueOfTem.setVisibility(GONE);
                         }
                         if (sensoroSensor.cayManData.hasValueOfHum) {
-                            caymanValueOfHumContent.setText(sensoroSensor.cayManData.valueOfHum / 10 + "%");
+                            caymanValueOfHumContent.setText(sensoroSensor.cayManData.valueOfHum / 10f + "%");
+                        }else {
+                            caymanValueOfHum.setVisibility(GONE);
+                            viewCaymanValueOfHum.setVisibility(GONE);
                         }
                         if (sensoroSensor.cayManData.hasAlarmOfHighTem) {
-                            caymanAlarmOfHighTemContent.setText(sensoroSensor.cayManData.alarmOfHighTem / 10 + "℃");
+                            caymanAlarmOfHighTemContent.setText(sensoroSensor.cayManData.alarmOfHighTem / 10f + "℃");
+                        }else {
+                            caymanAlarmOfHighTem.setVisibility(GONE);
+                            viewCaymanAlarmOfHighTem.setVisibility(GONE);
                         }
                         if (sensoroSensor.cayManData.hasAlarmOfLowTem) {
-                            caymanAlarmOfLowTemContent.setText(sensoroSensor.cayManData.alarmOfLowTem / 10 + "℃");
+                            caymanAlarmOfLowTemContent.setText(sensoroSensor.cayManData.alarmOfLowTem / 10f + "℃");
+                        }else {
+                            caymanAlarmOfLowTem.setVisibility(GONE);
+                            viewCaymanAlarmOfLowTem.setVisibility(GONE);
                         }
                         if (sensoroSensor.cayManData.hasAlarmOfHighHum) {
-                            caymanAlarmOfHighHumContent.setText(sensoroSensor.cayManData.alarmOfHighHum / 10 + "%");
+                            caymanAlarmOfHighHumContent.setText(sensoroSensor.cayManData.alarmOfHighHum / 10f + "%");
+                        }else {
+                            caymanAlarmOfHighHum.setVisibility(GONE);
+                            viewCaymanAlarmOfHighHum.setVisibility(GONE);
                         }
                         if (sensoroSensor.cayManData.hasAlarmOfLowHum) {
-                            caymanAlarmOfLowHumContent.setText(sensoroSensor.cayManData.alarmOfLowHum / 10 + "%");
+                            caymanAlarmOfLowHumContent.setText(sensoroSensor.cayManData.alarmOfLowHum / 10f + "%");
+                        }else {
+                            caymanAlarmOfLowHum.setVisibility(GONE);
+                            viewCaymanAlarmOfLowHum.setVisibility(GONE);
                         }
                         if (sensoroSensor.cayManData.hasValueOfphotor) {
                             caymanValueOfPhotorContent.setText(String.valueOf(sensoroSensor.cayManData.valueOfphotor));
+                        }else {
+                            caymanValueOfPhotor.setVisibility(GONE);
+                            viewCaymanValueOfPhotor.setVisibility(GONE);
                         }
                         if (sensoroSensor.cayManData.hasBleAdvType) {
                             caymanBleAdvTypeContent.setText(sensoroSensor.cayManData.bleAdvType == 0 ? "持续广播" : "间断广播");
+                        }else {
+                            caymanBleAdvType.setVisibility(GONE);
+                            viewCaymanBleAdvType.setVisibility(GONE);
                         }
                         if (sensoroSensor.cayManData.hasValueOfBatb && sensoroSensor.cayManData.valueOfBatb > -1) {
-                            caymanValueOfBatbContent.setText(sensoroSensor.cayManData.valueOfBatb / 1000 + "v");
+                            caymanValueOfBatbContent.setText(sensoroSensor.cayManData.valueOfBatb / 1000f + "v");
                         } else {
                             caymanValueOfBatb.setVisibility(GONE);
                             viewCaymanValueOfBatb.setVisibility(GONE);
                         }
 
-                        if(sensoroSensor.cayManData.hasHumanDetectionTime){
-                            caymanHumanDetctionTimeContent.setText(sensoroSensor.cayManData.humanDetectionTime+"s");
+                        if (sensoroSensor.cayManData.hasHumanDetectionTime) {
+                            caymanHumanDetctionTimeContent.setText(sensoroSensor.cayManData.humanDetectionTime + "s");
+                        }else {
+                            caymanHumanDetectionTime.setVisibility(GONE);
+                            viewCaymanHumanDetectionTime.setVisibility(GONE);
                         }
 
                         if (sensoroSensor.cayManData.hasDefenseMode) {
                             caymanDefenseModeContent.setText(sensoroSensor.cayManData.defenseMode == 0 ? R.string.close : R.string.open);
+                        }else {
+                            caymanDefenseMode.setVisibility(GONE);
+                            viewCaymanDefenseMode.setVisibility(GONE);
                         }
 
                         if (sensoroSensor.cayManData.hasDefenseTimerMode) {
                             caymanDefenseTimerModeContent.setText(sensoroSensor.cayManData.defenseTimerMode == 0 ? R.string.close : R.string.open);
+                        }else {
+                            caymanDefenseTimerMode.setVisibility(GONE);
+                            viewCaymanDefenseTimerMode.setVisibility(GONE);
                         }
 
                         if (sensoroSensor.cayManData.hasDefenseModeStartTime) {
-                            caymanDefenseModeStartTimeContent.setText(sensoroSensor.cayManData.defenseModeStartTime+"min");
+                            String s = timeZoneConvert(sensoroSensor.cayManData.defenseModeStartTime);
+                            caymanDefenseModeStartTimeContent.setText(s);
+                        }else {
+                            caymanDefenseModeStartTime.setVisibility(GONE);
+                            viewCaymanDefenseModeStartTime.setVisibility(GONE);
                         }
 
                         if (sensoroSensor.cayManData.hasDefenseModeStopTime) {
-                            caymanDefenseModeStopTimeContent.setText(sensoroSensor.cayManData.defenseModeStopTime+"min");
+                            String s = timeZoneConvert(sensoroSensor.cayManData.defenseModeStopTime);
+                            caymanDefenseModeStopTimeContent.setText(s);
+                        }else {
+                            caymanDefenseModeStopTime.setVisibility(GONE);
+                            viewCaymanDefenseModeStopTime.setVisibility(GONE);
                         }
 
                         if (sensoroSensor.cayManData.hasInvadeAlarm) {
                             caymanInvadeAlarmContent.setText(sensoroSensor.cayManData.invadeAlarm == 0 ? R.string.close : R.string.open);
+                        }else {
+                            caymanInvadeAlarm.setVisibility(GONE);
+                            viewCaymanInvadeAlarm.setVisibility(GONE);
                         }
 
 
@@ -2005,7 +2097,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
 
                 if (sensoroDevice.hasBeepMuteTime()) {
                     beepMuteTimeLayout.setVisibility(VISIBLE);
-                    beepMuteTimeTextView.setText(sensoroDevice.getBeepMuteTime()+"s");
+                    beepMuteTimeTextView.setText(sensoroDevice.getBeepMuteTime() + "s");
                 } else {
                     beepMuteTimeLayout.setVisibility(GONE);
                 }
@@ -2418,7 +2510,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                                 eddyStoneSlot1Item2.setText(getResources().getStringArray(R.array
                                         .eddystone_slot_array)[1]);
                                 eddyStoneSlot1Item2Value.setText(slot.getFrame());
-                                eddyStoneSlot1Item2Layout.setVisibility(View.VISIBLE);
+                                eddyStoneSlot1Item2Layout.setVisibility(VISIBLE);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
                                 eddyStoneSlot1Item1Value.setText(getResources().getStringArray(R.array
@@ -2432,7 +2524,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                                 eddyStoneSlot2Item2.setText(getResources().getStringArray(R.array
                                         .eddystone_slot_array)[1]);
                                 eddyStoneSlot2Item2Value.setText(slot.getFrame());
-                                eddyStoneSlot2Item2Layout.setVisibility(View.VISIBLE);
+                                eddyStoneSlot2Item2Layout.setVisibility(VISIBLE);
 
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
@@ -2447,7 +2539,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                                 eddyStoneSlot3Item2.setText(getResources().getStringArray(R.array
                                         .eddystone_slot_array)[1]);
                                 eddyStoneSlot3Item2Value.setText(slot.getFrame());
-                                eddyStoneSlot3Item2Layout.setVisibility(View.VISIBLE);
+                                eddyStoneSlot3Item2Layout.setVisibility(VISIBLE);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
                                 eddyStoneSlot3Item1Value.setText(getResources().getStringArray(R.array
@@ -2461,7 +2553,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                                 eddyStoneSlot4Item2.setText(getResources().getStringArray(R.array
                                         .eddystone_slot_array)[1]);
                                 eddyStoneSlot4Item2Value.setText(slot.getFrame());
-                                eddyStoneSlot4Item2Layout.setVisibility(View.VISIBLE);
+                                eddyStoneSlot4Item2Layout.setVisibility(VISIBLE);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
                                 eddyStoneSlot4Item1Value.setText(getResources().getStringArray(R.array
@@ -2480,7 +2572,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                                 eddyStoneSlot1Item2.setText(getResources().getStringArray(R.array
                                         .eddystone_slot_array)[2]);
                                 eddyStoneSlot1Item2Value.setText(slot.getFrame());
-                                eddyStoneSlot1Item2Layout.setVisibility(View.VISIBLE);
+                                eddyStoneSlot1Item2Layout.setVisibility(VISIBLE);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
                                 eddyStoneSlot1Item1Value.setText(getResources().getStringArray(R.array
@@ -2494,7 +2586,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                                 eddyStoneSlot2Item2.setText(getResources().getStringArray(R.array
                                         .eddystone_slot_array)[2]);
                                 eddyStoneSlot2Item2Value.setText(slot.getFrame());
-                                eddyStoneSlot2Item2Layout.setVisibility(View.VISIBLE);
+                                eddyStoneSlot2Item2Layout.setVisibility(VISIBLE);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
                                 eddyStoneSlot2Item1Value.setText(getResources().getStringArray(R.array
@@ -2508,7 +2600,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                                 eddyStoneSlot3Item2.setText(getResources().getStringArray(R.array
                                         .eddystone_slot_array)[1]);
                                 eddyStoneSlot3Item2Value.setText(slot.getFrame());
-                                eddyStoneSlot3Item2Layout.setVisibility(View.VISIBLE);
+                                eddyStoneSlot3Item2Layout.setVisibility(VISIBLE);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
                                 eddyStoneSlot3Item1Value.setText(getResources().getStringArray(R.array
@@ -2522,7 +2614,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                                 eddyStoneSlot4Item2.setText(getResources().getStringArray(R.array
                                         .eddystone_slot_array)[2]);
                                 eddyStoneSlot4Item2Value.setText(slot.getFrame());
-                                eddyStoneSlot4Item2Layout.setVisibility(View.VISIBLE);
+                                eddyStoneSlot4Item2Layout.setVisibility(VISIBLE);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
                                 eddyStoneSlot4Item1Value.setText(getResources().getStringArray(R.array
@@ -2547,7 +2639,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                                 String ik = SensoroUtils.bytesToHex(ik_data);
                                 eddyStoneSlot1Item2.setText(getString(R.string.eid_list));
                                 eddyStoneSlot1Item2Value.setText(ik);
-                                eddyStoneSlot1Item2Layout.setVisibility(View.VISIBLE);
+                                eddyStoneSlot1Item2Layout.setVisibility(VISIBLE);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
                                 eddyStoneSlot1Item1Value.setText(getResources().getStringArray(R.array
@@ -2567,7 +2659,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                                 String ik = SensoroUtils.bytesToHex(ik_data);
                                 eddyStoneSlot2Item2.setText(getString(R.string.eid_list));
                                 eddyStoneSlot2Item2Value.setText(ik);
-                                eddyStoneSlot2Item2Layout.setVisibility(View.VISIBLE);
+                                eddyStoneSlot2Item2Layout.setVisibility(VISIBLE);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
                                 eddyStoneSlot2Item1Value.setText(getResources().getStringArray(R.array
@@ -2587,7 +2679,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                                 String ik = SensoroUtils.bytesToHex(ik_data);
                                 eddyStoneSlot3Item2.setText(getString(R.string.eid_list));
                                 eddyStoneSlot3Item2Value.setText(ik);
-                                eddyStoneSlot3Item2Layout.setVisibility(View.VISIBLE);
+                                eddyStoneSlot3Item2Layout.setVisibility(VISIBLE);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
                                 eddyStoneSlot3Item1Value.setText(getResources().getStringArray(R.array
@@ -2607,7 +2699,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                                 String ik = SensoroUtils.bytesToHex(ik_data);
                                 eddyStoneSlot4Item2.setText(getString(R.string.eid_list));
                                 eddyStoneSlot4Item2Value.setText(ik);
-                                eddyStoneSlot4Item2Layout.setVisibility(View.VISIBLE);
+                                eddyStoneSlot4Item2Layout.setVisibility(VISIBLE);
                             } else {
                                 slotItemSelectIndex[slot.getIndex()] = STATUS_SLOT_DISABLED;
                                 eddyStoneSlot4Item1Value.setText(getResources().getStringArray(R.array
@@ -3040,22 +3132,9 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             Toast.makeText(getApplicationContext(), getString(R.string.send_success), Toast.LENGTH_SHORT).show();
                         }
                         break;
-//                    case CmdType.CMD_CAYMAN_RESET:
-//                                progressDialog.setMessage("正在恢复出厂设置，请稍后...");
-//                                progressDialog.show();
-////                            try {
-////                                Thread.sleep(4000);
-////                            } catch (InterruptedException e) {
-////                                e.printStackTrace();
-////                            }
-////                            runOnUiThread(new Runnable() {
-////                                @Override
-////                                public void run() {
-////                                    connectDevice();
-////                                }
-////                            });
-//
-//                        break;
+                    case CmdType.CMD_CAYMAN_RESET:
+                        isCaymanReset = 2; //没别的意思，只是为了区分状态，值是随便给的，不想给0，就随意给了个2
+                        break;
                     default:
                         try {
                             switch (sensoroDevice.getDataVersion()) {
@@ -3115,11 +3194,15 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
 
         Log.v(TAG, "onConnectedSuccess");
         String sn = sensoroDevice.getSn();
+        String password = sensoroDevice.getPassword();
         String firmwareVersion = sensoroDevice.getFirmwareVersion();
+        String macAddress = sensoroDevice.getMacAddress();
         sensoroDevice = (SensoroDevice) bleDevice;
         sensoroSensor = sensoroDevice.getSensoroSensorTest();
+        sensoroDevice.setPassword(password);
         sensoroDevice.setFirmwareVersion(firmwareVersion);
         sensoroDevice.setSn(sn);
+        sensoroDevice.setMacAddress(macAddress);
         sensoroDevice.setHasMaxEirp(((SensoroDevice) bleDevice).hasMaxEirp());
         if (((SensoroDevice) bleDevice).hasMaxEirp()) {
             sensoroDevice.setMaxEirp(((SensoroDevice) bleDevice).getMaxEirp());
@@ -3134,6 +3217,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 initEnterDialog();
             }
         });
+
+
     }
 
     private void initEnterDialog() {
@@ -3146,12 +3231,51 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getApplicationContext(), getString(R.string.connect_failed), Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
-                SettingDeviceActivity.this.finish();
+                if (isCaymanReset == 2 || isCaymanReset == 3) {
+                    if (isCaymanReset == 3) {
+                        //测试过程中发现，会多次调用onConnectedFailure，这里做只要是恢复出厂设置，再回调onConnectedFailure
+                        //就不做处理了
+                        return;
+                    }
+                    //恢复出厂设置后重新连接，然后更新
+                    progressDialog.setMessage("正在恢复出厂设置，请稍后...");
+                    try {
+                        progressDialog.show();
+                        sensoroDeviceConnection = new SensoroDeviceConnection(SettingDeviceActivity.this, sensoroDevice.getMacAddress());
+                        sensoroDeviceConnection.connect(sensoroDevice.getPassword(), mCaymanConnectCallBack);
+                        isCaymanReset = 3;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), getString(R.string.connect_failed), Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                    SettingDeviceActivity.this.finish();
+                }
             }
         });
     }
+
+    private SensoroConnectionCallback mCaymanConnectCallBack = new SensoroConnectionCallback() {
+        @Override
+        public void onConnectedSuccess(BLEDevice bleDevice, int cmd) {
+            postUpdateData05();
+            Toast.makeText(getApplicationContext(), "恢复出厂设置成功", Toast.LENGTH_SHORT).show();
+            progressDialog.dismiss();
+            SettingDeviceActivity.this.finish();
+        }
+
+        @Override
+        public void onConnectedFailure(int errorCode) {
+            progressDialog.dismiss();
+            SettingDeviceActivity.this.finish();
+        }
+
+        @Override
+        public void onDisconnected() {
+
+        }
+    };
 
     @Override
     public void onDisconnected() {
@@ -3569,6 +3693,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 if (sensoroSensor.acrelFires.hasConnectSw) {
                     builder.setConnectSw(sensoroSensor.acrelFires.connectSw);
                 }
+
                 if (sensoroSensor.acrelFires.hasChEnable) {
                     builder.setChEnable(sensoroSensor.acrelFires.chEnable);
                 }
@@ -3740,8 +3865,6 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             }
 
 
-
-
         }
         MsgNode1V1M5.MsgNode msgCfg = msgCfgBuilder.build();
         byte[] data = msgCfg.toByteArray();
@@ -3905,6 +4028,88 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 DeviceDataDao.addDeviceItem(sensoroDevice.getSn(), baseString, versionString);
             }
         });
+    }
+
+
+    public static String timeZoneConvert(int defenseModeStartTime) {
+        String displayName = TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT);
+        if (displayName.contains("+")) {
+            String[] split = displayName.split("\\+");
+            if (split.length > 1) {
+                String[] split1 = split[1].split(":");
+                if (split1.length > 1) {
+                    try {
+                        int hour = Integer.parseInt(split1[0]);
+                        int minute = Integer.parseInt(split1[1]);
+
+                        int time = defenseModeStartTime + hour * 60 + minute;
+
+                        int realHour = time / 60;
+
+                        if (realHour > 24) {
+                            realHour = realHour - 24;
+                        }
+                        int realMinute = time % 60;
+                        return String.format(Locale.ROOT, "%02d:%02d", realHour, realMinute);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                        return timeZoneBeijing(defenseModeStartTime);
+                    }
+                } else {
+                    timeZoneBeijing(defenseModeStartTime);
+                }
+            } else {
+                //默认按东八区计算
+                return timeZoneBeijing(defenseModeStartTime);
+            }
+
+        } else if (displayName.contains("-")) {
+            String[] split = displayName.split("-");
+            if (split.length > 1) {
+                String[] split1 = split[1].split(":");
+                if (split1.length > 1) {
+                    try {
+                        int hour = Integer.parseInt(split1[0]);
+                        int minute = Integer.parseInt(split1[1]);
+
+                        int time = defenseModeStartTime - hour * 60 - minute;
+                        if (time < 0) {
+                            time = time + 24 * 60;
+                        }
+                        int realHour = time / 60;
+
+                        if (realHour > 24) {
+                            realHour = realHour - 24;
+                        }
+                        int realMinute = time % 60;
+                        return String.format(Locale.ROOT, "%02d:%02d", realHour, realMinute);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                        return timeZoneBeijing(defenseModeStartTime);
+                    }
+                } else {
+                    timeZoneBeijing(defenseModeStartTime);
+                }
+            } else {
+                //默认按东八区计算
+                return timeZoneBeijing(defenseModeStartTime);
+            }
+        } else {
+            return timeZoneBeijing(defenseModeStartTime);
+        }
+        return timeZoneBeijing(defenseModeStartTime);
+    }
+
+    private static String timeZoneBeijing(int defenseModeStartTime) {
+
+        int realHour = (defenseModeStartTime + 8 * 60) / 60;
+
+        if (realHour > 24) {
+            realHour = realHour - 24;
+        }
+        int realMinute = defenseModeStartTime % 60;
+        StringBuffer sb = new StringBuffer(realHour).append(":").append(realMinute);
+        return String.format(Locale.ROOT, "%02d:%02d", realHour, realMinute);
     }
 
 
@@ -4341,7 +4546,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         [index]);
                 eddyStoneSlot1Item2.setText(this.getString(R.string.slot5_name));
                 eddyStoneSlot1Item2Value.setText(this.getString(R.string.text_null));
-                eddyStoneSlot1Item2Layout.setVisibility(View.VISIBLE);
+                eddyStoneSlot1Item2Layout.setVisibility(VISIBLE);
                 break;
             case STATUS_SLOT_URL:
                 eddyStoneSlot1Item1.setText(this.getString(R.string.slot1_name));
@@ -4349,11 +4554,11 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         [index]);
                 eddyStoneSlot1Item2.setText(this.getString(R.string.slot6_name));
                 eddyStoneSlot1Item2Value.setText(this.getString(R.string.text_null));
-                eddyStoneSlot1Item2Layout.setVisibility(View.VISIBLE);
+                eddyStoneSlot1Item2Layout.setVisibility(VISIBLE);
                 break;
             case STATUS_SLOT_EID:
-                eddyStoneSlot1Item2Layout.setVisibility(View.VISIBLE);
-                eddyStoneSlot1Iv2.setVisibility(View.VISIBLE);
+                eddyStoneSlot1Item2Layout.setVisibility(VISIBLE);
+                eddyStoneSlot1Iv2.setVisibility(VISIBLE);
                 eddyStoneSlot1Item1.setText(this.getString(R.string.slot1_name));
                 eddyStoneSlot1Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
                         [index]);
@@ -4386,7 +4591,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 eddyStoneSlot2Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
                         [index]);
                 eddyStoneSlot2Item2.setText(this.getString(R.string.slot5_name));
-                eddyStoneSlot2Item2Layout.setVisibility(View.VISIBLE);
+                eddyStoneSlot2Item2Layout.setVisibility(VISIBLE);
                 break;
             case STATUS_SLOT_URL:
                 eddyStoneSlot2Item1.setText(this.getString(R.string.slot1_name));
@@ -4394,10 +4599,10 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         [index]);
                 eddyStoneSlot2Item2.setText(this.getString(R.string.slot6_name));
                 eddyStoneSlot2Item2Value.setText(this.getString(R.string.text_null));
-                eddyStoneSlot2Item2Layout.setVisibility(View.VISIBLE);
+                eddyStoneSlot2Item2Layout.setVisibility(VISIBLE);
                 break;
             case STATUS_SLOT_EID:
-                eddyStoneSlot2Item2Layout.setVisibility(View.VISIBLE);
+                eddyStoneSlot2Item2Layout.setVisibility(VISIBLE);
                 eddyStoneSlot2Item1.setText(this.getString(R.string.slot1_name));
                 eddyStoneSlot2Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
                         [index]);
@@ -4430,22 +4635,22 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         [index]);
                 eddyStoneSlot3Item2.setText(this.getString(R.string.slot5_name));
                 eddyStoneSlot3Item2Value.setText(this.getString(R.string.text_null));
-                eddyStoneSlot3Item2Layout.setVisibility(View.VISIBLE);
+                eddyStoneSlot3Item2Layout.setVisibility(VISIBLE);
                 break;
             case STATUS_SLOT_URL:
                 eddyStoneSlot3Item1.setText(this.getString(R.string.slot1_name));
                 eddyStoneSlot3Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
                         [index]);
                 eddyStoneSlot3Item2.setText(this.getString(R.string.slot6_name));
-                eddyStoneSlot3Item2Layout.setVisibility(View.VISIBLE);
+                eddyStoneSlot3Item2Layout.setVisibility(VISIBLE);
                 break;
             case STATUS_SLOT_EID:
-                eddyStoneSlot3Item2Layout.setVisibility(View.VISIBLE);
+                eddyStoneSlot3Item2Layout.setVisibility(VISIBLE);
                 eddyStoneSlot3Item1.setText(this.getString(R.string.slot1_name));
                 eddyStoneSlot3Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
                         [index]);
                 eddyStoneSlot3Item2.setText(this.getString(R.string.eid_list));
-                eddyStoneSlot3Iv2.setVisibility(View.VISIBLE);
+                eddyStoneSlot3Iv2.setVisibility(VISIBLE);
                 break;
             case STATUS_SLOT_TLM:
                 eddyStoneSlot3Item1.setText(this.getString(R.string.slot1_name));
@@ -4473,23 +4678,23 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         [index]);
                 eddyStoneSlot4Item2.setText(this.getString(R.string.slot5_name));
                 eddyStoneSlot4Item2Value.setText(this.getString(R.string.text_null));
-                eddyStoneSlot4Item2Layout.setVisibility(View.VISIBLE);
+                eddyStoneSlot4Item2Layout.setVisibility(VISIBLE);
                 break;
             case STATUS_SLOT_URL:
                 eddyStoneSlot4Item1.setText(this.getString(R.string.slot1_name));
                 eddyStoneSlot4Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
                         [index]);
                 eddyStoneSlot4Item2.setText(this.getString(R.string.slot6_name));
-                eddyStoneSlot4Item2Layout.setVisibility(View.VISIBLE);
+                eddyStoneSlot4Item2Layout.setVisibility(VISIBLE);
                 break;
             case STATUS_SLOT_EID:
-                eddyStoneSlot4Item2Layout.setVisibility(View.VISIBLE);
+                eddyStoneSlot4Item2Layout.setVisibility(VISIBLE);
                 eddyStoneSlot3Item1.setText(this.getString(R.string.slot1_name));
                 eddyStoneSlot4Item1Value.setText(this.getResources().getStringArray(R.array.eddystone_slot_array)
                         [index]);
                 eddyStoneSlot4Item2.setText(this.getString(R.string.eid_list));
                 eddyStoneSlot4Item2Value.setText(this.getString(R.string.text_null));
-                eddyStoneSlot4Iv2.setVisibility(View.VISIBLE);
+                eddyStoneSlot4Iv2.setVisibility(VISIBLE);
                 break;
             case STATUS_SLOT_TLM:
                 eddyStoneSlot4Item1.setText(this.getString(R.string.slot1_name));
@@ -5078,34 +5283,51 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 e.printStackTrace();
                 Toast.makeText(this, "范围为数字格式", Toast.LENGTH_SHORT).show();
             }
-        }else if (SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE_START_TIME.equals(tag)) {
+        } else if (SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE_START_TIME.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
-            try {
-                int i = Integer.parseInt(temp);
-                if (i < 1 || i > 1439) {
-                    Toast.makeText(this, "定时设防开始时间范围为1-1439", Toast.LENGTH_SHORT).show();
-                    return;
+            if (temp != null && temp.contains(":")) {
+                String[] split = temp.split(":");
+                if (split.length > 1) {
+                    int i = caymanTimeConvertMinute(split);
+                    if (i == -1) {
+                        Toast.makeText(this, "输入非法，请重新输入", Toast.LENGTH_SHORT).show();
+                        return;
+
+                    }
+                    if (i < 1 || i > 1439) {
+                        Toast.makeText(this, "定时设防结束时间范围为1-1439", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    sensoroSensor.cayManData.defenseModeStartTime = i;
+                    caymanDefenseModeStartTimeContent.setText(temp);
                 }
-                sensoroSensor.cayManData.defenseModeStartTime = i;
-                caymanDefenseModeStartTimeContent.setText(i + "min");
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(this, "请输入数字", Toast.LENGTH_SHORT).show();
+
+            } else {
+                Toast.makeText(this, "请输入正确时间格式", Toast.LENGTH_SHORT).show();
             }
-        }else if (SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE_STOP_TIME.equals(tag)) {
+        } else if (SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE_STOP_TIME.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
-            try {
-                int i = Integer.parseInt(temp);
-                if (i < 1 || i > 1439) {
-                    Toast.makeText(this, "定时设防结束时间范围为1-1439", Toast.LENGTH_SHORT).show();
-                    return;
+            if (temp != null && temp.contains(":")) {
+                String[] split = temp.split(":");
+                if (split.length > 1) {
+                    int i = caymanTimeConvertMinute(split);
+                    if (i == -1) {
+                        Toast.makeText(this, "输入非法，请重新输入", Toast.LENGTH_SHORT).show();
+                        return;
+
+                    }
+                    if (i < 1 || i > 1439) {
+                        Toast.makeText(this, "定时设防结束时间范围为1-1439", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    sensoroSensor.cayManData.defenseModeStopTime = i;
+                    caymanDefenseModeStopTimeContent.setText(temp);
                 }
-                sensoroSensor.cayManData.defenseModeStopTime = i;
-                caymanDefenseModeStopTimeContent.setText(i + "min");
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(this, "请输入数字", Toast.LENGTH_SHORT).show();
+
+            } else {
+                Toast.makeText(this, "请输入正确时间格式", Toast.LENGTH_SHORT).show();
             }
+
         } else if (SETTINGS_DEVICE_RL_APP_BEEP_MUTE_TIME.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
@@ -5114,13 +5336,26 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     Toast.makeText(this, "请输入正数", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                sensoroDevice.setBeepMuteTime(i);
                 beepMuteTimeTextView.setText(i + "s");
+                sensoroDeviceConnection.writeAppBeepMuteTime(i, new SensoroWriteCallback() {
+                    @Override
+                    public void onWriteSuccess(Object o, int cmd) {
+                        sensoroDevice.setBeepMuteTime(i);
+                        Toast.makeText(SettingDeviceActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onWriteFailure(int errorCode, int cmd) {
+                        Toast.makeText(SettingDeviceActivity.this, "保存失败", Toast.LENGTH_SHORT).show();
+                        beepMuteTimeTextView.setText(sensoroDevice.getBeepMuteTime() + "s");
+                    }
+                });
+
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(this, "请输入数字", Toast.LENGTH_SHORT).show();
             }
-        }else if (SETTINGS_DEVICE_RL_ACREL_T4_TH.equals(tag)) {
+        } else if (SETTINGS_DEVICE_RL_ACREL_T4_TH.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 int i = Integer.parseInt(temp);
@@ -5251,12 +5486,12 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         } else if (SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_HIGH_TEM.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
-                int i = Integer.parseInt(temp);
+                float i = Float.parseFloat(temp);
                 if (i < -40 || i > 140) {
                     Toast.makeText(this, "高温度阈值范围为-40-140", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                sensoroSensor.cayManData.alarmOfHighTem = i * 10;
+                sensoroSensor.cayManData.alarmOfHighTem = (int) (i * 10);
                 caymanAlarmOfHighTemContent.setText(i + "℃");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -5265,12 +5500,12 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         } else if (SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_LOW_TEM.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
-                int i = Integer.parseInt(temp);
+                float i = Float.parseFloat(temp);
                 if (i < -40 || i > 140) {
                     Toast.makeText(this, "低温度阈值范围为-40-140", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                sensoroSensor.cayManData.alarmOfLowTem = i * 10;
+                sensoroSensor.cayManData.alarmOfLowTem = (int) (i * 10);
                 caymanAlarmOfLowTemContent.setText(i + "℃");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -5279,12 +5514,12 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         } else if (SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_HIGH_HUM.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
-                int i = Integer.parseInt(temp);
+                float i = Float.parseFloat(temp);
                 if (i < 0 || i > 100) {
                     Toast.makeText(this, "湿度阈值范围为0-100", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                sensoroSensor.cayManData.alarmOfHighHum = i*10;
+                sensoroSensor.cayManData.alarmOfHighHum = (int) (i * 10);
                 caymanAlarmOfHighHumContent.setText(i + "%");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -5294,15 +5529,15 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
             sensoroSensor.cayManData.bleAdvType = index;
             caymanBleAdvTypeContent.setText(index == 0 ? "持续广播" : "间断广播");
-        }else if (SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE.equals(tag)) {
+        } else if (SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE.equals(tag)) {
             int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
             sensoroSensor.cayManData.defenseMode = index;
             caymanDefenseModeContent.setText(index == 0 ? "关闭" : "开启");
-        }else if (SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_TIMER_MODE.equals(tag)) {
+        } else if (SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_TIMER_MODE.equals(tag)) {
             int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
             sensoroSensor.cayManData.defenseTimerMode = index;
             caymanDefenseTimerModeContent.setText(index == 0 ? "关闭" : "开启");
-        }else if (SETTINGS_DEVICE_RL_CAYMAN_INVADE_ALARM.equals(tag)) {
+        } else if (SETTINGS_DEVICE_RL_CAYMAN_INVADE_ALARM.equals(tag)) {
             int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
             sensoroSensor.cayManData.invadeAlarm = index;
             caymanInvadeAlarmContent.setText(index == 0 ? "关闭" : "开启");
@@ -5310,15 +5545,15 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
             sensoroDevice.setLedStatus(index);
             ledStatusTextView.setText(index == 0 ? "关闭" : "开启");
-        }else if (SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_LOW_HUM.equals(tag)) {
+        } else if (SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_LOW_HUM.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
-                int i = Integer.parseInt(temp);
+                float i = Float.parseFloat(temp);
                 if (i < 0 || i > 100) {
                     Toast.makeText(this, "湿度阈值范围为0-100", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                sensoroSensor.cayManData.alarmOfLowHum = i*10;
+                sensoroSensor.cayManData.alarmOfLowHum = (int) (i * 10);
                 caymanAlarmOfLowHumContent.setText(i + "%");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -5370,6 +5605,52 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
 
     }
 
+    private int caymanTimeConvertMinute(String[] split) {
+        try {
+            int hour = Integer.parseInt(split[0]);
+            int minute = Integer.parseInt(split[1]);
+
+            String displayName = TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT);
+            if (displayName.contains("+")) {
+                String[] split1 = displayName.split("\\+");
+                if (split1.length > 1) {
+                    String[] split2 = split1[1].split(":");
+                    if (split2.length > 1) {
+                        int zoneHour = Integer.parseInt(split2[0]);
+                        int zoneMinute = Integer.parseInt(split2[1]);
+
+                        int time = hour * 60 + minute - zoneHour * 60 - zoneMinute;
+
+                        if (time < 0) {
+                            time = time + 1440;
+                        }
+                        return time;
+                    }
+                }
+            } else if (displayName.contains("-")) {
+                String[] split1 = displayName.split("-");
+                if (split1.length > 1) {
+                    String[] split2 = split1[1].split(":");
+                    if (split2.length > 1) {
+                        int zoneHour = Integer.parseInt(split2[0]);
+                        int zoneMinute = Integer.parseInt(split2[1]);
+
+                        int time = hour * 60 + minute + zoneHour * 60 + zoneMinute;
+
+                        if (time > 1440) {
+                            time = time - 1440;
+                        }
+                        return time;
+                    }
+                }
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+
+        }
+        return -1;
+    }
+
     @Override
     protected void onDestroy() {
         if (progressDialog != null && progressDialog.isShowing()) {
@@ -5378,6 +5659,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         if (sensoroDeviceConnection != null) {
             sensoroDeviceConnection.disconnect();
         }
+
         if (mSettingEnterDialogUtils != null) {
             mSettingEnterDialogUtils.destroy();
         }
@@ -5392,11 +5674,11 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             R.id.acrel_cmd_mute, R.id.acrel_cmd_zero_clearing, R.id.acrel_root,
             R.id.acrel_psd, R.id.cayman_is_smoke, R.id.cayman_is_moved, R.id.cayman_value_of_tem, R.id.cayman_value_of_photor,
             R.id.cayman_ble_adv_type, R.id.cayman_ble_adv_start_time, R.id.cayman_ble_adv_end_time_hum, R.id.cayman_value_of_batb,
-            R.id.cayman_human_detection_time,R.id.cayman_defense_mode,R.id.cayman_defense_timer_mode,
-            R.id.cayman_defense_mode_start_time,R.id.cayman_defense_mode_stop_time,R.id.cayman_invade_alarm,
+            R.id.cayman_human_detection_time, R.id.cayman_defense_mode, R.id.cayman_defense_timer_mode,
+            R.id.cayman_defense_mode_start_time, R.id.cayman_defense_mode_stop_time, R.id.cayman_invade_alarm,
             R.id.cayman_value_of_hum, R.id.cayman_alarm_of_high_tem, R.id.cayman_alarm_of_low_tem,
-            R.id.cayman_alarm_of_high_hum, R.id.settings_device_rl_app_led_status,R.id.cayman_alarm_of_low_hum, R.id.cayman_cmd_self_check,
-            R.id.cayman_cmd_reset, R.id.cayman_cmd_clear_sound,R.id.settings_device_rl_app_beep_mute_time, R.id.baymax_density_l1, R.id.baymax_density_l2, R.id.baymax_density_l3,
+            R.id.cayman_alarm_of_high_hum, R.id.settings_device_rl_app_led_status, R.id.cayman_alarm_of_low_hum, R.id.cayman_cmd_self_check,
+            R.id.cayman_cmd_reset, R.id.cayman_cmd_clear_sound, R.id.settings_device_rl_app_beep_mute_time, R.id.baymax_density_l1, R.id.baymax_density_l2, R.id.baymax_density_l3,
             R.id.baymax_cmd_close_electronic_valve, R.id.baymax_cmd_self_check, R.id.baymax_cmd_reset, R.id.baymax_cmd_mute,
             R.id.settings_device_rl_app_battery_beep, R.id.settings_device_rl_app_demo})
     public void onViewClicked(View view) {
@@ -5608,58 +5890,58 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             case R.id.cayman_ble_adv_end_time_hum:
                 break;
             case R.id.cayman_human_detection_time:
-                dialogFragment = SettingsInputDialogFragment.newInstance(sensoroSensor.cayManData.humanDetectionTime+"");
-                dialogFragment.show(getFragmentManager(),SETTINGS_DEVICE_RL_CAYMAN_HUMAN_DETECTION_TIME);
+                dialogFragment = SettingsInputDialogFragment.newInstance(sensoroSensor.cayManData.humanDetectionTime + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_HUMAN_DETECTION_TIME);
                 break;
             case R.id.cayman_defense_mode:
                 String[] items = {"关闭", "开启"};
-                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(items,sensoroSensor.cayManData.defenseMode);
-                dialogFragment.show(getFragmentManager(),SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE);
+                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(items, sensoroSensor.cayManData.defenseMode);
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE);
                 break;
             case R.id.cayman_defense_timer_mode:
                 String[] timerItems = {"关闭", "开启"};
-                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(timerItems,sensoroSensor.cayManData.defenseTimerMode);
-                dialogFragment.show(getFragmentManager(),SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_TIMER_MODE);
+                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(timerItems, sensoroSensor.cayManData.defenseTimerMode);
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_TIMER_MODE);
                 break;
             case R.id.cayman_defense_mode_start_time:
-                dialogFragment = SettingsInputDialogFragment.newInstance(sensoroSensor.cayManData.defenseModeStartTime+"");
-                dialogFragment.show(getFragmentManager(),SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE_START_TIME);
+                dialogFragment = SettingsInputDialogFragment.newInstance(caymanDefenseModeStartTimeContent.getText().toString());
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE_START_TIME);
                 break;
             case R.id.cayman_defense_mode_stop_time:
-                dialogFragment = SettingsInputDialogFragment.newInstance(sensoroSensor.cayManData.defenseModeStopTime+"");
-                dialogFragment.show(getFragmentManager(),SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE_STOP_TIME);
+                dialogFragment = SettingsInputDialogFragment.newInstance(caymanDefenseModeStopTimeContent.getText().toString());
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE_STOP_TIME);
                 break;
             case R.id.cayman_invade_alarm:
                 String[] invadeAlarmItems = {"关闭", "开启"};
-                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(invadeAlarmItems,sensoroSensor.cayManData.defenseTimerMode);
-                dialogFragment.show(getFragmentManager(),SETTINGS_DEVICE_RL_CAYMAN_INVADE_ALARM);
+                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(invadeAlarmItems, sensoroSensor.cayManData.defenseTimerMode);
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_INVADE_ALARM);
                 break;
             case R.id.settings_device_rl_app_led_status:
                 String[] ledStatusItems = {"关闭", "开启"};
-                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(ledStatusItems,sensoroDevice.getLedStatus());
-                dialogFragment.show(getFragmentManager(),SETTINGS_DEVICE_APP_LED_STATUS);
+                dialogFragment = SettingsSingleChoiceItemsFragment.newInstance(ledStatusItems, sensoroDevice.getLedStatus());
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_APP_LED_STATUS);
                 break;
             case R.id.settings_device_rl_app_beep_mute_time:
-                dialogFragment = SettingsInputDialogFragment.newInstance(sensoroSensor.cayManData.defenseModeStopTime+"");
-                dialogFragment.show(getFragmentManager(),SETTINGS_DEVICE_RL_APP_BEEP_MUTE_TIME);
+                dialogFragment = SettingsInputDialogFragment.newInstance(sensoroDevice.getBeepMuteTime() + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_APP_BEEP_MUTE_TIME);
                 break;
             case R.id.cayman_alarm_of_high_tem:
-                int alarmOfHighTem = sensoroSensor.cayManData.alarmOfHighTem / 10;
+                float alarmOfHighTem = sensoroSensor.cayManData.alarmOfHighTem / 10f;
                 dialogFragment = SettingsInputDialogFragment.newInstance(alarmOfHighTem + "");
                 dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_HIGH_TEM);
                 break;
             case R.id.cayman_alarm_of_low_tem:
-                int alarmOfLowTem = sensoroSensor.cayManData.alarmOfLowTem / 10;
+                float alarmOfLowTem = sensoroSensor.cayManData.alarmOfLowTem / 10f;
                 dialogFragment = SettingsInputDialogFragment.newInstance(alarmOfLowTem + "");
                 dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_LOW_TEM);
                 break;
             case R.id.cayman_alarm_of_high_hum:
-                int alarmOfHighHum = sensoroSensor.cayManData.alarmOfHighHum/10;
+                float alarmOfHighHum = sensoroSensor.cayManData.alarmOfHighHum / 10f;
                 dialogFragment = SettingsInputDialogFragment.newInstance(alarmOfHighHum + "");
                 dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_HIGH_HUM);
                 break;
             case R.id.cayman_alarm_of_low_hum:
-                int alarmOfLowHum = sensoroSensor.cayManData.alarmOfLowHum/10;
+                float alarmOfLowHum = sensoroSensor.cayManData.alarmOfLowHum / 10f;
                 dialogFragment = SettingsInputDialogFragment.newInstance(alarmOfLowHum + "");
                 dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_ALARM_OF_LOW_HUM);
                 break;
@@ -5671,7 +5953,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 //恢复出厂设置后，需要断开连接 再连接上 然后将新的配置文件推送到服务器
                 MsgNode1V1M5.Cayman.Builder builder = MsgNode1V1M5.Cayman.newBuilder();
                 builder.setCmd(2);
-                sensoroDeviceConnection.writeCaymanCmd(builder, CmdType.CMD_CAYMAN_RESET,this);
+                sensoroDeviceConnection.writeCaymanCmd(builder, CmdType.CMD_CAYMAN_RESET, this);
                 break;
             case R.id.cayman_cmd_clear_sound:
                 doCaymanControl(CmdType.CMD_CAYMAN_CLEAR_SOUND);
@@ -5751,7 +6033,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         MsgNode1V1M5.Cayman.Builder builder = MsgNode1V1M5.Cayman.newBuilder();
         int i = SensoroUUID.bitsToInt(bytes);
         builder.setCmd(i);
-        sensoroDeviceConnection.writeCaymanCmd(builder, -1,this);
+        sensoroDeviceConnection.writeCaymanCmd(builder, -1, this);
     }
 
     private void doAcrelControl(int cmd) {
