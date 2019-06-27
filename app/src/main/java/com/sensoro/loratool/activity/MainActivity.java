@@ -376,18 +376,28 @@ public class MainActivity extends BaseActivity
             public void run() {
                 switch (bleDevice.getType()) {
                     case BLEDevice.TYPE_DEVICE:
-                        deviceFragment.refreshGone((SensoroDevice) bleDevice);
+                        if (bleDevice instanceof SensoroDevice) {
+                            deviceFragment.refreshGone((SensoroDevice) bleDevice);
+                        }
                         break;
                     case BLEDevice.TYPE_SENSOR:
-                        deviceFragment.refreshSensorGone((SensoroSensor) bleDevice);
+                        if (bleDevice instanceof SensoroSensor) {
+                            deviceFragment.refreshSensorGone((SensoroSensor) bleDevice);
+
+                        }
                         break;
                     case BLEDevice.TYPE_STATION:
                         try {
-                            stationFragment.refreshGone((SensoroStation) bleDevice);
+                            if (bleDevice instanceof SensoroStation) {
+                                stationFragment.refreshGone((SensoroStation) bleDevice);
+                            }
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                         break;
+                        default:
+                            break;
                 }
             }
         });

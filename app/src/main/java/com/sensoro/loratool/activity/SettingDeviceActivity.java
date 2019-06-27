@@ -5543,7 +5543,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
 
         MsgNode1V1M5.Cayman.Builder builder = MsgNode1V1M5.Cayman.newBuilder();
         builder.setCmd(SensoroUUID.bitsToInt(bytes));
-        sensoroDeviceConnection.writeCaymanCmd(builder, this);
+        sensoroDeviceConnection.writeCaymanCmd(builder, -1,this);
     }
 
     private void doAcrelControl(int cmd) {
