@@ -116,16 +116,16 @@ public class ScanDeviceAcPresenter extends BasePresenter<IScanDeviceAcView> impl
         getView().showProgressDialog();
         final Intent intent = new Intent(mContext, DeviceDetailActivity.class);
         LoRaSettingApplication application = (LoRaSettingApplication) mContext.getApplicationContext();
-        final List<DeviceInfo> deviceInfoList = application.getDeviceInfoList();
-        for (DeviceInfo deviceInfo : deviceInfoList) {
-            if (deviceInfo.getSn().equals(scanSerialNumber)) {
-                intent.putExtra("deviceInfo", deviceInfo);
-                addTags(intent, deviceInfo);
-                getView().dismissProgressDialog();
-                getView().startAC(intent);
-                return;
-            }
-        }
+//        final List<DeviceInfo> deviceInfoList = application.getDeviceInfoList();
+//        for (DeviceInfo deviceInfo : deviceInfoList) {
+//            if (deviceInfo.getSn().equals(scanSerialNumber)) {
+//                intent.putExtra("deviceInfo", deviceInfo);
+//                addTags(intent, deviceInfo);
+//                getView().dismissProgressDialog();
+//                getView().startAC(intent);
+//                return;
+//            }
+//        }
         //
         application.loRaSettingServer.deviceAll(scanSerialNumber, new Response
                 .Listener<DeviceInfoListRsp>() {

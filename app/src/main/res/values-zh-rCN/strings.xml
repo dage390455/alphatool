@@ -69,8 +69,8 @@
     <string name="update_version_error">升级版本必须大于等于当前设备版本</string>
     <string name="target_error">无法找到目标对象</string>
     <string name="firmware_error">固件版本号必须大于等于1.2</string>
-    <string name="firmware_version">固件版本</string>
-    <string name="hardware_version">硬件版本</string>
+    <string name="firmware_version">固件</string>
+    <string name="hardware_version">硬件</string>
     <string name="signal_strength">信号强弱</string>
     <string name="band">频段</string>
     <string name="invaild_url">Url请以http://或者https://开头</string>

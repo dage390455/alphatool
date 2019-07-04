@@ -79,6 +79,7 @@ public class DeviceDetailAcPresenter extends BasePresenter<IDeviceDetailAcView> 
 
     private void initRcContent() {
         ArrayList<String> valueList = new ArrayList<>();
+        obtainPower(mDeviceInfo);
         valueList.add(String.format(Locale.CHINA, "%ddBm", mDeviceInfo.getLoraTxp()));
         valueList.add(String.format(Locale.CHINA, "%ds", mDeviceInfo.getInterval()));
         valueList.add(String.format(Locale.CHINA, "%sMHz", mDeviceInfo.getBand()));
@@ -97,6 +98,10 @@ public class DeviceDetailAcPresenter extends BasePresenter<IDeviceDetailAcView> 
         getView().setRcKeyList(keyList);
         getView().updateRcValueList(valueList);
         getView().setRcAdapter();
+    }
+
+    private void obtainPower(DeviceInfo mDeviceInfo) {
+        mDeviceInfo.getLoraTxp();
     }
 
     private void initTvTest() {

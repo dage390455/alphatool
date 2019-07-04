@@ -347,6 +347,7 @@ public class LoginActivity extends BaseActivity implements Constants, Permission
                 } else {
                     //获取账户下设备类型
                     getAccountDevicesType();
+
                     Utils.checkBleStatus(getApplicationContext());
                     PreferencesHelper.getInstance().saveLoginData(app, response.getName(), username, pwd, response
                             .getExpires(), response.getSessionId());
@@ -404,8 +405,7 @@ public class LoginActivity extends BaseActivity implements Constants, Permission
                 , new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        String s = new String(error.networkResponse.data);
-                        int i = 1;
+
                     }
                 });
     }

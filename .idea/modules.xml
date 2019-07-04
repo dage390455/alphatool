@@ -8,9 +8,11 @@
       <module fileurl="file://$PROJECT_DIR$/libs/libs.iml" filepath="$PROJECT_DIR$/libs/libs.iml" />
       <module fileurl="file://$PROJECT_DIR$/libstationcommunication/libstationcommunication.iml" filepath="$PROJECT_DIR$/libstationcommunication/libstationcommunication.iml" />
       <module fileurl="file://$PROJECT_DIR$/menudrawer/menudrawer.iml" filepath="$PROJECT_DIR$/menudrawer/menudrawer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pickerview/pickerview.iml" filepath="$PROJECT_DIR$/pickerview/pickerview.iml" />
       <module fileurl="file://$PROJECT_DIR$/libs/pulltorefresh/pulltorefresh.iml" filepath="$PROJECT_DIR$/libs/pulltorefresh/pulltorefresh.iml" />
       <module fileurl="file://$PROJECT_DIR$/sensor-kit/sensor-kit.iml" filepath="$PROJECT_DIR$/sensor-kit/sensor-kit.iml" />
       <module fileurl="file://$PROJECT_DIR$/volleymanager/volleymanager.iml" filepath="$PROJECT_DIR$/volleymanager/volleymanager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wheelview/wheelview.iml" filepath="$PROJECT_DIR$/wheelview/wheelview.iml" />
     </modules>
   </component>
 </project>

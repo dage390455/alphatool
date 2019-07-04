@@ -569,6 +569,23 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
                 loraParamBuilder.setDevAddr(deviceConfiguration.getDevAdr());
                 loraParamBuilder.setAdr(deviceConfiguration.getLoraAdr());
                 loraParamBuilder.setDatarate(deviceConfiguration.getLoraDr());
+                if (sensoroDevice.hasMaxEirp()) {
+                    loraParamBuilder.setMaxEIRP(sensoroDevice.getMaxEirp());
+                }
+                List<Integer> channelList = deviceConfiguration.getChannelMaskList();
+                loraParamBuilder.addAllChannelMask(channelList);
+
+                List<SensoroChannel> channels = deviceConfiguration.getChannelList();
+                if (channels != null) {
+                    for (int i = 0; i < channels.size(); i++) {
+                        MsgNode1V1M5.Channel.Builder builder1 = MsgNode1V1M5.Channel.newBuilder();
+                        SensoroChannel sensoroChannel = channels.get(i);
+                        builder1.setFrequency(sensoroChannel.frequency);
+                        builder1.setRx1Frequency(sensoroChannel.rx1Frequency);
+//                    loraParamBuilder.setChannels(i,builder1);
+                        loraParamBuilder.addChannels(builder1);
+                    }
+                }
 
                 if (deviceInfo.getDeviceType().equalsIgnoreCase("chip") && (deviceInfo.getFirmwareVersion().equalsIgnoreCase("2.0") || deviceInfo.getFirmwareVersion().equalsIgnoreCase("2.0.0"))) {
 
@@ -590,6 +607,7 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
         }
 
         final String dataString = baseString;
+        Log.e("hcs",":::");
         JSONObject jsonData = new JSONObject();
         JSONObject jsonObject = new JSONObject();
         JSONArray jsonArray = new JSONArray();

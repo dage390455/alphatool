@@ -1211,19 +1211,6 @@
                         android:contentDescription="@null"
                         android:src="@drawable/icon_arrow" />
 
-                    <TextView
-                        android:id="@+id/settings_device_tv_app_beep_mute_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="12dp"
-                        android:layout_toLeftOf="@id/iv_app_beep_mute_time"
-                        android:ellipsize="end"
-                        android:maxEms="8"
-                        android:singleLine="true"
-                        android:textColor="#999999"
-                        android:textSize="18sp" />
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="1dp"

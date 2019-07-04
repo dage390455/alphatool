@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    def verName = "1.4.5"
+    def verName = "1.4.7"
 
     def verCode = 42
     def buildCode = 1
@@ -172,6 +172,7 @@ dependencies {
     implementation 'cn.bingoogolapple:bga-qrcode-zxing:1.2.4'
     implementation project(':sensor-kit')
     implementation "com.mcxiaoke.volley:library:$volleyVersion"
+    implementation project(path: ':pickerview')
 
 
     //bugly

@@ -4,6 +4,7 @@ import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +22,11 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.listener.CustomListener;
+import com.bigkoo.pickerview.listener.OnDismissListener;
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
+import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.sensoro.libbleserver.ble.callback.SensoroConnectionCallback;
@@ -253,8 +259,6 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     TextView batteryBeepTextView;
     @BindView(R.id.settings_device_rl_app_beep_mute_time)
     RelativeLayout beepMuteTimeLayout;
-    @BindView(R.id.settings_device_tv_app_beep_mute_time)
-    TextView beepMuteTimeTextView;
     @BindView(R.id.settings_device_rl_app_led_status)
     RelativeLayout ledStatusLayout;
     @BindView(R.id.settings_device_tv_app_led_status)
@@ -1070,6 +1074,10 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     private int[] txp_array;
     private SettingEnterDialogUtils mSettingEnterDialogUtils;
     private int isCaymanReset = -1;
+    private OptionsPickerView<Integer> pvCustomOptions;
+    private int picekerViewStatus = -1;
+    private ArrayList<Integer> pickerHours;
+    private ArrayList<Integer> pickerMinutes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1214,7 +1222,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         int maxEirp = sensoroDevice.getMaxEirp();
 
         for (int i = 0; i < txp_array.length; i++) {
-            String format = String.format(Locale.CHINA, "MaxEIRP - %d \n%d dBm", i,
+            String format = String.format(Locale.CHINA, "MaxEIRP - %d \n%d dBm", i*2,
                     maxEirp - txp_array[txp_array.length - 1 - i] * 2);
             loraEirpItems[i] = format;
         }
@@ -1870,56 +1878,56 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             } else {
                                 caymanIsMovedContent.setText("拆卸");
                             }
-                        }else {
+                        } else {
                             caymanIsMoved.setVisibility(GONE);
                             viewCaymanIsMove.setVisibility(GONE);
                         }
 
                         if (sensoroSensor.cayManData.hasValueOfTem) {
                             caymanValueOfTemContent.setText(sensoroSensor.cayManData.valueOfTem / 10f + "℃");
-                        }else {
+                        } else {
                             caymanValueOfTem.setVisibility(GONE);
                             viewCaymanValueOfTem.setVisibility(GONE);
                         }
                         if (sensoroSensor.cayManData.hasValueOfHum) {
                             caymanValueOfHumContent.setText(sensoroSensor.cayManData.valueOfHum / 10f + "%");
-                        }else {
+                        } else {
                             caymanValueOfHum.setVisibility(GONE);
                             viewCaymanValueOfHum.setVisibility(GONE);
                         }
                         if (sensoroSensor.cayManData.hasAlarmOfHighTem) {
                             caymanAlarmOfHighTemContent.setText(sensoroSensor.cayManData.alarmOfHighTem / 10f + "℃");
-                        }else {
+                        } else {
                             caymanAlarmOfHighTem.setVisibility(GONE);
                             viewCaymanAlarmOfHighTem.setVisibility(GONE);
                         }
                         if (sensoroSensor.cayManData.hasAlarmOfLowTem) {
                             caymanAlarmOfLowTemContent.setText(sensoroSensor.cayManData.alarmOfLowTem / 10f + "℃");
-                        }else {
+                        } else {
                             caymanAlarmOfLowTem.setVisibility(GONE);
                             viewCaymanAlarmOfLowTem.setVisibility(GONE);
                         }
                         if (sensoroSensor.cayManData.hasAlarmOfHighHum) {
                             caymanAlarmOfHighHumContent.setText(sensoroSensor.cayManData.alarmOfHighHum / 10f + "%");
-                        }else {
+                        } else {
                             caymanAlarmOfHighHum.setVisibility(GONE);
                             viewCaymanAlarmOfHighHum.setVisibility(GONE);
                         }
                         if (sensoroSensor.cayManData.hasAlarmOfLowHum) {
                             caymanAlarmOfLowHumContent.setText(sensoroSensor.cayManData.alarmOfLowHum / 10f + "%");
-                        }else {
+                        } else {
                             caymanAlarmOfLowHum.setVisibility(GONE);
                             viewCaymanAlarmOfLowHum.setVisibility(GONE);
                         }
                         if (sensoroSensor.cayManData.hasValueOfphotor) {
                             caymanValueOfPhotorContent.setText(String.valueOf(sensoroSensor.cayManData.valueOfphotor));
-                        }else {
+                        } else {
                             caymanValueOfPhotor.setVisibility(GONE);
                             viewCaymanValueOfPhotor.setVisibility(GONE);
                         }
                         if (sensoroSensor.cayManData.hasBleAdvType) {
                             caymanBleAdvTypeContent.setText(sensoroSensor.cayManData.bleAdvType == 0 ? "持续广播" : "间断广播");
-                        }else {
+                        } else {
                             caymanBleAdvType.setVisibility(GONE);
                             viewCaymanBleAdvType.setVisibility(GONE);
                         }
@@ -1932,21 +1940,21 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
 
                         if (sensoroSensor.cayManData.hasHumanDetectionTime) {
                             caymanHumanDetctionTimeContent.setText(sensoroSensor.cayManData.humanDetectionTime + "s");
-                        }else {
+                        } else {
                             caymanHumanDetectionTime.setVisibility(GONE);
                             viewCaymanHumanDetectionTime.setVisibility(GONE);
                         }
 
                         if (sensoroSensor.cayManData.hasDefenseMode) {
                             caymanDefenseModeContent.setText(sensoroSensor.cayManData.defenseMode == 0 ? R.string.close : R.string.open);
-                        }else {
+                        } else {
                             caymanDefenseMode.setVisibility(GONE);
                             viewCaymanDefenseMode.setVisibility(GONE);
                         }
 
                         if (sensoroSensor.cayManData.hasDefenseTimerMode) {
                             caymanDefenseTimerModeContent.setText(sensoroSensor.cayManData.defenseTimerMode == 0 ? R.string.close : R.string.open);
-                        }else {
+                        } else {
                             caymanDefenseTimerMode.setVisibility(GONE);
                             viewCaymanDefenseTimerMode.setVisibility(GONE);
                         }
@@ -1954,7 +1962,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         if (sensoroSensor.cayManData.hasDefenseModeStartTime) {
                             String s = timeZoneConvert(sensoroSensor.cayManData.defenseModeStartTime);
                             caymanDefenseModeStartTimeContent.setText(s);
-                        }else {
+                        } else {
                             caymanDefenseModeStartTime.setVisibility(GONE);
                             viewCaymanDefenseModeStartTime.setVisibility(GONE);
                         }
@@ -1962,14 +1970,14 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         if (sensoroSensor.cayManData.hasDefenseModeStopTime) {
                             String s = timeZoneConvert(sensoroSensor.cayManData.defenseModeStopTime);
                             caymanDefenseModeStopTimeContent.setText(s);
-                        }else {
+                        } else {
                             caymanDefenseModeStopTime.setVisibility(GONE);
                             viewCaymanDefenseModeStopTime.setVisibility(GONE);
                         }
 
                         if (sensoroSensor.cayManData.hasInvadeAlarm) {
                             caymanInvadeAlarmContent.setText(sensoroSensor.cayManData.invadeAlarm == 0 ? R.string.close : R.string.open);
-                        }else {
+                        } else {
                             caymanInvadeAlarm.setVisibility(GONE);
                             viewCaymanInvadeAlarm.setVisibility(GONE);
                         }
@@ -2097,7 +2105,6 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
 
                 if (sensoroDevice.hasBeepMuteTime()) {
                     beepMuteTimeLayout.setVisibility(VISIBLE);
-                    beepMuteTimeTextView.setText(sensoroDevice.getBeepMuteTime() + "s");
                 } else {
                     beepMuteTimeLayout.setVisibility(GONE);
                 }
@@ -2995,7 +3002,6 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             }
 
             SensoroDeviceConfiguration.Builder builder = new SensoroDeviceConfiguration.Builder();
-
             builder.setIBeaconEnabled(isIBeaconEnabled)
                     .setProximityUUID(uuid)
                     .setMajor(sensoroDevice.getMajor())
@@ -3478,6 +3484,9 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             }
             if (sensoroDevice.hasDevAddr()) {
                 loraParamBuilder.setDevAddr(sensoroDevice.getDevAdr());
+            }
+            if(sensoroDevice.hasMaxEirp()){
+                loraParamBuilder.setMaxEIRP(sensoroDevice.getMaxEirp());
             }
             msgCfgBuilder.setLpwanParam(loraParamBuilder);
         }
@@ -4110,6 +4119,199 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         int realMinute = defenseModeStartTime % 60;
         StringBuffer sb = new StringBuffer(realHour).append(":").append(realMinute);
         return String.format(Locale.ROOT, "%02d:%02d", realHour, realMinute);
+    }
+
+    private void initCustomOptionPicker() {//条件选择器初始化，自定义布局
+        pvCustomOptions = new OptionsPickerBuilder(SettingDeviceActivity.this, new OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int options2, int options3, View v) {
+//                mPresenter.doSelectComplete(options1, options2, options3 + 1);
+                switch (picekerViewStatus) {
+                    case 1:
+                        //嘉德自研烟感定时设防开始时间
+                        doCaymanDefenseModeStartTime(options1, options2, options3);
+                        break;
+                    case 2:
+                        //嘉德自研烟感定时设防开始时间
+                        doCaymanDefenseModeStopTime(options1, options2, options3);
+
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }).setTitleText("选择时间")
+                .setContentTextSize(20)//设置滚轮文字大小
+                .setDividerColor(getResources().getColor(R.color.c_dfdfdf))//设置分割线的颜色
+                .setBgColor(getResources().getColor(R.color.white))
+                .setTitleBgColor(getResources().getColor(R.color.c_f4f4f4))
+                .setTitleColor(getResources().getColor(R.color.c_252525))
+                .setTextColorCenter(getResources().getColor(R.color.c_252525))
+                .setTextColorOut(Color.parseColor("#A6A6A6"))
+                .setOutSideColor(Color.parseColor("#B3000000"))
+                .setCancelColor(getResources().getColor(R.color.actionbar_bg))
+                .setSubmitColor(getResources().getColor(R.color.actionbar_bg))
+                .isRestoreItem(true)//切换时是否还原，设置默认选中第一项。
+                .isCenterLabel(false)//是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                .setOutSideCancelable(true)
+                .setCyclic(true, true, false)
+                .setLineSpacingMultiplier(2.0f)
+                .build();
+//        pickerHours = new ArrayList<String>(24){
+//            {
+//                add("00");add("01");add("02");add("03");add("04");add("05");add("06");add("07");add("08");add("09");
+//                add("12");add("11");add("13");add("14");add("15");add("16");add("17");add("18");add("19");add("20");
+//                add("21");add("22");add("23");
+//            }
+//        };
+
+        pickerHours = new ArrayList<Integer>(24) {
+            {
+                add(0);
+                add(1);
+                add(2);
+                add(3);
+                add(4);
+                add(5);
+                add(6);
+                add(7);
+                add(8);
+                add(9);
+                add(12);
+                add(11);
+                add(13);
+                add(14);
+                add(15);
+                add(16);
+                add(17);
+                add(18);
+                add(19);
+                add(20);
+                add(21);
+                add(22);
+                add(23);
+            }
+        };
+        pickerMinutes = new ArrayList<Integer>(60) {
+            {
+                add(0);
+                add(1);
+                add(2);
+                add(3);
+                add(4);
+                add(5);
+                add(6);
+                add(7);
+                add(8);
+                add(9);
+                add(12);
+                add(11);
+                add(13);
+                add(14);
+                add(15);
+                add(16);
+                add(17);
+                add(18);
+                add(19);
+                add(20);
+                add(21);
+                add(22);
+                add(23);
+                add(25);
+                add(26);
+                add(27);
+                add(28);
+                add(29);
+                add(30);
+                add(31);
+                add(32);
+                add(33);
+                add(34);
+                add(35);
+                add(36);
+                add(37);
+                add(38);
+                add(39);
+                add(40);
+                add(41);
+                add(42);
+                add(43);
+                add(44);
+                add(45);
+                add(46);
+                add(47);
+                add(48);
+                add(49);
+                add(50);
+                add(51);
+                add(52);
+                add(53);
+                add(54);
+                add(55);
+                add(56);
+                add(57);
+                add(58);
+                add(59);
+            }
+        };
+
+//        pickerMinutes = new ArrayList<Integer>(60){
+//            {
+//                add("00");add("01");add("02");add("03");add("04");add("05");add("06");add("07");add("08");add("09");
+//                add("12");add("11");add("13");add("14");add("15");add("16");add("17");add("18");add("19");add("20");
+//                add("21");add("22");add("23");add("25");add("26");add("27");add("28");add("29");add("30");add("31");
+//                add("32");add("33");add("34");
+//                add("35");add("36");add("37");add("38");add("39");add("40");add("41");add("42");add("43");add("44");
+//                add("45");add("46");add("47");add("48");add("49");add("50");add("51");add("52");add("53");add("54");
+//                add("55");add("56");add("57");
+//                add("58");add("59");
+//            }
+//        };
+
+        pvCustomOptions.setNPicker(pickerHours, pickerMinutes, null);
+        pvCustomOptions.setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(Object o) {
+//                mPresenter.onPickerViewDismiss();
+            }
+        });
+
+    }
+
+    private void doCaymanDefenseModeStopTime(int options1, int options2, int options3) {
+        Integer hour = pickerHours.get(options1);
+        Integer minute = pickerMinutes.get(options2);
+
+        int i = caymanTimeConvertMinute(hour, minute);
+        if (i == -1) {
+            Toast.makeText(this, "输入非法，请重新输入", Toast.LENGTH_SHORT).show();
+            return;
+
+        }
+        if (i < 0 || i > 1439) {
+            Toast.makeText(this, "定时设防结束时间范围为1-1439", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        sensoroSensor.cayManData.defenseModeStopTime = i;
+        caymanDefenseModeStopTimeContent.setText(String.format(Locale.ROOT, "%02d:%02d", hour, minute));
+    }
+
+    private void doCaymanDefenseModeStartTime(int options1, int options2, int options3) {
+        Integer hour = pickerHours.get(options1);
+        Integer minute = pickerMinutes.get(options2);
+
+        int i = caymanTimeConvertMinute(hour, minute);
+        if (i == -1) {
+            Toast.makeText(this, "输入非法，请重新输入", Toast.LENGTH_SHORT).show();
+            return;
+
+        }
+        if (i < 0 || i > 1439) {
+            Toast.makeText(this, "定时设防结束时间范围为1-1439", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        sensoroSensor.cayManData.defenseModeStartTime = i;
+        caymanDefenseModeStartTimeContent.setText(String.format(Locale.ROOT, "%02d:%02d", hour, minute));
     }
 
 
@@ -5283,60 +5485,14 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 e.printStackTrace();
                 Toast.makeText(this, "范围为数字格式", Toast.LENGTH_SHORT).show();
             }
-        } else if (SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE_START_TIME.equals(tag)) {
-            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
-            if (temp != null && temp.contains(":")) {
-                String[] split = temp.split(":");
-                if (split.length > 1) {
-                    int i = caymanTimeConvertMinute(split);
-                    if (i == -1) {
-                        Toast.makeText(this, "输入非法，请重新输入", Toast.LENGTH_SHORT).show();
-                        return;
-
-                    }
-                    if (i < 1 || i > 1439) {
-                        Toast.makeText(this, "定时设防结束时间范围为1-1439", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    sensoroSensor.cayManData.defenseModeStartTime = i;
-                    caymanDefenseModeStartTimeContent.setText(temp);
-                }
-
-            } else {
-                Toast.makeText(this, "请输入正确时间格式", Toast.LENGTH_SHORT).show();
-            }
-        } else if (SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE_STOP_TIME.equals(tag)) {
-            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
-            if (temp != null && temp.contains(":")) {
-                String[] split = temp.split(":");
-                if (split.length > 1) {
-                    int i = caymanTimeConvertMinute(split);
-                    if (i == -1) {
-                        Toast.makeText(this, "输入非法，请重新输入", Toast.LENGTH_SHORT).show();
-                        return;
-
-                    }
-                    if (i < 1 || i > 1439) {
-                        Toast.makeText(this, "定时设防结束时间范围为1-1439", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    sensoroSensor.cayManData.defenseModeStopTime = i;
-                    caymanDefenseModeStopTimeContent.setText(temp);
-                }
-
-            } else {
-                Toast.makeText(this, "请输入正确时间格式", Toast.LENGTH_SHORT).show();
-            }
-
-        } else if (SETTINGS_DEVICE_RL_APP_BEEP_MUTE_TIME.equals(tag)) {
+        }  else if (SETTINGS_DEVICE_RL_APP_BEEP_MUTE_TIME.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 int i = Integer.parseInt(temp);
                 if (i < 0) {
-                    Toast.makeText(this, "请输入正数", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "消音时间范围1-30分钟", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                beepMuteTimeTextView.setText(i + "s");
                 sensoroDeviceConnection.writeAppBeepMuteTime(i, new SensoroWriteCallback() {
                     @Override
                     public void onWriteSuccess(Object o, int cmd) {
@@ -5347,7 +5503,6 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     @Override
                     public void onWriteFailure(int errorCode, int cmd) {
                         Toast.makeText(SettingDeviceActivity.this, "保存失败", Toast.LENGTH_SHORT).show();
-                        beepMuteTimeTextView.setText(sensoroDevice.getBeepMuteTime() + "s");
                     }
                 });
 
@@ -5605,10 +5760,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
 
     }
 
-    private int caymanTimeConvertMinute(String[] split) {
+    private int caymanTimeConvertMinute(int hour, int minute) {
         try {
-            int hour = Integer.parseInt(split[0]);
-            int minute = Integer.parseInt(split[1]);
 
             String displayName = TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT);
             if (displayName.contains("+")) {
@@ -5904,12 +6057,14 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_TIMER_MODE);
                 break;
             case R.id.cayman_defense_mode_start_time:
-                dialogFragment = SettingsInputDialogFragment.newInstance(caymanDefenseModeStartTimeContent.getText().toString());
-                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE_START_TIME);
+//                dialogFragment = SettingsInputDialogFragment.newInstance(caymanDefenseModeStartTimeContent.getText().toString());
+//                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE_START_TIME);
+                showPickerView(1);
                 break;
             case R.id.cayman_defense_mode_stop_time:
-                dialogFragment = SettingsInputDialogFragment.newInstance(caymanDefenseModeStopTimeContent.getText().toString());
-                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE_STOP_TIME);
+//                dialogFragment = SettingsInputDialogFragment.newInstance(caymanDefenseModeStopTimeContent.getText().toString());
+//                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_CAYMAN_DEFENSE_MODE_STOP_TIME);
+                showPickerView(2);
                 break;
             case R.id.cayman_invade_alarm:
                 String[] invadeAlarmItems = {"关闭", "开启"};
@@ -5922,7 +6077,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_APP_LED_STATUS);
                 break;
             case R.id.settings_device_rl_app_beep_mute_time:
-                dialogFragment = SettingsInputDialogFragment.newInstance(sensoroDevice.getBeepMuteTime() + "");
+                dialogFragment = SettingsInputDialogFragment.newInstance("");
                 dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RL_APP_BEEP_MUTE_TIME);
                 break;
             case R.id.cayman_alarm_of_high_tem:
@@ -5998,6 +6153,17 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 break;
 
         }
+    }
+
+    private void showPickerView(int status) {
+
+        if (pvCustomOptions == null) {
+            initCustomOptionPicker();
+        }
+        picekerViewStatus = status;
+        pvCustomOptions.setSelectOptions(8, 0);//默认选中项
+        pvCustomOptions.show();
+
     }
 
     private void doBaymaxControl(int cmd) {
