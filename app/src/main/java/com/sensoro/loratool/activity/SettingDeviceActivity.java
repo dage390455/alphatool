@@ -1222,7 +1222,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         int maxEirp = sensoroDevice.getMaxEirp();
 
         for (int i = 0; i < txp_array.length; i++) {
-            String format = String.format(Locale.CHINA, "MaxEIRP - %d \n%d dBm", i*2,
+            String format = String.format(Locale.CHINA, "MaxEIRP - %d \n%d dBm", i * 2,
                     maxEirp - txp_array[txp_array.length - 1 - i] * 2);
             loraEirpItems[i] = format;
         }
@@ -3485,7 +3485,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             if (sensoroDevice.hasDevAddr()) {
                 loraParamBuilder.setDevAddr(sensoroDevice.getDevAdr());
             }
-            if(sensoroDevice.hasMaxEirp()){
+            if (sensoroDevice.hasMaxEirp()) {
                 loraParamBuilder.setMaxEIRP(sensoroDevice.getMaxEirp());
             }
             msgCfgBuilder.setLpwanParam(loraParamBuilder);
@@ -3753,9 +3753,15 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 if (sensoroSensor.acrelFires.hasCt) {
                     builder.setCt(sensoroSensor.acrelFires.ct);
                 }
-//            if (sensoroSensor.acrelFires.hasCmd) {
-                builder.setCmd(sensoroSensor.acrelFires.cmd);
-//            }
+                if (sensoroSensor.acrelFires.hasCmd) {
+                    builder.setCmd(sensoroSensor.acrelFires.cmd);
+                }
+                if (sensoroSensor.acrelFires.hasIn) {
+                    builder.setCt(sensoroSensor.acrelFires.in);
+                }
+                if (sensoroSensor.acrelFires.hasBuzzer) {
+                    builder.setCt(sensoroSensor.acrelFires.buzzer);
+                }
                 msgCfgBuilder.setAcrelData(builder);
 
             }
@@ -5485,7 +5491,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 e.printStackTrace();
                 Toast.makeText(this, "范围为数字格式", Toast.LENGTH_SHORT).show();
             }
-        }  else if (SETTINGS_DEVICE_RL_APP_BEEP_MUTE_TIME.equals(tag)) {
+        } else if (SETTINGS_DEVICE_RL_APP_BEEP_MUTE_TIME.equals(tag)) {
             String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
             try {
                 int i = Integer.parseInt(temp);
