@@ -295,6 +295,8 @@ public interface Constants {
     String SETTINGS_DEVICE_SGL_STATUS = "settings_device_sgl_status";
     String SETTINGS_DEVICE_SGL_DATA_RATE = "settings_device_sgl_data_rate";
     String SETTINGS_DEVICE_SGL_FREQUENCY = "settings_device_sgl_frequency";
+    String SETTINGS_DEVICE_RX2_FREQUENCY = "settings_device_rx2_frequency";
+    String SETTINGS_DEVICE_RX2_DATA_RATE = "settings_device_rx2_data_rate";
 
 
 

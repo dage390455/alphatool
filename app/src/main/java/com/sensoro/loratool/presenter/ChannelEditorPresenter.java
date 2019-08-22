@@ -3,10 +3,8 @@ package com.sensoro.loratool.presenter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.sensoro.libbleserver.ble.entity.SensoroChannel;
-import com.sensoro.libbleserver.ble.proto.MsgNode1V1M5;
 import com.sensoro.loratool.R;
 import com.sensoro.loratool.adapter.RecyclerItemClickListener;
 import com.sensoro.loratool.base.BasePresenter;
@@ -14,13 +12,11 @@ import com.sensoro.loratool.constant.Constants;
 import com.sensoro.loratool.imainview.IChannelEditorActivityView;
 import com.sensoro.loratool.model.SettingDeviceModel;
 import com.sensoro.loratool.widget.SettingEnterDialogUtils;
-import com.sensoro.station.communication.bean.CheckNetStatusReq;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.function.LongFunction;
 
 public class ChannelEditorPresenter extends BasePresenter<IChannelEditorActivityView>
         implements RecyclerItemClickListener, SettingEnterDialogUtils.SettingEnterUtilsClickListener {
