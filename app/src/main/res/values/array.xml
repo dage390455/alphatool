@@ -392,6 +392,8 @@
         <item>α Station</item>
         <item>α Gateway</item>
         <item>α Mini</item>
+        <item>α Macro base station</item>
+        <item>α Base station enhanced</item>
     </string-array>
     <string-array name="filter_signal_array">
         <item>-40</item>

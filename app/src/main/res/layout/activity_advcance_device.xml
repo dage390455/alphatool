@@ -651,8 +651,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_item_selector"
                 android:paddingBottom="10dp"
-                android:visibility="gone"
-                >
+                android:visibility="gone">
 
 
                 <TextView
@@ -706,7 +705,42 @@
                     android:contentDescription="@null" />
             </RelativeLayout>
 
+            <!--alertModeStatus设备移动报警开关-->
+            <RelativeLayout
+                android:id="@+id/rl_alertModeStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:background="@drawable/bg_item_selector"
+                android:paddingTop="10dp">
 
+                <TextView
+                    android:id="@+id/tv_alertModeStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="15dp"
+                    android:text="移动报警"
+                    android:textColor="#666666"
+                    android:textSize="18sp" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/sw_alertModeStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_below="@+id/sw_alertModeStatus"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="@dimen/y40"
+                    android:layout_marginRight="12dp"
+                    android:background="#c8c7cc"
+                    android:contentDescription="@null" />
+            </RelativeLayout>
             <!-- rx2Datarate-->
             <RelativeLayout
                 android:id="@+id/rl_rx2data_rate"

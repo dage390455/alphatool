@@ -100,6 +100,14 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
     @BindView(R.id.rl_rx2data_rate)
     RelativeLayout rlRx2dataRate;
 
+    /**
+     * 设备移动报警开关
+     */
+    @BindView(R.id.sw_alertModeStatus)
+    SwitchCompat swAlertModeStatus;
+    @BindView(R.id.rl_alertModeStatus)
+    RelativeLayout rlAlertModeStatus;
+
 
     private SensoroDeviceConnection sensoroDeviceConnection;
     private SensoroDevice deviceConfiguration;
@@ -351,6 +359,19 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
                 rlRx2dataRate.setVisibility(VISIBLE);
             } else {
                 rlRx2dataRate.setVisibility(GONE);
+            }
+
+            //设备移动报警开关
+            if (sensoroDevice.hasAlertModeStatus()) {
+                if (sensoroDevice.getAlertModeStatus() == 1) {
+                    swAlertModeStatus.setChecked(true);
+                } else {
+                    swAlertModeStatus.setChecked(false);
+
+                }
+                rlAlertModeStatus.setVisibility(VISIBLE);
+            } else {
+                rlAlertModeStatus.setVisibility(GONE);
             }
 
 
@@ -628,6 +649,17 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
                     loraParamBuilder.setActivition(MsgNode1V1M5.Activtion.valueOf(activation));
                 }
                 msgNodeBuilder.setLpwanParam(loraParamBuilder);
+            }
+
+            /**
+             * alertModeStatus设备移动报警开关
+             */
+            if (deviceConfiguration.hasAppParam()) {
+                MsgNode1V1M5.AppParam.Builder appBuilder = MsgNode1V1M5.AppParam.newBuilder();
+                if (deviceConfiguration.hasAlertModeStatus()) {
+                    appBuilder.setAlertModeStatus(deviceConfiguration.getAlertModeStatus());
+                }
+                msgNodeBuilder.setAppParam(appBuilder);
             }
 
             byte[] data = msgNodeBuilder.build().toByteArray();
@@ -941,6 +973,22 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
 
 
             /**
+             * 设备移动报警
+             */
+
+            device.setHasAlertModeStatus(sensoroDevice.hasAlertModeStatus());
+            if (device.hasAlertModeStatus()) {
+                if (swAlertModeStatus.isChecked()) {
+                    sensoroDevice.setAlertModeStatus(1);
+                    device.setAlertModeStatus(sensoroDevice.getAlertModeStatus());
+                } else {
+                    sensoroDevice.setAlertModeStatus(0);
+                    device.setAlertModeStatus(sensoroDevice.getAlertModeStatus());
+                }
+            }
+
+
+            /**
              * rx2
              */
 
@@ -969,6 +1017,8 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
             if (sensoroDevice.hasSglFrequency()) {
                 device.setSglFrequency(sensoroDevice.getSglFrequency());
             }
+
+
             List<Integer> list = sensoroDevice.getChannelMaskList();
             if (list != null && list.size() > 0) {
                 int array[] = new int[list.size()];
@@ -1014,6 +1064,18 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
         } else {
             loraSfRelativeLayout.setVisibility(VISIBLE);
         }
+    }
+
+    /**
+     * 移动报警
+     */
+    @OnCheckedChanged(R.id.sw_alertModeStatus)
+    public void swAlertModeStatus() {
+        if (swAlertModeStatus.isChecked()) {
+
+        }
+
+
     }
 
     @Override
@@ -1177,7 +1239,6 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
             } catch (Exception e) {
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
             }
-
 
 
         } else if (tag.equals(SETTINGS_DEVICE_RX2_DATA_RATE)) {
