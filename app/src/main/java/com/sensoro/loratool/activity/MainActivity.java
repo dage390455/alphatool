@@ -392,11 +392,16 @@ public class MainActivity extends BaseActivity
                         break;
                     case BLEDevice.TYPE_STATION:
                         try {
-                            stationFragment.refreshGone((SensoroStation) bleDevice);
+                            if (bleDevice instanceof SensoroStation) {
+                                stationFragment.refreshGone((SensoroStation) bleDevice);
+                            }
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                         break;
+                        default:
+                            break;
                 }
             }
         });

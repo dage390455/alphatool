@@ -28,7 +28,7 @@ public interface Constants {
     // REQUEST CODE
     int ZXING_REQUEST_CODE_RESULT = 102;
     int ZXING_REQUEST_CODE_SCAN_BEACON = 100;
-     String ZXING_REQUEST_CODE = "ZXING_REQUEST_CODE";
+    String ZXING_REQUEST_CODE = "ZXING_REQUEST_CODE";
 
     String PREFERENCE_FILTER = "alpha_filter_data";
     String PREFERENCE_LOGIN = "alpha_tool_login";
@@ -64,12 +64,16 @@ public interface Constants {
     String LORA_BAND_SE780 = "SE780";
     String LORA_BAND_CN470 = "CN470";
     String LORA_BAND_SE800 = "SE800";
-    String DEVICE_HARDWARE_TYPE[] = {"##","cayman_smoke","chip", "module", "node", "co2", "co", "no2", "so2", "nh3",
+    String DEVICE_HARDWARE_TYPE[] = {"##", "cayman_smoke", "chip", "module", "node", "co2", "co", "no2", "so2", "nh3",
             "tvoc", "o3", "pm", "leak", "temp_humi", "ch4", "lpg", "cover", "smoke", "angle", "gps", "op_node",
             "flame", "op_chip", "winsen_ch4", "winsen_lpg", "winsen_gas", "bhenergy_water", "chip_s", "chip_e",
             "tester|t1", "temp_humi_one", "fhsj_ch4", "fhsj_lpg", "concox_tracker", "tk","fhsj_smoke","fhsj_elec_fires",
             "siter_ch4","siter_lpg","jf_connection","mantun_fires","acrel_fires","acrel_single","baymax_ch4","baymax_lpg",
             "bigbang_tracker","acrel_alpha","n16w_smoke"};
+//=======
+//            "tester|t1", "temp_humi_one", "fhsj_ch4", "fhsj_lpg", "concox_tracker", "tk", "fhsj_smoke", "fhsj_elec_fires",
+//            "siter_ch4", "siter_lpg", "jf_connection", "mantun_fires", "acrel_fires", "acrel_single", "baymax_ch4", "baymax_lpg", "bigbang_tracker"};
+//>>>>>>> developer
 
     boolean permission[] = {
             false,//sCfgByBle
@@ -128,26 +132,26 @@ public interface Constants {
     int LORA_EU868_TXP[] = {20, 14, 11, 8, 5, 2};
     String LORA_EU868_SF[] = {"FSK 50 kbps", "SF7 / 250 kHz", "SF7 / 125 kHz", "SF8 / 125 kHz", "SF9 / 125 kHz", "SF10 / 125 kHz", "SF11 / 125 kHz", "SF12 / 125 kHz"};
     int LORA_EU868_DR[] = {7, 6, 5, 4, 3, 2, 1, 0};
-    String LORA_EU868_MAX_EIRP[] = {"MaxEIRP - 0 \n12 dBm", "MaxEIRP - 2 \n10 dBm", "MaxEIRP -4 \n8 dBm", "MaxEIRP -6 \n6 dBm", "MaxEIRP -4 \n4 dBm", "MaxEIRP -8 \n2 dBm", "MaxEIRP -10 \n0 dBm","MaxEIRP -12 \n-2 dBm"};
-    String LORA_EU868_MAX_EIRP_VALUE[] = {"MaxEIRP - 0", "MaxEIRP - 2", "MaxEIRP -4", "MaxEIRP -6", "MaxEIRP -8", "MaxEIRP -10", "MaxEIRP -12","MaxEIRP -14"};
+    String LORA_EU868_MAX_EIRP[] = {"MaxEIRP - 0 \n12 dBm", "MaxEIRP - 2 \n10 dBm", "MaxEIRP -4 \n8 dBm", "MaxEIRP -6 \n6 dBm", "MaxEIRP -4 \n4 dBm", "MaxEIRP -8 \n2 dBm", "MaxEIRP -10 \n0 dBm", "MaxEIRP -12 \n-2 dBm"};
+    String LORA_EU868_MAX_EIRP_VALUE[] = {"MaxEIRP - 0", "MaxEIRP - 2", "MaxEIRP -4", "MaxEIRP -6", "MaxEIRP -8", "MaxEIRP -10", "MaxEIRP -12", "MaxEIRP -14"};
 
     int LORA_AS923_TXP[] = {14, 12, 10, 8, 6, 4};
     String LORA_AS923_SF[] = {"FSK 50 kbps", "SF7 / 250 kHz", "SF7 / 125 kHz", "SF8 / 125 kHz", "SF9 / 125 kHz", "SF10 / 125 kHz", "SF11 / 125 kHz", "SF12 / 125 kHz"};
     int LORA_AS923_DR[] = {7, 6, 5, 4, 3, 2, 1, 0};
-    String LORA_AS923_MAX_EIRP[] = {"MaxEIRP - 0 \n12 dBm", "MaxEIRP - 2 \n10 dBm", "MaxEIRP -4 \n8 dBm", "MaxEIRP -6 \n6 dBm", "MaxEIRP -4 \n4 dBm", "MaxEIRP -8 \n2 dBm", "MaxEIRP -10 \n0 dBm","MaxEIRP -12 \n-2 dBm"};
-    String LORA_AS923_MAX_EIRP_VALUE[] = {"MaxEIRP - 0", "MaxEIRP - 2", "MaxEIRP -4", "MaxEIRP -6", "MaxEIRP -8", "MaxEIRP -10", "MaxEIRP -12","MaxEIRP -14"};
+    String LORA_AS923_MAX_EIRP[] = {"MaxEIRP - 0 \n12 dBm", "MaxEIRP - 2 \n10 dBm", "MaxEIRP -4 \n8 dBm", "MaxEIRP -6 \n6 dBm", "MaxEIRP -4 \n4 dBm", "MaxEIRP -8 \n2 dBm", "MaxEIRP -10 \n0 dBm", "MaxEIRP -12 \n-2 dBm"};
+    String LORA_AS923_MAX_EIRP_VALUE[] = {"MaxEIRP - 0", "MaxEIRP - 2", "MaxEIRP -4", "MaxEIRP -6", "MaxEIRP -8", "MaxEIRP -10", "MaxEIRP -12", "MaxEIRP -14"};
 
     int LORA_CN470_TXP[] = {7, 6, 5, 4, 3, 2, 1, 0};
     String LORA_CN470_SF[] = {"SF7 / 125 kHz", "SF8 / 125 kHz", "SF9 / 125 kHz", "SF10 / 125 kHz", "SF11 / 125 kHz", "SF12 / 125 kHz"};
     int LORA_CN470_DR[] = {5, 4, 3, 2, 1, 0};
-    String LORA_CN470_MAX_EIRP[] = {"MaxEIRP - 0 \n12 dBm", "MaxEIRP - 2 \n10 dBm", "MaxEIRP -4 \n8 dBm", "MaxEIRP -6 \n6 dBm", "MaxEIRP -4 \n4 dBm", "MaxEIRP -8 \n2 dBm", "MaxEIRP -10 \n0 dBm","MaxEIRP -12 \n-2 dBm"};
-    String LORA_CN470_MAX_EIRP_VALUE[] = {"MaxEIRP - 0", "MaxEIRP - 2", "MaxEIRP -4", "MaxEIRP -6", "MaxEIRP -8", "MaxEIRP -10", "MaxEIRP -12","MaxEIRP -14"};
+    String LORA_CN470_MAX_EIRP[] = {"MaxEIRP - 0 \n12 dBm", "MaxEIRP - 2 \n10 dBm", "MaxEIRP -4 \n8 dBm", "MaxEIRP -6 \n6 dBm", "MaxEIRP -4 \n4 dBm", "MaxEIRP -8 \n2 dBm", "MaxEIRP -10 \n0 dBm", "MaxEIRP -12 \n-2 dBm"};
+    String LORA_CN470_MAX_EIRP_VALUE[] = {"MaxEIRP - 0", "MaxEIRP - 2", "MaxEIRP -4", "MaxEIRP -6", "MaxEIRP -8", "MaxEIRP -10", "MaxEIRP -12", "MaxEIRP -14"};
 
     int LORA_SE800_TXP[] = {7, 6, 5, 4, 3, 2, 1, 0};
     String LORA_SE800_SF[] = {"SF7 / 125 kHz", "SF8 / 125 kHz", "SF9 / 125 kHz", "SF10 / 125 kHz", "SF11 / 125 kHz", "SF12 / 125 kHz"};
     int LORA_SE800_DR[] = {5, 4, 3, 2, 1, 0};
-    String LORA_SE800_MAX_EIRP[] = {"MaxEIRP - 0 \n12 dBm", "MaxEIRP - 2 \n10 dBm", "MaxEIRP -4 \n8 dBm", "MaxEIRP -6 \n6 dBm", "MaxEIRP -4 \n4 dBm", "MaxEIRP -8 \n2 dBm", "MaxEIRP -10 \n0 dBm","MaxEIRP -12 \n-2 dBm"};
-    String LORA_SE800_MAX_EIRP_VALUE[] = {"MaxEIRP - 0", "MaxEIRP - 2", "MaxEIRP -4", "MaxEIRP -6", "MaxEIRP -8", "MaxEIRP -10", "MaxEIRP -12","MaxEIRP -14"};
+    String LORA_SE800_MAX_EIRP[] = {"MaxEIRP - 0 \n12 dBm", "MaxEIRP - 2 \n10 dBm", "MaxEIRP -4 \n8 dBm", "MaxEIRP -6 \n6 dBm", "MaxEIRP -4 \n4 dBm", "MaxEIRP -8 \n2 dBm", "MaxEIRP -10 \n0 dBm", "MaxEIRP -12 \n-2 dBm"};
+    String LORA_SE800_MAX_EIRP_VALUE[] = {"MaxEIRP - 0", "MaxEIRP - 2", "MaxEIRP -4", "MaxEIRP -6", "MaxEIRP -8", "MaxEIRP -10", "MaxEIRP -12", "MaxEIRP -14"};
     int LORA_BAND_SE_433[] = {0, 433300000, 433500000, 433700000, 433900000, 434300000, 434500000, 434700000, 434900000};
 
     int LORA_BAND_SE_470[] = {0, 486300000, 486500000, 486700000, 486900000, 487100000, 487300000, 487500000, 487700000};
@@ -176,7 +180,7 @@ public interface Constants {
     String[] CLASSB_PERIODICITY = {"1", "2", "4", "8", "16", "32", "64", "128"};
     int[] DELAY_VALUES = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
     String[] DELAY_ITEMS = {"1s", "2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "10s", "11s", "12s", "13s", "14s", "15s"};
-    String[] ON_OFF_ITEMS = {"开启","关闭"};
+    String[] ON_OFF_ITEMS = {"开启", "关闭"};
 
     int STATUS_SLOT_DISABLED = 0;
     int STATUS_SLOT_UID = 1;
@@ -238,25 +242,54 @@ public interface Constants {
     String SETTINGS_LORA_INT = "SETTINGS_LORA_INT";
     String SETTINGS_LORA_EIRP = "SETTINGS_LORA_EIRP";
     String SETTINGS_SENSOR_CO = "SETTINGS_SENSOR_CO";
+    String SETTINGS_SENSOR_CO_FLUCTUATIONRANGE = "SETTINGS_SENSOR_CO_FLUCTUATIONRANGE";
     String SETTINGS_SENSOR_CO2 = "SETTINGS_SENSOR_CO2";
+    String SETTINGS_SENSOR_CO2_FLUCTUATIONRANGE = "SETTINGS_SENSOR_CO2_FLUCTUATIONRANGE";
     String SETTINGS_SENSOR_NO2 = "SETTINGS_SENSOR_NO2";
+    String SETTINGS_SENSOR_NO2_FLUCTUATIONRANGE = "SETTINGS_SENSOR_NO2_FLUCTUATIONRANGE";
+
+
     String SETTINGS_SENSOR_CH4 = "SETTINGS_SENSOR_CH4";
+    String SETTINGS_SENSOR_CH4_FLUCTUATIONRANGE = "SETTINGS_SENSOR_CH4_FLUCTUATIONRANGE";
+
     String SETTINGS_SENSOR_LPG = "SETTINGS_SENSOR_LPG";
+    String SETTINGS_SENSOR_LPG_FLUCTUATIONRANGE = "SETTINGS_SENSOR_LPG_FLUCTUATIONRANGE";
+
     String SETTINGS_SENSOR_PM25 = "SETTINGS_SENSOR_PM25";
+    String SETTINGS_SENSOR_PM25_FLUCTUATIONRANGE = "SETTINGS_SENSOR_PM25_FLUCTUATIONRANGE";
+
+
     String SETTINGS_SENSOR_PM10 = "SETTINGS_SENSOR_PM10";
+    String SETTINGS_SENSOR_PM10_FLUCTUATIONRANGE = "SETTINGS_SENSOR_PM10_FLUCTUATIONRANGE";
+
+    String SETTINGS_SENSOR_TEMP_FLUCTUATIONRANGE = "SETTINGS_SENSOR_TEMP_FLUCTUATIONRANGE";
+
     String SETTINGS_SENSOR_TEMP_UPPER = "SETTINGS_SENSOR_TEMP_UPPER";
     String SETTINGS_SENSOR_TEMP_LOWER = "SETTINGS_SENSOR_TEMP_LOWER";
     String SETTINGS_SENSOR_HUMIDITY_UPPER = "SETTINGS_SENSOR_HUMIDITY_UPPER";
     String SETTINGS_SENSOR_HUMIDITY_LOWER = "SETTINGS_SENSOR_HUMIDITY_UPPER";
+    String SETTINGS_SENSOR_HUMIDITY_FLUCTUATIONRANGE = "SETTINGS_SENSOR_HUMIDITY_FLUCTUATIONRANGE";
+
     String SETTINGS_SENSOR_PITCH_ANGLE_UPPER = "SETTINGS_SENSOR_PITCH_ANGLE_UPPER";
     String SETTINGS_SENSOR_PITCH_ANGLE_LOWER = "SETTINGS_SENSOR_PITCH_ANGLE_LOWER";
+    String SETTINGS_SENSOR_PITCH_FLUCTUATIONRANGE = "SETTINGS_SENSOR_PITCH_FLUCTUATIONRANGE";
+
     String SETTINGS_SENSOR_ROLL_ANGLE_UPPER = "SETTINGS_SENSOR_ROLL_ANGLE_UPPER";
     String SETTINGS_SENSOR_ROLL_ANGLE_LOWER = "SETTINGS_SENSOR_ROLL_ANGLE_LOWER";
+
+    String SETTINGS_SENSOR_ROLL_FLUCTUATIONRANGE = "SETTINGS_SENSOR_ROLL_FLUCTUATIONRANGE";
+
     String SETTINGS_SENSOR_YAW_ANGLE_UPPER = "SETTINGS_SENSOR_YAW_ANGLE_UPPER";
     String SETTINGS_SENSOR_YAW_ANGLE_LOWER = "SETTINGS_SENSOR_YAW_ANGLE_LOWER";
+    String SETTINGS_SENSOR_YAW_FLUCTUATIONRANGE = "SETTINGS_SENSOR_YAW_FLUCTUATIONRANGE";
+
     String SETTINGS_SENSOR_WATER_PRESSURE_UPPER = "SETTINGS_SENSOR_WATER_PRESSURE_UPPER";
     String SETTINGS_SENSOR_WATER_PRESSURE_LOWER = "SETTINGS_SENSOR_WATER_PRESSURE_LOWER";
+    String SETTINGS_SENSOR_WATER_FLUCTUATIONRANGE = "SETTINGS_SENSOR_WATER_FLUCTUATIONRANGE";
+
     String SETTINGS_APP_PARAM_UPLOAD = "SETTINGS_APP_PARAM_UPLOAD";
+    String SETTINGS_APP_PARAM_APP_CMD_TIMING_MUTE = "SETTINGS_APP_PARAM_APP_CMD_TIMING_MUTE";
+
     String SETTINGS_APP_PARAM_CONFIRM = "SETTINGS_APP_PARAM_CONFIRM";
     String SETTINGS_CUSTOM_PACKAGE1 = "SETTINGS_CUSTOM_PACKAGE1";
     String SETTINGS_CUSTOM_PACKAGE2 = "SETTINGS_CUSTOM_PACKAGE2";
@@ -304,6 +337,8 @@ public interface Constants {
     String SETTINGS_DEVICE_RL_APP_BEEP_MUTE_TIME = "settings_device_rl_app_beep_mute_time";
 
 
+    String SETTINGS_DEVICE_RX2_FREQUENCY = "settings_device_rx2_frequency";
+    String SETTINGS_DEVICE_RX2_DATA_RATE = "settings_device_rx2_data_rate";
 
 
     //单通道传感器设置
@@ -372,7 +407,7 @@ public interface Constants {
     String SETTINGS_DEVICE_RL_APP_LOW_BATTERY_BEEP = "settings_device_rl_app_low_battery_beep";
 
 
-    ArrayList<String> CHIP_E_UPGRADE_LIST = new ArrayList<String>(3){
+    ArrayList<String> CHIP_E_UPGRADE_LIST = new ArrayList<String>(3) {
         {
             add("t1");
             add("chip_e");

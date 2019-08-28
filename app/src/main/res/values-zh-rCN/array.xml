@@ -412,6 +412,8 @@
         <item>α 基站</item>
         <item>α 网关</item>
         <item>α 路由</item>
+        <item>α 宏基站</item>
+        <item>α 基站增强型</item>
     </string-array>
     <string-array name="filter_signal_array">
         <item>-40</item>

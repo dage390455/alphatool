@@ -82,6 +82,33 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
     RelativeLayout settingsDeviceRlSglFrequency;
     @BindView(R.id.settings_device_rl_channel)
     RelativeLayout settingsDeviceRlWorkChannel;
+
+
+    /**
+     * rx2
+     */
+    @BindView(R.id.settings_rx2_freq_name)
+    TextView settingsRx2FreqName;
+    @BindView(R.id.tv_settings_rx2_freq)
+    TextView tvSettingsRx2Freq;
+    @BindView(R.id.rl_settings_rx2frequency)
+    RelativeLayout rlSettingsRx2frequency;
+    @BindView(R.id.tv_rx2_data_rate)
+    TextView tvRx2DataRate;
+    @BindView(R.id.tv_rx2_data_rate_content)
+    TextView tvRx2DataRateContent;
+    @BindView(R.id.rl_rx2data_rate)
+    RelativeLayout rlRx2dataRate;
+
+    /**
+     * 设备移动报警开关
+     */
+    @BindView(R.id.sw_alertModeStatus)
+    SwitchCompat swAlertModeStatus;
+    @BindView(R.id.rl_alertModeStatus)
+    RelativeLayout rlAlertModeStatus;
+
+
     private SensoroDeviceConnection sensoroDeviceConnection;
     private SensoroDevice deviceConfiguration;
     private SensoroDevice sensoroDevice = null;
@@ -164,13 +191,14 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
     @BindView(R.id.settings_device_ll_channel_et)
     LinearLayout settingsDeviceLlChannelEt;
 
+
     private ArrayList<ChannelData> channelOpenList = new ArrayList<>();
     private int loraDr = 0;
     private int activation = 0;
     private int delay = 1;
     private String receivePeriod;
     private String classBSf;
-    private String sglDataRate;
+    private int rx2frequency;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -273,54 +301,80 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
                 receivePeriod = CLASSB_PERIODICITY[sensoroDevice.getClassBPeriodicity()];
                 classBPeriodicityTextView.setText(receivePeriod + "s");
             } else {
-                classBLinearLayout.setVisibility(View.GONE);
+                classBLinearLayout.setVisibility(GONE);
             }
             ArrayList<SensoroChannel> channelList = sensoroDevice.getChannelList();
             if (channelList != null && channelList.size() > 0) {
                 settingsDeviceLlChannelEt.setVisibility(VISIBLE);
-            }else{
+            } else {
                 settingsDeviceLlChannelEt.setVisibility(GONE);
             }
 
-//            if(sensoroDevice.hasSglStatus()){
-//                settingsDeviceRlSglStatus.setVisibility(VISIBLE);
-//                int sglStatus = sensoroDevice.getSglStatus();
-//                if (sglStatus == 1) {
-//                    settingsDeviceTvSglStatusContent.setText("开启");
-//                    if(sensoroDevice.hasSglDatarate()){
-//                        settingsDeviceRlSglDataRate.setVisibility(VISIBLE);
-//                        int loraTxpIndex = ParamUtil.getLoraTxpIndex(band, sensoroDevice.getSglDatarate());
-//                        if(loraTxpIndex==0||loraTxpIndex==1||loraTxpIndex==2){
-//                            settingsDeviceTvSglDataRateContent.setText(sfItems[loraTxpIndex]);
-//                        }else{
-//                            settingsDeviceTvSglDataRateContent.setText("未知");
-//                        }
-//
-//                    }
-//
-//                    if(sensoroDevice.hasSglFrequency()){
-//                        settingsDeviceRlSglFrequency.setVisibility(VISIBLE);
-//                        int sglFrequency = sensoroDevice.getSglFrequency();
-//                        int[] loraBandIntArray = ParamUtil.getLoraBandIntArray(band);
-//                        for (int i = 0; i < loraBandIntArray.length; i++) {
-//                            if (sglFrequency == loraBandIntArray[i]) {
-//                                settingsDeviceTvSglFrequencyContent.setText(sensoroDevice.getSglFrequency()/1000000+"MHz");
-//                                break;
-//                            }
-//                        }
-//                    }
-//                    settingsDeviceRlWorkChannel.setVisibility(GONE);
-//
-//                }else{
-//                    settingsDeviceTvSglStatusContent.setText("关闭");
-//                    settingsDeviceRlSglDataRate.setVisibility(GONE);
-//                    settingsDeviceRlSglFrequency.setVisibility(GONE);
-//                    settingsDeviceRlWorkChannel.setVisibility(VISIBLE);
-//                    // todo 记得改这里
-//                }
-//
-//
-//            }
+
+            if (sensoroDevice.hasSglStatus()) {
+                settingsDeviceRlSglStatus.setVisibility(VISIBLE);
+                int sglStatus = sensoroDevice.getSglStatus();
+                if (sglStatus == 1) {
+                    settingsDeviceTvSglStatusContent.setText("开启");
+                    if (sensoroDevice.hasSglDatarate()) {
+                        settingsDeviceRlSglDataRate.setVisibility(VISIBLE);
+                        int loraTxpIndex = ParamUtil.getLoraTxpIndex(band, sensoroDevice.getSglDatarate());
+                        settingsDeviceTvSglDataRateContent.setText(sfItems[loraTxpIndex]);
+
+                    }
+
+                    if (sensoroDevice.hasSglFrequency()) {
+                        settingsDeviceRlSglFrequency.setVisibility(VISIBLE);
+                        int sglFrequency = sensoroDevice.getSglFrequency();
+                        int[] loraBandIntArray = ParamUtil.getLoraBandIntArray(band);
+                        for (int i = 0; i < loraBandIntArray.length; i++) {
+                            if (sglFrequency == loraBandIntArray[i]) {
+                                settingsDeviceTvSglFrequencyContent.setText(ParamUtil.getLoraBandText(this, band)[i]);
+                                break;
+                            }
+                        }
+                    }
+                    settingsDeviceRlWorkChannel.setVisibility(GONE);
+
+                } else {
+                    settingsDeviceTvSglStatusContent.setText("关闭");
+                    settingsDeviceRlSglDataRate.setVisibility(GONE);
+                    settingsDeviceRlSglFrequency.setVisibility(GONE);
+                    settingsDeviceRlWorkChannel.setVisibility(VISIBLE);
+                    // todo 记得改这里
+                }
+
+
+            }
+
+            //rx2
+
+            if (sensoroDevice.hasRx2Frequency()) {
+                rlSettingsRx2frequency.setVisibility(VISIBLE);
+            } else {
+                rlSettingsRx2frequency.setVisibility(GONE);
+            }
+
+            if (sensoroDevice.hasRx2Datarate()) {
+                rlRx2dataRate.setVisibility(VISIBLE);
+            } else {
+                rlRx2dataRate.setVisibility(GONE);
+            }
+
+            //设备移动报警开关
+            if (sensoroDevice.hasAlertModeStatus()) {
+                if (sensoroDevice.getAlertModeStatus() == 1) {
+                    swAlertModeStatus.setChecked(true);
+                } else {
+                    swAlertModeStatus.setChecked(false);
+
+                }
+                rlAlertModeStatus.setVisibility(VISIBLE);
+            } else {
+                rlAlertModeStatus.setVisibility(GONE);
+            }
+
+
             if (deviceInfo.getDeviceType().equalsIgnoreCase("chip") && (deviceInfo.getFirmwareVersion().equalsIgnoreCase("2.0") || deviceInfo.getFirmwareVersion().equalsIgnoreCase("2.0.0"))) {
                 delayLinearLayout.setVisibility(GONE);
             } else {
@@ -358,7 +412,7 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
                         loraSfRelativeLayout.setVisibility(VISIBLE);
                     }
                 } else {
-                    devEuiRelativeLayout.setVisibility(View.GONE);
+                    devEuiRelativeLayout.setVisibility(GONE);
                 }
             }
 
@@ -394,13 +448,17 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
                     channelMaskLinearLayout.setVisibility(VISIBLE);
                 }
             }
-        } catch (Exception e) {
+        } catch (
+                Exception e) {
             e.printStackTrace();
             Toast.makeText(getApplicationContext(), getString(R.string.connect_failed), Toast.LENGTH_SHORT).show();
             this.finish();
             return;
         }
-        Toast.makeText(this, R.string.connect_success, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.connect_success, Toast.LENGTH_SHORT).
+
+                show();
+
     }
 
     private void initLoraParam() {
@@ -587,6 +645,15 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
                     }
                 }
 
+                loraParamBuilder.setSglStatus(deviceConfiguration.getSglStatus());
+                loraParamBuilder.setSglFrequency(deviceConfiguration.getSglFrequency());
+                loraParamBuilder.setSglDatarate(deviceConfiguration.getSglDatarate());
+
+
+                //rx2
+                loraParamBuilder.setRx2Datarate(deviceConfiguration.getRx2Datarate());
+                loraParamBuilder.setRx2Frequency(deviceConfiguration.getRx2Frequency());
+
                 if (deviceInfo.getDeviceType().equalsIgnoreCase("chip") && (deviceInfo.getFirmwareVersion().equalsIgnoreCase("2.0") || deviceInfo.getFirmwareVersion().equalsIgnoreCase("2.0.0"))) {
 
                 } else {
@@ -599,6 +666,17 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
                     loraParamBuilder.setActivition(MsgNode1V1M5.Activtion.valueOf(activation));
                 }
                 msgNodeBuilder.setLpwanParam(loraParamBuilder);
+            }
+
+            /**
+             * alertModeStatus设备移动报警开关
+             */
+            if (deviceConfiguration.hasAppParam()) {
+                MsgNode1V1M5.AppParam.Builder appBuilder = MsgNode1V1M5.AppParam.newBuilder();
+                if (deviceConfiguration.hasAlertModeStatus()) {
+                    appBuilder.setAlertModeStatus(deviceConfiguration.getAlertModeStatus());
+                }
+                msgNodeBuilder.setAppParam(appBuilder);
             }
 
             byte[] data = msgNodeBuilder.build().toByteArray();
@@ -718,11 +796,30 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
             R.id.settings_device_rl_nwk_address, R.id.settings_device_rl_sf, R.id.settings_device_rl_delay, R.id.settings_device_rl_channel, R.id.settings_device_rl_activation,
             R.id.settings_device_sc_classB_enable, R.id.settings_device_rl_classB_datarate, R.id.settings_device_rl_classB_periodicity, R.id.settings_device_rl_sgl_status,
             R.id.settings_device_rl_sgl_data_rate, R.id.settings_device_rl_sgl_frequency, R.id.settings_device_tv_adv_device_save, R.id.settings_device_ad_device_back,
-            R.id.settings_device_ll_channel_et})
+            R.id.settings_device_ll_channel_et, R.id.rl_settings_rx2frequency, R.id.rl_rx2data_rate})
+
+
     public void onclick(View view) {
         SettingsInputDialogFragment dialogFragment = null;
         SettingsSingleChoiceItemsFragment dialogSingleFragment;
         switch (view.getId()) {
+
+
+            case R.id.rl_settings_rx2frequency:
+
+
+                dialogFragment = SettingsInputDialogFragment.newInstance(rx2frequency + "");
+                dialogFragment.show(getFragmentManager(), SETTINGS_DEVICE_RX2_FREQUENCY);
+                break;
+            case R.id.rl_rx2data_rate:
+
+
+                int index2 = ParamUtil.getLoraTxpIndex(band, sensoroDevice.getRx2Datarate());
+                dialogSingleFragment = SettingsSingleChoiceItemsFragment.newInstance(sfItems, index2);
+                dialogSingleFragment.show(getFragmentManager(), SETTINGS_DEVICE_RX2_DATA_RATE);
+                break;
+
+
             case R.id.settings_device_rl_dev_eui:
                 if (deviceInfo.isOpenLoraDevice()) {
                     dialogFragment = SettingsInputDialogFragment.newInstance(devEuiTextView.getText().toString());
@@ -791,14 +888,20 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
                 dialogSingleFragment.show(getFragmentManager(), SETTINGS_DEVICE_SGL_STATUS);
                 break;
             case R.id.settings_device_rl_sgl_data_rate:
-                int indexss = ParamUtil.getLoraDrIndex(band, loraDr);
-                if (indexss == 0 || indexss == 1 || indexss == 2) {
 
-                } else {
-                    indexss = -1;
-                }
-                String[] items = {sfItems[0], sfItems[1], sfItems[2]};
-                dialogSingleFragment = SettingsSingleChoiceItemsFragment.newInstance(items, indexss);
+//                int indexss = ParamUtil.getLoraDrIndex(band, loraDr);
+                int indexss = ParamUtil.getLoraTxpIndex(band, sensoroDevice.getSglDatarate());
+
+//                settingsDeviceTvSglFrequencyContent.getText();
+//
+//                sfItems
+//                if (indexss == 0 || indexss == 1 || indexss == 2) {
+//
+//                } else {
+//                    indexss = -1;
+//                }
+//                String[] items = {sfItems[0], sfItems[1], sfItems[2]};
+                dialogSingleFragment = SettingsSingleChoiceItemsFragment.newInstance(sfItems, indexss);
                 dialogSingleFragment.show(getFragmentManager(), SETTINGS_DEVICE_SGL_DATA_RATE);
                 break;
             case R.id.settings_device_rl_sgl_frequency:
@@ -886,6 +989,38 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
                 device.setHasDelay(false);
             }
 
+
+            /**
+             * 设备移动报警
+             */
+
+            device.setHasAlertModeStatus(sensoroDevice.hasAlertModeStatus());
+            if (device.hasAlertModeStatus()) {
+                if (swAlertModeStatus.isChecked()) {
+                    sensoroDevice.setAlertModeStatus(1);
+                    device.setAlertModeStatus(sensoroDevice.getAlertModeStatus());
+                } else {
+                    sensoroDevice.setAlertModeStatus(0);
+                    device.setAlertModeStatus(sensoroDevice.getAlertModeStatus());
+                }
+            }
+
+
+            /**
+             * rx2
+             */
+
+            device.setHasRx2Datarate(sensoroDevice.hasRx2Datarate());
+            if (device.hasRx2Datarate()) {
+                device.setRx2Datarate(sensoroDevice.getRx2Datarate());
+            }
+
+            device.setHasRx2Frequency(sensoroDevice.hasRx2Frequency());
+            if (device.hasRx2Frequency()) {
+                device.setRx2Frequency(sensoroDevice.getRx2Frequency());
+            }
+
+
             device.setHasSglStatus(sensoroDevice.hasSglStatus());
             if (sensoroDevice.hasSglStatus()) {
                 device.setSglStatus(sensoroDevice.getSglStatus());
@@ -900,6 +1035,8 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
             if (sensoroDevice.hasSglFrequency()) {
                 device.setSglFrequency(sensoroDevice.getSglFrequency());
             }
+
+
             List<Integer> list = sensoroDevice.getChannelMaskList();
             if (list != null && list.size() > 0) {
                 int array[] = new int[list.size()];
@@ -945,6 +1082,18 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
         } else {
             loraSfRelativeLayout.setVisibility(VISIBLE);
         }
+    }
+
+    /**
+     * 移动报警
+     */
+    @OnCheckedChanged(R.id.sw_alertModeStatus)
+    public void swAlertModeStatus() {
+        if (swAlertModeStatus.isChecked()) {
+
+        }
+
+
     }
 
     @Override
@@ -1062,19 +1211,16 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
                 settingsDeviceRlSglDataRate.setVisibility(VISIBLE);
                 settingsDeviceRlWorkChannel.setVisibility(GONE);
                 int bleTxpIndex = ParamUtil.getLoraTxpIndex(band, sensoroDevice.getSglDatarate());
-                if (bleTxpIndex == 0 || bleTxpIndex == 1 || bleTxpIndex == 2) {
-                    settingsDeviceTvSglDataRateContent.setText(sfItems[bleTxpIndex]);
-                } else {
-                    settingsDeviceTvSglDataRateContent.setText("未知");
-                }
+                settingsDeviceTvSglDataRateContent.setText(sfItems[bleTxpIndex]);
+                settingsDeviceRlWorkChannel.setVisibility(GONE);
 
 
                 int sglFrequency = sensoroDevice.getSglFrequency();
                 int[] loraBandIntArray = ParamUtil.getLoraBandIntArray(band);
                 for (int i = 0; i < loraBandIntArray.length; i++) {
                     if (sglFrequency == loraBandIntArray[i]) {
-                        settingsDeviceTvSglFrequencyContent.setText(sensoroDevice.getSglFrequency() / 1000000 + "MHz");
-                        return;
+                        settingsDeviceTvSglFrequencyContent.setText(ParamUtil.getLoraBandText(this, band)[i]);
+                        break;
                     }
                 }
             } else {
@@ -1083,6 +1229,8 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
                 settingsDeviceRlSglFrequency.setVisibility(GONE);
                 settingsDeviceRlSglDataRate.setVisibility(GONE);
                 settingsDeviceRlWorkChannel.setVisibility(GONE);
+                settingsDeviceRlWorkChannel.setVisibility(VISIBLE);
+
 //                sensoroDevice.setSglDatarate(0);
 //                sensoroDevice.setSglFrequency(0);
             }
@@ -1097,6 +1245,25 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
             int sglFrequency = ParamUtil.getLoraBandIntArray(band)[index];
             sensoroDevice.setSglFrequency(sglFrequency);
             settingsDeviceTvSglFrequencyContent.setText(ParamUtil.getLoraBandText(this, band)[index]);
+        } else if (tag.equals(SETTINGS_DEVICE_RX2_FREQUENCY)) {
+            String text = bundle.getString(SettingsInputDialogFragment.INPUT);
+            int v;
+            try {
+                v = Integer.parseInt(text);
+                int vv = v / 1000000;
+                tvSettingsRx2Freq.setText(vv + "MHz");
+                rx2frequency = v;
+                sensoroDevice.setRx2Frequency(Integer.parseInt(text));
+            } catch (Exception e) {
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+
+
+        } else if (tag.equals(SETTINGS_DEVICE_RX2_DATA_RATE)) {
+            int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
+            int bleTxp = ParamUtil.getLoraTxp(band, index);
+            sensoroDevice.setRx2Datarate(bleTxp);
+            tvRx2DataRateContent.setText(sfItems[index]);
         }
     }
 
@@ -1107,4 +1274,6 @@ public class AdvanceSettingDeviceActivity extends BaseActivity implements Consta
             sensoroDeviceConnection.disconnect();
         }
     }
+
+
 }

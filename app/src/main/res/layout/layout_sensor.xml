@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <!--CO-->
     <LinearLayout
@@ -15,24 +15,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:paddingBottom="10dp"
             android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="@string/sensor_co"
             android:textColor="#333333"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0.8dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
+            android:id="@+id/settings_device_rl_co"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -41,7 +43,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="@string/setting_text_upper_limit"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_co_upper_limit"
@@ -52,7 +54,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_co_upper_limit"
@@ -66,14 +68,20 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
+
+        <include
+            android:id="@+id/include_co"
+            layout="@layout/include_fluctuationrange"></include>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
+
+
     </LinearLayout>
 
     <!--CO2-->
@@ -87,24 +95,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:paddingBottom="10dp"
             android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="@string/sensor_co2"
             android:textColor="#333333"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0.8dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
+            android:id="@+id/settings_device_rl_co2"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -113,7 +123,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="@string/setting_text_upper_limit"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_co2_upper_limit"
@@ -124,7 +134,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_co2_upper_limit"
@@ -138,14 +148,16 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
-
+        <include
+            android:id="@+id/include_co2"
+            layout="@layout/include_fluctuationrange"></include>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
     </LinearLayout>
 
     <!--NO2-->
@@ -159,24 +171,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:paddingBottom="10dp"
             android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="@string/sensor_no2"
             android:textColor="#333333"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0.8dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
+            android:id="@+id/settings_device_rl_no2"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -185,7 +199,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="@string/setting_text_upper_limit"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_no2_upper_limit"
@@ -196,7 +210,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_no2_upper_limit"
@@ -210,14 +224,18 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
-
+        
+        
+        <include
+            android:id="@+id/include_no2"
+            layout="@layout/include_fluctuationrange"></include>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
     </LinearLayout>
 
     <!--CH4-->
@@ -231,24 +249,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:paddingBottom="10dp"
             android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="@string/sensor_ch4"
             android:textColor="#333333"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0.8dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -257,7 +275,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="@string/setting_text_upper_limit"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_ch4_upper_limit"
@@ -268,7 +286,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_ch4_upper_limit"
@@ -282,14 +300,16 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
-
+        <include
+            android:id="@+id/include_ch4"
+            layout="@layout/include_fluctuationrange"></include>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
     </LinearLayout>
 
     <!--LPG-->
@@ -303,24 +323,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:paddingBottom="10dp"
             android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="@string/sensor_lpg"
             android:textColor="#333333"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0.8dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -329,7 +349,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="@string/setting_text_upper_limit"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_lpg_upper_limit"
@@ -340,7 +360,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_lpg_upper_limit"
@@ -354,14 +374,16 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
-
+        <include
+            android:id="@+id/include_lpg"
+            layout="@layout/include_fluctuationrange"></include>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
     </LinearLayout>
 
     <!--PM10-->
@@ -375,24 +397,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:paddingBottom="10dp"
             android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="@string/sensor_pm10"
             android:textColor="#333333"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0.8dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -401,7 +423,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="@string/setting_text_upper_limit"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_pm10_upper_limit"
@@ -412,7 +434,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_pm10_upper_limit"
@@ -426,14 +448,16 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
-
+        <include
+            android:id="@+id/include_pm10"
+            layout="@layout/include_fluctuationrange"></include>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
     </LinearLayout>
     <!--PM2.5-->
     <LinearLayout
@@ -446,24 +470,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:paddingBottom="10dp"
             android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="@string/sensor_pm25"
             android:textColor="#333333"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0.8dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -472,7 +496,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="@string/setting_text_upper_limit"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_pm25_upper_limit"
@@ -483,7 +507,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_pm25_upper_limit"
@@ -497,15 +521,17 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
-
+        <include
+            android:id="@+id/include_pm25"
+            layout="@layout/include_fluctuationrange"></include>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="@dimen/y20"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
     </LinearLayout>
 
     <LinearLayout
@@ -518,25 +544,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:paddingBottom="10dp"
             android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="@string/sensor_temp"
             android:textColor="#333333"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0.8dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_temp_upper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -545,7 +571,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="@string/setting_text_upper_limit"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_temp_upper_limit"
@@ -556,7 +582,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_temp_upper_limit"
@@ -570,7 +596,7 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
 
         <ImageView
@@ -580,15 +606,15 @@
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_temp_lower"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -597,7 +623,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="@string/setting_text_lower_limit"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_temp_lower_limit"
@@ -608,7 +634,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_temp_lower_limit"
@@ -622,15 +648,17 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
-
+        <include
+            android:id="@+id/include_temp"
+            layout="@layout/include_fluctuationrange"></include>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="@dimen/y20"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
     </LinearLayout>
 
     <LinearLayout
@@ -643,25 +671,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:paddingBottom="10dp"
             android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="@string/sensor_humidity"
             android:textColor="#333333"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0.8dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_humidity_upper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -670,7 +698,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="@string/setting_text_upper_limit"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_humidity_upper_limit"
@@ -681,7 +709,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_humidity_upper_limit"
@@ -695,7 +723,7 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
 
         <ImageView
@@ -706,15 +734,15 @@
             android:layout_marginRight="12dp"
             android:background="#c8c7cc"
             android:contentDescription="@null"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_humidity_lower"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
             android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:visibility="gone">
 
             <TextView
@@ -724,7 +752,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="@string/setting_text_lower_limit"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_humidity_lower_limit"
@@ -735,7 +763,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_humidity_lower_limit"
@@ -749,15 +777,17 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
-
+        <include
+            android:id="@+id/include_humidity"
+            layout="@layout/include_fluctuationrange"></include>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="@dimen/y10"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
     </LinearLayout>
 
     <LinearLayout
@@ -770,25 +800,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:paddingBottom="10dp"
             android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="@string/sensor_angle_pitch"
             android:textColor="#333333"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0.8dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_pitch_angle_upper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -797,7 +827,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="@string/setting_text_upper_limit"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_pitch_angle_upper_limit"
@@ -808,7 +838,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_pitch_angle_upper_limit"
@@ -822,7 +852,7 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
 
         <ImageView
@@ -832,15 +862,15 @@
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_pitch_angle_lower"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -849,7 +879,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="@string/setting_text_lower_limit"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_pitch_angle_lower_limit"
@@ -860,7 +890,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_pitch_angle_lower_limit"
@@ -874,15 +904,17 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
-
+        <include
+            android:id="@+id/include_pitch"
+            layout="@layout/include_fluctuationrange"></include>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="@dimen/y10"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
     </LinearLayout>
 
     <LinearLayout
@@ -895,25 +927,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:paddingBottom="10dp"
             android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="@string/sensor_angle_yaw"
             android:textColor="#333333"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0.8dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_yaw_angle_upper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -922,7 +954,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="@string/setting_text_upper_limit"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_yaw_angle_upper_limit"
@@ -933,7 +965,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_yaw_angle_upper_limit"
@@ -947,7 +979,7 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
 
         <ImageView
@@ -957,15 +989,15 @@
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_yaw_angle_lower"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -974,7 +1006,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="@string/setting_text_lower_limit"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_yaw_angle_lower_limit"
@@ -985,7 +1017,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_yaw_angle_lower_limit"
@@ -999,15 +1031,17 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
-
+        <include
+            android:id="@+id/include_yaw"
+            layout="@layout/include_fluctuationrange"></include>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="@dimen/y10"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
     </LinearLayout>
 
     <LinearLayout
@@ -1020,25 +1054,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:paddingBottom="10dp"
             android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="@string/sensor_angle_roll"
             android:textColor="#333333"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0.8dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_roll_angle_upper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -1047,7 +1081,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="@string/setting_text_upper_limit"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_roll_angle_upper_limit"
@@ -1058,7 +1092,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_roll_angle_upper_limit"
@@ -1072,7 +1106,7 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
 
         <ImageView
@@ -1082,15 +1116,15 @@
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_roll_angle_lower"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -1099,7 +1133,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="@string/setting_text_lower_limit"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_roll_angle_lower_limit"
@@ -1110,7 +1144,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_roll_angle_lower_limit"
@@ -1124,15 +1158,17 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
-
+        <include
+            android:id="@+id/include_roll"
+            layout="@layout/include_fluctuationrange"></include>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="@dimen/y10"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
     </LinearLayout>
 
     <LinearLayout
@@ -1145,25 +1181,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:paddingBottom="10dp"
             android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="@string/command"
             android:textColor="#333333"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0.8dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_angle_zero"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:id="@+id/settings_device_tv_angle_zero"
@@ -1174,7 +1210,7 @@
                 android:autoLink="none"
                 android:text="@string/zero_calibrate"
                 android:textColor="@android:color/holo_blue_light"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
         </RelativeLayout>
 
@@ -1183,7 +1219,7 @@
             android:layout_height="1dp"
             android:layout_marginBottom="@dimen/y10"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
     </LinearLayout>
 
     <LinearLayout
@@ -1196,25 +1232,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:paddingBottom="10dp"
             android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="@string/sensor_water_pressure"
             android:textColor="#333333"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0.8dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_water_pressure_upper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -1223,7 +1259,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="@string/setting_text_upper_limit"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_water_pressure_upper_limit"
@@ -1234,7 +1270,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_water_pressure_upper_limit"
@@ -1248,7 +1284,7 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
 
         <ImageView
@@ -1258,15 +1294,15 @@
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_water_pressure_lower"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -1275,7 +1311,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="@string/setting_text_lower_limit"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_water_pressure_lower_limit"
@@ -1286,7 +1322,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_water_pressure_lower_limit"
@@ -1300,15 +1336,17 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
-
+        <include
+            android:id="@+id/include_water_pressure"
+            layout="@layout/include_fluctuationrange"></include>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="@dimen/y10"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
     </LinearLayout>
 
     <LinearLayout
@@ -1321,25 +1359,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:paddingBottom="10dp"
             android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="@string/sensor_temperature_pressure"
             android:textColor="#333333"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0.8dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_temperature_pressure_upper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -1348,7 +1386,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="@string/setting_text_upper_limit"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_temperature_pressure_upper_limit"
@@ -1359,7 +1397,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_temperature_pressure_upper_limit"
@@ -1373,7 +1411,7 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
 
         <ImageView
@@ -1383,15 +1421,15 @@
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_temperature_pressure_lower"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -1400,7 +1438,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="@string/setting_text_lower_limit"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_temperature_pressure_lower_limit"
@@ -1411,7 +1449,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_temperature_pressure_lower_limit"
@@ -1425,7 +1463,7 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
 
         <ImageView
@@ -1433,15 +1471,15 @@
             android:layout_height="1dp"
             android:layout_marginBottom="@dimen/y10"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_temperature_pressure_step_upper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -1450,7 +1488,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="@string/setting_text_step_upper_limit"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_temperature_pressure_upper_step_limit"
@@ -1461,7 +1499,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_temperature_pressure_upper_step_limit"
@@ -1475,7 +1513,7 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
 
         <ImageView
@@ -1485,15 +1523,15 @@
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_temperature_pressure_step_lower"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -1502,7 +1540,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="@string/setting_text_step_lower_limit"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_temperature_pressure_lower_step_limit"
@@ -1513,7 +1551,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_temperature_pressure_lower_step_limit"
@@ -1527,7 +1565,7 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
 
         <ImageView
@@ -1535,7 +1573,7 @@
             android:layout_height="1dp"
             android:layout_marginBottom="@dimen/y10"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
     </LinearLayout>
     <!--泛海三江电表-->
@@ -1549,25 +1587,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:paddingBottom="10dp"
             android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="电表"
             android:textColor="#333333"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0.8dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_fhsj_elec_pwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -1576,7 +1614,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="密码"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_fhsj_elec_pwd"
@@ -1587,7 +1625,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_fhsj_elec_pwd"
@@ -1601,14 +1639,14 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
 
         <RelativeLayout
@@ -1616,8 +1654,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -1626,7 +1664,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="漏电阈值(mA)"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_fhsj_elec_leak"
@@ -1637,7 +1675,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_fhsj_elec_leak"
@@ -1651,22 +1689,22 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_fhsj_elec_temp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -1675,7 +1713,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="温度阈值(℃)"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_fhsj_elec_temp"
@@ -1686,7 +1724,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_fhsj_elec_temp"
@@ -1700,22 +1738,22 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_fhsj_elec_current"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -1724,7 +1762,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="电流阈值(A)"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_fhsj_elec_current"
@@ -1735,7 +1773,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_fhsj_elec_current"
@@ -1749,22 +1787,22 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_fhsj_elec_overload"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -1773,7 +1811,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="过载阈值(W)"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_fhsj_elec_overload"
@@ -1784,7 +1822,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_fhsj_elec_overload"
@@ -1798,22 +1836,22 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_fhsj_elec_overpressure"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -1822,7 +1860,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="过压阈值(V)"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_fhsj_elec_overpressure"
@@ -1833,7 +1871,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_fhsj_elec_overpressure"
@@ -1847,22 +1885,22 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_fhsj_elec_undervoltage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -1871,7 +1909,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="欠压阈值(V)"
                 android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_fhsj_elec_undervoltage"
@@ -1882,7 +1920,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/icon_arrow"/>
+                android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/settings_device_tv_fhsj_elec_undervoltage"
@@ -1896,14 +1934,14 @@
                 android:maxEms="8"
                 android:singleLine="true"
                 android:textColor="#999999"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
         </RelativeLayout>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
     </LinearLayout>
 
     <LinearLayout
@@ -1916,25 +1954,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:paddingBottom="10dp"
             android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="电表控制"
             android:textColor="#333333"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0.8dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_fhsj_elec_control_reset"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:id="@+id/settings_device_tv_fhsj_elec_control_reset"
@@ -1945,7 +1983,7 @@
                 android:autoLink="none"
                 android:text="系统复位"
                 android:textColor="@android:color/holo_blue_light"
-                android:textSize="18dp"/>
+                android:textSize="18dp" />
 
         </RelativeLayout>
 
@@ -1953,15 +1991,15 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_fhsj_elec_control_restore"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:id="@+id/settings_device_tv_fhsj_elec_control_restore"
@@ -1971,7 +2009,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="恢复出厂"
                 android:textColor="@android:color/holo_blue_light"
-                android:textSize="18dp"/>
+                android:textSize="18dp" />
 
         </RelativeLayout>
 
@@ -1979,15 +2017,15 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_fhsj_elec_control_air_switch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:id="@+id/settings_device_tv_fhsj_elec_control_air_switch"
@@ -1997,7 +2035,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="断开空气开关"
                 android:textColor="@android:color/holo_blue_light"
-                android:textSize="18dp"/>
+                android:textSize="18dp" />
 
         </RelativeLayout>
 
@@ -2005,15 +2043,15 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_fhsj_elec_control_self_test"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:id="@+id/settings_device_tv_fhsj_elec_control_self_test"
@@ -2023,7 +2061,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="自检"
                 android:textColor="@android:color/holo_blue_light"
-                android:textSize="18dp"/>
+                android:textSize="18dp" />
 
         </RelativeLayout>
 
@@ -2031,15 +2069,15 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_fhsj_elec_control_silence"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:id="@+id/settings_device_tv_fhsj_elec_control_silence"
@@ -2049,7 +2087,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="消音"
                 android:textColor="@android:color/holo_blue_light"
-                android:textSize="18dp"/>
+                android:textSize="18dp" />
 
         </RelativeLayout>
 
@@ -2057,15 +2095,15 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <RelativeLayout
             android:id="@+id/settings_device_rl_fhsj_elec_control_zero_power"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_item_selector"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:id="@+id/settings_device_tv_fhsj_elec_control_zero_power"
@@ -2075,7 +2113,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="电量清零"
                 android:textColor="@android:color/holo_blue_light"
-                android:textSize="18dp"/>
+                android:textSize="18dp" />
 
         </RelativeLayout>
 
@@ -2083,12 +2121,13 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#c8c7cc"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/settings_device_rc_ibeacon"
             android:layout_width="match_parent"
@@ -2101,6 +2140,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/settings_device_rc_matun_fire"
             android:layout_width="match_parent"
@@ -2112,584 +2152,583 @@
     <!--曼顿电气火灾-->
 
     <!--<LinearLayout-->
-        <!--android:id="@+id/settings_device_ll_matun_root"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="vertical"-->
-        <!--&gt;-->
+    <!--android:id="@+id/settings_device_ll_matun_root"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="vertical"-->
+    <!--&gt;-->
 
-        <!--<TextView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginLeft="15dp"-->
-            <!--android:paddingBottom="10dp"-->
-            <!--android:paddingTop="10dp"-->
-            <!--android:text="电表"-->
-            <!--android:textColor="#333333"-->
-            <!--android:textSize="18sp"/>-->
+    <!--<TextView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="15dp"-->
+    <!--android:paddingBottom="10dp"-->
+    <!--android:paddingTop="10dp"-->
+    <!--android:text="电表"-->
+    <!--android:textColor="#333333"-->
+    <!--android:textSize="18sp"/>-->
 
-        <!--<ImageView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="0.8dp"-->
-            <!--android:background="#c8c7cc"-->
-            <!--android:contentDescription="@null"/>-->
-
-
-        <!--<RelativeLayout-->
-            <!--android:id="@+id/settings_device_rl_mantun_leak"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@drawable/bg_item_selector"-->
-            <!--android:paddingBottom="10dp"-->
-            <!--android:visibility="gone"-->
-            <!--android:paddingTop="10dp">-->
-
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentLeft="true"-->
-                <!--android:layout_marginLeft="15dp"-->
-                <!--android:text="漏电阈值(mA)"-->
-                <!--android:textColor="#666666"-->
-                <!--android:textSize="18sp"/>-->
-
-            <!--<ImageView-->
-                <!--android:id="@+id/iv_mantun_leak"-->
-                <!--android:layout_width="18dp"-->
-                <!--android:layout_height="18dp"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_gravity="right"-->
-                <!--android:layout_marginRight="20dp"-->
-                <!--android:contentDescription="@null"-->
-                <!--android:src="@drawable/icon_arrow"/>-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/settings_device_mantun_leak"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_marginLeft="10dp"-->
-                <!--android:layout_marginRight="12dp"-->
-                <!--android:layout_toLeftOf="@id/iv_mantun_leak"-->
-                <!--android:ellipsize="end"-->
-                <!--android:maxEms="8"-->
-                <!--android:singleLine="true"-->
-                <!--android:textColor="#999999"-->
-                <!--android:textSize="18sp"/>-->
-        <!--</RelativeLayout>-->
-
-        <!--<ImageView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:background="#c8c7cc"-->
-            <!--android:contentDescription="@null"/>-->
-
-        <!--<RelativeLayout-->
-            <!--android:id="@+id/settings_device_rl_mauton_temp"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@drawable/bg_item_selector"-->
-            <!--android:paddingBottom="10dp"-->
-            <!--android:paddingTop="10dp">-->
-
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentLeft="true"-->
-                <!--android:layout_marginLeft="15dp"-->
-                <!--android:text="温度阈值(℃)"-->
-                <!--android:textColor="#666666"-->
-                <!--android:textSize="18sp"/>-->
-
-            <!--<ImageView-->
-                <!--android:id="@+id/iv_maunton_temp"-->
-                <!--android:layout_width="18dp"-->
-                <!--android:layout_height="18dp"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_gravity="right"-->
-                <!--android:layout_marginRight="20dp"-->
-                <!--android:contentDescription="@null"-->
-                <!--android:src="@drawable/icon_arrow"/>-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/settings_device_tv_maunton_temp"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_marginLeft="10dp"-->
-                <!--android:layout_marginRight="12dp"-->
-                <!--android:layout_toLeftOf="@id/iv_maunton_temp"-->
-                <!--android:ellipsize="end"-->
-                <!--android:maxEms="8"-->
-                <!--android:singleLine="true"-->
-                <!--android:textColor="#999999"-->
-                <!--android:textSize="18sp"/>-->
-        <!--</RelativeLayout>-->
-
-        <!--<ImageView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:background="#c8c7cc"-->
-            <!--android:contentDescription="@null"/>-->
-
-        <!--<RelativeLayout-->
-            <!--android:id="@+id/settings_device_rl_maunton_current"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@drawable/bg_item_selector"-->
-            <!--android:paddingBottom="10dp"-->
-            <!--android:paddingTop="10dp">-->
-
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentLeft="true"-->
-                <!--android:layout_marginLeft="15dp"-->
-                <!--android:text="电流阈值(A)"-->
-                <!--android:textColor="#666666"-->
-                <!--android:textSize="18sp"/>-->
-
-            <!--<ImageView-->
-                <!--android:id="@+id/iv_maunton_current"-->
-                <!--android:layout_width="18dp"-->
-                <!--android:layout_height="18dp"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_gravity="right"-->
-                <!--android:layout_marginRight="20dp"-->
-                <!--android:contentDescription="@null"-->
-                <!--android:src="@drawable/icon_arrow"/>-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/settings_device_tv_maunton_current"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_marginLeft="10dp"-->
-                <!--android:layout_marginRight="12dp"-->
-                <!--android:layout_toLeftOf="@id/iv_maunton_current"-->
-                <!--android:ellipsize="end"-->
-                <!--android:maxEms="8"-->
-                <!--android:singleLine="true"-->
-                <!--android:textColor="#999999"-->
-                <!--android:textSize="18sp"/>-->
-        <!--</RelativeLayout>-->
-
-        <!--<ImageView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:background="#c8c7cc"-->
-            <!--android:contentDescription="@null"/>-->
+    <!--<ImageView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="0.8dp"-->
+    <!--android:background="#c8c7cc"-->
+    <!--android:contentDescription="@null"/>-->
 
 
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/settings_device_rl_mantun_leak"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@drawable/bg_item_selector"-->
+    <!--android:paddingBottom="10dp"-->
+    <!--android:visibility="gone"-->
+    <!--android:paddingTop="10dp">-->
 
-        <!--<RelativeLayout-->
-            <!--android:id="@+id/settings_device_rl_maunton_overpressure"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@drawable/bg_item_selector"-->
-            <!--android:paddingBottom="10dp"-->
-            <!--android:paddingTop="10dp">-->
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:layout_marginLeft="15dp"-->
+    <!--android:text="漏电阈值(mA)"-->
+    <!--android:textColor="#666666"-->
+    <!--android:textSize="18sp"/>-->
 
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentLeft="true"-->
-                <!--android:layout_marginLeft="15dp"-->
-                <!--android:text="过压阈值(V)"-->
-                <!--android:textColor="#666666"-->
-                <!--android:textSize="18sp"/>-->
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_mantun_leak"-->
+    <!--android:layout_width="18dp"-->
+    <!--android:layout_height="18dp"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_gravity="right"-->
+    <!--android:layout_marginRight="20dp"-->
+    <!--android:contentDescription="@null"-->
+    <!--android:src="@drawable/icon_arrow"/>-->
 
-            <!--<ImageView-->
-                <!--android:id="@+id/iv_maunton_overpressure"-->
-                <!--android:layout_width="18dp"-->
-                <!--android:layout_height="18dp"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_gravity="right"-->
-                <!--android:layout_marginRight="20dp"-->
-                <!--android:contentDescription="@null"-->
-                <!--android:src="@drawable/icon_arrow"/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/settings_device_mantun_leak"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_marginLeft="10dp"-->
+    <!--android:layout_marginRight="12dp"-->
+    <!--android:layout_toLeftOf="@id/iv_mantun_leak"-->
+    <!--android:ellipsize="end"-->
+    <!--android:maxEms="8"-->
+    <!--android:singleLine="true"-->
+    <!--android:textColor="#999999"-->
+    <!--android:textSize="18sp"/>-->
+    <!--</RelativeLayout>-->
 
-            <!--<TextView-->
-                <!--android:id="@+id/settings_device_tv_maunton_overpressure"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_marginLeft="10dp"-->
-                <!--android:layout_marginRight="12dp"-->
-                <!--android:layout_toLeftOf="@id/iv_maunton_overpressure"-->
-                <!--android:ellipsize="end"-->
-                <!--android:maxEms="8"-->
-                <!--android:singleLine="true"-->
-                <!--android:textColor="#999999"-->
-                <!--android:textSize="18sp"/>-->
-        <!--</RelativeLayout>-->
+    <!--<ImageView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="1dp"-->
+    <!--android:background="#c8c7cc"-->
+    <!--android:contentDescription="@null"/>-->
 
-        <!--<ImageView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:background="#c8c7cc"-->
-            <!--android:contentDescription="@null"/>-->
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/settings_device_rl_mauton_temp"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@drawable/bg_item_selector"-->
+    <!--android:paddingBottom="10dp"-->
+    <!--android:paddingTop="10dp">-->
 
-        <!--<RelativeLayout-->
-            <!--android:id="@+id/settings_device_rl_maunton_undervoltage"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@drawable/bg_item_selector"-->
-            <!--android:paddingBottom="10dp"-->
-            <!--android:paddingTop="10dp">-->
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:layout_marginLeft="15dp"-->
+    <!--android:text="温度阈值(℃)"-->
+    <!--android:textColor="#666666"-->
+    <!--android:textSize="18sp"/>-->
 
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentLeft="true"-->
-                <!--android:layout_marginLeft="15dp"-->
-                <!--android:text="欠压阈值(V)"-->
-                <!--android:textColor="#666666"-->
-                <!--android:textSize="18sp"/>-->
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_maunton_temp"-->
+    <!--android:layout_width="18dp"-->
+    <!--android:layout_height="18dp"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_gravity="right"-->
+    <!--android:layout_marginRight="20dp"-->
+    <!--android:contentDescription="@null"-->
+    <!--android:src="@drawable/icon_arrow"/>-->
 
-            <!--<ImageView-->
-                <!--android:id="@+id/iv_maunton_undervoltage"-->
-                <!--android:layout_width="18dp"-->
-                <!--android:layout_height="18dp"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_gravity="right"-->
-                <!--android:layout_marginRight="20dp"-->
-                <!--android:contentDescription="@null"-->
-                <!--android:src="@drawable/icon_arrow"/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/settings_device_tv_maunton_temp"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_marginLeft="10dp"-->
+    <!--android:layout_marginRight="12dp"-->
+    <!--android:layout_toLeftOf="@id/iv_maunton_temp"-->
+    <!--android:ellipsize="end"-->
+    <!--android:maxEms="8"-->
+    <!--android:singleLine="true"-->
+    <!--android:textColor="#999999"-->
+    <!--android:textSize="18sp"/>-->
+    <!--</RelativeLayout>-->
 
-            <!--<TextView-->
-                <!--android:id="@+id/settings_device_tv_maunton_undervoltage"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_marginLeft="10dp"-->
-                <!--android:layout_marginRight="12dp"-->
-                <!--android:layout_toLeftOf="@id/iv_maunton_undervoltage"-->
-                <!--android:ellipsize="end"-->
-                <!--android:maxEms="8"-->
-                <!--android:singleLine="true"-->
-                <!--android:textColor="#999999"-->
-                <!--android:textSize="18sp"/>-->
-        <!--</RelativeLayout>-->
-        <!--<ImageView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:background="#c8c7cc"-->
-            <!--android:contentDescription="@null"/>-->
-        <!--<RelativeLayout-->
-            <!--android:id="@+id/settings_device_rl_maunton_overload"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@drawable/bg_item_selector"-->
-            <!--android:paddingBottom="10dp"-->
-            <!--android:paddingTop="10dp">-->
+    <!--<ImageView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="1dp"-->
+    <!--android:background="#c8c7cc"-->
+    <!--android:contentDescription="@null"/>-->
 
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentLeft="true"-->
-                <!--android:layout_marginLeft="15dp"-->
-                <!--android:text="过载阈值(W)"-->
-                <!--android:textColor="#666666"-->
-                <!--android:textSize="18sp"/>-->
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/settings_device_rl_maunton_current"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@drawable/bg_item_selector"-->
+    <!--android:paddingBottom="10dp"-->
+    <!--android:paddingTop="10dp">-->
 
-            <!--<ImageView-->
-                <!--android:id="@+id/iv_maunton_overload"-->
-                <!--android:layout_width="18dp"-->
-                <!--android:layout_height="18dp"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_gravity="right"-->
-                <!--android:layout_marginRight="20dp"-->
-                <!--android:contentDescription="@null"-->
-                <!--android:src="@drawable/icon_arrow"/>-->
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:layout_marginLeft="15dp"-->
+    <!--android:text="电流阈值(A)"-->
+    <!--android:textColor="#666666"-->
+    <!--android:textSize="18sp"/>-->
 
-            <!--<TextView-->
-                <!--android:id="@+id/settings_device_tv_maunton_overload"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_marginLeft="10dp"-->
-                <!--android:layout_marginRight="12dp"-->
-                <!--android:layout_toLeftOf="@id/iv_maunton_overload"-->
-                <!--android:ellipsize="end"-->
-                <!--android:maxEms="8"-->
-                <!--android:singleLine="true"-->
-                <!--android:textColor="#999999"-->
-                <!--android:textSize="18sp"/>-->
-        <!--</RelativeLayout>-->
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_maunton_current"-->
+    <!--android:layout_width="18dp"-->
+    <!--android:layout_height="18dp"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_gravity="right"-->
+    <!--android:layout_marginRight="20dp"-->
+    <!--android:contentDescription="@null"-->
+    <!--android:src="@drawable/icon_arrow"/>-->
 
-        <!--<ImageView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:background="#c8c7cc"-->
-            <!--android:contentDescription="@null"/>-->
-        <!--<RelativeLayout-->
-            <!--android:id="@+id/settings_device_rl_mantun_out_side"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@drawable/bg_item_selector"-->
-            <!--android:paddingBottom="10dp"-->
-            <!--android:paddingTop="10dp">-->
+    <!--<TextView-->
+    <!--android:id="@+id/settings_device_tv_maunton_current"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_marginLeft="10dp"-->
+    <!--android:layout_marginRight="12dp"-->
+    <!--android:layout_toLeftOf="@id/iv_maunton_current"-->
+    <!--android:ellipsize="end"-->
+    <!--android:maxEms="8"-->
+    <!--android:singleLine="true"-->
+    <!--android:textColor="#999999"-->
+    <!--android:textSize="18sp"/>-->
+    <!--</RelativeLayout>-->
 
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentLeft="true"-->
-                <!--android:layout_marginLeft="15dp"-->
-                <!--android:text="箱体温度(℃)"-->
-                <!--android:textColor="#666666"-->
-                <!--android:textSize="18sp"/>-->
+    <!--<ImageView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="1dp"-->
+    <!--android:background="#c8c7cc"-->
+    <!--android:contentDescription="@null"/>-->
 
-            <!--<ImageView-->
-                <!--android:id="@+id/iv_maunton_mantun_out_side"-->
-                <!--android:layout_width="18dp"-->
-                <!--android:layout_height="18dp"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_gravity="right"-->
-                <!--android:layout_marginRight="20dp"-->
-                <!--android:contentDescription="@null"-->
-                <!--android:src="@drawable/icon_arrow"/>-->
 
-            <!--<TextView-->
-                <!--android:id="@+id/settings_device_tv_mantun_out_side"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_marginLeft="10dp"-->
-                <!--android:layout_marginRight="12dp"-->
-                <!--android:layout_toLeftOf="@id/iv_maunton_mantun_out_side"-->
-                <!--android:ellipsize="end"-->
-                <!--android:maxEms="8"-->
-                <!--android:singleLine="true"-->
-                <!--android:textColor="#999999"-->
-                <!--android:textSize="18sp"/>-->
-        <!--</RelativeLayout>-->
-        <!--<ImageView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:background="#c8c7cc"-->
-            <!--android:contentDescription="@null"/>-->
-        <!--<RelativeLayout-->
-            <!--android:id="@+id/settings_device_rl_mantun_contact"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@drawable/bg_item_selector"-->
-            <!--android:paddingBottom="10dp"-->
-            <!--android:paddingTop="10dp">-->
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/settings_device_rl_maunton_overpressure"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@drawable/bg_item_selector"-->
+    <!--android:paddingBottom="10dp"-->
+    <!--android:paddingTop="10dp">-->
 
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentLeft="true"-->
-                <!--android:layout_marginLeft="15dp"-->
-                <!--android:text="触点温度(℃）"-->
-                <!--android:textColor="#666666"-->
-                <!--android:textSize="18sp"/>-->
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:layout_marginLeft="15dp"-->
+    <!--android:text="过压阈值(V)"-->
+    <!--android:textColor="#666666"-->
+    <!--android:textSize="18sp"/>-->
 
-            <!--<ImageView-->
-                <!--android:id="@+id/iv_maunton_mantun_contact"-->
-                <!--android:layout_width="18dp"-->
-                <!--android:layout_height="18dp"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_gravity="right"-->
-                <!--android:layout_marginRight="20dp"-->
-                <!--android:contentDescription="@null"-->
-                <!--android:src="@drawable/icon_arrow"/>-->
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_maunton_overpressure"-->
+    <!--android:layout_width="18dp"-->
+    <!--android:layout_height="18dp"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_gravity="right"-->
+    <!--android:layout_marginRight="20dp"-->
+    <!--android:contentDescription="@null"-->
+    <!--android:src="@drawable/icon_arrow"/>-->
 
-            <!--<TextView-->
-                <!--android:id="@+id/settings_device_tv_mantun_contact"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_marginLeft="10dp"-->
-                <!--android:layout_marginRight="12dp"-->
-                <!--android:layout_toLeftOf="@id/iv_maunton_mantun_contact"-->
-                <!--android:ellipsize="end"-->
-                <!--android:maxEms="8"-->
-                <!--android:singleLine="true"-->
-                <!--android:textColor="#999999"-->
-                <!--android:textSize="18sp"/>-->
-        <!--</RelativeLayout>-->
+    <!--<TextView-->
+    <!--android:id="@+id/settings_device_tv_maunton_overpressure"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_marginLeft="10dp"-->
+    <!--android:layout_marginRight="12dp"-->
+    <!--android:layout_toLeftOf="@id/iv_maunton_overpressure"-->
+    <!--android:ellipsize="end"-->
+    <!--android:maxEms="8"-->
+    <!--android:singleLine="true"-->
+    <!--android:textColor="#999999"-->
+    <!--android:textSize="18sp"/>-->
+    <!--</RelativeLayout>-->
 
-        <!--<ImageView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:background="#c8c7cc"-->
-            <!--android:contentDescription="@null"/>-->
+    <!--<ImageView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="1dp"-->
+    <!--android:background="#c8c7cc"-->
+    <!--android:contentDescription="@null"/>-->
+
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/settings_device_rl_maunton_undervoltage"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@drawable/bg_item_selector"-->
+    <!--android:paddingBottom="10dp"-->
+    <!--android:paddingTop="10dp">-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:layout_marginLeft="15dp"-->
+    <!--android:text="欠压阈值(V)"-->
+    <!--android:textColor="#666666"-->
+    <!--android:textSize="18sp"/>-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_maunton_undervoltage"-->
+    <!--android:layout_width="18dp"-->
+    <!--android:layout_height="18dp"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_gravity="right"-->
+    <!--android:layout_marginRight="20dp"-->
+    <!--android:contentDescription="@null"-->
+    <!--android:src="@drawable/icon_arrow"/>-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/settings_device_tv_maunton_undervoltage"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_marginLeft="10dp"-->
+    <!--android:layout_marginRight="12dp"-->
+    <!--android:layout_toLeftOf="@id/iv_maunton_undervoltage"-->
+    <!--android:ellipsize="end"-->
+    <!--android:maxEms="8"-->
+    <!--android:singleLine="true"-->
+    <!--android:textColor="#999999"-->
+    <!--android:textSize="18sp"/>-->
+    <!--</RelativeLayout>-->
+    <!--<ImageView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="1dp"-->
+    <!--android:background="#c8c7cc"-->
+    <!--android:contentDescription="@null"/>-->
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/settings_device_rl_maunton_overload"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@drawable/bg_item_selector"-->
+    <!--android:paddingBottom="10dp"-->
+    <!--android:paddingTop="10dp">-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:layout_marginLeft="15dp"-->
+    <!--android:text="过载阈值(W)"-->
+    <!--android:textColor="#666666"-->
+    <!--android:textSize="18sp"/>-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_maunton_overload"-->
+    <!--android:layout_width="18dp"-->
+    <!--android:layout_height="18dp"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_gravity="right"-->
+    <!--android:layout_marginRight="20dp"-->
+    <!--android:contentDescription="@null"-->
+    <!--android:src="@drawable/icon_arrow"/>-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/settings_device_tv_maunton_overload"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_marginLeft="10dp"-->
+    <!--android:layout_marginRight="12dp"-->
+    <!--android:layout_toLeftOf="@id/iv_maunton_overload"-->
+    <!--android:ellipsize="end"-->
+    <!--android:maxEms="8"-->
+    <!--android:singleLine="true"-->
+    <!--android:textColor="#999999"-->
+    <!--android:textSize="18sp"/>-->
+    <!--</RelativeLayout>-->
+
+    <!--<ImageView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="1dp"-->
+    <!--android:background="#c8c7cc"-->
+    <!--android:contentDescription="@null"/>-->
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/settings_device_rl_mantun_out_side"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@drawable/bg_item_selector"-->
+    <!--android:paddingBottom="10dp"-->
+    <!--android:paddingTop="10dp">-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:layout_marginLeft="15dp"-->
+    <!--android:text="箱体温度(℃)"-->
+    <!--android:textColor="#666666"-->
+    <!--android:textSize="18sp"/>-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_maunton_mantun_out_side"-->
+    <!--android:layout_width="18dp"-->
+    <!--android:layout_height="18dp"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_gravity="right"-->
+    <!--android:layout_marginRight="20dp"-->
+    <!--android:contentDescription="@null"-->
+    <!--android:src="@drawable/icon_arrow"/>-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/settings_device_tv_mantun_out_side"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_marginLeft="10dp"-->
+    <!--android:layout_marginRight="12dp"-->
+    <!--android:layout_toLeftOf="@id/iv_maunton_mantun_out_side"-->
+    <!--android:ellipsize="end"-->
+    <!--android:maxEms="8"-->
+    <!--android:singleLine="true"-->
+    <!--android:textColor="#999999"-->
+    <!--android:textSize="18sp"/>-->
+    <!--</RelativeLayout>-->
+    <!--<ImageView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="1dp"-->
+    <!--android:background="#c8c7cc"-->
+    <!--android:contentDescription="@null"/>-->
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/settings_device_rl_mantun_contact"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@drawable/bg_item_selector"-->
+    <!--android:paddingBottom="10dp"-->
+    <!--android:paddingTop="10dp">-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:layout_marginLeft="15dp"-->
+    <!--android:text="触点温度(℃）"-->
+    <!--android:textColor="#666666"-->
+    <!--android:textSize="18sp"/>-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_maunton_mantun_contact"-->
+    <!--android:layout_width="18dp"-->
+    <!--android:layout_height="18dp"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_gravity="right"-->
+    <!--android:layout_marginRight="20dp"-->
+    <!--android:contentDescription="@null"-->
+    <!--android:src="@drawable/icon_arrow"/>-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/settings_device_tv_mantun_contact"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_marginLeft="10dp"-->
+    <!--android:layout_marginRight="12dp"-->
+    <!--android:layout_toLeftOf="@id/iv_maunton_mantun_contact"-->
+    <!--android:ellipsize="end"-->
+    <!--android:maxEms="8"-->
+    <!--android:singleLine="true"-->
+    <!--android:textColor="#999999"-->
+    <!--android:textSize="18sp"/>-->
+    <!--</RelativeLayout>-->
+
+    <!--<ImageView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="1dp"-->
+    <!--android:background="#c8c7cc"-->
+    <!--android:contentDescription="@null"/>-->
     <!--</LinearLayout>-->
 
     <!--<LinearLayout-->
-        <!--android:id="@+id/settings_device_ll_maunton_control"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="vertical">-->
+    <!--android:id="@+id/settings_device_ll_maunton_control"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="vertical">-->
 
-        <!--<TextView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginLeft="15dp"-->
-            <!--android:paddingBottom="10dp"-->
-            <!--android:paddingTop="10dp"-->
-            <!--android:text="电表控制"-->
-            <!--android:textColor="#333333"-->
-            <!--android:textSize="18sp"/>-->
+    <!--<TextView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="15dp"-->
+    <!--android:paddingBottom="10dp"-->
+    <!--android:paddingTop="10dp"-->
+    <!--android:text="电表控制"-->
+    <!--android:textColor="#333333"-->
+    <!--android:textSize="18sp"/>-->
 
-        <!--<ImageView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="0.8dp"-->
-            <!--android:background="#c8c7cc"-->
-            <!--android:contentDescription="@null"/>-->
+    <!--<ImageView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="0.8dp"-->
+    <!--android:background="#c8c7cc"-->
+    <!--android:contentDescription="@null"/>-->
 
-        <!--<RelativeLayout-->
-            <!--android:id="@+id/settings_device_rl_maunton_control_switch_in"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@drawable/bg_item_selector"-->
-            <!--android:paddingBottom="10dp"-->
-            <!--android:paddingTop="10dp">-->
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/settings_device_rl_maunton_control_switch_in"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@drawable/bg_item_selector"-->
+    <!--android:paddingBottom="10dp"-->
+    <!--android:paddingTop="10dp">-->
 
-            <!--<TextView-->
-                <!--android:id="@+id/settings_device_tv_maunton_control_switch_in"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentLeft="true"-->
-                <!--android:layout_marginLeft="15dp"-->
-                <!--android:autoLink="none"-->
-                <!--android:text="合闸"-->
-                <!--android:textColor="@android:color/holo_blue_light"-->
-                <!--android:textSize="18dp"/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/settings_device_tv_maunton_control_switch_in"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:layout_marginLeft="15dp"-->
+    <!--android:autoLink="none"-->
+    <!--android:text="合闸"-->
+    <!--android:textColor="@android:color/holo_blue_light"-->
+    <!--android:textSize="18dp"/>-->
 
-        <!--</RelativeLayout>-->
+    <!--</RelativeLayout>-->
 
-        <!--<ImageView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:background="#c8c7cc"-->
-            <!--android:contentDescription="@null"/>-->
+    <!--<ImageView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="1dp"-->
+    <!--android:background="#c8c7cc"-->
+    <!--android:contentDescription="@null"/>-->
 
-        <!--<RelativeLayout-->
-            <!--android:id="@+id/settings_device_rl_maunton_control_switch_on"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@drawable/bg_item_selector"-->
-            <!--android:paddingBottom="10dp"-->
-            <!--android:paddingTop="10dp">-->
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/settings_device_rl_maunton_control_switch_on"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@drawable/bg_item_selector"-->
+    <!--android:paddingBottom="10dp"-->
+    <!--android:paddingTop="10dp">-->
 
-            <!--<TextView-->
-                <!--android:id="@+id/settings_device_tv_maunton_control_switch_on"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentLeft="true"-->
-                <!--android:layout_marginLeft="15dp"-->
-                <!--android:text="分闸"-->
-                <!--android:textColor="@android:color/holo_blue_light"-->
-                <!--android:textSize="18dp"/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/settings_device_tv_maunton_control_switch_on"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:layout_marginLeft="15dp"-->
+    <!--android:text="分闸"-->
+    <!--android:textColor="@android:color/holo_blue_light"-->
+    <!--android:textSize="18dp"/>-->
 
-        <!--</RelativeLayout>-->
+    <!--</RelativeLayout>-->
 
-        <!--<ImageView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:background="#c8c7cc"-->
-            <!--android:contentDescription="@null"/>-->
+    <!--<ImageView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="1dp"-->
+    <!--android:background="#c8c7cc"-->
+    <!--android:contentDescription="@null"/>-->
 
-        <!--<RelativeLayout-->
-            <!--android:id="@+id/settings_device_rl_maunton_control_self_chick"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@drawable/bg_item_selector"-->
-            <!--android:paddingBottom="10dp"-->
-            <!--android:paddingTop="10dp">-->
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/settings_device_rl_maunton_control_self_chick"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@drawable/bg_item_selector"-->
+    <!--android:paddingBottom="10dp"-->
+    <!--android:paddingTop="10dp">-->
 
-            <!--<TextView-->
-                <!--android:id="@+id/settings_device_tv_maunton_control_self_chick"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentLeft="true"-->
-                <!--android:layout_marginLeft="15dp"-->
-                <!--android:text="自检"-->
-                <!--android:textColor="@android:color/holo_blue_light"-->
-                <!--android:textSize="18dp"/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/settings_device_tv_maunton_control_self_chick"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:layout_marginLeft="15dp"-->
+    <!--android:text="自检"-->
+    <!--android:textColor="@android:color/holo_blue_light"-->
+    <!--android:textSize="18dp"/>-->
 
-        <!--</RelativeLayout>-->
+    <!--</RelativeLayout>-->
 
-        <!--<ImageView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:background="#c8c7cc"-->
-            <!--android:contentDescription="@null"/>-->
+    <!--<ImageView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="1dp"-->
+    <!--android:background="#c8c7cc"-->
+    <!--android:contentDescription="@null"/>-->
 
-        <!--<RelativeLayout-->
-            <!--android:id="@+id/settings_device_rl_maunton_control_elec_clear_zero"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@drawable/bg_item_selector"-->
-            <!--android:paddingBottom="10dp"-->
-            <!--android:paddingTop="10dp">-->
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/settings_device_rl_maunton_control_elec_clear_zero"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@drawable/bg_item_selector"-->
+    <!--android:paddingBottom="10dp"-->
+    <!--android:paddingTop="10dp">-->
 
-            <!--<TextView-->
-                <!--android:id="@+id/settings_device_tv_maunton_control_elec_clear_zero"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentLeft="true"-->
-                <!--android:layout_marginLeft="15dp"-->
-                <!--android:text="电量清零"-->
-                <!--android:textColor="@android:color/holo_blue_light"-->
-                <!--android:textSize="18dp"/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/settings_device_tv_maunton_control_elec_clear_zero"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:layout_marginLeft="15dp"-->
+    <!--android:text="电量清零"-->
+    <!--android:textColor="@android:color/holo_blue_light"-->
+    <!--android:textSize="18dp"/>-->
 
-        <!--</RelativeLayout>-->
+    <!--</RelativeLayout>-->
 
-        <!--<ImageView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:background="#c8c7cc"-->
-            <!--android:contentDescription="@null"/>-->
+    <!--<ImageView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="1dp"-->
+    <!--android:background="#c8c7cc"-->
+    <!--android:contentDescription="@null"/>-->
 
-        <!--<RelativeLayout-->
-            <!--android:id="@+id/settings_device_rl_maunton_control_restore"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@drawable/bg_item_selector"-->
-            <!--android:paddingBottom="10dp"-->
-            <!--android:paddingTop="10dp">-->
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/settings_device_rl_maunton_control_restore"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@drawable/bg_item_selector"-->
+    <!--android:paddingBottom="10dp"-->
+    <!--android:paddingTop="10dp">-->
 
-            <!--<TextView-->
-                <!--android:id="@+id/settings_device_tv_maunton_control_restore"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentLeft="true"-->
-                <!--android:layout_marginLeft="15dp"-->
-                <!--android:text="恢复出厂"-->
-                <!--android:textColor="@android:color/holo_blue_light"-->
-                <!--android:textSize="18dp"/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/settings_device_tv_maunton_control_restore"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:layout_marginLeft="15dp"-->
+    <!--android:text="恢复出厂"-->
+    <!--android:textColor="@android:color/holo_blue_light"-->
+    <!--android:textSize="18dp"/>-->
 
-        <!--</RelativeLayout>-->
+    <!--</RelativeLayout>-->
 
-        <!--<ImageView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:background="#c8c7cc"-->
-            <!--android:contentDescription="@null"/>-->
+    <!--<ImageView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="1dp"-->
+    <!--android:background="#c8c7cc"-->
+    <!--android:contentDescription="@null"/>-->
     <!--</LinearLayout>-->
 
     <!--安瑞科三相电-->
-    <include layout="@layout/layout_acrel"/>
+    <include layout="@layout/layout_acrel" />
 
     <!--嘉德 自研烟感-->
-    <include layout="@layout/layout_cay_man"/>
+    <include layout="@layout/layout_cay_man" />
 
     <!--baymax -->
-    <include layout="@layout/layout_bay_max"/>
+    <include layout="@layout/layout_bay_max" />
 
-    <include layout="@layout/layout_smoke"/>
+    <include layout="@layout/layout_smoke" />
 
 
 </LinearLayout>

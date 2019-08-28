@@ -25,7 +25,7 @@ import java.util.Map;
 
 public class FilterStationActivity extends BaseActivity {
 
-    public static final String STATION_HARDWARE_TYPE[] = {"station", "gateway","scgateway"};
+    public static final String STATION_HARDWARE_TYPE[] = {"station", "gateway", "scgateway", "macro_station", "enhanced_station"};
     private Map<String, List<FilterData>> dataSet = new HashMap<>();
     private ExpandableListView mMenuListView;
     private FilterStationInfoAdapter filterInfoAdapter;
@@ -37,6 +37,7 @@ public class FilterStationActivity extends BaseActivity {
     List<FilterData> signalList = new ArrayList<>();
     List<FilterData> nearList = new ArrayList<>();
     List<FilterData> enableList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,13 +53,12 @@ public class FilterStationActivity extends BaseActivity {
 
     public void initWidget() {
         saveTextView = (TextView) findViewById(R.id.settings_filter_tv_save);
-        saveTextView.setOnTouchListener(new View.OnTouchListener() {
+        saveTextView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public void onClick(View v) {
                 saveData();
                 FilterStationActivity.this.setResult(Constants.RESULT_FILTER);
                 FilterStationActivity.this.finish();
-                return true;
             }
         });
         resetRootLayout();
@@ -75,7 +75,7 @@ public class FilterStationActivity extends BaseActivity {
         HashSet<String> nearSet = (HashSet) sharedPreferences.getStringSet("station_near", null);
         String[] enableArray = getResources().getStringArray(R.array.filter_enable);
         if (enableFilterSet != null) {
-            for (int i = 0 ; i < enableArray.length; i ++) {
+            for (int i = 0; i < enableArray.length; i++) {
                 String enable = enableArray[i];
                 FilterData filterData = new FilterData();
                 filterData.setId(i);

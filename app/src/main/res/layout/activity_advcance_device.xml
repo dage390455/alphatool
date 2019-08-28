@@ -58,8 +58,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:paddingBottom="10dp"
                 android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:text="@string/wide_area_rf"
                 android:textColor="#333333"
                 android:textSize="18sp" />
@@ -75,8 +75,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_item_selector"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp">
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -125,8 +125,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_item_selector"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp">
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -175,8 +175,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_item_selector"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp">
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -267,8 +267,8 @@
                     android:layout_height="0.8dp"
                     android:layout_below="@+id/settings_device_tv_app_session_key"
                     android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
                     android:layout_marginTop="@dimen/y40"
+                    android:layout_marginRight="12dp"
                     android:background="#c8c7cc"
                     android:contentDescription="@null" />
             </RelativeLayout>
@@ -321,8 +321,8 @@
                     android:layout_height="0.8dp"
                     android:layout_below="@+id/settings_device_tv_nwk_session_key"
                     android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
                     android:layout_marginTop="@dimen/y40"
+                    android:layout_marginRight="12dp"
                     android:background="#c8c7cc"
                     android:contentDescription="@null" />
             </RelativeLayout>
@@ -373,8 +373,8 @@
                     android:layout_height="0.8dp"
                     android:layout_below="@+id/settings_device_tv_nwk_address"
                     android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
                     android:layout_marginTop="@dimen/y40"
+                    android:layout_marginRight="12dp"
                     android:background="#c8c7cc"
                     android:contentDescription="@null" />
             </RelativeLayout>
@@ -428,8 +428,8 @@
                     android:layout_height="0.8dp"
                     android:layout_below="@+id/settings_device_tv_sf"
                     android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
                     android:layout_marginTop="@dimen/y40"
+                    android:layout_marginRight="12dp"
                     android:background="#c8c7cc"
                     android:contentDescription="@null" />
             </RelativeLayout>
@@ -458,13 +458,14 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="20dp" />
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="0.8dp"
                     android:layout_below="@+id/settings_device_sc_datarate"
                     android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
                     android:layout_marginTop="@dimen/y40"
+                    android:layout_marginRight="12dp"
                     android:background="#c8c7cc"
                     android:contentDescription="@null" />
             </RelativeLayout>
@@ -474,8 +475,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_item_selector"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp">
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -510,13 +511,14 @@
                     android:singleLine="true"
                     android:textColor="#999999"
                     android:textSize="18sp" />
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="0.8dp"
                     android:layout_below="@+id/settings_device_tv_activation"
                     android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
                     android:layout_marginTop="@dimen/y40"
+                    android:layout_marginRight="12dp"
                     android:background="#c8c7cc"
                     android:contentDescription="@null" />
             </RelativeLayout>
@@ -527,8 +529,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_item_selector"
-                android:visibility="gone"
-                android:paddingTop="10dp">
+                android:paddingTop="10dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/settings_device_tv_sgl_status"
@@ -545,8 +547,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="15dp"
                     android:layout_centerVertical="true"
+                    android:layout_marginEnd="15dp"
                     android:textColor="#a6a6a6a6"
                     android:textSize="16sp" />
 
@@ -556,8 +558,8 @@
                     android:layout_height="0.8dp"
                     android:layout_below="@id/settings_device_tv_sgl_status"
                     android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
                     android:layout_marginTop="@dimen/y40"
+                    android:layout_marginRight="12dp"
                     android:background="#c8c7cc"
                     android:contentDescription="@null" />
             </RelativeLayout>
@@ -567,9 +569,9 @@
                 android:id="@+id/settings_device_rl_sgl_data_rate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:background="@drawable/bg_item_selector"
-                android:paddingTop="10dp">
+                android:paddingTop="10dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/settings_device_tv_sgl_data_rate"
@@ -580,13 +582,14 @@
                     android:text="@string/setting_text_classB_datarate"
                     android:textColor="#666666"
                     android:textSize="18sp" />
+
                 <TextView
                     android:id="@+id/settings_device_tv_sgl_data_rate_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="15dp"
                     android:layout_centerVertical="true"
+                    android:layout_marginEnd="15dp"
                     android:textColor="#a6a6a6a6"
                     android:textSize="16sp" />
 
@@ -595,8 +598,8 @@
                     android:layout_height="0.8dp"
                     android:layout_below="@+id/settings_device_tv_sgl_data_rate"
                     android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
                     android:layout_marginTop="@dimen/y40"
+                    android:layout_marginRight="12dp"
                     android:background="#c8c7cc"
                     android:contentDescription="@null" />
             </RelativeLayout>
@@ -606,9 +609,9 @@
                 android:id="@+id/settings_device_rl_sgl_frequency"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:background="@drawable/bg_item_selector"
-                android:paddingTop="10dp">
+                android:paddingTop="10dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/settings_device_tv_sgl_frequency"
@@ -619,13 +622,14 @@
                     android:text="@string/sgl_freq"
                     android:textColor="#666666"
                     android:textSize="18sp" />
+
                 <TextView
                     android:id="@+id/settings_device_tv_sgl_frequency_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="15dp"
                     android:layout_centerVertical="true"
+                    android:layout_marginEnd="15dp"
                     android:textColor="#a6a6a6a6"
                     android:textSize="16sp" />
 
@@ -634,24 +638,163 @@
                     android:layout_height="0.8dp"
                     android:layout_below="@+id/settings_device_tv_sgl_frequency"
                     android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
                     android:layout_marginTop="@dimen/y40"
+                    android:layout_marginRight="12dp"
                     android:background="#c8c7cc"
                     android:contentDescription="@null" />
             </RelativeLayout>
+
+            <!--rx2frequency-->
+            <RelativeLayout
+                android:id="@+id/rl_settings_rx2frequency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_item_selector"
+                android:paddingBottom="10dp"
+                android:visibility="gone">
+
+
+                <TextView
+                    android:id="@+id/settings_rx2_freq_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="@dimen/y30"
+                    android:text="Rx2 频率"
+                    android:textColor="#666666"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/image_rx2_freq"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_alignTop="@+id/settings_rx2_freq_name"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="@dimen/y10"
+                    android:layout_marginRight="20dp"
+
+                    android:contentDescription="@null"
+                    android:src="@drawable/icon_arrow" />
+
+                <TextView
+                    android:id="@+id/tv_settings_rx2_freq"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/settings_rx2_freq_name"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_toLeftOf="@id/image_rx2_freq"
+                    android:ellipsize="end"
+                    android:maxEms="8"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="#999999"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_below="@+id/settings_rx2_freq_name"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="@dimen/y40"
+                    android:layout_marginRight="12dp"
+                    android:background="#c8c7cc"
+                    android:contentDescription="@null" />
+            </RelativeLayout>
+
+            <!--alertModeStatus设备移动报警开关-->
+            <RelativeLayout
+                android:id="@+id/rl_alertModeStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:background="@drawable/bg_item_selector"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/tv_alertModeStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="15dp"
+                    android:text="移动报警"
+                    android:textColor="#666666"
+                    android:textSize="18sp" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/sw_alertModeStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_below="@+id/sw_alertModeStatus"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="@dimen/y40"
+                    android:layout_marginRight="12dp"
+                    android:background="#c8c7cc"
+                    android:contentDescription="@null" />
+            </RelativeLayout>
+            <!-- rx2Datarate-->
+            <RelativeLayout
+                android:id="@+id/rl_rx2data_rate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_item_selector"
+                android:paddingTop="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_rx2_data_rate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="15dp"
+                    android:text="Rx2 扩频因子"
+                    android:textColor="#666666"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_rx2_data_rate_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="15dp"
+                    android:textColor="#a6a6a6a6"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:layout_below="@+id/tv_rx2_data_rate"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="@dimen/y40"
+                    android:layout_marginRight="12dp"
+                    android:background="#c8c7cc"
+                    android:contentDescription="@null" />
+            </RelativeLayout>
+
 
             <LinearLayout
                 android:id="@+id/settings_device_ll_delay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <RelativeLayout
                     android:id="@+id/settings_device_rl_delay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_item_selector"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp">
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp">
 
 
                     <TextView
@@ -688,6 +831,7 @@
                         android:textColor="#999999"
                         android:textSize="18sp" />
                 </RelativeLayout>
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="0.8dp"
@@ -708,8 +852,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_item_selector"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp">
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -745,12 +889,13 @@
                         android:textColor="#999999"
                         android:textSize="18sp" />
                 </RelativeLayout>
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="0.8dp"
-                    android:background="#c8c7cc"
                     android:layout_marginLeft="12dp"
                     android:layout_marginRight="12dp"
+                    android:background="#c8c7cc"
                     android:contentDescription="@null" />
             </LinearLayout>
 
@@ -765,8 +910,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_item_selector"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp">
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -789,26 +934,26 @@
                         android:src="@drawable/icon_arrow" />
 
                     <!--<TextView-->
-                        <!--android:id="@+id/settings_device_tv_channel"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_centerVertical="true"-->
-                        <!--android:layout_marginLeft="10dp"-->
-                        <!--android:layout_marginRight="12dp"-->
-                        <!--android:layout_toLeftOf="@id/iv_device_channel"-->
-                        <!--android:ellipsize="end"-->
-                        <!--android:maxEms="8"-->
-                        <!--android:singleLine="true"-->
-                        <!--android:textColor="#999999"-->
-                        <!--android:textSize="18sp" />-->
+                    <!--android:id="@+id/settings_device_tv_channel"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:layout_marginLeft="10dp"-->
+                    <!--android:layout_marginRight="12dp"-->
+                    <!--android:layout_toLeftOf="@id/iv_device_channel"-->
+                    <!--android:ellipsize="end"-->
+                    <!--android:maxEms="8"-->
+                    <!--android:singleLine="true"-->
+                    <!--android:textColor="#999999"-->
+                    <!--android:textSize="18sp" />-->
                 </RelativeLayout>
                 <!--<ImageView-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="0.8dp"-->
-                    <!--android:background="#c8c7cc"-->
-                    <!--android:layout_marginLeft="12dp"-->
-                    <!--android:layout_marginRight="12dp"-->
-                    <!--android:contentDescription="@null" />-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0.8dp"-->
+                <!--android:background="#c8c7cc"-->
+                <!--android:layout_marginLeft="12dp"-->
+                <!--android:layout_marginRight="12dp"-->
+                <!--android:contentDescription="@null" />-->
             </LinearLayout>
 
             <LinearLayout
@@ -821,8 +966,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
-                    android:paddingBottom="10dp"
                     android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:text="@string/setting_text_classB"
                     android:textColor="#333333"
                     android:textSize="18sp" />
@@ -838,8 +983,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_item_selector"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp">
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp">
 
 
                     <TextView
@@ -872,8 +1017,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_item_selector"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp">
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp">
 
 
                     <TextView
@@ -924,8 +1069,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_item_selector"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp">
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp">
 
 
                     <TextView
