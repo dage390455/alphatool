@@ -2145,110 +2145,110 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
 
 
                     // TODO: 2019-08-27 告知app,设备支持哪些cmd
-//                    if (null != sensoroDevice.getCmdArrayList() && sensoroDevice.getCmdArrayList().size() > 0) {
-//                        llCmdRoot.setVisibility(VISIBLE);
-//
-//
-//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_RESET.getNumber())) {
-//                            llCmdReset.setVisibility(VISIBLE);
-//                            lineCmdReset.setVisibility(VISIBLE);
-//                        } else {
-//                            llCmdReset.setVisibility(GONE);
-//                            lineCmdReset.setVisibility(GONE);
-//                        }
-//
-//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_RESET.getNumber())) {
-//                            llCmdReset.setVisibility(VISIBLE);
-//                            lineCmdReset.setVisibility(VISIBLE);
-//                        } else {
-//                            llCmdReset.setVisibility(GONE);
-//                            lineCmdReset.setVisibility(GONE);
-//                        }
-//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_FAC_RESET.getNumber())) {
-//                            llCmdFacReset.setVisibility(VISIBLE);
-//                            lineCmdFacReset.setVisibility(VISIBLE);
-//                        } else {
-//                            llCmdFacReset.setVisibility(GONE);
-//                            lineCmdFacReset.setVisibility(GONE);
-//                        }
-//
-//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_DFU.getNumber())) {
-//                            llCmdDfu.setVisibility(VISIBLE);
-//                            lineCmdDfu.setVisibility(VISIBLE);
-//                        } else {
-//                            llCmdDfu.setVisibility(GONE);
-//                            lineCmdDfu.setVisibility(GONE);
-//                        }
-//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_DATA_QUERY.getNumber())) {
-//                            llCmdDataQuery.setVisibility(VISIBLE);
-//                            lineCmdDataQuery.setVisibility(VISIBLE);
-//                        } else {
-//                            llCmdDataQuery.setVisibility(GONE);
-//                            lineCmdDataQuery.setVisibility(GONE);
-//                        }
-//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_SELF_TEST.getNumber())) {
-//                            llCmdSelfTest.setVisibility(VISIBLE);
-//                            lineCmdSelfTest.setVisibility(VISIBLE);
-//                        } else {
-//                            llCmdSelfTest.setVisibility(GONE);
-//                            lineCmdSelfTest.setVisibility(GONE);
-//                        }
-//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_LONG_MUTE.getNumber())) {
-//                            llCmdLongMute.setVisibility(VISIBLE);
-//                            lineCmdLongMute.setVisibility(VISIBLE);
-//                        } else {
-//                            llCmdLongMute.setVisibility(GONE);
-//                            lineCmdLongMute.setVisibility(GONE);
-//                        }
-//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_MUTE.getNumber())) {
-//                            llCmdMute.setVisibility(VISIBLE);
-//                            lineCmdMute.setVisibility(VISIBLE);
-//                        } else {
-//                            llCmdMute.setVisibility(GONE);
-//                            lineCmdMute.setVisibility(GONE);
-//                        }
-//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_SWITCH_OPENING.getNumber())) {
-//                            llCmdSwitchOpening.setVisibility(VISIBLE);
-//                            lineSwitchOpening.setVisibility(VISIBLE);
-//                        } else {
-//                            llCmdSwitchOpening.setVisibility(GONE);
-//                            lineSwitchOpening.setVisibility(GONE);
-//                        }
-//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_SWITCH_CLOSING.getNumber())) {
-//                            llCmdSwitchClosing.setVisibility(VISIBLE);
-//                            lineSwitchClosing.setVisibility(VISIBLE);
-//                        } else {
-//                            llCmdSwitchClosing.setVisibility(GONE);
-//                            lineSwitchClosing.setVisibility(GONE);
-//                        }
-//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_VALVE_CLOSING.getNumber())) {
-//                            llCmdValveClosing.setVisibility(VISIBLE);
-//                            lineValveClosing.setVisibility(VISIBLE);
-//                        } else {
-//                            llCmdValveClosing.setVisibility(GONE);
-//                            lineValveClosing.setVisibility(GONE);
-//                        }
-//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_TIMING_MUTE.getNumber())) {
-//                            llCmdTimingMute.setVisibility(VISIBLE);
-//                            lineTimingMute.setVisibility(VISIBLE);
-//                            Integer beepMuteTime = sensoroDevice.getBeepMuteTime();
-//                            if (null != beepMuteTime) {
-//                                tvCmdTimingMute.setText(beepMuteTime + "分");
-//                            }
-//                        } else {
-//                            llCmdTimingMute.setVisibility(GONE);
-//                            lineTimingMute.setVisibility(GONE);
-//                        }
-//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_ALARM_TRIGGER.getNumber())) {
-//                            llCmdAlarmTrigger.setVisibility(VISIBLE);
-//                            lineAlarmTrigger.setVisibility(VISIBLE);
-//                        } else {
-//                            llCmdAlarmTrigger.setVisibility(GONE);
-//                            lineAlarmTrigger.setVisibility(GONE);
-//                        }
-//                    } else {
-//                        llCmdRoot.setVisibility(GONE);
-//                    }
+                    if (null != sensoroDevice.getCmdArrayList() && sensoroDevice.getCmdArrayList().size() > 0) {
+                        llCmdRoot.setVisibility(VISIBLE);
+
+
+                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_RESET.getNumber())) {
+                            llCmdReset.setVisibility(VISIBLE);
+                            lineCmdReset.setVisibility(VISIBLE);
+                        } else {
+                            llCmdReset.setVisibility(GONE);
+                            lineCmdReset.setVisibility(GONE);
+                        }
+
+                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_RESET.getNumber())) {
+                            llCmdReset.setVisibility(VISIBLE);
+                            lineCmdReset.setVisibility(VISIBLE);
+                        } else {
+                            llCmdReset.setVisibility(GONE);
+                            lineCmdReset.setVisibility(GONE);
+                        }
+                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_FAC_RESET.getNumber())) {
+                            llCmdFacReset.setVisibility(VISIBLE);
+                            lineCmdFacReset.setVisibility(VISIBLE);
+                        } else {
+                            llCmdFacReset.setVisibility(GONE);
+                            lineCmdFacReset.setVisibility(GONE);
+                        }
+
+                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_DFU.getNumber())) {
+                            llCmdDfu.setVisibility(VISIBLE);
+                            lineCmdDfu.setVisibility(VISIBLE);
+                        } else {
+                            llCmdDfu.setVisibility(GONE);
+                            lineCmdDfu.setVisibility(GONE);
+                        }
+                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_DATA_QUERY.getNumber())) {
+                            llCmdDataQuery.setVisibility(VISIBLE);
+                            lineCmdDataQuery.setVisibility(VISIBLE);
+                        } else {
+                            llCmdDataQuery.setVisibility(GONE);
+                            lineCmdDataQuery.setVisibility(GONE);
+                        }
+                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_SELF_TEST.getNumber())) {
+                            llCmdSelfTest.setVisibility(VISIBLE);
+                            lineCmdSelfTest.setVisibility(VISIBLE);
+                        } else {
+                            llCmdSelfTest.setVisibility(GONE);
+                            lineCmdSelfTest.setVisibility(GONE);
+                        }
+                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_LONG_MUTE.getNumber())) {
+                            llCmdLongMute.setVisibility(VISIBLE);
+                            lineCmdLongMute.setVisibility(VISIBLE);
+                        } else {
+                            llCmdLongMute.setVisibility(GONE);
+                            lineCmdLongMute.setVisibility(GONE);
+                        }
+                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_MUTE.getNumber())) {
+                            llCmdMute.setVisibility(VISIBLE);
+                            lineCmdMute.setVisibility(VISIBLE);
+                        } else {
+                            llCmdMute.setVisibility(GONE);
+                            lineCmdMute.setVisibility(GONE);
+                        }
+                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_SWITCH_OPENING.getNumber())) {
+                            llCmdSwitchOpening.setVisibility(VISIBLE);
+                            lineSwitchOpening.setVisibility(VISIBLE);
+                        } else {
+                            llCmdSwitchOpening.setVisibility(GONE);
+                            lineSwitchOpening.setVisibility(GONE);
+                        }
+                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_SWITCH_CLOSING.getNumber())) {
+                            llCmdSwitchClosing.setVisibility(VISIBLE);
+                            lineSwitchClosing.setVisibility(VISIBLE);
+                        } else {
+                            llCmdSwitchClosing.setVisibility(GONE);
+                            lineSwitchClosing.setVisibility(GONE);
+                        }
+                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_VALVE_CLOSING.getNumber())) {
+                            llCmdValveClosing.setVisibility(VISIBLE);
+                            lineValveClosing.setVisibility(VISIBLE);
+                        } else {
+                            llCmdValveClosing.setVisibility(GONE);
+                            lineValveClosing.setVisibility(GONE);
+                        }
+                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_TIMING_MUTE.getNumber())) {
+                            llCmdTimingMute.setVisibility(VISIBLE);
+                            lineTimingMute.setVisibility(VISIBLE);
+                            Integer beepMuteTime = sensoroDevice.getBeepMuteTime();
+                            if (null != beepMuteTime) {
+                                tvCmdTimingMute.setText(beepMuteTime + "分");
+                            }
+                        } else {
+                            llCmdTimingMute.setVisibility(GONE);
+                            lineTimingMute.setVisibility(GONE);
+                        }
+                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_ALARM_TRIGGER.getNumber())) {
+                            llCmdAlarmTrigger.setVisibility(VISIBLE);
+                            lineAlarmTrigger.setVisibility(VISIBLE);
+                        } else {
+                            llCmdAlarmTrigger.setVisibility(GONE);
+                            lineAlarmTrigger.setVisibility(GONE);
+                        }
+                    } else {
+                        llCmdRoot.setVisibility(GONE);
+                    }
 
 
                 } else {
