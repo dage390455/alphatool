@@ -1190,473 +1190,491 @@
                         android:textSize="18sp" />
                 </RelativeLayout>
 
-                <LinearLayout
-                    android:id="@+id/ll_cmd_root"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
-                    android:orientation="vertical"
-                    android:visibility="visible">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:id="@+id/line_cmd_reset"
-
-                        android:background="#dfdfdf" />
-
-                    <LinearLayout
-                        android:id="@+id/ll_cmd_reset"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_item_selector"
-                        android:orientation="horizontal"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_weight="1"
-                            android:text="重启"
-                            android:textColor="#252525"
-                            android:textSize="18sp" />
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="20dp"
-                            android:src="@drawable/icon_arrow" />
-                    </LinearLayout>
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:id="@+id/line_cmd_fac_reset"
-
-                        android:background="#dfdfdf" />
-
-                    <LinearLayout
-                        android:id="@+id/ll_cmd_fac_reset"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_item_selector"
-                        android:orientation="horizontal"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_weight="1"
-                            android:text="恢复出厂设置"
-                            android:textColor="#252525"
-                            android:textSize="18sp" />
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="20dp"
-                            android:src="@drawable/icon_arrow" />
-                    </LinearLayout>
-
-                    <View
-                        android:id="@+id/line_cmd_dfu"
-
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="#dfdfdf" />
-
-                    <LinearLayout
-                        android:id="@+id/ll_cmd_dfu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_item_selector"
-                        android:orientation="horizontal"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_weight="1"
-                            android:text="进入DFU模式"
-                            android:textColor="#252525"
-                            android:textSize="18sp" />
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="20dp"
-                            android:src="@drawable/icon_arrow" />
-                    </LinearLayout>
-
-                    <View
-                        android:id="@+id/line_cmd_data_query"
-
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="#dfdfdf" />
-
-                    <LinearLayout
-                        android:id="@+id/ll_cmd_data_query"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_item_selector"
-                        android:orientation="horizontal"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_weight="1"
-                            android:text="数据查询"
-                            android:textColor="#252525"
-                            android:textSize="18sp" />
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="20dp"
-                            android:src="@drawable/icon_arrow" />
-                    </LinearLayout>
-
-
-                    <View
-                        android:id="@+id/line_cmd_self_test"
-
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="#dfdfdf" />
-
-                    <LinearLayout
-                        android:id="@+id/ll_cmd_self_test"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_item_selector"
-                        android:orientation="horizontal"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_weight="1"
-                            android:text="自检"
-                            android:textColor="#252525"
-                            android:textSize="18sp" />
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="20dp"
-                            android:src="@drawable/icon_arrow" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="20dp"
-                        android:id="@+id/line_cmd_long_mute"
-
-                        android:layout_marginEnd="20dp"
-                        android:background="#dfdfdf" />
-
-                    <LinearLayout
-                        android:id="@+id/ll_cmd_long_mute"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_item_selector"
-                        android:orientation="horizontal"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_weight="1"
-                            android:text="长消音"
-                            android:textColor="#252525"
-                            android:textSize="18sp" />
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="20dp"
-                            android:src="@drawable/icon_arrow" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="20dp"
-                        android:id="@+id/line_cmd_mute"
-
-                        android:layout_marginEnd="20dp"
-                        android:background="#dfdfdf" />
-
-                    <LinearLayout
-                        android:id="@+id/ll_cmd_mute"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_item_selector"
-                        android:orientation="horizontal"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_weight="1"
-                            android:text="短消音"
-                            android:textColor="#252525"
-                            android:textSize="18sp" />
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="20dp"
-                            android:src="@drawable/icon_arrow" />
-                    </LinearLayout>
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:id="@+id/line_switch_opening"
-
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="#dfdfdf" />
-
-                    <LinearLayout
-                        android:id="@+id/ll_cmd_switch_opening"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_item_selector"
-                        android:orientation="horizontal"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_weight="1"
-                            android:text="开闸"
-                            android:textColor="#252525"
-                            android:textSize="18sp" />
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="20dp"
-                            android:src="@drawable/icon_arrow" />
-                    </LinearLayout>
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:id="@+id/line_switch_closing"
-
-                        android:background="#dfdfdf" />
-
-                    <LinearLayout
-                        android:id="@+id/ll_cmd_switch_closing"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_item_selector"
-                        android:orientation="horizontal"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_weight="1"
-                            android:text="合闸"
-                            android:textColor="#252525"
-                            android:textSize="18sp" />
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="20dp"
-                            android:src="@drawable/icon_arrow" />
-                    </LinearLayout>
-
-
-                    <View
-                        android:id="@+id/line_valve_closing"
-
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="#dfdfdf" />
-
-                    <LinearLayout
-                        android:id="@+id/ll_cmd_valve_closing"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_item_selector"
-                        android:orientation="horizontal"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_weight="1"
-                            android:text="阀门闭合"
-                            android:textColor="#252525"
-                            android:textSize="18sp" />
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="20dp"
-                            android:src="@drawable/icon_arrow" />
-                    </LinearLayout>
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:id="@+id/line_timing_mute"
-
-                        android:background="#dfdfdf" />
-
-                    <LinearLayout
-                        android:id="@+id/ll_cmd_timing_mute"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_item_selector"
-                        android:orientation="horizontal"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_weight="1"
-                            android:text="定时消音"
-                            android:textColor="#252525"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/tv_cmd_timing_mute"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="10dp"
-                            android:layout_toLeftOf="@id/iv_fhsj_elec_overload"
-                            android:ellipsize="end"
-                            android:maxEms="8"
-                            android:singleLine="true"
-                            android:textColor="#999999"
-                            android:textSize="18sp" />
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="20dp"
-                            android:src="@drawable/icon_arrow" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="20dp"
-                        android:id="@+id/line_alarm_trigger"
-
-                        android:layout_marginEnd="20dp"
-                        android:background="#dfdfdf" />
-
-                    <LinearLayout
-                        android:id="@+id/ll_cmd_alarm_trigger"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_item_selector"
-                        android:orientation="horizontal"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_weight="1"
-                            android:text="触发报警"
-                            android:textColor="#252525"
-                            android:textSize="18sp" />
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="20dp"
-                            android:src="@drawable/icon_arrow" />
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="#c8c7cc"
                     android:contentDescription="@null" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_cmd_root"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="应用命令"
+                    android:textColor="#333333"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:background="#c8c7cc"
+                    android:contentDescription="@null" />
+
+                <LinearLayout
+                    android:id="@+id/ll_cmd_reset"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_item_selector"
+                    android:orientation="horizontal"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_weight="1"
+                        android:text="重启"
+                        android:textColor="#252525"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="20dp"
+                        android:src="@drawable/icon_arrow" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/line_cmd_reset"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+
+                    android:background="#dfdfdf" />
+
+                <LinearLayout
+                    android:id="@+id/ll_cmd_fac_reset"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_item_selector"
+                    android:orientation="horizontal"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_weight="1"
+                        android:text="恢复出厂设置"
+                        android:textColor="#252525"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="20dp"
+                        android:src="@drawable/icon_arrow" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/line_cmd_fac_reset"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+
+                    android:background="#dfdfdf" />
+
+
+                <LinearLayout
+                    android:id="@+id/ll_cmd_dfu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_item_selector"
+                    android:orientation="horizontal"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_weight="1"
+                        android:text="进入DFU模式"
+                        android:textColor="#252525"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="20dp"
+                        android:src="@drawable/icon_arrow" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/line_cmd_dfu"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="#dfdfdf" />
+
+
+                <LinearLayout
+                    android:id="@+id/ll_cmd_data_query"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_item_selector"
+                    android:orientation="horizontal"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_weight="1"
+                        android:text="数据查询"
+                        android:textColor="#252525"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="20dp"
+                        android:src="@drawable/icon_arrow" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/line_cmd_data_query"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="#dfdfdf" />
+
+
+                <LinearLayout
+                    android:id="@+id/ll_cmd_self_test"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_item_selector"
+                    android:orientation="horizontal"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_weight="1"
+                        android:text="自检"
+                        android:textColor="#252525"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="20dp"
+                        android:src="@drawable/icon_arrow" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/line_cmd_self_test"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="#dfdfdf" />
+
+
+                <LinearLayout
+                    android:id="@+id/ll_cmd_long_mute"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_item_selector"
+                    android:orientation="horizontal"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_weight="1"
+                        android:text="长消音"
+                        android:textColor="#252525"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="20dp"
+                        android:src="@drawable/icon_arrow" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/line_cmd_long_mute"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+
+                    android:layout_marginEnd="20dp"
+                    android:background="#dfdfdf" />
+
+
+                <LinearLayout
+                    android:id="@+id/ll_cmd_mute"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_item_selector"
+                    android:orientation="horizontal"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_weight="1"
+                        android:text="短消音"
+                        android:textColor="#252525"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="20dp"
+                        android:src="@drawable/icon_arrow" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/line_cmd_mute"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+
+                    android:layout_marginEnd="20dp"
+                    android:background="#dfdfdf" />
+
+
+                <LinearLayout
+                    android:id="@+id/ll_cmd_switch_opening"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_item_selector"
+                    android:orientation="horizontal"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_weight="1"
+                        android:text="开闸"
+                        android:textColor="#252525"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="20dp"
+                        android:src="@drawable/icon_arrow" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/line_switch_opening"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="#dfdfdf" />
+
+
+                <LinearLayout
+                    android:id="@+id/ll_cmd_switch_closing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_item_selector"
+                    android:orientation="horizontal"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_weight="1"
+                        android:text="合闸"
+                        android:textColor="#252525"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="20dp"
+                        android:src="@drawable/icon_arrow" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/line_switch_closing"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+
+                    android:background="#dfdfdf" />
+
+
+                <LinearLayout
+                    android:id="@+id/ll_cmd_valve_closing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_item_selector"
+                    android:orientation="horizontal"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_weight="1"
+                        android:text="阀门闭合"
+                        android:textColor="#252525"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="20dp"
+                        android:src="@drawable/icon_arrow" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/line_valve_closing"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="#dfdfdf" />
+
+
+                <LinearLayout
+                    android:id="@+id/ll_cmd_timing_mute"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_item_selector"
+                    android:orientation="horizontal"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_weight="1"
+                        android:text="定时消音"
+                        android:textColor="#252525"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tv_cmd_timing_mute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toLeftOf="@id/iv_fhsj_elec_overload"
+                        android:ellipsize="end"
+                        android:maxEms="8"
+                        android:singleLine="true"
+                        android:textColor="#999999"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="20dp"
+                        android:src="@drawable/icon_arrow" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/line_timing_mute"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+
+                    android:background="#dfdfdf" />
+
+
+                <LinearLayout
+                    android:id="@+id/ll_cmd_alarm_trigger"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_item_selector"
+                    android:orientation="horizontal"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_weight="1"
+                        android:text="触发报警"
+                        android:textColor="#252525"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="20dp"
+                        android:src="@drawable/icon_arrow" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#c8c7cc"
+                    android:contentDescription="@null" />
+
             </LinearLayout>
 
             <LinearLayout

@@ -1041,7 +1041,6 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     private View lineSwitchClosing;
     private View lineValveClosing;
     private View lineTimingMute;
-    private View lineAlarmTrigger;
     private TextView tvCmdTimingMute;
 
     @Override
@@ -1374,7 +1373,6 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         lineValveClosing = findViewById(R.id.line_valve_closing);
         lineTimingMute = findViewById(R.id.line_timing_mute);
         tvCmdTimingMute = findViewById(R.id.tv_cmd_timing_mute);
-        lineAlarmTrigger = findViewById(R.id.line_alarm_trigger);
 
 
         llCmdRoot.setOnClickListener(this);
@@ -2157,13 +2155,6 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             lineCmdReset.setVisibility(GONE);
                         }
 
-                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_RESET.getNumber())) {
-                            llCmdReset.setVisibility(VISIBLE);
-                            lineCmdReset.setVisibility(VISIBLE);
-                        } else {
-                            llCmdReset.setVisibility(GONE);
-                            lineCmdReset.setVisibility(GONE);
-                        }
                         if (sensoroDevice.getCmdArrayList().contains(APP_CMD_FAC_RESET.getNumber())) {
                             llCmdFacReset.setVisibility(VISIBLE);
                             lineCmdFacReset.setVisibility(VISIBLE);
@@ -2241,10 +2232,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         }
                         if (sensoroDevice.getCmdArrayList().contains(APP_CMD_ALARM_TRIGGER.getNumber())) {
                             llCmdAlarmTrigger.setVisibility(VISIBLE);
-                            lineAlarmTrigger.setVisibility(VISIBLE);
                         } else {
                             llCmdAlarmTrigger.setVisibility(GONE);
-                            lineAlarmTrigger.setVisibility(GONE);
                         }
                     } else {
                         llCmdRoot.setVisibility(GONE);
