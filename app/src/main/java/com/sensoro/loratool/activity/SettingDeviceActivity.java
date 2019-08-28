@@ -29,11 +29,13 @@ import com.sensoro.libbleserver.ble.connection.SensoroDeviceConfiguration;
 import com.sensoro.libbleserver.ble.connection.SensoroDeviceConnection;
 import com.sensoro.libbleserver.ble.constants.CmdType;
 import com.sensoro.libbleserver.ble.entity.BLEDevice;
+import com.sensoro.libbleserver.ble.entity.SensoroAppCmd;
 import com.sensoro.libbleserver.ble.entity.SensoroDevice;
 import com.sensoro.libbleserver.ble.entity.SensoroMantunData;
 import com.sensoro.libbleserver.ble.entity.SensoroSensor;
 import com.sensoro.libbleserver.ble.entity.SensoroSlot;
 import com.sensoro.libbleserver.ble.proto.MsgNode1V1M5;
+import com.sensoro.libbleserver.ble.proto.MsgNode1V1M5.AppCmd;
 import com.sensoro.libbleserver.ble.proto.ProtoMsgCfgV1U1;
 import com.sensoro.libbleserver.ble.proto.ProtoStd1U1;
 import com.sensoro.libbleserver.ble.scanner.SensoroUUID;
@@ -84,6 +86,18 @@ import static com.sensoro.libbleserver.ble.constants.CmdType.CMD_ELEC_RESTORE;
 import static com.sensoro.libbleserver.ble.constants.CmdType.CMD_ELEC_SELF_TEST;
 import static com.sensoro.libbleserver.ble.constants.CmdType.CMD_ELEC_SILENCE;
 import static com.sensoro.libbleserver.ble.constants.CmdType.CMD_ELEC_ZERO_POWER;
+import static com.sensoro.libbleserver.ble.proto.MsgNode1V1M5.AppCmd.APP_CMD_ALARM_TRIGGER;
+import static com.sensoro.libbleserver.ble.proto.MsgNode1V1M5.AppCmd.APP_CMD_DATA_QUERY;
+import static com.sensoro.libbleserver.ble.proto.MsgNode1V1M5.AppCmd.APP_CMD_DFU;
+import static com.sensoro.libbleserver.ble.proto.MsgNode1V1M5.AppCmd.APP_CMD_FAC_RESET;
+import static com.sensoro.libbleserver.ble.proto.MsgNode1V1M5.AppCmd.APP_CMD_LONG_MUTE;
+import static com.sensoro.libbleserver.ble.proto.MsgNode1V1M5.AppCmd.APP_CMD_MUTE;
+import static com.sensoro.libbleserver.ble.proto.MsgNode1V1M5.AppCmd.APP_CMD_RESET;
+import static com.sensoro.libbleserver.ble.proto.MsgNode1V1M5.AppCmd.APP_CMD_SELF_TEST;
+import static com.sensoro.libbleserver.ble.proto.MsgNode1V1M5.AppCmd.APP_CMD_SWITCH_CLOSING;
+import static com.sensoro.libbleserver.ble.proto.MsgNode1V1M5.AppCmd.APP_CMD_SWITCH_OPENING;
+import static com.sensoro.libbleserver.ble.proto.MsgNode1V1M5.AppCmd.APP_CMD_TIMING_MUTE;
+import static com.sensoro.libbleserver.ble.proto.MsgNode1V1M5.AppCmd.APP_CMD_VALVE_CLOSING;
 
 
 public class SettingDeviceActivity extends BaseActivity implements Constants, CompoundButton.OnCheckedChangeListener,
@@ -974,6 +988,61 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     private SensoroSensor sensoroSensor;
     private int[] txp_array;
     private SettingEnterDialogUtils mSettingEnterDialogUtils;
+    private View includeCo;
+    private TextView includeCoTv;
+    View includeCo2;
+    TextView includeCo2Tv;
+    View includeNo2;
+    TextView includeNo2Tv;
+    TextView includeCh4Tv;
+    View includeCh4;
+    private TextView includeLpgTv;
+    private View includeLpg;
+    private View includePm10;
+    private TextView includePm10Tv;
+    private View includePm25;
+    private TextView includePm25Tv;
+    private View includeTemp;
+    private TextView includeTempTv;
+    private View includeHumidity;
+    private TextView includeHumidityTv;
+    private View includePitch;
+    private TextView includePitchTv;
+    private View includeYaw;
+    private TextView includeYawTv;
+    private View includeRoll;
+    private TextView includeRollTv;
+    private View includeWaterPressure;
+    private TextView includeWaterPressureTv;
+
+
+    //告知app,设备支持哪些cmd
+    private LinearLayout llCmdRoot;
+    private LinearLayout llCmdReset;
+    private LinearLayout llCmdFacReset;
+    private LinearLayout llCmdDfu;
+    private LinearLayout llCmdDataQuery;
+    private LinearLayout llCmdSelfTest;
+    private LinearLayout llCmdLongMute;
+    private LinearLayout llCmdMute;
+    private LinearLayout llCmdSwitchOpening;
+    private LinearLayout llCmdSwitchClosing;
+    private LinearLayout llCmdValveClosing;
+    private LinearLayout llCmdTimingMute;
+    private LinearLayout llCmdAlarmTrigger;
+    private View lineCmdReset;
+    private View lineCmdFacReset;
+    private View lineCmdDfu;
+    private View lineCmdDataQuery;
+    private View lineCmdSelfTest;
+    private View lineCmdLongMute;
+    private View lineCmdMute;
+    private View lineSwitchOpening;
+    private View lineSwitchClosing;
+    private View lineValveClosing;
+    private View lineTimingMute;
+    private View lineAlarmTrigger;
+    private TextView tvCmdTimingMute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1209,6 +1278,120 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         settingsDeviceRlFhsjElecControlSelfTest.setOnClickListener(this);
         settingsDeviceRlFhsjElecControlSilence.setOnClickListener(this);
         settingsDeviceRlFhsjElecControlZeroPower.setOnClickListener(this);
+
+
+        //波动范围
+        includeCo = findViewById(R.id.include_co);
+        includeCoTv = includeCo.findViewById(R.id.include_tv_fluctuationRange);
+        includeCo.setOnClickListener(this);
+
+
+        includeCo2 = findViewById(R.id.include_co2);
+        includeCo2Tv = includeCo2.findViewById(R.id.include_tv_fluctuationRange);
+        includeCo2.setOnClickListener(this);
+
+
+        includeNo2 = findViewById(R.id.include_no2);
+        includeNo2Tv = includeNo2.findViewById(R.id.include_tv_fluctuationRange);
+        includeNo2.setOnClickListener(this);
+
+
+        includeCh4 = findViewById(R.id.include_ch4);
+        includeCh4Tv = includeCh4.findViewById(R.id.include_tv_fluctuationRange);
+        includeCh4.setOnClickListener(this);
+
+
+        includeLpg = findViewById(R.id.include_lpg);
+        includeLpgTv = includeLpg.findViewById(R.id.include_tv_fluctuationRange);
+        includeLpg.setOnClickListener(this);
+
+
+        includePm10 = findViewById(R.id.include_pm10);
+        includePm10Tv = includePm10.findViewById(R.id.include_tv_fluctuationRange);
+        includePm10.setOnClickListener(this);
+
+
+        includePm25 = findViewById(R.id.include_pm25);
+        includePm25Tv = includePm25.findViewById(R.id.include_tv_fluctuationRange);
+        includePm25.setOnClickListener(this);
+
+
+        includeTemp = findViewById(R.id.include_temp);
+        includeTempTv = includeTemp.findViewById(R.id.include_tv_fluctuationRange);
+        includeTemp.setOnClickListener(this);
+
+
+        includeHumidity = findViewById(R.id.include_humidity);
+        includeHumidityTv = includeHumidity.findViewById(R.id.include_tv_fluctuationRange);
+        includeHumidity.setOnClickListener(this);
+
+
+        includePitch = findViewById(R.id.include_pitch);
+        includePitchTv = includePitch.findViewById(R.id.include_tv_fluctuationRange);
+        includePitch.setOnClickListener(this);
+
+
+        includeYaw = findViewById(R.id.include_yaw);
+        includeYawTv = includeYaw.findViewById(R.id.include_tv_fluctuationRange);
+        includeYaw.setOnClickListener(this);
+
+
+        includeRoll = findViewById(R.id.include_roll);
+        includeRollTv = includeRoll.findViewById(R.id.include_tv_fluctuationRange);
+        includeRoll.setOnClickListener(this);
+
+
+        includeWaterPressure = findViewById(R.id.include_water_pressure);
+        includeWaterPressureTv = includeWaterPressure.findViewById(R.id.include_tv_fluctuationRange);
+        includeWaterPressure.setOnClickListener(this);
+
+
+        // 告知app,设备支持哪些cmd
+        llCmdRoot = findViewById(R.id.ll_cmd_root);
+        llCmdReset = findViewById(R.id.ll_cmd_reset);
+        llCmdFacReset = findViewById(R.id.ll_cmd_fac_reset);
+        llCmdDfu = findViewById(R.id.ll_cmd_dfu);
+        llCmdDataQuery = findViewById(R.id.ll_cmd_data_query);
+        llCmdSelfTest = findViewById(R.id.ll_cmd_self_test);
+        llCmdLongMute = findViewById(R.id.ll_cmd_long_mute);
+        llCmdMute = findViewById(R.id.ll_cmd_mute);
+        llCmdSwitchOpening = findViewById(R.id.ll_cmd_switch_opening);
+        llCmdSwitchClosing = findViewById(R.id.ll_cmd_switch_closing);
+        llCmdValveClosing = findViewById(R.id.ll_cmd_valve_closing);
+        llCmdTimingMute = findViewById(R.id.ll_cmd_timing_mute);
+        llCmdAlarmTrigger = findViewById(R.id.ll_cmd_alarm_trigger);
+
+
+        lineCmdReset = findViewById(R.id.line_cmd_reset);
+        lineCmdFacReset = findViewById(R.id.line_cmd_fac_reset);
+        lineCmdDfu = findViewById(R.id.line_cmd_dfu);
+        lineCmdDataQuery = findViewById(R.id.line_cmd_data_query);
+        lineCmdSelfTest = findViewById(R.id.line_cmd_self_test);
+        lineCmdLongMute = findViewById(R.id.line_cmd_long_mute);
+        lineCmdMute = findViewById(R.id.line_cmd_mute);
+        lineSwitchOpening = findViewById(R.id.line_switch_opening);
+        lineSwitchClosing = findViewById(R.id.line_switch_closing);
+        lineValveClosing = findViewById(R.id.line_valve_closing);
+        lineTimingMute = findViewById(R.id.line_timing_mute);
+        tvCmdTimingMute = findViewById(R.id.tv_cmd_timing_mute);
+        lineAlarmTrigger = findViewById(R.id.line_alarm_trigger);
+
+
+        llCmdRoot.setOnClickListener(this);
+        llCmdReset.setOnClickListener(this);
+        llCmdFacReset.setOnClickListener(this);
+        llCmdDfu.setOnClickListener(this);
+        llCmdDataQuery.setOnClickListener(this);
+        llCmdSelfTest.setOnClickListener(this);
+        llCmdLongMute.setOnClickListener(this);
+        llCmdMute.setOnClickListener(this);
+        llCmdSwitchOpening.setOnClickListener(this);
+        llCmdSwitchClosing.setOnClickListener(this);
+        llCmdValveClosing.setOnClickListener(this);
+        llCmdTimingMute.setOnClickListener(this);
+        llCmdAlarmTrigger.setOnClickListener(this);
+
+
     }
 
     private void refresh() {
@@ -1339,25 +1522,37 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     eddystoneLayout.setVisibility(GONE);
                 }
 
+                // TODO: 2019-08-27  SensorParam
                 if (sensoroDevice.hasSensorParam()) {
                     sensorParamLayout.setVisibility(VISIBLE);
                     if (sensoroSensor.hasCo) {
                         coLinearLayout.setVisibility(VISIBLE);
-                        coLinearLayout.setOnClickListener(this);
+                        findViewById(R.id.settings_device_rl_co).setOnClickListener(this);
                         if (sensoroSensor.co.has_alarmStepHigh) {
                             Float coAlarmHigh = sensoroSensor.co.alarmHigh_float;
                             coTextView.setText(coAlarmHigh + "");
+                        }
+                        if (sensoroSensor.co.hasFluctuationRange) {
+                            includeCo.setVisibility(VISIBLE);
+                            includeCoTv.setText(sensoroSensor.co.fluctuationRange + "");
                         }
 
                     } else {
                         coLinearLayout.setVisibility(GONE);
                     }
+
+
                     if (sensoroSensor.hasCo2) {
                         co2LinearLayout.setVisibility(VISIBLE);
-                        co2LinearLayout.setOnClickListener(this);
+                        findViewById(R.id.settings_device_rl_co2).setOnClickListener(this);
                         if (sensoroSensor.co2.has_alarmHigh) {
                             Float co2AlarmHigh = sensoroSensor.co2.alarmHigh_float;
                             co2TextView.setText(co2AlarmHigh + "");
+                        }
+
+                        if (sensoroSensor.co2.hasFluctuationRange) {
+                            includeCo2.setVisibility(VISIBLE);
+                            includeCo2Tv.setText(sensoroSensor.co2.fluctuationRange + "");
                         }
 
                     } else {
@@ -1369,6 +1564,10 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         if (sensoroSensor.no2.has_alarmHigh) {
                             Float no2AlarmHigh = sensoroSensor.no2.alarmHigh_float;
                             no2TextView.setText(no2AlarmHigh + "");
+                        }
+                        if (sensoroSensor.no2.hasFluctuationRange) {
+                            includeNo2.setVisibility(VISIBLE);
+                            includeNo2Tv.setText(sensoroSensor.no2.fluctuationRange + "");
                         }
 
                     } else {
@@ -1382,6 +1581,11 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             ch4TextView.setText(ch4AlarmHigh + "");
                         }
 
+                        if (sensoroSensor.ch4.hasFluctuationRange) {
+                            includeCh4.setVisibility(VISIBLE);
+                            includeCh4Tv.setText(sensoroSensor.ch4.fluctuationRange + "");
+                        }
+
                     } else {
                         ch4LinearLayout.setVisibility(GONE);
                     }
@@ -1391,6 +1595,10 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         if (sensoroSensor.lpg.has_alarmHigh) {
                             Float lpgAlarmHigh = sensoroSensor.lpg.alarmHigh_float;
                             lpgTextView.setText(lpgAlarmHigh + "");
+                        }
+                        if (sensoroSensor.lpg.hasFluctuationRange) {
+                            includeLpg.setVisibility(VISIBLE);
+                            includeLpgTv.setText(sensoroSensor.lpg.fluctuationRange + "");
                         }
                     } else {
                         lpgLinearLayout.setVisibility(GONE);
@@ -1403,6 +1611,11 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             pm25TextView.setText(pm25AlarmHigh + "");
                         }
 
+                        if (sensoroSensor.pm25.hasFluctuationRange) {
+                            includePm25.setVisibility(VISIBLE);
+                            includePm25Tv.setText(sensoroSensor.pm25.fluctuationRange + "");
+                        }
+
                     } else {
                         pm25LinearLayout.setVisibility(GONE);
                     }
@@ -1412,6 +1625,11 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         if (sensoroSensor.pm10.has_alarmHigh) {
                             Float pm10AlarmHigh = sensoroSensor.pm10.alarmHigh_float;
                             pm10TextView.setText(pm10AlarmHigh + "");
+                        }
+
+                        if (sensoroSensor.pm10.hasFluctuationRange) {
+                            includePm10.setVisibility(VISIBLE);
+                            includePm10Tv.setText(sensoroSensor.pm10.fluctuationRange + "");
                         }
 
                     } else {
@@ -1430,6 +1648,11 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         }
 
                         tempLinearLayout.setVisibility(has_alarmHigh || has_alarmLow ? VISIBLE : GONE);
+
+                        if (sensoroSensor.temperature.hasFluctuationRange) {
+                            includeTemp.setVisibility(VISIBLE);
+                            includeTempTv.setText(sensoroSensor.temperature.fluctuationRange + "");
+                        }
                     } else {
                         tempLinearLayout.setVisibility(GONE);
                     }
@@ -1445,6 +1668,11 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             humidityLowerTextView.setText(humidityAlarmLow + "");
                         }
                         humidityLinearLayout.setVisibility(has_alarmHigh || has_alarmLow ? VISIBLE : GONE);
+
+                        if (sensoroSensor.humidity.hasFluctuationRange) {
+                            includeHumidity.setVisibility(VISIBLE);
+                            includeHumidityTv.setText(sensoroSensor.humidity.fluctuationRange + "");
+                        }
                     } else {
                         humidityLinearLayout.setVisibility(GONE);
                     }
@@ -1473,6 +1701,10 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             pitchAngleLowerTextView.setText(pitchAngleAlarmLow + "");
                         }
                         pitchAngleLinearLayout.setVisibility(has_alarmHigh || has_alarmLow ? VISIBLE : GONE);
+                        if (sensoroSensor.pitch.hasFluctuationRange) {
+                            includePitch.setVisibility(VISIBLE);
+                            includePitchTv.setText(sensoroSensor.pitch.fluctuationRange + "");
+                        }
 
                     } else {
                         pitchAngleLinearLayout.setVisibility(GONE);
@@ -1489,6 +1721,10 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             rollAngleLowerTextView.setText(rollAngleAlarmLow + "");
                         }
                         rollAngleLinearLayout.setVisibility(has_alarmHigh || has_alarmLow ? VISIBLE : GONE);
+                        if (sensoroSensor.roll.hasFluctuationRange) {
+                            includeRoll.setVisibility(VISIBLE);
+                            includeRollTv.setText(sensoroSensor.roll.fluctuationRange + "");
+                        }
 
                     } else {
                         rollAngleLinearLayout.setVisibility(GONE);
@@ -1505,6 +1741,10 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             yawAngleLowerTextView.setText(yawAngleAlarmLow + "");
                         }
                         yawAngleLinearLayout.setVisibility(has_alarmHigh || has_alarmLow ? VISIBLE : GONE);
+                        if (sensoroSensor.yaw.hasFluctuationRange) {
+                            includeYaw.setVisibility(VISIBLE);
+                            includeYawTv.setText(sensoroSensor.yaw.fluctuationRange + "");
+                        }
 
                     } else {
                         yawAngleLinearLayout.setVisibility(GONE);
@@ -1522,6 +1762,11 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             waterPressureLowerTextView.setText(waterPressureAlarmLow + "");
                         }
                         waterPressureLinearLayout.setVisibility(has_alarmHigh || has_alarmLow ? VISIBLE : GONE);
+
+                        if (sensoroSensor.waterPressure.hasFluctuationRange) {
+                            includeWaterPressure.setVisibility(VISIBLE);
+                            includeWaterPressureTv.setText(sensoroSensor.waterPressure.fluctuationRange + "");
+                        }
 
                     } else {
                         waterPressureLinearLayout.setVisibility(GONE);
@@ -1777,7 +2022,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             caymanValueOfTemContent.setText(sensoroSensor.cayManData.valueOfTem / 10 + "℃");
                         }
                         if (sensoroSensor.cayManData.hasValueOfHum) {
-                            caymanValueOfHumContent.setText(sensoroSensor.cayManData.valueOfHum/10 + "%");
+                            caymanValueOfHumContent.setText(sensoroSensor.cayManData.valueOfHum / 10 + "%");
                         }
                         if (sensoroSensor.cayManData.hasAlarmOfHighTem) {
                             caymanAlarmOfHighTemContent.setText(sensoroSensor.cayManData.alarmOfHighTem / 10 + "℃");
@@ -1786,10 +2031,10 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             caymanAlarmOfLowTemContent.setText(sensoroSensor.cayManData.alarmOfLowTem / 10 + "℃");
                         }
                         if (sensoroSensor.cayManData.hasAlarmOfHighHum) {
-                            caymanAlarmOfHighHumContent.setText(sensoroSensor.cayManData.alarmOfHighHum/10 + "%");
+                            caymanAlarmOfHighHumContent.setText(sensoroSensor.cayManData.alarmOfHighHum / 10 + "%");
                         }
                         if (sensoroSensor.cayManData.hasAlarmOfLowHum) {
-                            caymanAlarmOfLowHumContent.setText(sensoroSensor.cayManData.alarmOfLowHum/10 + "%");
+                            caymanAlarmOfLowHumContent.setText(sensoroSensor.cayManData.alarmOfLowHum / 10 + "%");
                         }
                         if (sensoroSensor.cayManData.hasValueOfphotor) {
                             caymanValueOfPhotorContent.setText(String.valueOf(sensoroSensor.cayManData.valueOfphotor));
@@ -1798,8 +2043,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                             caymanBleAdvTypeContent.setText(sensoroSensor.cayManData.bleAdvType == 0 ? "持续广播" : "间断广播");
                         }
                         if (sensoroSensor.cayManData.hasValueOfBatb && sensoroSensor.cayManData.valueOfBatb > -1) {
-                            caymanValueOfBatbContent.setText(sensoroSensor.cayManData.valueOfBatb/1000 +"v");
-                        }else{
+                            caymanValueOfBatbContent.setText(sensoroSensor.cayManData.valueOfBatb / 1000 + "v");
+                        } else {
                             caymanValueOfBatb.setVisibility(GONE);
                         }
 
@@ -1897,6 +2142,115 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     } else {
                         confirmLayout.setVisibility(GONE);
                     }
+
+
+                    // TODO: 2019-08-27 告知app,设备支持哪些cmd
+//                    if (null != sensoroDevice.getCmdArrayList() && sensoroDevice.getCmdArrayList().size() > 0) {
+//                        llCmdRoot.setVisibility(VISIBLE);
+//
+//
+//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_RESET.getNumber())) {
+//                            llCmdReset.setVisibility(VISIBLE);
+//                            lineCmdReset.setVisibility(VISIBLE);
+//                        } else {
+//                            llCmdReset.setVisibility(GONE);
+//                            lineCmdReset.setVisibility(GONE);
+//                        }
+//
+//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_RESET.getNumber())) {
+//                            llCmdReset.setVisibility(VISIBLE);
+//                            lineCmdReset.setVisibility(VISIBLE);
+//                        } else {
+//                            llCmdReset.setVisibility(GONE);
+//                            lineCmdReset.setVisibility(GONE);
+//                        }
+//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_FAC_RESET.getNumber())) {
+//                            llCmdFacReset.setVisibility(VISIBLE);
+//                            lineCmdFacReset.setVisibility(VISIBLE);
+//                        } else {
+//                            llCmdFacReset.setVisibility(GONE);
+//                            lineCmdFacReset.setVisibility(GONE);
+//                        }
+//
+//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_DFU.getNumber())) {
+//                            llCmdDfu.setVisibility(VISIBLE);
+//                            lineCmdDfu.setVisibility(VISIBLE);
+//                        } else {
+//                            llCmdDfu.setVisibility(GONE);
+//                            lineCmdDfu.setVisibility(GONE);
+//                        }
+//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_DATA_QUERY.getNumber())) {
+//                            llCmdDataQuery.setVisibility(VISIBLE);
+//                            lineCmdDataQuery.setVisibility(VISIBLE);
+//                        } else {
+//                            llCmdDataQuery.setVisibility(GONE);
+//                            lineCmdDataQuery.setVisibility(GONE);
+//                        }
+//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_SELF_TEST.getNumber())) {
+//                            llCmdSelfTest.setVisibility(VISIBLE);
+//                            lineCmdSelfTest.setVisibility(VISIBLE);
+//                        } else {
+//                            llCmdSelfTest.setVisibility(GONE);
+//                            lineCmdSelfTest.setVisibility(GONE);
+//                        }
+//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_LONG_MUTE.getNumber())) {
+//                            llCmdLongMute.setVisibility(VISIBLE);
+//                            lineCmdLongMute.setVisibility(VISIBLE);
+//                        } else {
+//                            llCmdLongMute.setVisibility(GONE);
+//                            lineCmdLongMute.setVisibility(GONE);
+//                        }
+//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_MUTE.getNumber())) {
+//                            llCmdMute.setVisibility(VISIBLE);
+//                            lineCmdMute.setVisibility(VISIBLE);
+//                        } else {
+//                            llCmdMute.setVisibility(GONE);
+//                            lineCmdMute.setVisibility(GONE);
+//                        }
+//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_SWITCH_OPENING.getNumber())) {
+//                            llCmdSwitchOpening.setVisibility(VISIBLE);
+//                            lineSwitchOpening.setVisibility(VISIBLE);
+//                        } else {
+//                            llCmdSwitchOpening.setVisibility(GONE);
+//                            lineSwitchOpening.setVisibility(GONE);
+//                        }
+//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_SWITCH_CLOSING.getNumber())) {
+//                            llCmdSwitchClosing.setVisibility(VISIBLE);
+//                            lineSwitchClosing.setVisibility(VISIBLE);
+//                        } else {
+//                            llCmdSwitchClosing.setVisibility(GONE);
+//                            lineSwitchClosing.setVisibility(GONE);
+//                        }
+//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_VALVE_CLOSING.getNumber())) {
+//                            llCmdValveClosing.setVisibility(VISIBLE);
+//                            lineValveClosing.setVisibility(VISIBLE);
+//                        } else {
+//                            llCmdValveClosing.setVisibility(GONE);
+//                            lineValveClosing.setVisibility(GONE);
+//                        }
+//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_TIMING_MUTE.getNumber())) {
+//                            llCmdTimingMute.setVisibility(VISIBLE);
+//                            lineTimingMute.setVisibility(VISIBLE);
+//                            Integer beepMuteTime = sensoroDevice.getBeepMuteTime();
+//                            if (null != beepMuteTime) {
+//                                tvCmdTimingMute.setText(beepMuteTime + "分");
+//                            }
+//                        } else {
+//                            llCmdTimingMute.setVisibility(GONE);
+//                            lineTimingMute.setVisibility(GONE);
+//                        }
+//                        if (sensoroDevice.getCmdArrayList().contains(APP_CMD_ALARM_TRIGGER.getNumber())) {
+//                            llCmdAlarmTrigger.setVisibility(VISIBLE);
+//                            lineAlarmTrigger.setVisibility(VISIBLE);
+//                        } else {
+//                            llCmdAlarmTrigger.setVisibility(GONE);
+//                            lineAlarmTrigger.setVisibility(GONE);
+//                        }
+//                    } else {
+//                        llCmdRoot.setVisibility(GONE);
+//                    }
+
+
                 } else {
                     appParamLayout.setVisibility(GONE);
                 }
@@ -1946,7 +2300,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             if (sensoroSensor.ibeacon.hasMajor) {
                 SettingDeviceModel model2 = new SettingDeviceModel();
                 model2.name = "MAJOR";
-                model2.content = String.format(Locale.ROOT,"0x%04X",sensoroSensor.ibeacon.major);
+                model2.content = String.format(Locale.ROOT, "0x%04X", sensoroSensor.ibeacon.major);
                 model2.tag = 2;
                 model2.originContent = sensoroSensor.ibeacon.major;
                 datas.add(model2);
@@ -1955,7 +2309,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             if (sensoroSensor.ibeacon.hasMinor) {
                 SettingDeviceModel model3 = new SettingDeviceModel();
                 model3.name = "MINOR";
-                model3.content = String.format(Locale.ROOT,"0x%04X",sensoroSensor.ibeacon.minor);
+                model3.content = String.format(Locale.ROOT, "0x%04X", sensoroSensor.ibeacon.minor);
                 model3.tag = 3;
                 model3.originContent = sensoroSensor.ibeacon.minor;
                 datas.add(model3);
@@ -1974,20 +2328,20 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             ibeaconAdapter.setOnItemClickListener(new RecyclerItemClickListener() {
                 @Override
                 public void onItemClick(SettingDeviceModel model, int position) {
-                    switch ((int)model.tag){
+                    switch ((int) model.tag) {
                         case 1:
                             //uuid
-                            showUUIDDialog(model,ibeaconAdapter);
+                            showUUIDDialog(model, ibeaconAdapter);
                             break;
                         case 2:
                             //major
-                            showMajorDialog(model,ibeaconAdapter);
+                            showMajorDialog(model, ibeaconAdapter);
                             break;
                         case 3:
-                            showMinorDialog(model,ibeaconAdapter);
+                            showMinorDialog(model, ibeaconAdapter);
                             break;
                         case 4:
-                            showMrssiDialog(model,ibeaconAdapter);
+                            showMrssiDialog(model, ibeaconAdapter);
                             break;
                     }
                 }
@@ -2012,7 +2366,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                     ibeaconAdapter.notifyDataSetChanged();
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
-                    AlphaToast.INSTANCE.makeText(SettingDeviceActivity.this,getString(R.string.please_enter_correct_value),Toast.LENGTH_SHORT).show();
+                    AlphaToast.INSTANCE.makeText(SettingDeviceActivity.this, getString(R.string.please_enter_correct_value), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -2049,7 +2403,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
     }
 
     private void showUUIDDialog(SettingDeviceModel model, DeviceAdapter ibeaconAdapter) {
-        String str = TextUtils.isEmpty(model.content) ? null : model.content.replaceAll("-","");
+        String str = TextUtils.isEmpty(model.content) ? null : model.content.replaceAll("-", "");
         SettingsUUIDDialogFragment dialogFragment = SettingsUUIDDialogFragment.newInstance(str);
         dialogFragment.show(getFragmentManager(), SETTINGS_UUID);
         dialogFragment.setOnClickLisenter(new OnPositiveButtonClickListener() {
@@ -2058,14 +2412,14 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 String uuid = bundle.getString(SettingsUUIDDialogFragment.UUID);
                 if (TextUtils.isEmpty(uuid)) {
                     model.content = "";
-                }else{
+                } else {
                     StringBuilder uuidString = new StringBuilder(uuid);
                     uuidString.insert(8, "-");
                     uuidString.insert(13, "-");
                     uuidString.insert(18, "-");
                     uuidString.insert(23, "-");
                     model.content = uuidString.toString();
-                    sensoroSensor.ibeacon.uuid= Utils.string2ByteString(uuid);
+                    sensoroSensor.ibeacon.uuid = Utils.string2ByteString(uuid);
                 }
                 ibeaconAdapter.notifyDataSetChanged();
             }
@@ -2894,6 +3248,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         sensoroDeviceConnection.writeSmokeCmd(appParamBuilder, this);
     }
 
+
     protected void doZeroCommand() {
         progressDialog.show();
         sensoroDeviceConnection.writeZeroCmd(this);
@@ -2906,6 +3261,14 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             @Override
             public void run() {
                 switch (cmd) {
+
+                    case CmdType.CMD_APP_SUPPORTCMDS:
+                        if (progressDialog != null && progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(), getString(R.string.send_success), Toast.LENGTH_SHORT).show();
+                        }
+
+                        break;
                     case CmdType.CMD_SET_SMOKE:
                     case CmdType.CMD_SET_ELEC_CMD:
                         break;
@@ -3237,41 +3600,65 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 appParamBuilder.setConfirm(sensoroDevice.getConfirm());
                 msgCfgBuilder.setAppParam(appParamBuilder);
             }
+            // TODO: 2019-08-28  命令操作是否写回服务端
+
         }
         if (sensoroDevice.hasSensorParam()) {
             if (sensoroSensor.hasCo) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
                 builder.setAlarmHigh(sensoroSensor.co.alarmHigh_float);
+                if (sensoroSensor.co.hasFluctuationRange) {
+                    builder.setFluctuationRange(sensoroSensor.co.fluctuationRange);
+                }
                 msgCfgBuilder.setCo(builder);
             }
             if (sensoroSensor.hasCo2) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
                 builder.setAlarmHigh(sensoroSensor.co2.alarmHigh_float);
+                if (sensoroSensor.co2.hasFluctuationRange) {
+                    builder.setFluctuationRange(sensoroSensor.co2.fluctuationRange);
+                }
                 msgCfgBuilder.setCo2(builder);
             }
             if (sensoroSensor.hasNo2) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
                 builder.setAlarmHigh(sensoroSensor.no2.alarmHigh_float);
+                if (sensoroSensor.no2.hasFluctuationRange) {
+                    builder.setFluctuationRange(sensoroSensor.no2.fluctuationRange);
+                }
                 msgCfgBuilder.setNo2(builder);
             }
             if (sensoroSensor.hasCh4) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
                 builder.setAlarmHigh(sensoroSensor.ch4.alarmHigh_float);
+                if (sensoroSensor.ch4.hasFluctuationRange) {
+                    builder.setFluctuationRange(sensoroSensor.ch4.fluctuationRange);
+                }
                 msgCfgBuilder.setCh4(builder);
             }
             if (sensoroSensor.hasLpg) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
                 builder.setAlarmHigh(sensoroSensor.lpg.alarmHigh_float);
+                if (sensoroSensor.lpg.hasFluctuationRange) {
+                    builder.setFluctuationRange(sensoroSensor.lpg.fluctuationRange);
+                }
                 msgCfgBuilder.setLpg(builder);
             }
             if (sensoroSensor.hasPm10) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
                 builder.setAlarmHigh(sensoroSensor.pm10.alarmHigh_float);
+
+                if (sensoroSensor.pm10.hasFluctuationRange) {
+                    builder.setFluctuationRange(sensoroSensor.pm10.fluctuationRange);
+                }
                 msgCfgBuilder.setPm10(builder);
             }
             if (sensoroSensor.hasPm25) {
                 MsgNode1V1M5.SensorData.Builder builder = MsgNode1V1M5.SensorData.newBuilder();
                 builder.setAlarmHigh(sensoroSensor.pm25.alarmHigh_float);
+                if (sensoroSensor.pm25.hasFluctuationRange) {
+                    builder.setFluctuationRange(sensoroSensor.pm25.fluctuationRange);
+                }
                 msgCfgBuilder.setPm25(builder);
             }
 
@@ -3286,6 +3673,10 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 if (sensoroSensor.temperature.has_alarmLow) {
                     builder.setAlarmLow(sensoroSensor.temperature.alarmLow_float);
                 }
+
+                if (sensoroSensor.temperature.hasFluctuationRange) {
+                    builder.setFluctuationRange(sensoroSensor.temperature.fluctuationRange);
+                }
                 msgCfgBuilder.setTemperature(builder);
             }
             if (sensoroSensor.hasHumidity) {
@@ -3298,6 +3689,9 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 }
                 if (sensoroSensor.humidity.has_alarmLow) {
                     builder.setAlarmLow(sensoroSensor.humidity.alarmLow_float);
+                }
+                if (sensoroSensor.humidity.hasFluctuationRange) {
+                    builder.setFluctuationRange(sensoroSensor.humidity.fluctuationRange);
                 }
                 msgCfgBuilder.setHumidity(builder);
             }
@@ -3312,6 +3706,9 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 if (sensoroSensor.pitch.has_alarmLow) {
                     builder.setAlarmLow(sensoroSensor.pitch.alarmLow_float);
                 }
+                if (sensoroSensor.pitch.hasFluctuationRange) {
+                    builder.setFluctuationRange(sensoroSensor.pitch.fluctuationRange);
+                }
                 msgCfgBuilder.setPitch(builder);
             }
             if (sensoroSensor.hasRoll) {
@@ -3324,6 +3721,9 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 }
                 if (sensoroSensor.roll.has_alarmLow) {
                     builder.setAlarmLow(sensoroSensor.roll.alarmLow_float);
+                }
+                if (sensoroSensor.roll.hasFluctuationRange) {
+                    builder.setFluctuationRange(sensoroSensor.roll.fluctuationRange);
                 }
                 msgCfgBuilder.setRoll(builder);
             }
@@ -3338,6 +3738,10 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 if (sensoroSensor.yaw.has_alarmLow) {
                     builder.setAlarmLow(sensoroSensor.yaw.alarmLow_float);
                 }
+
+                if (sensoroSensor.yaw.hasFluctuationRange) {
+                    builder.setFluctuationRange(sensoroSensor.yaw.fluctuationRange);
+                }
                 msgCfgBuilder.setYaw(builder);
             }
             if (sensoroSensor.hasWaterPressure) {
@@ -3350,6 +3754,9 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 }
                 if (sensoroSensor.waterPressure.has_alarmLow) {
                     builder.setAlarmLow(sensoroSensor.waterPressure.alarmLow_float);
+                }
+                if (sensoroSensor.waterPressure.hasFluctuationRange) {
+                    builder.setFluctuationRange(sensoroSensor.waterPressure.fluctuationRange);
                 }
                 msgCfgBuilder.setWaterPressure(builder);
             }
@@ -3548,7 +3955,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 }
                 msgCfgBuilder.setBaymaxData(builder);
             }
-            if(sensoroSensor.hasIbeacon){
+            if (sensoroSensor.hasIbeacon) {
                 MsgNode1V1M5.iBeacon.Builder builder = MsgNode1V1M5.iBeacon.newBuilder();
                 if (sensoroSensor.ibeacon.hasUuid) {
                     builder.setUuid(sensoroSensor.ibeacon.uuid);
@@ -3834,45 +4241,97 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 dialogFragment = SettingsInputDialogFragment.newInstance(custom_package3);
                 dialogFragment.show(getFragmentManager(), SETTINGS_CUSTOM_PACKAGE3);
                 break;
-            case R.id.settings_device_ll_co:
+            case R.id.settings_device_rl_co:
                 dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.co
                         .alarmHigh_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_CO);
                 break;
-            case R.id.settings_device_ll_co2:
+            case R.id.include_co:
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.co
+                        .fluctuationRange));
+                dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_CO_FLUCTUATIONRANGE);
+                break;
+            case R.id.settings_device_rl_co2:
                 dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
                         .co2.alarmHigh_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_CO2);
                 break;
+            case R.id.include_co2:
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
+                        .co2.fluctuationRange));
+                dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_CO2_FLUCTUATIONRANGE);
+                break;
+
+
             case R.id.settings_device_ll_ch4:
                 dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
                         .ch4.alarmHigh_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_CH4);
+                break;
+
+
+            case R.id.include_ch4:
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
+                        .co2.fluctuationRange));
+                dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_CH4_FLUCTUATIONRANGE);
                 break;
             case R.id.settings_device_ll_no2:
                 dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
                         .no2.alarmHigh_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_NO2);
                 break;
+            case R.id.include_no2:
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
+                        .no2.fluctuationRange));
+                dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_NO2_FLUCTUATIONRANGE);
+                break;
+
+
             case R.id.settings_device_ll_lpg:
                 dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.lpg
                         .alarmHigh_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_LPG);
+                break;
+
+            case R.id.include_lpg:
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
+                        .lpg.fluctuationRange));
+                dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_LPG_FLUCTUATIONRANGE);
                 break;
             case R.id.settings_device_ll_pm10:
                 dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
                         .pm10.alarmHigh_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_PM10);
                 break;
+
+            case R.id.include_pm10:
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
+                        .pm10.fluctuationRange));
+                dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_PM10_FLUCTUATIONRANGE);
+                break;
             case R.id.settings_device_ll_pm25:
                 dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
                         .pm25.alarmHigh_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_PM25);
                 break;
+
+            case R.id.include_pm25:
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
+                        .pm25.fluctuationRange));
+                dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_PM25_FLUCTUATIONRANGE);
+                break;
+
             case R.id.settings_device_rl_temp_upper:
                 dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.temperature
                         .alarmHigh_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_TEMP_UPPER);
+                break;
+
+
+            case R.id.include_temp:
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
+                        .temperature.fluctuationRange));
+                dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_TEMP_FLUCTUATIONRANGE);
                 break;
             case R.id.settings_device_rl_temp_lower:
                 dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.temperature
@@ -3884,10 +4343,18 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         .alarmHigh_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_HUMIDITY_UPPER);
                 break;
+
             case R.id.settings_device_rl_humidity_lower:
                 dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.humidity
                         .alarmLow_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_HUMIDITY_LOWER);
+                break;
+
+
+            case R.id.include_humidity:
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
+                        .humidity.fluctuationRange));
+                dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_HUMIDITY_FLUCTUATIONRANGE);
                 break;
             case R.id.settings_device_rl_pitch_angle_upper:
                 dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.pitch
@@ -3899,6 +4366,12 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         .alarmLow_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_PITCH_ANGLE_LOWER);
                 break;
+
+            case R.id.include_pitch:
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
+                        .pitch.fluctuationRange));
+                dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_PITCH_FLUCTUATIONRANGE);
+                break;
             case R.id.settings_device_rl_roll_angle_upper:
                 dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.roll
                         .alarmHigh_float));
@@ -3908,6 +4381,12 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.roll
                         .alarmLow_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_ROLL_ANGLE_LOWER);
+                break;
+
+            case R.id.include_roll:
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
+                        .roll.fluctuationRange));
+                dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_ROLL_FLUCTUATIONRANGE);
                 break;
             case R.id.settings_device_rl_yaw_angle_upper:
                 dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.yaw
@@ -3919,6 +4398,12 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                         .alarmLow_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_YAW_ANGLE_LOWER);
                 break;
+
+            case R.id.include_yaw:
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
+                        .yaw.fluctuationRange));
+                dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_YAW_FLUCTUATIONRANGE);
+                break;
             case R.id.settings_device_rl_water_pressure_upper:
                 dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.waterPressure
                         .alarmHigh_float));
@@ -3928,6 +4413,12 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor.waterPressure
                         .alarmLow_float));
                 dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_WATER_PRESSURE_LOWER);
+                break;
+
+            case R.id.include_water_pressure:
+                dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroSensor
+                        .waterPressure.fluctuationRange));
+                dialogFragment.show(getFragmentManager(), SETTINGS_SENSOR_WATER_FLUCTUATIONRANGE);
                 break;
             case R.id.settings_device_rl_app_param_upload:
                 dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(sensoroDevice
@@ -4030,11 +4521,133 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             case R.id.settings_device_rl_fhsj_elec_control_zero_power:
                 doElecControl(CMD_ELEC_ZERO_POWER);
                 break;
+            //设备支持哪些cmd
+
+
+            case R.id.ll_cmd_reset:
+                doAppCmd(APP_CMD_RESET);
+                break;
+            case R.id.ll_cmd_fac_reset:
+                doAppCmd(APP_CMD_FAC_RESET);
+                break;
+            case R.id.ll_cmd_dfu:
+                doAppCmd(APP_CMD_DFU);
+                break;
+            case R.id.ll_cmd_data_query:
+                doAppCmd(APP_CMD_DATA_QUERY);
+                break;
+            case R.id.ll_cmd_self_test:
+                doAppCmd(APP_CMD_SELF_TEST);
+                break;
+            case R.id.ll_cmd_long_mute:
+                doAppCmd(APP_CMD_LONG_MUTE);
+
+                break;
+            case R.id.ll_cmd_mute:
+                doAppCmd(APP_CMD_MUTE);
+
+                break;
+            case R.id.ll_cmd_switch_opening:
+                doAppCmd(APP_CMD_SWITCH_OPENING);
+
+                break;
+            case R.id.ll_cmd_switch_closing:
+                doAppCmd(APP_CMD_SWITCH_CLOSING);
+                break;
+            case R.id.ll_cmd_valve_closing:
+                doAppCmd(APP_CMD_VALVE_CLOSING);
+
+                break;
+            case R.id.ll_cmd_timing_mute:
+
+                Integer beepMuteTime = sensoroDevice.getBeepMuteTime();
+                if (null != beepMuteTime) {
+                    dialogFragment = SettingsInputDialogFragment.newInstance(String.valueOf(beepMuteTime));
+                } else {
+                    dialogFragment = SettingsInputDialogFragment.newInstance("");
+
+                }
+                dialogFragment.show(getFragmentManager(), SETTINGS_APP_PARAM_APP_CMD_TIMING_MUTE);
+                break;
+            case R.id.ll_cmd_alarm_trigger:
+                doAppCmd(APP_CMD_ALARM_TRIGGER);
+
+                break;
+
 
             default:
                 break;
         }
     }
+
+
+    /**
+     * 设备支持哪些cmd
+     *
+     * @param cmd
+     */
+    private void doAppCmd(AppCmd cmd) {
+
+        progressDialog.show();
+        MsgNode1V1M5.AppParam.Builder appBuilder = MsgNode1V1M5.AppParam.newBuilder();
+
+        switch (cmd) {
+
+            case APP_CMD_RESET:
+                Toast.makeText(application, "重启指令", Toast.LENGTH_SHORT).show();
+                break;
+            case APP_CMD_FAC_RESET:
+                Toast.makeText(application, "恢复出厂设置指令", Toast.LENGTH_SHORT).show();
+                break;
+            case APP_CMD_DFU:
+                Toast.makeText(application, "进入 DFU 模式指令", Toast.LENGTH_SHORT).show();
+                break;
+            case APP_CMD_DATA_QUERY:
+                Toast.makeText(application, "数据查询指令", Toast.LENGTH_SHORT).show();
+                break;
+            case APP_CMD_SELF_TEST:
+                Toast.makeText(application, "自检指令", Toast.LENGTH_SHORT).show();
+                break;
+            case APP_CMD_LONG_MUTE:
+                Toast.makeText(application, "长消音指令", Toast.LENGTH_SHORT).show();
+                break;
+            case APP_CMD_MUTE:
+                Toast.makeText(application, "短消音指令", Toast.LENGTH_SHORT).show();
+                break;
+            case APP_CMD_SWITCH_OPENING:
+                Toast.makeText(application, "开闸指令", Toast.LENGTH_SHORT).show();
+                break;
+            case APP_CMD_SWITCH_CLOSING:
+
+                Toast.makeText(application, "合闸指令", Toast.LENGTH_SHORT).show();
+                break;
+            case APP_CMD_VALVE_CLOSING:
+
+                Toast.makeText(application, "阀门闭合指令", Toast.LENGTH_SHORT).show();
+                break;
+            case APP_CMD_TIMING_MUTE:
+
+                Toast.makeText(application, "定时消音指令", Toast.LENGTH_SHORT).show();
+                //定时消音设置参数转化为秒
+                appBuilder.setBeepMuteTime(sensoroDevice.getBeepMuteTime() * 60);
+                break;
+            case APP_CMD_ALARM_TRIGGER:
+                Toast.makeText(application, "触发报警指令", Toast.LENGTH_SHORT).show();
+                break;
+
+            default:
+
+                break;
+        }
+
+
+        appBuilder.setCmd(cmd);
+
+        sensoroDeviceConnection.writeAppParamCmd(appBuilder, this);
+
+
+    }
+
 
     /**
      * 电表系统复位
@@ -4542,30 +5155,133 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             String co = bundle.getString(SettingsInputDialogFragment.INPUT);
             sensoroSensor.co.alarmHigh_float = Float.valueOf(co);
             coTextView.setText(co + "");
+        } else if (tag.equals(SETTINGS_SENSOR_CO_FLUCTUATIONRANGE)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                float i = Float.valueOf(temp);
+                if (i < 0 || i > 250) {
+                    Toast.makeText(this, "波动范围为0-250", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.co.fluctuationRange = Float.valueOf(i);
+                includeCoTv.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+
+
         } else if (tag.equals(SETTINGS_SENSOR_CO2)) {
             String co2 = bundle.getString(SettingsInputDialogFragment.INPUT);
             sensoroSensor.co2.alarmHigh_float = Float.valueOf(co2);
             co2TextView.setText(co2 + "");
+        } else if (tag.equals(SETTINGS_SENSOR_CO2_FLUCTUATIONRANGE)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                float i = Float.valueOf(temp);
+                if (i < 0 || i > 250) {
+                    Toast.makeText(this, "波动范围为0-250", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.co2.fluctuationRange = i;
+                includeCo2Tv.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+
         } else if (tag.equals(SETTINGS_SENSOR_NO2)) {
             String no2 = bundle.getString(SettingsInputDialogFragment.INPUT);
             sensoroSensor.no2.alarmHigh_float = Float.valueOf(no2);
             no2TextView.setText(no2 + "");
+        } else if (tag.equals(SETTINGS_SENSOR_NO2_FLUCTUATIONRANGE)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                float i = Float.valueOf(temp);
+                if (i < 0 || i > 250) {
+                    Toast.makeText(this, "波动范围为0-250", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.no2.fluctuationRange = i;
+                includeNo2Tv.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
         } else if (tag.equals(SETTINGS_SENSOR_CH4)) {
             String ch4 = bundle.getString(SettingsInputDialogFragment.INPUT);
             sensoroSensor.ch4.alarmHigh_float = Float.valueOf(ch4);
             ch4TextView.setText(ch4 + "");
+        } else if (tag.equals(SETTINGS_SENSOR_CH4_FLUCTUATIONRANGE)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                float i = Float.valueOf(temp);
+                if (i < 0 || i > 250) {
+                    Toast.makeText(this, "波动范围为0-250", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.ch4.fluctuationRange = i;
+                includeCh4Tv.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
         } else if (tag.equals(SETTINGS_SENSOR_LPG)) {
             String lpg = bundle.getString(SettingsInputDialogFragment.INPUT);
             sensoroSensor.lpg.alarmHigh_float = Float.valueOf(lpg);
             lpgTextView.setText(lpg + " ");
+        } else if (tag.equals(SETTINGS_SENSOR_LPG_FLUCTUATIONRANGE)) {
+
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                float i = Float.valueOf(temp);
+                if (i < 0 || i > 250) {
+                    Toast.makeText(this, "波动范围为0-250", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.lpg.fluctuationRange = i;
+                includeLpgTv.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
+
         } else if (tag.equals(SETTINGS_SENSOR_PM25)) {
             String pm25 = bundle.getString(SettingsInputDialogFragment.INPUT);
             sensoroSensor.pm25.alarmHigh_float = Float.valueOf(pm25);
             pm25TextView.setText(pm25 + "");
+        } else if (tag.equals(SETTINGS_SENSOR_PM25_FLUCTUATIONRANGE)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                float i = Float.valueOf(temp);
+                if (i < 0 || i > 250) {
+                    Toast.makeText(this, "波动范围为0-250", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.pm25.fluctuationRange = i;
+                includePm25Tv.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
         } else if (tag.equals(SETTINGS_SENSOR_PM10)) {
             String pm10 = bundle.getString(SettingsInputDialogFragment.INPUT);
             sensoroSensor.pm10.alarmHigh_float = Float.valueOf(pm10);
             pm10TextView.setText(pm10 + "");
+        } else if (tag.equals(SETTINGS_SENSOR_PM10_FLUCTUATIONRANGE)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                float i = Float.valueOf(temp);
+                if (i < 0 || i > 250) {
+                    Toast.makeText(this, "波动范围为0-250", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.pm10.fluctuationRange = i;
+                includePm10Tv.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
         } else if (tag.equals(SETTINGS_SENSOR_TEMP_UPPER)) {
             String tempHigh = bundle.getString(SettingsInputDialogFragment.INPUT);
             sensoroSensor.temperature.alarmHigh_float = Float.valueOf(tempHigh);
@@ -4574,6 +5290,20 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             String tempLow = bundle.getString(SettingsInputDialogFragment.INPUT);
             sensoroSensor.temperature.alarmLow_float = Float.valueOf(tempLow);
             tempLowerTextView.setText(tempLow + "");
+        } else if (tag.equals(SETTINGS_SENSOR_TEMP_FLUCTUATIONRANGE)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                float i = Float.valueOf(temp);
+                if (i < 0 || i > 250) {
+                    Toast.makeText(this, "波动范围为0-250", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.temperature.fluctuationRange = i;
+                includeTempTv.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
         } else if (tag.equals(SETTINGS_SENSOR_HUMIDITY_UPPER)) {
             String humidityHigh = bundle.getString(SettingsInputDialogFragment.INPUT);
             sensoroSensor.humidity.alarmHigh_float = Float.valueOf(humidityHigh);
@@ -4582,6 +5312,20 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             String humidityLow = bundle.getString(SettingsInputDialogFragment.INPUT);
             sensoroSensor.humidity.alarmLow_float = Float.valueOf(humidityLow);
             humidityLowerTextView.setText(humidityLow + "");
+        } else if (tag.equals(SETTINGS_SENSOR_HUMIDITY_FLUCTUATIONRANGE)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                float i = Float.valueOf(temp);
+                if (i < 0 || i > 250) {
+                    Toast.makeText(this, "波动范围为0-250", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.humidity.fluctuationRange = i;
+                includeHumidityTv.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
         } else if (tag.equals(SETTINGS_SENSOR_PITCH_ANGLE_UPPER)) {
             String pitchHigh = bundle.getString(SettingsInputDialogFragment.INPUT);
             sensoroSensor.pitch.alarmHigh_float = Float.valueOf(pitchHigh);
@@ -4590,6 +5334,20 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             String pitchLow = bundle.getString(SettingsInputDialogFragment.INPUT);
             sensoroSensor.pitch.alarmLow_float = Float.valueOf(pitchLow);
             pitchAngleLowerTextView.setText(pitchLow + "");
+        } else if (tag.equals(SETTINGS_SENSOR_PITCH_FLUCTUATIONRANGE)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                float i = Float.valueOf(temp);
+                if (i < 0 || i > 250) {
+                    Toast.makeText(this, "波动范围为0-250", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.pitch.fluctuationRange = i;
+                includePitchTv.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
         } else if (tag.equals(SETTINGS_SENSOR_ROLL_ANGLE_UPPER)) {
             String rollHigh = bundle.getString(SettingsInputDialogFragment.INPUT);
             sensoroSensor.roll.alarmHigh_float = Float.valueOf(rollHigh);
@@ -4598,6 +5356,20 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             String rollLower = bundle.getString(SettingsInputDialogFragment.INPUT);
             sensoroSensor.roll.alarmLow_float = Float.valueOf(rollLower);
             rollAngleLowerTextView.setText(rollLower + "");
+        } else if (tag.equals(SETTINGS_SENSOR_ROLL_FLUCTUATIONRANGE)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                float i = Float.valueOf(temp);
+                if (i < 0 || i > 250) {
+                    Toast.makeText(this, "波动范围为0-250", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.roll.fluctuationRange = i;
+                includeRollTv.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
         } else if (tag.equals(SETTINGS_SENSOR_YAW_ANGLE_UPPER)) {
             String yawHigh = bundle.getString(SettingsInputDialogFragment.INPUT);
             sensoroSensor.yaw.alarmHigh_float = Float.valueOf(yawHigh);
@@ -4606,6 +5378,20 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             String yawLower = bundle.getString(SettingsInputDialogFragment.INPUT);
             sensoroSensor.yaw.alarmLow_float = Float.valueOf(yawLower);
             yawAngleLowerTextView.setText(yawLower + "");
+        } else if (tag.equals(SETTINGS_SENSOR_YAW_FLUCTUATIONRANGE)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                float i = Float.valueOf(temp);
+                if (i < 0 || i > 250) {
+                    Toast.makeText(this, "波动范围为0-250", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.yaw.fluctuationRange = i;
+                includeYawTv.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
         } else if (tag.equals(SETTINGS_SENSOR_WATER_PRESSURE_UPPER)) {
             String waterHigh = bundle.getString(SettingsInputDialogFragment.INPUT);
             sensoroSensor.waterPressure.alarmHigh_float = Float.valueOf(waterHigh);
@@ -4614,6 +5400,20 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             String waterLower = bundle.getString(SettingsInputDialogFragment.INPUT);
             sensoroSensor.waterPressure.alarmLow_float = Float.valueOf(waterLower);
             waterPressureLowerTextView.setText(waterLower + "");
+        } else if (tag.equals(SETTINGS_SENSOR_WATER_FLUCTUATIONRANGE)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                float i = Float.valueOf(temp);
+                if (i < 0 || i > 250) {
+                    Toast.makeText(this, "波动范围为0-250", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroSensor.waterPressure.fluctuationRange = i;
+                includeWaterPressureTv.setText(i + "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
         } else if (tag.equals(SETTINGS_APP_PARAM_UPLOAD)) {
             String upload = bundle.getString(SettingsInputDialogFragment.INPUT);
             Integer uploadInterval = Integer.valueOf(upload);
@@ -5162,7 +5962,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
             }
-        }else if(SETTINGS_DEVICE_RL_CAYMAN_ADV_TYPE.equals(tag)){
+        } else if (SETTINGS_DEVICE_RL_CAYMAN_ADV_TYPE.equals(tag)) {
             int index = bundle.getInt(SettingsSingleChoiceItemsFragment.INDEX);
             sensoroSensor.cayManData.bleAdvType = index;
             caymanBleAdvTypeContent.setText(index == 0 ? "持续广播" : "间断广播");
@@ -5222,6 +6022,25 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
                 e.printStackTrace();
                 Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
             }
+        } else if (SETTINGS_APP_PARAM_APP_CMD_TIMING_MUTE.equals(tag)) {
+            String temp = bundle.getString(SettingsInputDialogFragment.INPUT);
+            try {
+                if (TextUtils.isEmpty(temp)) {
+                    Toast.makeText(this, "输入不能为空", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                int beepMuteTime = Integer.parseInt(temp);
+                if (beepMuteTime < 1 || beepMuteTime > 30) {
+                    Toast.makeText(this, "时长输入错误，数值范围:" + "1~30", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sensoroDevice.setBeepMuteTime(beepMuteTime);
+                tvCmdTimingMute.setText(beepMuteTime + "分");
+                doAppCmd(APP_CMD_TIMING_MUTE);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "请输入正确的数字格式", Toast.LENGTH_SHORT).show();
+            }
         }
 
     }
@@ -5245,8 +6064,8 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
             R.id.acrel_t3_th, R.id.acrel_t4_th, R.id.acrel_curr_high_set, R.id.acrel_val_high_set,
             R.id.acrel_val_low_set, R.id.acrel_val_high_type, R.id.acrel_val_low_type,
             R.id.acrel_curr_high_type, R.id.acrel_cmd_reset, R.id.acrel_cmd_self_check, R.id.acrel_root,
-            R.id.acrel_psd, R.id.cayman_is_smoke, R.id.cayman_is_moved, R.id.cayman_value_of_tem,R.id.cayman_value_of_photor,
-            R.id.cayman_ble_adv_type,R.id.cayman_ble_adv_start_time,R.id.cayman_ble_adv_end_time_hum,R.id.cayman_value_of_batb,
+            R.id.acrel_psd, R.id.cayman_is_smoke, R.id.cayman_is_moved, R.id.cayman_value_of_tem, R.id.cayman_value_of_photor,
+            R.id.cayman_ble_adv_type, R.id.cayman_ble_adv_start_time, R.id.cayman_ble_adv_end_time_hum, R.id.cayman_value_of_batb,
             R.id.cayman_value_of_hum, R.id.cayman_alarm_of_high_tem, R.id.cayman_alarm_of_low_tem,
             R.id.cayman_alarm_of_high_hum, R.id.cayman_alarm_of_low_hum, R.id.cayman_cmd_self_check,
             R.id.cayman_cmd_reset, R.id.cayman_cmd_clear_sound, R.id.baymax_density_l1, R.id.baymax_density_l2, R.id.baymax_density_l3,
@@ -5543,7 +6362,7 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
 
         MsgNode1V1M5.Cayman.Builder builder = MsgNode1V1M5.Cayman.newBuilder();
         builder.setCmd(SensoroUUID.bitsToInt(bytes));
-        sensoroDeviceConnection.writeCaymanCmd(builder, -1,this);
+        sensoroDeviceConnection.writeCaymanCmd(builder, -1, this);
     }
 
     private void doAcrelControl(int cmd) {
@@ -5563,5 +6382,6 @@ public class SettingDeviceActivity extends BaseActivity implements Constants, Co
         builder.setCmd(SensoroUUID.bitsToInt(bytes));
         sensoroDeviceConnection.writeAcrelCmd(builder, this);
     }
+
 
 }
